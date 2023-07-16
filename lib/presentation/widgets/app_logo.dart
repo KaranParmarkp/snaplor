@@ -13,7 +13,9 @@ class AppLogo extends StatelessWidget {
     return Container(
       constraints: BoxConstraints(maxWidth: 300),
       padding:  EdgeInsets.symmetric(horizontal: padding),
-      child: Image.asset(whiteLogo ? AppImages.appLogoWhite :AppImages.appLogo),
+      child: Hero(
+          tag: "appLogo",
+          child: Image.asset(whiteLogo ? AppImages.appLogoWhite :AppImages.appLogo)),
     );
   }
 }

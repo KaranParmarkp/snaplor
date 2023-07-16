@@ -15,7 +15,7 @@ class AppButton extends StatelessWidget {
       this.buttonTextColor,
       this.textFontSize,
       this.fontFamily,
-      this.outlineColor})
+      this.outlineColor,this.whiteButton=false})
       : super(key: key);
   final void Function()? onTap;
   final String title;
@@ -29,7 +29,7 @@ class AppButton extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final BorderRadiusGeometry? borderRadius;
   final Color? outlineColor;
-
+  final bool whiteButton;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -41,33 +41,18 @@ class AppButton extends StatelessWidget {
             maxWidth: 500
           ),
           decoration: outlineColor!=null ? BoxDecoration(
-            borderRadius: borderRadius ?? BorderRadius.circular(30),
+            borderRadius: borderRadius ?? BorderRadius.circular(15),
             border: Border.all(color: outlineColor!,width: 1)
           ): BoxDecoration(
-              borderRadius: borderRadius ?? BorderRadius.circular(30),
-              gradient: AppColors.appGradient,
-              boxShadow: [
-               /* BoxShadow(
-                    color: AppColors.shadowColor,
-                    blurRadius: 10,
-                    offset: Offset(0, 5),
-                    spreadRadius: 1.5)*/
-                BoxShadow(
-                  blurRadius: 13,
-                  color: AppColors.shadowColor,
-                  offset: Offset(0, 7),
-                )
-              ]),
+              borderRadius: borderRadius ?? BorderRadius.circular(15),
+                color: whiteButton ? AppColors.white : AppColors.colorPrimary
+              ),
           child: Center(
               child: Padding(
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 0),
             child: Text(
               title,
-              style: textStyle ??
-                  TextStyle(
-                      color: buttonTextColor ?? AppColors.white,
-                      fontSize: textFontSize ?? 20,
-                      fontWeight: FontWeight.bold,),
+              style: textStyle ?? (!whiteButton ? AppStyle.white14 : AppStyle.purple14),
             ),
           )),
         ),

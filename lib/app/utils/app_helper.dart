@@ -526,43 +526,45 @@ class AppHelper {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(32), topRight: Radius.circular(32))),
       builder: (context) {
-        return Padding(
-          padding: isScrollControlled
-              ? MediaQuery.of(context).viewInsets
-              : EdgeInsets.zero,
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                constraints: BoxConstraints(),
-                decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(32),
-                        topRight: Radius.circular(32))),
-                padding: padding ?? EdgeInsets.symmetric(horizontal: 20),
-                child: Padding(
-                  padding: innerPadding ?? EdgeInsets.only(top: 60, bottom: 30),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [child],
+        return DismissKeyBoard(
+          child: Padding(
+            padding: isScrollControlled
+                ? MediaQuery.of(context).viewInsets
+                : EdgeInsets.zero,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  onTap: () => context.pop(),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0,right: 16),
+                      child: CircleAvatar(
+                        radius: 15,
+                          backgroundColor: AppColors.white,
+                          child: SvgImage(image: AppSvg.close,)),
+                    ),
                   ),
                 ),
-              ),
-              if (showCloseIcon)
-                Positioned(
-                  top: -28,
-                  left: 0,
-                  right: 0,
-                  child: InkWell(
-                    onTap: () => context.pop(),
-                    child: SizedBox(
-                        height: 68,
-                        width: 68,
-                        child: Image.asset(AppImages.closeButton)),
+                Container(
+                  constraints: BoxConstraints(),
+                  decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(22),
+                          topRight: Radius.circular(22))),
+                  padding: padding ?? EdgeInsets.symmetric(horizontal: 20),
+                  child: Padding(
+                    padding: innerPadding ?? EdgeInsets.only(top: 30, bottom: 30),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [child],
+                    ),
                   ),
-                )
-            ],
+                ),
+              ],
+            ),
           ),
         );
       },

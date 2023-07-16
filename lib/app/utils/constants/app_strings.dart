@@ -27,10 +27,9 @@ class AppStrings {
   static const String password= "Password";
   static const String mobileNumber= "Mobile Number";
   static const String mobile= "Mobile";
-  static const String enterCode= "Enter Code";
   static const String forgotPassword= "Forgot Password?";
   static const String signIn= "SIGN IN";
-  static const String login= "LOG IN";
+  static const String login= "Log In";
   static const String signUp= "SIGN UP";
   static const String orUseTouchId= "Or Use Touch Id";
   static const String touchId= "Touch ID";
@@ -213,6 +212,29 @@ class AppStrings {
   static const String outInvoice = "Outstanding Invoices";
   static const String unInvoiceTime = "UnInvoices Timesheets";
   static const String runningShifts = "Running Shifts";
-  static const String confirmedShifts = "Confirmed Shifts";
+
+
+  static const String letStarted = "Let’s Get Started";
+  static const String connectUser = "Connect with user through chatting or calling. Enjoy safe and private experience";
+  static const String phoneNumber = "Phone Number";
+  static const String enterPhoneNumber = "Enter your phone number here";
+  static const String hiWelcome = "Hi, Welcome!";
+  static const String enterNumber4VerCode = "Please enter your phone number you will receive a 4 digit code for verification";
+  static const String getOtp = "Get OTP";
+  static const String enterCode= "Enter Code";
+  static const String weSentSMS= "We’ve sent an SMS with an activation code to your phone ";
+  static const String resentOTP= "Resend OTP";
+  static const String enteredWrongNumber= "Entered wrong number";
+  static const String verify= "Verify";
+  static const String hi= "Hi, ";
+  static const String importantPolices= "Important Polices:";
+  static const String neverBeRude= "1.  Never be rude to any customer.";
+  static const String neverShare=  "2. Never share your personal details with any customer";
+  static const String showMore= "Show more";
+  static const String totalEarnings= "Total Earning";
+  static const String calls= "Call";
+  static const String chat= "Chat";
+  static const String type= "Type";
+
 
 }

@@ -49,6 +49,9 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   flutter_html: any
   google_fonts: ^5.1.0
+  flutter_otp_text_field: ^1.1.1
+  percent_indicator: ^4.2.2
+
 
 
 

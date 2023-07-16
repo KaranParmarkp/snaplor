@@ -1,12 +1,12 @@
 class ApiConfig {
 
-  static const String baseUrl = "stagUrl";
+  static const String baseUrl = "https://www.google.com/";
   static const String apiUrl = "${baseUrl}api/v8/";
   static const String providerBaseImageUrlDebug = "https://staging.quinable.com/";
   static const String providerBaseImageUrl = "https://login.quinable.com/";
 
   //Google place api key
-  static const String googleApiKey = "";
+  static const String googleApiKey = "google";
 
   // update below url when creating build for release
   static const String serviceAgreementUrl = providerBaseImageUrlDebug+"facility_agreement";

@@ -29,6 +29,8 @@ class AppImages {
   static const String financialStartIcon = "assets/images/financial_start_icon.png";
   static const String financialTitleIcon = "assets/images/financial_title_icon.png";
 
+  static const String hand = "assets/images/hand.png";
+
 }
 
 class AppSvg{
@@ -50,7 +52,6 @@ class AppSvg{
   static const String schedule = "assets/icons/TAB_Schedule.svg";
   static const String addButton = "assets/icons/TAB_Create New Shift.svg";
   static const String drawer = "assets/icons/drawer.svg";
-  static const String close = "assets/icons/close.svg";
   static const String time = "assets/icons/Approve Times.svg";
   static const String phone = "assets/icons/cell-phone number_white.svg";
   static const String email = "assets/icons/Mail_white.svg";
@@ -72,6 +73,17 @@ class AppSvg{
   static const String blackList = "assets/icons/blacklist.svg";
   static const String searchQuery = "assets/icons/Detailed query_black.svg";
   static const String arrowRight = "assets/icons/Arrow_ right.svg";
+
+
+
+  static const String mobile = "assets/icons/mobile.svg";
+  static const String close = "assets/icons/close.svg";
+  static const String home = "assets/icons/home.svg";
+  static const String search = "assets/icons/search.svg";
+  static const String setting = "assets/icons/settings.svg";
+  static const String wallet = "assets/icons/Wallet.svg";
+  static const String bell = "assets/icons/bell.svg";
+
 
 
 

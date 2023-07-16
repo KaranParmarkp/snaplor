@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/auth/register/register_mobile_screen.dart';
+import 'package:jyotishee/presentation/screens/base/base_screen.dart';
 
 import '../../../../app/utils/preferences/preferences.dart';
 import '../../../../main.dart';
@@ -17,168 +19,210 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final emailController = TextEditingController();
+  final mobileController = TextEditingController();
   final passwordController = TextEditingController();
-  final emailFocus = FocusNode();
+  final mobileFocus = FocusNode();
   final passwordFocus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return WillPopExit(
-      child: HalfGradientContainer(
-        showBack: false,
-        bottomWidget: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            AppTextField(
-              hintText: AppStrings.password,
-              obscureText: true,
-              controller: passwordController,
-              focusNode: passwordFocus,
-              autofillHints: [
-                AutofillHints.password
-              ],
-
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: InkWell(
-                onTap: () => context.push(ForgotPasswordScreen()),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 14, bottom: 44),
-                  child: Text(
-                    AppStrings.forgotPassword,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: AppColors.colorPrimary,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            AppButton(
-              title: AppStrings.login,
-              onTap: () => onLoginTap(),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 24, horizontal: 6),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: Divider(
-                      height: 1,
-                      color: AppColors.hintGrey.withOpacity(0.5),
-                    )),
-                    6.width,
-                    Text(
-                      AppStrings.orUseTouchId,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: AppColors.hintGrey,
-                      ),
-                    ),
-                    6.width,
-                    Expanded(
-                        child: Divider(
-                      height: 1,
-                      color: AppColors.hintGrey.withOpacity(0.5),
-                    )),
-                  ],
-                ),
-              ),
-            ),
-            Center(
-                child: InkWell(
-              onTap: () => onTouchIDTap(),
-              child: Image.asset(
-                AppImages.fingerprint,
-                height: 66,
-                width: 66,
-                fit: BoxFit.cover,
-              ),
-            )),
-            Align(
-              alignment: Alignment.center,
-              child: InkWell(
-                onTap: () => context.push(RegisterMobileScreen()),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+      child: DismissKeyBoard(
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.light.copyWith(
+              statusBarColor: Colors.transparent,
+              systemNavigationBarIconBrightness: Brightness.dark,
+              systemNavigationBarColor: Colors.white),
+          child: Container(
+            decoration: AppDecoration.splash,
+            child: SafeArea(
+              child: Scaffold(
+                backgroundColor: AppColors.transparent,
+                resizeToAvoidBottomInset: false,
+                body: Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                  child: Column(
                     children: [
-                      Text(
-                        AppStrings.dontHaveAccount,
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: AppColors.hintGrey,
+                      50.height,
+                      AppLogo(
+                        whiteLogo: true,
+                      ),
+                      Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Text(
+                          AppStrings.letStarted,
+                          style: AppStyle.white50,
+                          textAlign: TextAlign.start,
                         ),
                       ),
-                      5.width,
-                      Text(
-                        AppStrings.signUp,
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: AppColors.colorPrimary,
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Text(
+                          AppStrings.connectUser,
+                          style: AppStyle.white14W400,
                         ),
                       ),
+
+                      100.height,
+                      AppButton(
+                        title: AppStrings.login,
+                        whiteButton: true,
+                        onTap: () {
+                          _showLoginSheet();
+                        },
+                      )
                     ],
                   ),
                 ),
               ),
             ),
-          ],
-        ),
-        overlayWidget: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            AppLogo(
-              padding: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 60),
-              child: Text(
-                AppStrings.loginTojyotishee,
-                style: TextStyle(
-                  fontSize: 18,
-                  color: AppColors.white,
-                ),
-              ),
-            ),
-            AppTextField(
-              hintText: AppStrings.emailMobileNumber,
-              autofillHints: [
-                AutofillHints.email
-              ],
-              controller: emailController,
-              focusNode: emailFocus,
-              keyboard: TextInputType.emailAddress,
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
 
+  void _showLoginSheet() {
+    AppHelper.showBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    AppStrings.hiWelcome,
+                    style: AppStyle.black30W700,
+                  ),
+                  6.width,
+                  Image.asset(AppImages.hand,width: 30,height: 30,)
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 35),
+              child: Text(
+                AppStrings.enterNumber4VerCode,
+                style: AppStyle.grey14,
+              ),
+            ),
+            HeaderTextField(
+                hint: AppStrings.enterPhoneNumber,
+                header: AppStrings.phoneNumber,
+                controller: mobileController,
+                icon: AppSvg.mobile),
+            AppButton(title: AppStrings.getOtp,onTap: () {
+              _showOTPSheet();
+            },)
+          ],
+        ));
+  }
+  void _showOTPSheet() {
+    AppHelper.showBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: Text(
+                AppStrings.enterCode,
+                style: AppStyle.black30W700,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 35),
+              child: Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: AppStrings.weSentSMS,
+                      style: AppStyle.grey14,
+                    ),
+                    TextSpan(
+                      text: "+91 9112547856",
+                      style: AppStyle.black14.copyWith(
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            OtpTextField(
+              numberOfFields: 4,
+              handleControllers: (controllers) {
+
+              },
+              borderColor: AppColors.colorPrimary,
+              showFieldAsBox: true,
+              enabledBorderColor: AppColors.colorPrimary,borderWidth: 1,
+              textStyle: AppStyle.black20,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              fieldWidth: 65,
+              borderRadius: BorderRadius.circular(15),
+              fillColor: AppColors.white,
+              filled: true,
+              cursorColor: AppColors.colorPrimary,
+              onCodeChanged: (String code) {
+                //handle validation or checks here
+              },
+              onSubmit: (String verificationCode){
+
+              }, // end onSubmit
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 20,top: 14,right: 16),
+                child: Text(
+                  AppStrings.resentOTP,
+                  style: AppStyle.black12.copyWith(color: AppColors.colorPrimary),
+                ),
+              ),
+            ),
+            AppButton(title: AppStrings.verify,onTap: () {
+                context.push(BaseScreen());
+            },),
+            InkWell(
+              onTap: () => context.pop(),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 15,left: 10,bottom: 5),
+                child: Row(
+                  children: [
+                    Icon(Icons.arrow_back_ios,size: 10,),
+                    4.width,
+                    Text(AppStrings.enteredWrongNumber,style: AppStyle.black12.copyWith(decoration: TextDecoration.underline),),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ));
+  }
+
   Future<void> onLoginTap() async {
     AppHelper.hideKeyboard();
-    if (emailController.text.isEmpty) {
+    if (mobileController.text.isEmpty) {
       AppHelper.showImageToast(message: AppValidator.messageBuilder("email")!);
-      emailFocus.requestFocusDelayed();
-    } else if (emailController.validateEmailAddress()) {
+      mobileFocus.requestFocusDelayed();
+    } else if (mobileController.validateEmailAddress()) {
       AppHelper.showImageToast(
         message: AppValidator.messageBuilder("Email Address",
             validationType: ErrorType.INVALID)!,
       );
-      emailFocus.requestFocusDelayed();
+      mobileFocus.requestFocusDelayed();
     } else if (passwordController.text.isEmpty) {
-      AppHelper.showImageToast(message: AppValidator.messageBuilder("password")!);
+      AppHelper.showImageToast(
+          message: AppValidator.messageBuilder("password")!);
       passwordFocus.requestFocusDelayed();
     } else if (passwordController.text.length < 8) {
       AppHelper.showImageToast(
@@ -187,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       TextInput.finishAutofillContext();
       await Provider.of<AuthProvider>(context, listen: false).login(
-          email: emailController.text,
+          email: mobileController.text,
           password: passwordController.text,
           fromTouchId: false);
     }

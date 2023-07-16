@@ -5,18 +5,29 @@ import 'package:jyotishee/presentation/widgets/widgets.dart';
 import '../../app/utils/utils.dart';
 import '../screens/base/base_screen.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
-  const CustomAppBar({Key? key, required this.title, this.onBackTap,this.trailingIcon,  this.gradient=false}) : super(key: key);
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar(
+      {Key? key,
+      required this.title,
+      this.onBackTap,
+      this.trailingIcon,
+      this.gradient = false})
+      : super(key: key);
   final String title;
   final VoidCallback? onBackTap;
   final Widget? trailingIcon;
   final bool gradient;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title,style: AppStyle.black22.copyWith(color: gradient ? AppColors.white : AppColors.black),),
+      title: Text(
+        title,
+        style: AppStyle.black22
+            .copyWith(color: gradient ? AppColors.white : AppColors.black),
+      ),
       centerTitle: true,
-      backgroundColor:  Colors.white,
+      backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
       elevation: 2,
       actions: [
@@ -24,9 +35,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
         20.width,
       ],
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarIconBrightness: gradient ? Brightness.light : Brightness.dark,
-        statusBarBrightness: gradient ? Brightness.dark:Brightness.light
-      ),
+          statusBarIconBrightness:
+              gradient ? Brightness.light : Brightness.dark,
+          statusBarBrightness: gradient ? Brightness.dark : Brightness.light),
       flexibleSpace: Container(
         decoration: gradient ? AppDecoration.splash : BoxDecoration(),
       ),
@@ -36,7 +47,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
           padding: const EdgeInsets.only(left: 8),
           child: Padding(
             padding: const EdgeInsets.all(12.0),
-            child: SvgImage(image :AppSvg.backArrow,color: gradient ? AppColors.white : AppColors.black,width: 14,height: 8),
+            child: SvgImage(
+                image: AppSvg.backArrow,
+                color: gradient ? AppColors.white : AppColors.black,
+                width: 14,
+                height: 8),
           ),
         ),
       ),
@@ -44,41 +59,66 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
   }
 
   @override
-  Size get preferredSize => Size(double.infinity,60);
+  Size get preferredSize => Size(double.infinity, 60);
 }
-class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget{
-  const DashboardAppBar({Key? key, required this.title, this.trailingIcon}) : super(key: key);
-  final String title;
+
+class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const DashboardAppBar({Key? key, this.title, this.trailingIcon})
+      : super(key: key);
+  final String? title;
   final Widget? trailingIcon;
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
-  builder: (context, provider, child) {
-  return AppBar(
-      title: Text(title,style: TextStyle(fontSize: 22,color: Colors.white),),
-      centerTitle: true,
-      backgroundColor: Colors.transparent,
-      automaticallyImplyLeading: false,
-      elevation: 0,
-      actions: [
-        trailingIcon ?? SizedBox(),
-        20.width,
-      ],
-      flexibleSpace: Container(
-        decoration: AppDecoration.splash,
-      ),
-      leading: InkWell(
-        onTap: () => scaffoldKey.currentState?.openDrawer(),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SvgPicture.asset(AppSvg.drawer,width: 25,height: 20),
-        ),
-      ),
+      builder: (context, provider, child) {
+        return AppBar(
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(AppStrings.hi + "Mudhusudhan!", style: AppStyle.black14.copyWith(fontWeight: FontWeight.bold)),
+              Text("mudhusudhan07@gmail.com", style: AppStyle.grey12),
+            ],
+          ),
+          centerTitle: false,
+          backgroundColor: AppColors.white,
+          automaticallyImplyLeading: false,
+          elevation: 8,
+          shadowColor: AppColors.shadowAppBar,
+          actions: [
+            InkWell(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10,right: 10),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SvgImage(image: AppSvg.bell,),
+                    Positioned(
+                        right: 0,
+                        top: 8,
+                        child: CircleAvatar(radius: 4,backgroundColor: AppColors.colorPrimary,))
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 20,left: 10),
+                child: CircleNetworkImageAvatar(
+                radius: 20,
+                    image:
+                        "https://images.unsplash.com/photo-1567324216289-97cc4134f626?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cG9ydHJhaXQlMjBtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80"),
+              ),
+            ),
+          ],
+          systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarIconBrightness: Brightness.dark,
+              statusBarBrightness: Brightness.light),
+        );
+      },
     );
-  },
-);
   }
 
   @override
-  Size get preferredSize => Size(double.infinity,60);
+  Size get preferredSize => Size(double.infinity, 65);
 }

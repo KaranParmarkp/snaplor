@@ -4,7 +4,13 @@ class AppColors {
   static Color colorPrimary = const Color(0xFF7E1E80);
   static Color primaryAccent = const Color(0xFFCB69CA);
   static Color transparent = const Color(0x00000000);
-  static Color hintGrey = const Color(0xFF999999);
+  static Color hintGrey = const Color(0xFF5B5B5B);
+  static Color shadowAppBar = const Color(0x19000000);
+  static Color purpleLight = const Color(0xFFF2EBFD);
+  static Color lightGreen = const Color(0xFF91C23D);
+  static Color purpleLight1 = const Color(0xFFFFECEC);
+
+
   static Color dividerColor = hintGrey.withOpacity(0.5);
   static Color silverBfBfBf = const Color(0xFFBFBFBF);
   static Color grey777777 = const Color(0xFF777777);

@@ -113,7 +113,7 @@ class CreditProfileScreen extends StatelessWidget {
                       CreditSpendCard(title: AppStrings.outInvoice,value: data.outstandingInvoiceTotal,creditSpend: CreditSpend.outStandingInvoices),
                       CreditSpendCard(title: AppStrings.unInvoiceTime,value: data.pendingTimesheetTotal,creditSpend: CreditSpend.unInvoiceTimesheet),
                       CreditSpendCard(title: AppStrings.runningShifts,value: data.runningShiftTotal,creditSpend: CreditSpend.runningShifts),
-                      CreditSpendCard(title: AppStrings.confirmedShifts,value: data.shiftToBeWork,creditSpend: CreditSpend.confirmedShifts),
+                      CreditSpendCard(title: "AppStrings.confirmedShifts",value: data.shiftToBeWork,creditSpend: CreditSpend.confirmedShifts),
                       50.height
                     ],
                   ),

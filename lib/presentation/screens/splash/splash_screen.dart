@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        decoration: AppDecoration.splash,
+        color: AppColors.white,
         child: Padding(
           padding: EdgeInsets.only(bottom: 100),
           child: AppLogo(),
