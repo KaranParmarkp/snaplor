@@ -1,0 +1,68 @@
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:jyotishee/app/utils/preferences/preferences.dart';
+import 'package:jyotishee/data/providers/providers.dart';
+import 'package:jyotishee/presentation/screens/splash/splash_screen.dart';
+import 'app/utils/utils.dart';
+
+Preference preference = Preference();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //systemNavigationBarColor: Colors.blue, // navigation bar color
+    statusBarIconBrightness: Brightness.light,
+    statusBarBrightness: Brightness.dark,
+    statusBarColor: Colors.transparent, // status bar color
+  ));
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+  await preference.load();
+  runApp(buildProviders());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // navKey use to access context
+  static GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Jyotishee',
+      debugShowCheckedModeBanner: false,
+      navigatorKey: navKey,
+      builder: EasyLoading.init(),
+      scrollBehavior: MaterialScrollBehavior().copyWith(
+        dragDevices: {
+          PointerDeviceKind.mouse,
+          PointerDeviceKind.touch,
+          PointerDeviceKind.stylus,
+          PointerDeviceKind.unknown
+        },
+        physics: BouncingScrollPhysics(),
+        scrollbars: true,
+      ),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.poppinsTextTheme(),
+        //scaffoldBackgroundColor: Colors.white,
+      ),
+      home: const SplashScreen(),
+    );
+  }
+}
+
+buildProviders() {
+  return MultiProvider(providers: [
+    ChangeNotifierProvider.value(value: AuthProvider.initialize()),
+    ChangeNotifierProvider.value(value: AppProvider()),
+    ChangeNotifierProvider.value(value: ShiftsProvider()),
+    ChangeNotifierProvider.value(value: ProvidersListProvider()),
+  ], child: const MyApp());
+}

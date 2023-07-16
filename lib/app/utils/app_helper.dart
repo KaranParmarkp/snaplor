@@ -1,0 +1,635 @@
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:jyotishee/app/utils/utils.dart';
+import 'package:jyotishee/presentation/widgets/loader_ring.dart';
+import 'package:jyotishee/presentation/widgets/ftoast.dart' as ft;
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../data/models/models.dart';
+import '../../main.dart';
+import '../../presentation/widgets/widgets.dart';
+
+///AppHelper class contains function that will help in ui related code
+class AppHelper {
+  static BuildContext? dialogContext;
+
+  static Future<void> showLoading() async {
+    ///do not remove this await
+    await EasyLoading.instance
+      ..loadingStyle = EasyLoadingStyle.custom
+      ..backgroundColor = Colors.transparent
+      ..indicatorColor = Colors.transparent
+      ..textStyle = const TextStyle()
+      ..textColor = Colors.white
+      ..radius = 12.0
+      ..contentPadding = EdgeInsets.zero
+      ..maskType = EasyLoadingMaskType.black
+      ..dismissOnTap = false;
+    EasyLoading.show(
+        dismissOnTap: false,
+        indicator: Container(
+            height: 100,
+            width: 100,
+            decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(12)),
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: Image.asset(
+                      //"assets/images/appiconq.png",
+                      "assets/images/appicontransparent.png",
+                      fit: BoxFit.fitWidth,
+                      height: 80, width: 80, alignment: Alignment.center,
+                    ),
+                  ),
+                ),
+                Positioned(
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: SizedBox(
+                          child: SpinKitRing(
+                        color: AppColors.colorPrimary,
+                        size: 100,
+                        lineWidth: 4,
+                        //color: AppColors.containerOrangeBorder,
+                      )),
+                    ))
+              ],
+            )));
+  }
+
+  static hideLoading() {
+    if (EasyLoading.isShow) {
+      EasyLoading.dismiss();
+    }
+  }
+
+  static void showToast({required String message, Color? textColor}) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.black.withOpacity(0.5),
+        textColor: textColor ?? Colors.white,
+        fontSize: 14);
+  }
+
+  static void showImageToast(
+      {BuildContext? context,
+      required String message,
+      bool success = false,
+      int duration = 1800}) {
+    ft.FToast.toast(
+      context ?? MyApp.navKey.currentContext!,
+      msg: message,
+      msgStyle: AppStyle.whiteBold16.copyWith(),
+      duration: duration,
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      image: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Image.asset(
+          success ? AppImages.correct : AppImages.error,
+          height: 30,
+          width: 30,
+        ),
+      ),
+      //imageDirection: AxisDirection.up,
+    );
+  }
+
+  static showSnackBar(
+      {required BuildContext context,
+      required String message,
+      bool? isSuccess}) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        message,
+      ),
+      backgroundColor: isSuccess != null
+          ? isSuccess
+              ? Colors.green
+              : Colors.red
+          : Colors.amber,
+      elevation: 1.0,
+    ));
+  }
+
+  static Future<File?> pickImage({required bool fromCamera}) async {
+    final ImagePicker imagePicker = ImagePicker();
+    final XFile? image = await imagePicker.pickImage(
+        source: fromCamera ? ImageSource.camera : ImageSource.gallery,
+        imageQuality: 50);
+    return image != null ? File(image.path) : null;
+  }
+
+  static Future<List<File>> pickMultipleImage() async {
+    final ImagePicker imagePicker = ImagePicker();
+    final List<XFile>? images = await imagePicker.pickMultiImage();
+
+    List<File> files = [];
+    if (images != null) {
+      for (XFile image in images) {
+        File file = File(image.path);
+        files.add(file);
+      }
+    }
+
+    return files;
+  }
+
+  static showCustomDialog(
+      {required BuildContext context,
+      required RichText title,
+      required String positiveText,
+      required VoidCallback? onPressedPositive,
+      VoidCallback? onPressedNegative}) async {
+    return await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    constraints: BoxConstraints(maxHeight: 500),
+                    decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(20)),
+                    padding: EdgeInsets.symmetric(horizontal: 14),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 60, bottom: 30),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 50, top: 36),
+                            child: title,
+                          ),
+                          /*Padding(
+                            padding: const EdgeInsets.only(bottom: 50, top: 36),
+                            child: Text(
+                              title,
+                              style: AppStyle.black18,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          */
+                          Row(
+                            children: [
+                              Expanded(
+                                child: AppShadeButton(
+                                  text: AppStrings.cancel,
+                                  startColor: AppColors.primaryRedFfc2c2,
+                                  endColor: AppColors.redFf4646,
+                                  onTap: () => context.pop(),
+                                ),
+                              ),
+                              12.width,
+                              Expanded(
+                                child: AppShadeButton(
+                                  text: positiveText,
+                                  startColor: AppColors.primaryAccent,
+                                  endColor: AppColors.colorPrimary,
+                                  onTap: onPressedPositive,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: -28,
+                    left: 0,
+                    right: 0,
+                    child: SizedBox(
+                        height: 70,
+                        width: 70,
+                        child: Image.asset(AppImages.question)),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  static showNoticeDialog(
+      {required BuildContext context, required String text}) async {
+    return await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Container(
+                //constraints: BoxConstraints(maxHeight: 500),
+                decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(20)),
+                padding: EdgeInsets.symmetric(horizontal: 18),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 30),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 30),
+                        child: Text(
+                          AppStrings.notice,
+                          style: AppStyle.black18.copyWith(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 19),
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 30,
+                        ),
+                        child: Text(
+                          text,
+                          style: AppStyle.black18
+                              .copyWith(color: Colors.red, fontSize: 19),
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                      SizedBox(
+                          height: 45,
+                          child: AppButton(
+                            title: AppStrings.ok.toUpperCase(),
+                            textFontSize: 14,
+                            onTap: () => context.pop(),
+                          ))
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  static Future<bool> willPopScope() {
+    if (Platform.isIOS) {
+      SystemNavigator.pop();
+    } else {
+      exit(0);
+    }
+    return Future.value(true);
+  }
+
+  static showExitDialog(BuildContext context) {
+    showCupertinoModalPopup<bool>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 18.0),
+          child: Center(
+            child: Text(
+              "Are you sure want to exit",
+              style: TextStyle(
+                  //     color: Colors.amber,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () {
+              if (Platform.isIOS) {
+                SystemNavigator.pop();
+              } else {
+                SystemNavigator.pop();
+                //exit(0);
+              }
+            },
+            child: Text(
+              "Yes",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              "No",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static hideKeyboard() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  static showLogoutDialog(BuildContext context) {
+    showCupertinoModalPopup<bool>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 18.0),
+          child: Center(
+            child: Text(
+              "Are you sure want to Logout?",
+              style: TextStyle(
+                  //     color: Colors.amber,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () {},
+            child: Text(
+              "Yes",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              "No",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static datePicker(BuildContext context, Widget child) {
+    showCupertinoModalPopup<void>(
+        context: context,
+        builder: (BuildContext context) => Container(
+              height: 216,
+              padding: const EdgeInsets.only(top: 6.0),
+              // The Bottom margin is provided to align the popup above the system
+              // navigation bar.
+              margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              // Provide a background color for the popup.
+              color: CupertinoColors.systemBackground.resolveFrom(context),
+              // Use a SafeArea widget to avoid system overlaps.
+              child: SafeArea(
+                top: false,
+                child: child,
+              ),
+            ));
+  }
+
+  static Future<DateTime?> showDatePicker(
+      {required BuildContext context,
+      CupertinoDatePickerMode mode = CupertinoDatePickerMode.date,
+      DateTime? minimumDate,
+      DateTime? maximumDate,
+        int? maximumYear}) async {
+    DateTime? date =maximumDate;//= DateTime.now();
+    await showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setStateDialog) {
+          return Container(
+            height: 250,
+            margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            color: CupertinoColors.systemBackground.resolveFrom(context),
+            child: Column(
+              children: [
+                Container(
+                  decoration: AppDecoration.splash,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          date = null;
+                          setStateDialog(() {});
+                          Navigator.of(context).pop();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 18, vertical: 14),
+                          child: Text(
+                            AppStrings.cancel,
+                            style: AppStyle.white16,
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setStateDialog(() {});
+                          Navigator.of(context).pop();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 18, vertical: 14),
+                          child: Text(
+                            AppStrings.OK,
+                            style: AppStyle.white16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: CupertinoDatePicker(
+                    minimumDate: minimumDate,
+                    maximumDate: maximumDate,
+                    maximumYear: maximumYear,
+                    mode: mode,
+                    initialDateTime: maximumDate,
+                    use24hFormat: true,
+                    onDateTimeChanged: (DateTime newDate) {
+                      setStateDialog(() {
+                        date = newDate;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+      },
+    );
+    print(date);
+    return date != null ? date : null;
+  }
+
+  static showBottomSheet<T>(
+      {required BuildContext context,
+      required Widget child,
+      EdgeInsetsGeometry? padding,
+      EdgeInsetsGeometry? innerPadding,
+      bool isScrollControlled = false,
+      bool isDismissible = false,
+      bool showCloseIcon = true}) {
+    return showModalBottomSheet<T>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: isScrollControlled,
+      isDismissible: isDismissible,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(32), topRight: Radius.circular(32))),
+      builder: (context) {
+        return Padding(
+          padding: isScrollControlled
+              ? MediaQuery.of(context).viewInsets
+              : EdgeInsets.zero,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                constraints: BoxConstraints(),
+                decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(32),
+                        topRight: Radius.circular(32))),
+                padding: padding ?? EdgeInsets.symmetric(horizontal: 20),
+                child: Padding(
+                  padding: innerPadding ?? EdgeInsets.only(top: 60, bottom: 30),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [child],
+                  ),
+                ),
+              ),
+              if (showCloseIcon)
+                Positioned(
+                  top: -28,
+                  left: 0,
+                  right: 0,
+                  child: InkWell(
+                    onTap: () => context.pop(),
+                    child: SizedBox(
+                        height: 68,
+                        width: 68,
+                        child: Image.asset(AppImages.closeButton)),
+                  ),
+                )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  static launchWebUrl(String url) async {
+    final Uri _url = Uri.parse(url);
+    if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $url';
+    }
+  }
+
+  static launchSMS(String number) async {
+    final uri = 'sms:$number';
+    final Uri _url = Uri.parse(uri);
+    if (!await launchUrl(
+      _url,
+    )) {
+      throw 'Could not launch $_url';
+    }
+  }
+
+  static launchCall(String number) async {
+    final uri = 'tel:$number';
+    final Uri _url = Uri.parse(uri);
+    if (!await launchUrl(
+      _url,
+    )) {
+      throw 'Could not launch $_url';
+    }
+  }
+
+  static launchEmail(String email) async {
+    final uri = 'mailto:$email';
+    final Uri _url = Uri.parse(uri);
+    if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $_url';
+    }
+  }
+
+  static Future<ButtonModel?> showGenericTypeSheet(
+      {required BuildContext context, required List<ButtonModel> list}) async {
+    return await AppHelper.showBottomSheet<ButtonModel?>(
+        context: context,
+        padding: EdgeInsets.zero,
+        child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: list.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      context.pop(list[index]);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Text(
+                        list[index].value,
+                        style: AppStyle.blue16,
+                      ),
+                    ),
+                  ),
+                  Divider(),
+                ],
+              );
+            }));
+  }
+}
