@@ -1,11 +1,22 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jyotishee/presentation/widgets/custom_app_bar.dart';
+import 'package:jyotishee/presentation/widgets/svg_image.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../app/utils/utils.dart';
+import '../widgets/widgets.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool chatSwitch = false;
+  bool callSwitch = false;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +30,8 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               ImportantNotice(),
+
+              //total earnings
               Container(
                 margin: EdgeInsets.only(top: 30),
                 padding: const EdgeInsets.all(15),
@@ -41,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                                   Text(
                                     AppStrings.totalEarnings,
                                     style: AppStyle.black14
-                                        .copyWith(fontWeight: FontWeight.w500),
+                                        .copyWith(fontWeight: FontWeight.w600),
                                   ),
                                   4.height,
                                   Row(
@@ -59,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                                         '500',
                                         style: AppStyle.purple14.copyWith(
                                           fontSize: 25,
-                                          fontWeight: FontWeight.w600,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ],
@@ -86,7 +99,7 @@ class HomeScreen extends StatelessWidget {
                                           width: 20,
                                           height: 8,
                                           decoration: ShapeDecoration(
-                                            color: Color(0xFF7E1E80),
+                                            color: AppColors.colorPrimary,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10),
@@ -104,22 +117,12 @@ class HomeScreen extends StatelessWidget {
                                             children: [
                                               Text(
                                                 'Call:',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12,
-                                                  fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                                                style: AppStyle.black12,
                                               ),
                                               const SizedBox(width: 2),
                                               Text(
                                                 '15',
-                                                style: TextStyle(
-                                                  color: Color(0xFF7E1E80),
-                                                  fontSize: 12,
-                                                  fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                                                style: AppStyle.purple12,
                                               ),
                                             ],
                                           ),
@@ -158,22 +161,12 @@ class HomeScreen extends StatelessWidget {
                                             children: [
                                               Text(
                                                 'Chat:',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12,
-                                                  fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                                                style: AppStyle.black12,
                                               ),
                                               const SizedBox(width: 2),
                                               Text(
                                                 '08',
-                                                style: TextStyle(
-                                                  color: Color(0xFF7E1E80),
-                                                  fontSize: 12,
-                                                  fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                                                style: AppStyle.purple12,
                                               ),
                                             ],
                                           ),
@@ -207,13 +200,171 @@ class HomeScreen extends StatelessWidget {
                           progressColor: AppColors.purpleLight1,
                           percent: 0.70,
                         ),
-                        Center(child: Text("85%",style: AppStyle.black14.copyWith(fontWeight: FontWeight.bold),))
-
+                        Center(
+                            child: Text(
+                          "85%",
+                          style: AppStyle.black14
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ))
                       ],
                     )
                   ],
                 ),
-              )
+              ),
+
+              // call and chat switches
+              Container(
+                margin: EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.all(15),
+                decoration: AppDecoration.whiteShadowRounded,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 20, right: 5, bottom: 20),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Type',
+                            style: AppStyle.black14,
+                          ),
+                          const SizedBox(width: 185),
+                          Text(
+                            'Status',
+                            style: AppStyle.black14,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        RoundAvatar(image: AppSvg.call),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppStrings.calls,
+                                style: AppStyle.black12,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    AppStrings.rate,
+                                    style: AppStyle.grey12,
+                                  ),
+                                  Text(
+                                    ' \u{20B9} ',
+                                    style: TextStyle(
+                                      color: AppColors.colorPrimary,
+                                      fontSize: 16,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  Text(
+                                    "8/Min",
+                                    style: AppStyle.purple12,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Spacer(),
+                        CupertinoSwitch(
+                          value: callSwitch,
+                          onChanged: (value) {
+                            callSwitch = !callSwitch;
+                            setState(() {});
+                          },
+                          activeColor: AppColors.colorPrimary,
+                        )
+                      ],
+                    ),
+                    20.height,
+                    Row(
+                      children: [
+                        RoundAvatar(image: AppSvg.chat),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppStrings.chat,
+                                style: AppStyle.black12,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    AppStrings.rate,
+                                    style: AppStyle.grey12,
+                                  ),
+                                  Text(
+                                    ' \u{20B9} ',
+                                    style: TextStyle(
+                                      color: AppColors.colorPrimary,
+                                      fontSize: 16,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  Text(
+                                    "8/Min",
+                                    style: AppStyle.grey12.copyWith(
+                                        color: AppColors.colorPrimary),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Spacer(),
+                        CupertinoSwitch(
+                          value: chatSwitch,
+                          onChanged: (value) {
+                            chatSwitch = !chatSwitch;
+                            setState(() {});
+                          },
+                          activeColor: AppColors.colorPrimary,
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  children: [
+                    Expanded(child: SquareBoxAvatar(image: AppSvg.user, text: AppStrings.jsProfile)),
+                    Expanded(child: SquareBoxAvatar(image: AppSvg.invoice, text: AppStrings.orders)),
+                    Expanded(child: SquareBoxAvatar(image: AppSvg.discount, text: AppStrings.offers)),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  children: [
+                    Expanded(child: SquareBoxAvatar(image: AppSvg.bill, text: AppStrings.waitList)),
+                    Expanded(child: SquareBoxAvatar(image: AppSvg.invoice, text: AppStrings.reviews)),
+                    Expanded(child: SquareBoxAvatar(image: AppSvg.callHelp, text: AppStrings.supports)),
+                  ],
+                ),
+              ),
+
             ],
           ),
         ),
@@ -221,6 +372,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+
 
 class ImportantNotice extends StatelessWidget {
   const ImportantNotice({

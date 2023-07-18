@@ -235,6 +235,13 @@ class AppStrings {
   static const String calls= "Call";
   static const String chat= "Chat";
   static const String type= "Type";
+  static const String rate= "Rate:";
+  static const String jsProfile= "JS Profile";
+  static const String orders = "Orders";
+  static const String offers = "Offers";
+  static const String waitList = "Waitlist";
+  static const String reviews = "Reviews";
+  static const String supports = "Support";
 
 
 }

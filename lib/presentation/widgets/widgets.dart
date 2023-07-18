@@ -2,6 +2,7 @@
 export './app_consumer/app_consumer.dart';
 export './google_place_widget/google_places_flutter_test.dart';
 export './google_place_widget/place_input.dart';
+export 'square_box_avatar.dart';
 export 'app_button.dart';
 export 'app_chips.dart';
 export 'app_container.dart';
@@ -21,6 +22,7 @@ export 'home_credit_card.dart';
 export 'loader_ring.dart';
 export 'provider_card.dart';
 export 'resume_card.dart';
+export 'round_avatar.dart';
 export 'search_header_card.dart';
 export 'setting_card.dart';
 export 'shift_card.dart';
