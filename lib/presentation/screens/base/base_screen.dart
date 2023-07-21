@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
-import 'package:jyotishee/presentation/home/home_screen.dart';
-import 'package:jyotishee/presentation/screens/auth/forgot_password/forgot_screen.dart';
 import 'package:jyotishee/presentation/screens/auth/login/login_screen.dart';
-import 'package:jyotishee/presentation/screens/dashboard/dashboard_screen.dart';
 import 'package:jyotishee/presentation/screens/drawer/app_drawer.dart';
-import 'package:jyotishee/presentation/screens/provider/provider_screen.dart';
-
 import '../../widgets/widgets.dart';
+import '../home/home_screen.dart';
 
 // below key is used to connect with side drawer from appbar
 GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();

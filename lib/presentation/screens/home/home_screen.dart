@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jyotishee/presentation/widgets/custom_app_bar.dart';
-import 'package:jyotishee/presentation/widgets/svg_image.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-import '../../app/utils/utils.dart';
-import '../widgets/widgets.dart';
+import '../../../app/utils/utils.dart';
+import '../../widgets/widgets.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

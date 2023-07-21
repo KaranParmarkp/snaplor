@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jyotishee/data/providers/providers.dart';
+import 'package:jyotishee/presentation/screens/notification/notification_screen.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
 import '../../app/utils/utils.dart';
 import '../screens/base/base_screen.dart';
@@ -9,47 +10,51 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar(
       {Key? key,
       required this.title,
-      this.onBackTap,
+      this.onBackTap,this.gradient=false,
       this.trailingIcon,
-      this.gradient = false})
+      this.showProfile = false})
       : super(key: key);
   final String title;
   final VoidCallback? onBackTap;
   final Widget? trailingIcon;
+  final bool showProfile;
   final bool gradient;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(
-        title,
-        style: AppStyle.black22
-            .copyWith(color: gradient ? AppColors.white : AppColors.black),
+        title, style: AppStyle.black16.copyWith(fontWeight: FontWeight.w500),
       ),
-      centerTitle: true,
+      //centerTitle: true,
       backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
-      elevation: 2,
+      elevation: 8,
+      shadowColor: AppColors.shadowAppBar,
       actions: [
         trailingIcon ?? SizedBox(),
-        20.width,
+        if(showProfile)InkWell(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 20,left: 10),
+            child: CircleNetworkImageAvatar(
+                radius: 20,
+                image:
+                "https://images.unsplash.com/photo-1567324216289-97cc4134f626?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cG9ydHJhaXQlMjBtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80"),
+          ),
+        ),
       ],
       systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarIconBrightness:
-              gradient ? Brightness.light : Brightness.dark,
-          statusBarBrightness: gradient ? Brightness.dark : Brightness.light),
-      flexibleSpace: Container(
-        decoration: gradient ? AppDecoration.splash : BoxDecoration(),
-      ),
+          statusBarIconBrightness:  Brightness.dark,
+          statusBarBrightness:  Brightness.light),
       leading: InkWell(
         onTap: () => onBackTap ?? context.pop(),
         child: Padding(
-          padding: const EdgeInsets.only(left: 8),
+          padding: const EdgeInsets.only(left: 0),
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(10.0),
             child: SvgImage(
-                image: AppSvg.backArrow,
-                color: gradient ? AppColors.white : AppColors.black,
+                image: AppSvg.back,
+                color:  AppColors.black,
                 width: 14,
                 height: 8),
           ),
@@ -87,6 +92,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
           shadowColor: AppColors.shadowAppBar,
           actions: [
             InkWell(
+              onTap: () => context.push(NotificationScreen()),
               child: Padding(
                 padding: const EdgeInsets.only(left: 10,right: 10),
                 child: Stack(

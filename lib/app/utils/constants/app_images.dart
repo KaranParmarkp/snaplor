@@ -90,7 +90,7 @@ class AppSvg{
   static const String callHelp = "assets/icons/call-help.svg";
   static const String discount = "assets/icons/discount-star-01.svg";
   static const String user = "assets/icons/User.svg";
-
+  static const String back = "assets/icons/Caret left.svg";
 
 
 

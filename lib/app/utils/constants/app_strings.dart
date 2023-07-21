@@ -242,6 +242,9 @@ class AppStrings {
   static const String waitList = "Waitlist";
   static const String reviews = "Reviews";
   static const String supports = "Support";
+  static const String notification = "Notification";
+  static const String accept = "Accept";
+  static const String rejects = "Reject";
 
 
 }

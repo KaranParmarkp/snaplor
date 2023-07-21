@@ -178,3 +178,22 @@ class AppShadeButton extends StatelessWidget {
     );
   }
 }
+
+class AppRoundedButton extends StatelessWidget {
+  const AppRoundedButton({super.key, required this.color, required this.text, this.border=false, this.onTap});
+  final Color color;
+  final String text;
+  final bool border;
+  final VoidCallback? onTap;
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 8,horizontal: 12),
+        decoration: AppDecoration.rounded12.copyWith(color: border ? AppColors.white :color),
+        child: Center(child: Text(text,style: AppStyle.white12.copyWith(color: border ? color : AppColors.white),)),
+      ),
+    );
+  }
+}

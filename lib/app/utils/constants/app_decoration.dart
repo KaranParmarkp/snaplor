@@ -38,6 +38,9 @@ class AppDecoration {
   static BoxDecoration get chipDecoration => BoxDecoration(
       borderRadius: BorderRadius.circular(16), color: AppColors.black);
 
+  static BoxDecoration get rounded12 => BoxDecoration(
+      borderRadius: BorderRadius.circular(12), color: AppColors.black);
+
   static BoxDecoration get whiteWithShadow => BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: AppColors.white,
