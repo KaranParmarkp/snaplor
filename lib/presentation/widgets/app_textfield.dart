@@ -201,13 +201,13 @@ class HeaderTextField extends StatelessWidget {
         children: [
           if (header != null)
             Padding(
-              padding: const EdgeInsets.only(bottom: 8, top: 10),
+              padding: const EdgeInsets.only(bottom: 8, top: 10,left: 15),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     header!,
-                    style: AppStyle.black12.copyWith(color: headerColor),
+                    style: AppStyle.black14.copyWith(color: headerColor),
                   ),
                   if (showAsterisk)
                     Text(
@@ -240,27 +240,27 @@ class HeaderTextField extends StatelessWidget {
                   decoration: InputDecoration(
                       counterText: counterText ?? "",
                       contentPadding: EdgeInsets.only(
-                          top: 14, bottom: 14, left: 14, right: 14),
+                          top: 11, bottom: 11, left: 10, right: 15),
                       border: InputBorder.none,
                       hintText: hint,
                       fillColor: AppColors.white,
                       filled: true,
-                      hintStyle: AppStyle.grey14,
+                      hintStyle: AppStyle.grey14.copyWith(color: AppColors.hintGrey1,fontSize: 12,fontWeight: FontWeight.w500),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(borderRadius),
                         borderSide:
-                            BorderSide(color: AppColors.colorPrimary, width: 1),
+                            BorderSide(color: AppColors.greyOutline, width: 1),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(borderRadius),
                         borderSide: BorderSide(
-                            color: borderColor ?? AppColors.colorPrimary,
+                            color: borderColor ?? AppColors.greyOutline,
                             width: 1),
                       ),
                       disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(borderRadius),
                         borderSide: BorderSide(
-                            color: borderColor ?? AppColors.colorPrimary,
+                            color: borderColor ?? AppColors.greyOutline,
                             width: 1),
                       ),
                       suffixIcon: Icon(
@@ -274,7 +274,7 @@ class HeaderTextField extends StatelessWidget {
                             )
                           : SizedBox.shrink(),
                       prefixIconConstraints:
-                          BoxConstraints(maxHeight: 40, maxWidth: 35,minWidth: 35)),
+                          BoxConstraints(maxHeight: 40, maxWidth: 35,minWidth: 25)),
                 ),
               ),
             ),

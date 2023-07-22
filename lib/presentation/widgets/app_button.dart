@@ -180,18 +180,20 @@ class AppShadeButton extends StatelessWidget {
 }
 
 class AppRoundedButton extends StatelessWidget {
-  const AppRoundedButton({super.key, required this.color, required this.text, this.border=false, this.onTap});
+  const AppRoundedButton({super.key, required this.color, required this.text, this.border=false, this.onTap, this.radius=12, this.padding});
   final Color color;
   final String text;
   final bool border;
+  final double radius;
   final VoidCallback? onTap;
+  final EdgeInsets? padding;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8,horizontal: 12),
-        decoration: AppDecoration.rounded12.copyWith(color: border ? AppColors.white :color),
+        padding: padding ?? EdgeInsets.symmetric(vertical: 10,horizontal: 12),
+        decoration: AppDecoration.rounded12.copyWith(color: border ? AppColors.white :color,borderRadius: BorderRadius.circular(radius)),
         child: Center(child: Text(text,style: AppStyle.white12.copyWith(color: border ? color : AppColors.white),)),
       ),
     );

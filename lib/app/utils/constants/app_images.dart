@@ -91,6 +91,11 @@ class AppSvg{
   static const String discount = "assets/icons/discount-star-01.svg";
   static const String user = "assets/icons/User.svg";
   static const String back = "assets/icons/Caret left.svg";
+  static const String filter = "assets/icons/filter.svg";
+  static const String homeUnFilled = "assets/icons/home(1).svg";
+  static const String searchFilled = "assets/icons/search(1).svg";
+  static const String settingFilled = "assets/icons/settings(1).svg";
+  static const String walledFilled = "assets/icons/Property 1=Clicked.svg";
 
 
 

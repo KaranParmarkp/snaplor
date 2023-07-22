@@ -13,7 +13,7 @@ class AppChips extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: AppDecoration.chipDecoration.copyWith(color: bgColor ?? color.withOpacity(0.20)),
-        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 14),
-        child: Text(title,style: AppStyle.white14.copyWith(color: color)));
+        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 16),
+        child: Text(title,style: AppStyle.white12.copyWith(color: color,fontWeight: FontWeight.w500)));
   }
 }

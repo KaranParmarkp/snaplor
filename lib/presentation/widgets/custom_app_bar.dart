@@ -12,12 +12,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       required this.title,
       this.onBackTap,this.gradient=false,
       this.trailingIcon,
-      this.showProfile = false})
+      this.showProfile = false,  this.showNotification=false,  this.showBack=true})
       : super(key: key);
   final String title;
   final VoidCallback? onBackTap;
   final Widget? trailingIcon;
   final bool showProfile;
+  final bool showNotification;
+  final bool showBack;
   final bool gradient;
 
   @override
@@ -33,6 +35,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       shadowColor: AppColors.shadowAppBar,
       actions: [
         trailingIcon ?? SizedBox(),
+        if(showNotification)InkWell(
+          onTap: () => context.push(NotificationScreen()),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10,right: 10),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SvgImage(image: AppSvg.bell,),
+                Positioned(
+                    right: 0,
+                    top: 8,
+                    child: CircleAvatar(radius: 4,backgroundColor: AppColors.colorPrimary,))
+              ],
+            ),
+          ),
+        ),
         if(showProfile)InkWell(
           child: Padding(
             padding: const EdgeInsets.only(right: 20,left: 10),
@@ -46,7 +64,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       systemOverlayStyle: SystemUiOverlayStyle(
           statusBarIconBrightness:  Brightness.dark,
           statusBarBrightness:  Brightness.light),
-      leading: InkWell(
+      leading: showBack ? InkWell(
         onTap: () => onBackTap ?? context.pop(),
         child: Padding(
           padding: const EdgeInsets.only(left: 0),
@@ -59,7 +77,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 height: 8),
           ),
         ),
-      ),
+      ) : SizedBox(),
     );
   }
 

@@ -51,7 +51,7 @@ class AppStrings {
   static const String lastName= "Last Name";
   static const String next= "NEXT";
   static const String notFoundCompany= "Not found your company? Click here to input your company info.";
-  static const String search= "Search";
+
   static const String providerName= "Provider's Name/Email";
   static const String company= "Company";
   static const String inputCompany= "Input Your\nCompany Info";
@@ -232,6 +232,9 @@ class AppStrings {
   static const String neverShare=  "2. Never share your personal details with any customer";
   static const String showMore= "Show more";
   static const String totalEarnings= "Total Earning";
+  static const String lifetimeEarnings= "Lifetime Earning";
+  static const String recentAct= "Recent Activity";
+  static const String walletBalance= "Wallet Balance";
   static const String calls= "Call";
   static const String chat= "Chat";
   static const String type= "Type";
@@ -245,6 +248,16 @@ class AppStrings {
   static const String notification = "Notification";
   static const String accept = "Accept";
   static const String rejects = "Reject";
-
+  static const String search= "Search";
+  static const String recentSearch= "Recent Search";
+  static const String searchHere= "Search here..";
+  static const String filters= "Filter";
+  static const String proCat= "Product Categories";
+  static const String viewMore= "view more";
+  static const String filterByPrice= "Filter by Price";
+  static const String price= "Price";
+  static const String filterByWeight= "Filter by Weight ( Ct. )";
+  static const String clearAll= "Clear All";
+  static const String applyFilters= "Apply Filters";
 
 }

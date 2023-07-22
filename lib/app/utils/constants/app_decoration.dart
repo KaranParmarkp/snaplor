@@ -9,8 +9,12 @@ class AppDecoration {
   static BoxDecoration get purpleLightRounded => BoxDecoration(
       borderRadius: BorderRadius.circular(22), color: AppColors.purpleLight);
 
+  static BoxDecoration get roundedBorder => BoxDecoration(
+      borderRadius: BorderRadius.circular(15), color: AppColors.white,border: Border.all(color: AppColors.greyOutline));
+
+
   static BoxDecoration get whiteShadowRounded => BoxDecoration(
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(20),
         color: AppColors.white,
         boxShadow: [
           BoxShadow(

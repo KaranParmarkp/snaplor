@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/screens/auth/login/login_screen.dart';
 import 'package:jyotishee/presentation/screens/drawer/app_drawer.dart';
+import 'package:jyotishee/presentation/screens/search/search_screen.dart';
+import 'package:jyotishee/presentation/screens/wallet/wallet_screen.dart';
 import '../../widgets/widgets.dart';
 import '../home/home_screen.dart';
 
@@ -18,8 +20,8 @@ class BaseScreen extends StatefulWidget {
 class _BaseScreenState extends State<BaseScreen> {
   List<Widget> screens = [
     HomeScreen(),
-    LoginScreen(),
-    LoginScreen(),
+    SearchScreen(),
+    WalletScreen(),
     LoginScreen(),
   ];
   int selectedIndex = 0;
@@ -58,10 +60,7 @@ class _BaseScreenState extends State<BaseScreen> {
               icon: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SvgImage(
-                  image: AppSvg.home,
-                  color: selectedIndex == 0
-                      ? AppColors.colorPrimary
-                      : AppColors.hintGrey,
+                  image: selectedIndex==0 ?  AppSvg.home : AppSvg.homeUnFilled,
                 ),
               ),
               label: "",
@@ -70,30 +69,23 @@ class _BaseScreenState extends State<BaseScreen> {
                 icon: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SvgImage(
-                      image: AppSvg.search,
-                      color: selectedIndex == 1
-                          ? AppColors.colorPrimary
-                          : AppColors.hintGrey),
+                      image: selectedIndex==1 ? AppSvg.searchFilled : AppSvg.search,
+                      ),
                 ),
                 label: ""),
             BottomNavigationBarItem(
                 icon: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SvgImage(
-                      image: AppSvg.wallet,
-                      color: selectedIndex == 2
-                          ? AppColors.colorPrimary
-                          : AppColors.hintGrey),
+                      image: selectedIndex==2 ? AppSvg.walledFilled : AppSvg.wallet,
+                      ),
                 ),
                 label: ""),
             BottomNavigationBarItem(
                 icon: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SvgImage(
-                      image: AppSvg.setting,
-                      color: selectedIndex == 3
-                          ? AppColors.colorPrimary
-                          : AppColors.hintGrey),
+                      image:selectedIndex==3 ? AppSvg.settingFilled: AppSvg.setting,),
                 ),
                 label: ""),
           ],

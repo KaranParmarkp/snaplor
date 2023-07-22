@@ -78,7 +78,7 @@ class NotificationScreen extends StatelessWidget {
                     child: Row(
                       children: [
                         Expanded(
-                            child: AppRoundedButton(text: AppStrings.reject,color: AppColors.red,),
+                            child: AppRoundedButton(text: AppStrings.rejects,color: AppColors.red,),
                           ),
                         20.width,
                         Expanded(
