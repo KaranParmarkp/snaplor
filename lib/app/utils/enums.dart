@@ -14,3 +14,8 @@ enum CreditSpend {
   runningShifts,
   confirmedShifts
 }
+enum PostType{
+  image,
+  video,
+  text
+}

@@ -96,6 +96,17 @@ class AppSvg{
   static const String searchFilled = "assets/icons/search(1).svg";
   static const String settingFilled = "assets/icons/settings(1).svg";
   static const String walledFilled = "assets/icons/Property 1=Clicked.svg";
+  static const String bookmark = "assets/icons/bookmark.svg";
+  static const String verified = "assets/icons/ic_outline-verified.svg";
+  static const String msg = "assets/icons/message-circle.svg";
+  static const String image = "assets/icons/image.svg";
+  static const String like = "assets/icons/Frame 12174.svg";
+  static const String share = "assets/icons/share.svg";
+  static const String video = "assets/icons/video-on.svg";
+  static const String type = "assets/icons/type-03.svg";
+  static const String play = "assets/icons/Play.svg";
+  static const String lightPurpleBG = "assets/icons/Ellipse 29.svg";
+  static const String unLike = "assets/icons/heart1.svg";
 
 
 

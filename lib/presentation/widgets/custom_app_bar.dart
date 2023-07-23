@@ -53,13 +53,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         if(showProfile)InkWell(
           child: Padding(
-            padding: const EdgeInsets.only(right: 20,left: 10),
+            padding: const EdgeInsets.only(right: 10,left: 10),
             child: CircleNetworkImageAvatar(
                 radius: 20,
                 image:
                 "https://images.unsplash.com/photo-1567324216289-97cc4134f626?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cG9ydHJhaXQlMjBtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80"),
           ),
         ),
+        10.width
       ],
       systemOverlayStyle: SystemUiOverlayStyle(
           statusBarIconBrightness:  Brightness.dark,

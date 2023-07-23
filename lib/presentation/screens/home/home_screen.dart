@@ -5,6 +5,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../app/utils/utils.dart';
 import '../../widgets/widgets.dart';
+import '../social_profile/social_profile.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -348,7 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.only(top: 20),
                 child: Row(
                   children: [
-                    Expanded(child: SquareBoxAvatar(image: AppSvg.user, text: AppStrings.jsProfile)),
+                    Expanded(child: SquareBoxAvatar(image: AppSvg.user, text: AppStrings.jsProfile,onTap: () => context.push(SocialProfile()),)),
                     Expanded(child: SquareBoxAvatar(image: AppSvg.invoice, text: AppStrings.orders)),
                     Expanded(child: SquareBoxAvatar(image: AppSvg.discount, text: AppStrings.offers)),
                   ],

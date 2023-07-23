@@ -259,5 +259,9 @@ class AppStrings {
   static const String filterByWeight= "Filter by Weight ( Ct. )";
   static const String clearAll= "Clear All";
   static const String applyFilters= "Apply Filters";
+  static const String jyotisheeSocial= "Jyotishee Social Profile";
+  static const String posts= "Posts";
+  static const String followers= "Followers";
+
 
 }
