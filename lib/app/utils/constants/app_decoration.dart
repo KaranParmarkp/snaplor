@@ -26,6 +26,19 @@ class AppDecoration {
         ],
       );
 
+  static BoxDecoration get whiteShadow => BoxDecoration(
+    color: AppColors.white,
+    boxShadow: [
+      BoxShadow(
+        color: AppColors.shadowColor.withOpacity(0.80),
+        blurRadius: 10,
+        offset: Offset(0, 0),
+        spreadRadius: 0,
+      )
+    ],
+  );
+
+
   static BoxDecoration get skyBlueLightRounded => BoxDecoration(
       borderRadius: BorderRadius.circular(24),
       color: AppColors.colorPrimary.withOpacity(0.2));

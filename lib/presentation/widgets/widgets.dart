@@ -35,5 +35,6 @@ export 'text_hashtag.dart';
 export 'text_post.dart';
 export 'title_row_card.dart';
 export 'to_do_card.dart';
+export 'user_dp.dart';
 export 'will_pop_exit.dart';
 

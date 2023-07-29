@@ -165,7 +165,7 @@ class HeaderTextField extends StatelessWidget {
       this.showArrow = false,
       this.onTap,
       this.headerColor = Colors.black,
-      this.borderRadius = 15,
+      this.borderRadius = 15,this.bottomPadding=15,
       this.icon});
 
   final String hint;
@@ -188,13 +188,13 @@ class HeaderTextField extends StatelessWidget {
   final Color headerColor;
   final double borderRadius;
   final String? icon;
-
+  final double bottomPadding;
   @override
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(maxWidth: 500),
       padding: EdgeInsets.only(
-        bottom: 15,
+        bottom: bottomPadding,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

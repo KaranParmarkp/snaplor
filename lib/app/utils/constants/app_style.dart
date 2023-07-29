@@ -20,6 +20,7 @@ class AppStyle {
   static TextStyle get grey14 => GoogleFonts.poppins(fontSize: 14,color: AppColors.hintGrey,fontWeight: FontWeight.w400);
   static TextStyle get grey16 => GoogleFonts.poppins(fontSize: 16,color: AppColors.hintGrey);
   static TextStyle get grey12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.hintGrey);
+  static TextStyle get grey10w400 => GoogleFonts.poppins(fontSize: 10,color: AppColors.hintGrey1,fontWeight: FontWeight.w400);
   static TextStyle get black18 => GoogleFonts.poppins(fontSize: 18,color: AppColors.black,);
   static TextStyle get black20 => GoogleFonts.poppins(fontSize: 20,color: AppColors.black,);
   static TextStyle get black18Nova => GoogleFonts.poppins(fontSize: 18,color: AppColors.black,);

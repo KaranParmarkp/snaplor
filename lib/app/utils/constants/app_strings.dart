@@ -262,6 +262,17 @@ class AppStrings {
   static const String jyotisheeSocial= "Jyotishee Social Profile";
   static const String posts= "Posts";
   static const String followers= "Followers";
+  static const String comments= "Comments";
+  static const String reply= "Reply";
+  static const String likes= "likes";
+  static const String pinToTop= "Pin to Top";
+  static const String hide= "Hide";
+  static const String delete= "Delete";
+  static const String editPost= "Edit Post";
+  static const String createPost= "Create Post";
+  static const String addComment= "Add Comment";
+  static const String moreReplies= "more replies";
+  static const String view= "View";
 
 
 }
