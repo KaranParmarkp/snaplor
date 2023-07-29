@@ -110,6 +110,10 @@ class AppSvg{
   static const String eye = "assets/icons/Eye-closed.svg";
   static const String pin = "assets/icons/Pin.svg";
   static const String deleteRed = "assets/icons/trash-02.svg";
+  static const String addImage = "assets/icons/add image.svg";
+  static const String attach = "assets/icons/Attach.svg";
+  static const String happy = "assets/icons/happy.svg";
+  static const String videoPost = "assets/icons/clapper board.svg";
 
 
 

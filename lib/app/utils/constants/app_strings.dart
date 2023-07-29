@@ -273,6 +273,7 @@ class AppStrings {
   static const String addComment= "Add Comment";
   static const String moreReplies= "more replies";
   static const String view= "View";
+  static const String whatsHappening= "What's happening";
 
 
 }

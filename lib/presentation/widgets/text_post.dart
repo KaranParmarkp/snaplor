@@ -131,7 +131,7 @@ class LikeCommentShare extends StatelessWidget {
         20.width,
         InkWell(
           onTap: () {
-            _showFilterSheet(context);
+            _showCommentSheet(context);
           },
           child: Row(
             children: [
@@ -165,7 +165,7 @@ class LikeCommentShare extends StatelessWidget {
       ],
     );
   }
-  _showFilterSheet(BuildContext context){
+  _showCommentSheet(BuildContext context){
     AppHelper.showBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -193,140 +193,131 @@ class _CommentScreenState extends State<CommentScreen> {
   double? height;
   @override
   Widget build(BuildContext context) {
-    return Focus(
-      focusNode: commentFocus,
-      onFocusChange: (value) {
-          height = context.screenHeight * (value? 0.50 : 0.90);
-          setState(() {
-
-          });
-      },
-      child: SizedBox(
-        height:context.screenHeight * (0.90),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              child: Text(AppStrings.comments,style: AppStyle.black14,),
-            ),
-            AppDivider(color: Colors.black),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.only(right: 0),
-                margin: EdgeInsets.only(left: 15,right: 15,bottom: 0,top: 15),
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (context, index) => Container(
-                    margin: EdgeInsets.only(bottom: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        UserDP(radius: 18),
-                        10.width,
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text("RamGopalYadav",style: AppStyle.black12.copyWith(fontWeight: FontWeight.w700),),
-                                            10.width,
-                                            Text("52 min",style: AppStyle.grey10w400),
-                                          ],
-                                        ),
-                                        4.height,
-                                        Text("This is the comment part where user write their thoughts. Baki sab blah blah",style: AppStyle.black12.copyWith(fontWeight: FontWeight.w400),),
-                                        6.height,
-                                        Row(
-                                          children: [
-                                            SvgImage(image: AppSvg.unLike),
-                                            6.width,
-                                            Text(
-                                              "52 likes",
-                                              style: AppStyle.grey10w400,
-                                            ),
-                                            20.width,
-                                            Text(
-                                              AppStrings.reply,
-                                              style: AppStyle.grey10w400,
-                                            ),
-                                          ],
-                                        ),
-                                        6.height,
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                                width: 25,
-                                                child: AppDivider(thickness: 1,)),
-                                            6.width,
-                                            Text(
-                                              AppStrings.view+" 4 "+AppStrings.moreReplies,
-                                              style: AppStyle.grey10w400,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+    return SizedBox(
+      height:commentFocus.hasFocus ? context.screenHeight * (0.50): context.screenHeight * (0.90),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            child: Text(AppStrings.comments,style: AppStyle.black14,),
+          ),
+          AppDivider(color: Colors.black),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.only(right: 0),
+              margin: EdgeInsets.only(left: 15,right: 15,bottom: 0,top: 15),
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                itemBuilder: (context, index) => Container(
+                  margin: EdgeInsets.only(bottom: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      UserDP(radius: 18),
+                      10.width,
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text("RamGopalYadav",style: AppStyle.black12.copyWith(fontWeight: FontWeight.w700),),
+                                          10.width,
+                                          Text("52 min",style: AppStyle.grey10w400),
+                                        ],
+                                      ),
+                                      4.height,
+                                      Text("This is the comment part where user write their thoughts. Baki sab blah blah",style: AppStyle.black12.copyWith(fontWeight: FontWeight.w400),),
+                                      6.height,
+                                      Row(
+                                        children: [
+                                          SvgImage(image: AppSvg.unLike),
+                                          6.width,
+                                          Text(
+                                            "52 likes",
+                                            style: AppStyle.grey10w400,
+                                          ),
+                                          20.width,
+                                          Text(
+                                            AppStrings.reply,
+                                            style: AppStyle.grey10w400,
+                                          ),
+                                        ],
+                                      ),
+                                      6.height,
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                              width: 25,
+                                              child: AppDivider(thickness: 1,)),
+                                          6.width,
+                                          Text(
+                                            AppStrings.view+" 4 "+AppStrings.moreReplies,
+                                            style: AppStyle.grey10w400,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                  10.width,
-                                  PopupMenuButton(
-                                    padding: EdgeInsets.zero,
-                                    shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                    itemBuilder: (context) {
-                                      return [
-                                        PopupMenuItem(child: Row(children: [SvgImage(image: AppSvg.pin),10.width,Text(AppStrings.pinToTop,style: AppStyle.black12,)],),),
-                                        PopupMenuItem(child: Row(children: [SvgImage(image: AppSvg.eye),10.width,Text(AppStrings.hide,style: AppStyle.black12,)],),),
-                                        PopupMenuItem(child: Row(children: [SvgImage(image: AppSvg.deleteRed),10.width, Text(AppStrings.delete,style: AppStyle.black12.copyWith(color: AppColors.red),)],),),
-                                      ];
-                                    },),
+                                ),
+                                10.width,
+                                PopupMenuButton(
+                                  padding: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                  itemBuilder: (context) {
+                                    return [
+                                      PopupMenuItem(child: Row(children: [SvgImage(image: AppSvg.pin),10.width,Text(AppStrings.pinToTop,style: AppStyle.black12,)],),),
+                                      PopupMenuItem(child: Row(children: [SvgImage(image: AppSvg.eye),10.width,Text(AppStrings.hide,style: AppStyle.black12,)],),),
+                                      PopupMenuItem(child: Row(children: [SvgImage(image: AppSvg.deleteRed),10.width, Text(AppStrings.delete,style: AppStyle.black12.copyWith(color: AppColors.red),)],),),
+                                    ];
+                                  },),
 
-                                ],
-                              ),
-                            ],
-                          ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  itemCount: 25,
-                  shrinkWrap: true,
                 ),
+                itemCount: 25,
+                shrinkWrap: true,
               ),
             ),
-            Container(
-              height: 80,
-              decoration: AppDecoration.whiteShadow,
-              padding: EdgeInsets.only(left: 15,right: 15,bottom: 15,top: 15),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  UserDP(radius: 18),
-                  10.width,
-                  Expanded(
-                    child: HeaderTextField(
-                      hint: AppStrings.searchHere,
-                      focusNode: commentFocus,
-                      controller: commentController,
-                      borderRadius: 30,bottomPadding: 0,
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+          ),
+          Container(
+            height: 80,
+            decoration: AppDecoration.whiteShadow,
+            padding: EdgeInsets.only(left: 15,right: 15,bottom: 15,top: 15),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                UserDP(radius: 18),
+                10.width,
+                Expanded(
+                  child: HeaderTextField(
+                    hint: AppStrings.searchHere,
+                    focusNode: commentFocus,
+                    controller: commentController,
+                    borderRadius: 30,bottomPadding: 0,
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
