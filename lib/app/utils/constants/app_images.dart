@@ -107,6 +107,9 @@ class AppSvg{
   static const String play = "assets/icons/Play.svg";
   static const String lightPurpleBG = "assets/icons/Ellipse 29.svg";
   static const String unLike = "assets/icons/heart1.svg";
+  static const String eye = "assets/icons/Eye-closed.svg";
+  static const String pin = "assets/icons/Pin.svg";
+  static const String deleteRed = "assets/icons/trash-02.svg";
 
 
 

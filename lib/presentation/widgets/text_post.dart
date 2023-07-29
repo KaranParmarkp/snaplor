@@ -41,10 +41,14 @@ class Post extends StatelessWidget {
                   ),
                 ),
               ),
-              Icon(
-                Icons.more_vert_rounded,
-                color: AppColors.greyDark,
-              )
+              PopupMenuButton(
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(child: Row(children: [Text(AppStrings.pinToTop,style: AppStyle.black12,)],),),
+                    PopupMenuItem(child: Row(children: [Text(AppStrings.pinToTop,style: AppStyle.black12,)],),),
+                    PopupMenuItem(child: Row(children: [Text(AppStrings.pinToTop,style: AppStyle.black12,)],),),
+                  ];
+                },)
             ],
           ),
           if(type!=PostType.text)Padding(
@@ -275,10 +279,18 @@ class _CommentScreenState extends State<CommentScreen> {
                                     ),
                                   ),
                                   10.width,
-                                  Icon(
-                                    Icons.more_vert_rounded,
-                                    color: AppColors.greyDark,
-                                  )
+                                  PopupMenuButton(
+                                    padding: EdgeInsets.zero,
+                                    shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                    itemBuilder: (context) {
+                                      return [
+                                        PopupMenuItem(child: Row(children: [SvgImage(image: AppSvg.pin),10.width,Text(AppStrings.pinToTop,style: AppStyle.black12,)],),),
+                                        PopupMenuItem(child: Row(children: [SvgImage(image: AppSvg.eye),10.width,Text(AppStrings.hide,style: AppStyle.black12,)],),),
+                                        PopupMenuItem(child: Row(children: [SvgImage(image: AppSvg.deleteRed),10.width, Text(AppStrings.delete,style: AppStyle.black12.copyWith(color: AppColors.red),)],),),
+                                      ];
+                                    },),
 
                                 ],
                               ),
