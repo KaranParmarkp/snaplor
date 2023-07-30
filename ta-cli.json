@@ -1,0 +1,11 @@
+{
+  "api_token": "78b18e90-1e03-44fc-a347-97c5b541d75a",
+  "app_id": "meYGXpQ2DJ",
+  "release": "android",
+  "apk": "build/app/outputs/flutter-apk/app-release.apk",
+  "release_notes": "initial release",
+  "git_release_notes": false,
+  "git_commit_id": false,
+  "archive_latest_release": false,
+  "notify": true
+}

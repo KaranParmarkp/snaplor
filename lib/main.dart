@@ -5,9 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jyotishee/app/utils/preferences/preferences.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:jyotishee/presentation/screens/base/base_screen.dart';
 import 'package:jyotishee/presentation/screens/splash/splash_screen.dart';
-import 'app/utils/utils.dart';
 
 Preference preference = Preference();
 
@@ -54,7 +52,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.poppinsTextTheme(),
         //scaffoldBackgroundColor: Colors.white,
       ),
-      home: const BaseScreen(),
+      home: const SplashScreen(),
     );
   }
 }

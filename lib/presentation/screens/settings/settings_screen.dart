@@ -5,10 +5,13 @@ import 'package:jyotishee/app/utils/constants/app_strings.dart';
 import 'package:jyotishee/app/utils/constants/app_style.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_support_screen.dart';
+import 'package:jyotishee/presentation/screens/settings/profile/notification_settings/notification_settings_screen.dart';
+import 'package:jyotishee/presentation/screens/settings/profile/profile_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../app/utils/constants/app_colors.dart';
 import '../../widgets/widgets.dart';
+import 'faq_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -34,7 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         showProfile: true,
         showNotification: true,
       ),
-      body: SingleChildScrollView(
+      body:   SingleChildScrollView(
         clipBehavior: Clip.none,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -47,10 +50,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Expanded(child: SettingImageCard(image: AppSvg.callHelp,text: AppStrings.youNeedHelp,desc: AppStrings.contactSupport,onTap:() => context.push(ChatSupportScreen()),)),
                 ],
               ),
-              TitleDropdown(text: AppStrings.profile, leadingIcon: SvgImage(image: AppSvg.user),icon: Icon(Icons.keyboard_arrow_right_rounded)),
-              TitleDropdown(text: AppStrings.notification, leadingIcon: SvgImage(image: AppSvg.bell),icon: Icon(Icons.keyboard_arrow_right_rounded)),
+              TitleDropdown(text: AppStrings.profile, leadingIcon: SvgImage(image: AppSvg.user),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(ProfileScreen()),),
+              TitleDropdown(text: AppStrings.notification, leadingIcon: SvgImage(image: AppSvg.bell),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(NotificationSettingsScreen()),),
               TitleDropdown(text: AppStrings.language, leadingIcon: SvgImage(image: AppSvg.language),icon: Icon(Icons.keyboard_arrow_right_rounded)),
-              TitleDropdown(text: AppStrings.faqs, leadingIcon: SvgImage(image: AppSvg.terms),icon: Icon(Icons.keyboard_arrow_right_rounded)),
+              TitleDropdown(text: AppStrings.faqs, leadingIcon: SvgImage(image: AppSvg.terms),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(faqScreen()),),
               TitleDropdown(text: AppStrings.terms, leadingIcon: SvgImage(image: AppSvg.terms),icon: Icon(Icons.keyboard_arrow_right_rounded)),
               TitleDropdown(text: AppStrings.privacy, leadingIcon: SvgImage(image: AppSvg.privacy),icon: Icon(Icons.keyboard_arrow_right_rounded)),
               TitleDropdown(text: AppStrings.version,leadingIcon: SvgImage(image: AppSvg.terms),icon: Text(packageInfo?.version ?? '')),

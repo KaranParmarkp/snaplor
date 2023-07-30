@@ -202,7 +202,7 @@ class HeaderTextField extends StatelessWidget {
         children: [
           if (header != null)
             Padding(
-              padding: const EdgeInsets.only(bottom: 8, top: 10,left: 15),
+              padding: const EdgeInsets.only(bottom: 8, top: 0,left: 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

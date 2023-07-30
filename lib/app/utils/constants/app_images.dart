@@ -123,6 +123,7 @@ class AppSvg{
   static const String document = "assets/icons/document.svg";
   static const String bank = "assets/icons/bank.svg";
   static const String sms = "assets/icons/message-square-typing.svg";
+  static const String mail = "assets/icons/mail-03.svg";
 
 
 

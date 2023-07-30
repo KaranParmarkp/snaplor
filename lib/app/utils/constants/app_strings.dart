@@ -313,6 +313,7 @@ class AppStrings {
   static const String chatRate= "Chat Rate";
   static const String email= "Email";
   static const String firstName= "First Name";
+  static const String middleName= "Middle Name";
   static const String lastName= "Last Name";
   static const String mobileNumber= "Mobile Number";
   static const String mobile= "Mobile";
