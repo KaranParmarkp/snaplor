@@ -239,6 +239,7 @@ class AppStrings {
   static const String chat= "Chat";
   static const String type= "Type";
   static const String rate= "Rate:";
+  static const String rateWithout= "Rate";
   static const String jsProfile= "JS Profile";
   static const String orders = "Orders";
   static const String offers = "Offers";
@@ -274,6 +275,25 @@ class AppStrings {
   static const String moreReplies= "more replies";
   static const String view= "View";
   static const String whatsHappening= "What's happening";
-
+  static const String name= "Name";
+  static const String gender= "Gender";
+  static const String dob= "D.O.B";
+  static const String pob= "P.O.B";
+  static const String problemArea= "Problem Area";
+  static const String duration= "Duration";
+  static const String rupee= "\u{20B9}";
+  static const String refundAmount= "Refund Amount";
+  static const String openKundli= "Open Kundali";
+  static const String completed= "Complete";
+  static const String offerApplied= "Offer Applied";
+  static const String rs= "Rs ";
+  static const String chatHistory= "Chat History";
+  static const String callHistory= "Call History";
+  static const String offerName= "Offer Name";
+  static const String displayName= "Display Name";
+  static const String userType= "User Type";
+  static const String myShare= "My Share";
+  static const String jyotisheeShare= "Jyotishee Share";
+  static const String customerPay= "Customer Pays";
 
 }

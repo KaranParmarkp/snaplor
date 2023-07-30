@@ -19,6 +19,7 @@ export 'ftoast.dart';
 export 'half_gradient_container.dart';
 export 'home_credit_card.dart';
 export 'loader_ring.dart';
+export 'name_value.dart';
 export 'name_verified.dart';
 export 'play_button.dart';
 export 'provider_card.dart';

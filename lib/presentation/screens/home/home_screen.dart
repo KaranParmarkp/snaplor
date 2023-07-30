@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jyotishee/presentation/widgets/custom_app_bar.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../app/utils/utils.dart';
 import '../../widgets/widgets.dart';
+import '../offers/offers_screen.dart';
+import '../orders/orders_screen.dart';
 import '../social_profile/social_profile.dart';
 
 
@@ -350,8 +351,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   children: [
                     Expanded(child: SquareBoxAvatar(image: AppSvg.user, text: AppStrings.jsProfile,onTap: () => context.push(SocialProfile()),)),
-                    Expanded(child: SquareBoxAvatar(image: AppSvg.invoice, text: AppStrings.orders)),
-                    Expanded(child: SquareBoxAvatar(image: AppSvg.discount, text: AppStrings.offers)),
+                    Expanded(child: SquareBoxAvatar(image: AppSvg.invoice, text: AppStrings.orders,onTap: () => context.push(OrdersScreen()),)),
+                    Expanded(child: SquareBoxAvatar(image: AppSvg.discount, text: AppStrings.offers,onTap: () => context.push(OffersScreen()),)),
                   ],
                 ),
               ),

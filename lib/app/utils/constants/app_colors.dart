@@ -13,6 +13,7 @@ class AppColors {
   static Color greyOutline = const Color(0xFFCFCFCF);
   static Color hintGrey1 = const Color(0xFF606060);
   static Color hintGrey2 = const Color(0xFF868484);
+  static Color hintGrey3 = const Color(0xFFEDEEEF);
   static Color red = const Color(0xFFFF0000);
 
 
