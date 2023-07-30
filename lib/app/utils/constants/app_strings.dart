@@ -25,8 +25,6 @@ class AppStrings {
   static const String loginTojyotishee= "Log in to your Quinable account";
   static const String emailMobileNumber= "Email/Mobile Number";
   static const String password= "Password";
-  static const String mobileNumber= "Mobile Number";
-  static const String mobile= "Mobile";
   static const String forgotPassword= "Forgot Password?";
   static const String signIn= "SIGN IN";
   static const String login= "Log In";
@@ -46,9 +44,6 @@ class AppStrings {
   static const String confirmPassword= "Confirm Password";
   static const String createAcc= "Create Account";
   static const String fillBasicInfo= "Fill in your basic information";
-  static const String email= "Email";
-  static const String firstName= "First Name";
-  static const String lastName= "Last Name";
   static const String next= "NEXT";
   static const String notFoundCompany= "Not found your company? Click here to input your company info.";
 
@@ -62,8 +57,6 @@ class AppStrings {
   static const String location= "Location";
   static const String addressLine1= "Address Line 1";
   static const String addressLine2= "Address Line 2 (Optional)";
-  static const String city= "City";
-  static const String state= "State";
   static const String zipCode= "Zipcode";
   static const String companyPhone = "Company Phone";
   static const String phone = "Company Phone";
@@ -297,5 +290,52 @@ class AppStrings {
   static const String customerPay= "Customer Pays";
   static const String viewChat= "View Chat";
   static const String messageHere= "Message here...";
+  static const String chatSupport= "Chat Support";
+  static const String genTerms= "General Terms";
+  static const String genTermsInfo= "By accessing and placing an order with , you confirm that you are in agreement with and bound by the terms of service contained in the Terms & Conditions outlined below. These terms apply to the entire website and any email or other type of communication between you and Jyotishee. Under no circumstances shall team be liable for any direct, indirect, special, incidental or consequential damages, including, but not limited to, loss of data or profit, arising out of the use, or the inability to use, the materials on this site, even if team or an authorised representative has been advised of the possibility of such damages. If your use of materials from this site results in the need for servicing, repair or correction of equipment or data, you assume any costs thereof. will not be responsible for any outcome that may occur during the course of usage of our resources. We reserve the rights to change prices and revise the resources usage policy in any moment.";
+  static const String license= "License";
+  static const String defKey= "Definition & Key Terms";
+  static const String restriction= "Restriction";
+  static const String payment= "Payment";
+  static const String profile= "Profile";
+  static const String language= "Language";
+  static const String faqs= "Faqs";
+  static const String terms= "Terms of Services";
+  static const String privacy= "Privacy Policy";
+  static const String logOut= "Logout";
+  static const String instruction= "Instruction";
+  static const String understandableInstruction= "Understandable Instruction";
+  static const String contactSupport= "Contact Support write now";
+  static const String youNeedHelp= "You need help?";
+  static const String personalDetails= "Personal Details";
+  static const String bankDetails= "Bank Details";
+  static const String callRate= "Call Rate";
+  static const String chatRate= "Chat Rate";
+  static const String email= "Email";
+  static const String firstName= "First Name";
+  static const String lastName= "Last Name";
+  static const String mobileNumber= "Mobile Number";
+  static const String mobile= "Mobile";
+  static const String country= "Country";
+  static const String city= "City";
+  static const String state= "State";
+  static const String skills= "Skills";
+  static const String specialisation= "Specialisation";
+  static const String desc= "Description";
+  static const String saveChanges= "Save Changes";
+  static const String bankName= "Bank Name";
+  static const String ifsc= "IFSC Code";
+  static const String accountNum= "Account Number";
+  static const String nameOnAccount= "Name on Account";
+  static const String requestToChange= "Request To Change";
+  static const String notificationSettings= "Notification Settings";
+  static const String pushNotification= "Push Notification";
+  static const String smsNotification= "SMS Notification";
+  static const String emailNotification= "Email Notification";
+  static const String version= "Version";
+
+
+
+
 
 }

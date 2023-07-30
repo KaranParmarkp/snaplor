@@ -6,6 +6,7 @@ import 'package:jyotishee/presentation/screens/search/search_screen.dart';
 import 'package:jyotishee/presentation/screens/wallet/wallet_screen.dart';
 import '../../widgets/widgets.dart';
 import '../home/home_screen.dart';
+import '../settings/settings_screen.dart';
 
 // below key is used to connect with side drawer from appbar
 GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
@@ -22,7 +23,7 @@ class _BaseScreenState extends State<BaseScreen> {
     HomeScreen(),
     SearchScreen(),
     WalletScreen(),
-    LoginScreen(),
+    SettingsScreen(),
   ];
   int selectedIndex = 0;
 

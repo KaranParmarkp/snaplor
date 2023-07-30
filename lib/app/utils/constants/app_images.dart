@@ -116,6 +116,13 @@ class AppSvg{
   static const String videoPost = "assets/icons/clapper board.svg";
   static const String send = "assets/icons/send.svg";
   static const String camera = "assets/icons/camera.svg";
+  static const String terms = "assets/icons/terms.svg";
+  static const String privacy = "assets/icons/privacy.svg";
+  static const String language = "assets/icons/language.svg";
+  static const String logout = "assets/icons/logout-04.svg";
+  static const String document = "assets/icons/document.svg";
+  static const String bank = "assets/icons/bank.svg";
+  static const String sms = "assets/icons/message-square-typing.svg";
 
 
 

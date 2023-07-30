@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jyotishee/presentation/screens/chat/chat_support_screen.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../app/utils/utils.dart';
@@ -364,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Expanded(child: SquareBoxAvatar(image: AppSvg.bill, text: AppStrings.waitList,onTap: () => context.push(WaitListScreen()),)),
                     Expanded(child: SquareBoxAvatar(image: AppSvg.invoice, text: AppStrings.reviews,onTap: () => context.push(ReviewsScreen()),)),
-                    Expanded(child: SquareBoxAvatar(image: AppSvg.callHelp, text: AppStrings.supports,onTap: () => context.push(WaitListScreen()),)),
+                    Expanded(child: SquareBoxAvatar(image: AppSvg.callHelp, text: AppStrings.supports,onTap: () => context.push(ChatSupportScreen()),)),
                   ],
                 ),
               ),
