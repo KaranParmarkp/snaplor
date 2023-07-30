@@ -86,7 +86,7 @@ class AppSvg{
   static const String call = "assets/icons/call.svg";
   static const String chat = "assets/icons/chat.svg";
   static const String bill = "assets/icons/bill.svg";
-  static const String invoice = "assets/icons/invoice.svg";
+  static const String invoice = "assets/icons/Invoice.svg";
   static const String callHelp = "assets/icons/call-help.svg";
   static const String discount = "assets/icons/discount-star-01.svg";
   static const String user = "assets/icons/User.svg";

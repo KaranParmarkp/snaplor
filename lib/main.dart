@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.poppinsTextTheme(),
         //scaffoldBackgroundColor: Colors.white,
       ),
-      home: const SplashScreen(),
+      home: const BaseScreen(),
     );
   }
 }

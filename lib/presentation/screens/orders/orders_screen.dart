@@ -67,7 +67,9 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
             Expanded(child: TabBarView(
               controller: _tabController,
               children: [
-              ListView.builder(itemBuilder: (context, index) => OrderCard(),itemCount: 10,shrinkWrap: true,),
+              ListView.builder(
+                clipBehavior: Clip.none,
+                itemBuilder: (context, index) => OrderCard(),itemCount: 10,shrinkWrap: true,),
               ListView.builder(itemBuilder: (context, index) => OrderCard(),itemCount: 10,shrinkWrap: true,),
             ],))
           ],

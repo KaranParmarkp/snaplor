@@ -7,6 +7,7 @@ import '../../widgets/widgets.dart';
 import '../offers/offers_screen.dart';
 import '../orders/orders_screen.dart';
 import '../social_profile/social_profile.dart';
+import '../waitlist/waitlist_screen.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -360,7 +361,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.only(top: 20),
                 child: Row(
                   children: [
-                    Expanded(child: SquareBoxAvatar(image: AppSvg.bill, text: AppStrings.waitList)),
+                    Expanded(child: SquareBoxAvatar(image: AppSvg.bill, text: AppStrings.waitList,onTap: () => context.push(WaitListScreen()),)),
                     Expanded(child: SquareBoxAvatar(image: AppSvg.invoice, text: AppStrings.reviews)),
                     Expanded(child: SquareBoxAvatar(image: AppSvg.callHelp, text: AppStrings.supports)),
                   ],

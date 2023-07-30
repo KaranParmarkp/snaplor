@@ -281,7 +281,7 @@ class AppStrings {
   static const String pob= "P.O.B";
   static const String problemArea= "Problem Area";
   static const String duration= "Duration";
-  static const String rupee= "\u{20B9}";
+  static const String rupee= "\u{20B9} ";
   static const String refundAmount= "Refund Amount";
   static const String openKundli= "Open Kundali";
   static const String completed= "Complete";
