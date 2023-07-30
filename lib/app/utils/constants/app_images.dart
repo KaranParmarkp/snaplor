@@ -114,6 +114,8 @@ class AppSvg{
   static const String attach = "assets/icons/Attach.svg";
   static const String happy = "assets/icons/happy.svg";
   static const String videoPost = "assets/icons/clapper board.svg";
+  static const String send = "assets/icons/send.svg";
+  static const String camera = "assets/icons/camera.svg";
 
 
 

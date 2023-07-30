@@ -6,6 +6,7 @@ import '../../../app/utils/utils.dart';
 import '../../widgets/widgets.dart';
 import '../offers/offers_screen.dart';
 import '../orders/orders_screen.dart';
+import '../reviews/reviews_screen.dart';
 import '../social_profile/social_profile.dart';
 import '../waitlist/waitlist_screen.dart';
 
@@ -362,8 +363,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   children: [
                     Expanded(child: SquareBoxAvatar(image: AppSvg.bill, text: AppStrings.waitList,onTap: () => context.push(WaitListScreen()),)),
-                    Expanded(child: SquareBoxAvatar(image: AppSvg.invoice, text: AppStrings.reviews)),
-                    Expanded(child: SquareBoxAvatar(image: AppSvg.callHelp, text: AppStrings.supports)),
+                    Expanded(child: SquareBoxAvatar(image: AppSvg.invoice, text: AppStrings.reviews,onTap: () => context.push(ReviewsScreen()),)),
+                    Expanded(child: SquareBoxAvatar(image: AppSvg.callHelp, text: AppStrings.supports,onTap: () => context.push(WaitListScreen()),)),
                   ],
                 ),
               ),

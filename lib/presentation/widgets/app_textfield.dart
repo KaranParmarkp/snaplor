@@ -166,7 +166,7 @@ class HeaderTextField extends StatelessWidget {
       this.onTap,
       this.headerColor = Colors.black,
       this.borderRadius = 15,this.bottomPadding=15,
-      this.icon});
+      this.icon, this.suffixIcon});
 
   final String hint;
   final String? header;
@@ -189,6 +189,7 @@ class HeaderTextField extends StatelessWidget {
   final double borderRadius;
   final String? icon;
   final double bottomPadding;
+  final Widget? suffixIcon;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -263,7 +264,7 @@ class HeaderTextField extends StatelessWidget {
                             color: borderColor ?? AppColors.greyOutline,
                             width: 1),
                       ),
-                      suffixIcon: Icon(
+                      suffixIcon: suffixIcon ?? Icon(
                         Icons.arrow_forward_ios_rounded,
                         color:
                             showArrow ? AppColors.hintGrey : Colors.transparent,

@@ -19,3 +19,6 @@ enum PostType{
   video,
   text
 }
+enum MessageType {
+  sender,receiver
+}

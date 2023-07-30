@@ -295,5 +295,7 @@ class AppStrings {
   static const String myShare= "My Share";
   static const String jyotisheeShare= "Jyotishee Share";
   static const String customerPay= "Customer Pays";
+  static const String viewChat= "View Chat";
+  static const String messageHere= "Message here...";
 
 }
