@@ -1,8 +1,9 @@
-import 'dart:convert';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:jyotishee/main.dart';
 
 extension NullCheckExtension<T> on T {
   bool get isNull => this == null;
@@ -122,4 +123,5 @@ extension StringToIntExtension on String {
   int toInt() {
     return int.tryParse(this) ?? 0;
   }
+   //get tr => AppLocalizations.of(MyApp.navKey.currentState!.context)!;
 }

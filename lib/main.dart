@@ -2,10 +2,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jyotishee/app/utils/preferences/preferences.dart';
 import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/splash/splash_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'app/utils/utils.dart';
 
 Preference preference = Preference();
 
@@ -47,6 +51,14 @@ class MyApp extends StatelessWidget {
         physics: BouncingScrollPhysics(),
         scrollbars: true,
       ),
+      supportedLocales: L10n.all,
+      //locale: stateLocale.locale,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textTheme: GoogleFonts.poppinsTextTheme(),
