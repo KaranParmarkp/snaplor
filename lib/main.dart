@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
 
   // navKey use to access context
   static GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
-
+  static BuildContext get appContext => navKey.currentState!.context;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
