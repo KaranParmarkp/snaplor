@@ -55,6 +55,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         if(showProfile)InkWell(
+          onTap: () => context.push(ProfileScreen()),
           child: Padding(
             padding: const EdgeInsets.only(right: 10,left: 10),
             child: CircleNetworkImageAvatar(

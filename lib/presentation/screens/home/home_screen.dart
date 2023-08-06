@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/auth_provider.dart';
 import 'package:jyotishee/data/providers/providers.dart';
+import 'package:jyotishee/data/sources/remote/network_services/api_service.dart';
+import 'package:jyotishee/data/sources/remote/services/auth_service.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_support_screen.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:web_socket_channel/io.dart';
 
 import '../../../app/utils/utils.dart';
 import '../../widgets/widgets.dart';
@@ -28,6 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final res =  IOWebSocketChannel.connect(Uri.parse(ApiConfig.baseUrlSocket),headers: {
+      'Authorization': 'Bearer ${ApiService.getToken()}',
+    });
     return Scaffold(
       appBar: DashboardAppBar(
         title: '',
@@ -45,6 +51,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       ImportantNotice(),
 
+                      StreamBuilder(
+                        stream: res.stream,
+                        builder: (context, snapshot) {
+                          print("data="+snapshot.data.toString());
+                          return Text("${snapshot.connectionState}");
+                          },
+
+                      ),
                       //total earnings
                       Container(
                         margin: EdgeInsets.only(top: 30),

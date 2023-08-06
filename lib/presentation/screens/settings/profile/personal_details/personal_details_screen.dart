@@ -92,7 +92,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      widget.user.name??"",
+                      widget.user.userName??"",
                       style: AppStyle.black16
                           .copyWith(fontWeight: FontWeight.w600),
                     ),
