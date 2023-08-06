@@ -113,6 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 hint: AppStrings.enterPhoneNumber,
                 header: AppStrings.phoneNumber,
                 controller: mobileController,
+                keyboard: TextInputType.number,maxLength: 10,
                 icon: AppSvg.mobile),
             AppButton(title: AppStrings.getOtp,onTap: () => _getOtpTap(),)
           ],

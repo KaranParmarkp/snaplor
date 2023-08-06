@@ -43,6 +43,6 @@ class Preference {
 }
 
 class PreferenceKeys {
-  static const String appPrefName = "QuinableFacility";
+  static const String appPrefName = "Jyotishee";
   static const String isBiometric = "isBiometric";
 }

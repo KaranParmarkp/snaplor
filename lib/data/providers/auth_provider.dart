@@ -27,8 +27,7 @@ class AuthProvider extends BaseProvider {
   }
 
   checkUserIsLoggedIn() async {
-    String? encodedMap = await preference.getData(AppStrings.appPrefName);
-    print(encodedMap);
+    String? encodedMap = await preference.getData(PreferenceKeys.appPrefName);
     if (encodedMap == null) {
       _authStatus = AuthStatus.unAuthenticated;
       notifyListeners();
@@ -40,7 +39,7 @@ class AuthProvider extends BaseProvider {
   }
 
   loadUserData() async {
-    String? encodedMap = await preference.getData(AppStrings.appPrefName);
+    String? encodedMap = await preference.getData(PreferenceKeys.appPrefName);
     if (encodedMap != null) {
       _userModel = UserModel.fromJson(jsonDecode(encodedMap));
     }
@@ -48,8 +47,7 @@ class AuthProvider extends BaseProvider {
   }
 
   saveDataToLocally(UserModel user) async {
-    preference.removeString(AppStrings.appPrefName);
-    preference.clearPref();
+    preference.removeString(PreferenceKeys.appPrefName);
     String encodedMap = json.encode(user.toJson());
     await preference.setString(PreferenceKeys.appPrefName, encodedMap);
   }
@@ -100,18 +98,21 @@ class AuthProvider extends BaseProvider {
 
   // User home api
   static String userDataKey = 'userDataDetailsKey';
-  userData({bool refresh = false}) async {
+  Future<bool?> userData({bool refresh = false,UserModel? updateModel}) async {
     setLoading(taskName: userDataKey,showDialogLoader: refresh);
     try {
-      UserModel userModel = await _authRepo.userData();
-      _userModel = userModel;
+      UserModel model = await _authRepo.userData(updateModel);
+      final modelNew = model.copyWith(accessToken: _userModel?.accessToken);
+      _userModel = modelNew;
       notifyListeners();
       setData( taskName: userDataKey,data: userModel);
+      return true;
     } catch (e, s) {
       e.printDebug;
       s.printDebug;
-      setError(taskName: userDataKey,errorMessage:  e.toString(),);
+      setError(taskName: userDataKey,errorMessage:  e.toString(),showToast: true);
     }
+    return null;
   }
 
 }

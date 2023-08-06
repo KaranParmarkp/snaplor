@@ -86,20 +86,20 @@ class AppHelper {
         Color? textColor,
       bool success = false,
       int duration = 1800}) {
-    ft.FToast.toast(
+    Platform.isMacOS ? ft.FToast.toast(
       context ?? MyApp.navKey.currentContext!,
       msg: message,
       msgStyle: AppStyle.whiteBold16.copyWith(),
       duration: duration,
       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
       //imageDirection: AxisDirection.up,
-    );
-    /*Fluttertoast.showToast(
+    ):
+    Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
         backgroundColor: Colors.black.withOpacity(0.5),
         textColor: textColor ?? Colors.white,
-        fontSize: 14);*/
+        fontSize: 14);
   }
 
   static showSnackBar(
@@ -142,86 +142,6 @@ class AppHelper {
     return files;
   }
 
-  static showCustomDialog(
-      {required BuildContext context,
-      required RichText title,
-      required String positiveText,
-      required VoidCallback? onPressedPositive,
-      VoidCallback? onPressedNegative}) async {
-    return await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Container(
-                    constraints: BoxConstraints(maxHeight: 500),
-                    decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(20)),
-                    padding: EdgeInsets.symmetric(horizontal: 14),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 60, bottom: 30),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 50, top: 36),
-                            child: title,
-                          ),
-                          /*Padding(
-                            padding: const EdgeInsets.only(bottom: 50, top: 36),
-                            child: Text(
-                              title,
-                              style: AppStyle.black18,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          */
-                          Row(
-                            children: [
-                              Expanded(
-                                child: AppShadeButton(
-                                  text: AppStrings.cancel,
-                                  startColor: AppColors.primaryRedFfc2c2,
-                                  endColor: AppColors.redFf4646,
-                                  onTap: () => context.pop(),
-                                ),
-                              ),
-                              12.width,
-                              Expanded(
-                                child: AppShadeButton(
-                                  text: positiveText,
-                                  startColor: AppColors.primaryAccent,
-                                  endColor: AppColors.colorPrimary,
-                                  onTap: onPressedPositive,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: -28,
-                    left: 0,
-                    right: 0,
-                    child: SizedBox(
-                        height: 70,
-                        width: 70,
-                        child: Image.asset(AppImages.question)),
-                  )
-                ],
-              ),
-            ),
-          );
-        });
-  }
 
   static showNoticeDialog(
       {required BuildContext context, required String text}) async {

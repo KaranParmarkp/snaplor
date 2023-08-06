@@ -2,7 +2,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:jyotishee/main.dart';
 class AppStrings {
   static String appName = "Jyotishee";
-  static String appPrefName = "Jyotishee";
   static String yes = AppLocalizations.of(MyApp.appContext)!.yes;
   static String no = AppLocalizations.of(MyApp.appContext)!.no;
 
@@ -334,6 +333,7 @@ class AppStrings {
   static String smsNotification=AppLocalizations.of(MyApp.appContext)!.smsNotification;
   static String emailNotification=AppLocalizations.of(MyApp.appContext)!.emailNotification;
   static String version=AppLocalizations.of(MyApp.appContext)!.version;
+  static String profileUpdated="Profile updated successfully";
 
 
 

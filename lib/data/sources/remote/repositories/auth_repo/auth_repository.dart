@@ -4,6 +4,6 @@ import '../../../../models/models.dart';
 abstract class AuthRepository{
   Future<GenericResponse> login(String phone);
   Future<UserModel> verificationVerify(String mobile,String code);
-  Future<UserModel> userData();
+  Future<UserModel> userData(UserModel? model);
 
 }

@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jyotishee/data/models/generic_response_model.dart';
 import 'package:jyotishee/data/providers/providers.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../../../app/utils/constants/api_config.dart';
 import '../../../../main.dart';
 
@@ -125,5 +126,9 @@ abstract class ApiService {
         statusCode: response.statusCode,
         statusMessage: response.statusMessage);
     return result;
+  }
+
+   Future<WebSocketChannel> webSocketChannel() async {
+    return await WebSocketChannel.connect(Uri.parse(ApiConfig.baseUrlSocket));
   }
 }

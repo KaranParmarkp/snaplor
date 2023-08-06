@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/auth_provider.dart';
+import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_support_screen.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -278,11 +279,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 Spacer(),
+                                RoundAvatar(image: AppSvg.edit,onTap: () {
+                                  _showRateSheet(context: context,isCallRate: true,rate: data.callPrice.toString(),user: data);
+                                },),
+                                10.width,
+
                                 CupertinoSwitch(
                                   value: data.isAvailableForCall??false,
                                   onChanged: (value) {
-                                    callSwitch = !callSwitch;
-                                    setState(() {});
+                                    context.read<AuthProvider>().userData(refresh: true,updateModel: data.copyWith(
+                                      isAvailableForCall: value
+                                    ));
                                   },
                                   activeColor: AppColors.colorPrimary,
                                 )
@@ -312,8 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Rupee(fontSize: 16),
                                           Text(
                                               "${data.chatPrice}/Min",
-                                            style: AppStyle.grey12.copyWith(
-                                                color: AppColors.colorPrimary),
+                                            style: AppStyle.purple12,
                                           ),
                                         ],
                                       ),
@@ -321,11 +327,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 Spacer(),
+                                RoundAvatar(image: AppSvg.edit,onTap: () {
+                                  _showRateSheet(context: context,isCallRate: false,rate: data.chatPrice.toString(),user: data);
+                                },),
+                                10.width,
                                 CupertinoSwitch(
                                   value: data.isAvailableForChat??false,
                                   onChanged: (value) {
-                                    chatSwitch = !chatSwitch;
-                                    setState(() {});
+                                    context.read<AuthProvider>().userData(refresh: true,updateModel: data.copyWith(
+                                        isAvailableForChat: value
+                                    ));
                                   },
                                   activeColor: AppColors.colorPrimary,
                                 )
@@ -365,6 +376,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
         ),
     );
+  }
+
+  void _showRateSheet({required BuildContext context, required bool isCallRate,required String rate,required UserModel user}) {
+    TextEditingController controller = TextEditingController();
+    controller.text = rate;
+    AppHelper.showBottomSheet(context: context,
+        isScrollControlled: true,
+        child: Column(
+      children: [
+        HeaderTextField(hint: '',header:(isCallRate? AppStrings.call : AppStrings.chat)+" "+ AppStrings.rateWithout,controller: controller,keyboard: TextInputType.number,),
+        AppButton(title: AppStrings.saveChanges,onTap: () async {
+          if(controller.isEmpty()){
+            AppHelper.showToast(message: AppValidator.messageBuilder("rate")!,);
+          }else{
+            bool? response = await context.read<AuthProvider>().userData(refresh: true,updateModel: user.copyWith(
+                callPrice: isCallRate ? controller.text.toInt() : user.callPrice,
+                chatPrice: !isCallRate ? controller.text.toInt() : user.chatPrice,
+            ));
+            if(response.isTrue)context.pop();
+          }
+        },)
+      ],
+    ));
   }
 }
 

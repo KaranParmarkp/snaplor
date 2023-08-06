@@ -29,9 +29,9 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
   }
 
   @override
-  Future<UserModel> userData() {
+  Future<UserModel> userData(UserModel? model) {
     return serviceHandler(
-      serviceFunction: () => service.userData(),
+      serviceFunction: () => service.userData(model),
       successFunction: (response) async {
         return UserModel.fromJson(response.data);
       },

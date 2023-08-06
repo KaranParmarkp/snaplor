@@ -85,7 +85,7 @@ class ProfileScreen extends StatelessWidget {
               if(data.specialization.isNotEmpty)Text(data.specialization.join(", ").toCapitalized(), style: AppStyle.grey12.copyWith(color: AppColors.hintGrey2),),
               if(data.languages.isNotEmpty)Text(data.languages.join("| ").toCapitalized(), style: AppStyle.grey12.copyWith(color: AppColors.hintGrey2),),
               20.height,
-              TitleDropdown(text: AppStrings.personalDetails, leadingIcon: SvgImage(image: AppSvg.user),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(PersonalDetailsScreen()),),
+              TitleDropdown(text: AppStrings.personalDetails, leadingIcon: SvgImage(image: AppSvg.user),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(PersonalDetailsScreen(user: data,)),),
               TitleDropdown(text: AppStrings.bankDetails, leadingIcon: SvgImage(image: AppSvg.bank),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(BankDetailsScreen()),),
               TitleDropdown(text: AppStrings.callRate, leadingIcon: SvgImage(image: AppSvg.call),icon: Icon(Icons.keyboard_arrow_right_rounded)),
               TitleDropdown(text: AppStrings.chatRate, leadingIcon: SvgImage(image: AppSvg.chat),icon: Icon(Icons.keyboard_arrow_right_rounded)),

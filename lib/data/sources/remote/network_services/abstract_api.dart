@@ -74,7 +74,6 @@ abstract class AbstractApi {
         case DioExceptionType.badResponse:
           switch (dioError.response?.statusCode) {
             case 400:
-              MyApp.appContext.pushRemoveUntil(LoginScreen());
               return throw ApiException('${dioError.response!.statusCode}: ${dioError.response!.statusMessage}');
             case 401:
               final String? message = dioError.response!.data[messageKey];
