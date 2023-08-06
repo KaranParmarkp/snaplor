@@ -18,8 +18,8 @@ class CircleNetworkImageAvatar extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: image.isNotNull ? image! : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
       placeholder: (context, url) => SizedBox(
-        height: radius ?? 80,
-        width: radius ?? 80,
+        height: radius.isNotNull ? radius!*20 : 80,
+        width: radius.isNotNull ? radius!*20 : 80,
         child: SkeletonAvatar(style: SkeletonAvatarStyle(shape: BoxShape.circle)),
       ),
       errorWidget: (context, url, error) => CircleAvatar(

@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _navigate() {
     var authenticationProvider = Provider.of<AuthProvider>(context,listen: false);
-    if(authenticationProvider.status == AuthStatus.authenticated && authenticationProvider.userModel?.accessToken != null){
+    if(authenticationProvider.authStatus == AuthStatus.authenticated && authenticationProvider.userModel?.accessToken != null){
       context.pushReplace(BaseScreen());
     } else{
       context.pushReplace(LoginScreen());

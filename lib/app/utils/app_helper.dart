@@ -48,8 +48,7 @@ class AppHelper {
                   child: Padding(
                     padding: const EdgeInsets.all(30.0),
                     child: Image.asset(
-                      //"assets/images/appiconq.png",
-                      "assets/images/appicontransparent.png",
+                      "assets/images/app_logo1.jpeg",
                       fit: BoxFit.fitWidth,
                       height: 80, width: 80, alignment: Alignment.center,
                     ),
@@ -80,18 +79,11 @@ class AppHelper {
     }
   }
 
-  static void showToast({required String message, Color? textColor}) {
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        backgroundColor: Colors.black.withOpacity(0.5),
-        textColor: textColor ?? Colors.white,
-        fontSize: 14);
-  }
 
-  static void showImageToast(
+  static void showToast(
       {BuildContext? context,
       required String message,
+        Color? textColor,
       bool success = false,
       int duration = 1800}) {
     ft.FToast.toast(
@@ -100,16 +92,14 @@ class AppHelper {
       msgStyle: AppStyle.whiteBold16.copyWith(),
       duration: duration,
       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-      image: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Image.asset(
-          success ? AppImages.correct : AppImages.error,
-          height: 30,
-          width: 30,
-        ),
-      ),
       //imageDirection: AxisDirection.up,
     );
+    /*Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: Colors.black.withOpacity(0.5),
+        textColor: textColor ?? Colors.white,
+        fontSize: 14);*/
   }
 
   static showSnackBar(

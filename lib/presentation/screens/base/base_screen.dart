@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
-import 'package:jyotishee/presentation/screens/auth/login/login_screen.dart';
-import 'package:jyotishee/presentation/screens/drawer/app_drawer.dart';
 import 'package:jyotishee/presentation/screens/search/search_screen.dart';
 import 'package:jyotishee/presentation/screens/wallet/wallet_screen.dart';
 import '../../widgets/widgets.dart';
@@ -32,7 +30,7 @@ class _BaseScreenState extends State<BaseScreen> {
     return Scaffold(
       key: scaffoldKey,
       resizeToAvoidBottomInset: false,
-      drawer: AppDrawer(),
+      //drawer: AppDrawer(),
       body: screens[selectedIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(boxShadow: [

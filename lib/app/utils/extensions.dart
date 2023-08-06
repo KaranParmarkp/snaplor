@@ -17,6 +17,17 @@ extension ListNullCheckExtension<T> on List<T>? {
   bool get isNotNull => this != null;
 }
 
+extension MapNullCheckExtension<K, V> on Map<K, V>? {
+  bool get isNull => this == null;
+  bool get isNotNull => this != null;
+}
+
+extension DynamicNullCheckExtension on dynamic  {
+  bool get isNull => this == null;
+  bool get isNotNull => this != null;
+}
+
+
 extension StringNullCheckExtension<T> on String?  {
   bool get isNull => this == null;
   bool get isNotNull => this != null;
@@ -62,6 +73,7 @@ extension ContextX on BuildContext{
   pop([dynamic result ]) => Navigator.pop(this,result);
   push (Widget screen)=> Navigator.push(this, CupertinoPageRoute(builder: (context) => screen,));
   pushReplace(Widget screen)=> Navigator.pushReplacement(this, CupertinoPageRoute(builder: (context) => screen,));
+  pushRemoveUntil(Widget screen)=> Navigator.pushAndRemoveUntil(this, CupertinoPageRoute(builder: (context) => screen,),(route) => false,);
 }
 
 extension Format on DateTime {

@@ -5,6 +5,8 @@ import 'package:jyotishee/presentation/screens/settings/profile/personal_details
 import 'package:jyotishee/presentation/widgets/custom_app_bar.dart';
 
 import '../../../../app/utils/utils.dart';
+import '../../../../data/models/models.dart';
+import '../../../../data/providers/providers.dart';
 import '../../../widgets/widgets.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -18,7 +20,13 @@ class ProfileScreen extends StatelessWidget {
         title: AppStrings.profile,
         showNotification: true,
       ),
-      body: SingleChildScrollView(
+      body: SizedBox(
+        height: double.infinity,
+        child: AppConsumer<AuthProvider, UserModel>(
+          taskName: AuthProvider.userDataKey,
+          load: (provider) => provider.userData(),
+          successBuilder: (data,provider) {
+            return SingleChildScrollView(
         clipBehavior: Clip.none,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -29,8 +37,7 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   CircleNetworkImageAvatar(
                       radius: 40,
-                      image:
-                      "https://images.unsplash.com/photo-1567324216289-97cc4134f626?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cG9ydHJhaXQlMjBtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80"),
+                      image: data.profileImage),
                   20.width,
                   Expanded(
                     child: Row(
@@ -42,7 +49,7 @@ class ProfileScreen extends StatelessWidget {
                             Text(AppStrings.call),
                             5.height,
                             Text(
-                              "45",
+                              "${data.totalCallOrders}",
                               style: AppStyle.black14,
                             ),
                           ],
@@ -52,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
                             Text(AppStrings.chat),
                             5.height,
                             Text(
-                              "45",
+                              "${data.totalChatOrders}",
                               style: AppStyle.black14,
                             ),
                           ],
@@ -62,7 +69,7 @@ class ProfileScreen extends StatelessWidget {
                             Text(AppStrings.orders),
                             5.height,
                             Text(
-                              "45",
+                              "${(data.totalChatOrders! + data.totalCallOrders!)}",
                               style: AppStyle.black14,
                             ),
                           ],
@@ -73,10 +80,10 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
               6.height,
-              NameVerified(),
+              NameVerified(name: data.name,verified: data.isVerified),
               6.height,
-              Text("Vedic, Card Reader, Tarot Reader", style: AppStyle.grey12.copyWith(color: AppColors.hintGrey2),),
-              Text("Hindi | English", style: AppStyle.grey12.copyWith(color: AppColors.hintGrey2),),
+              if(data.specialization.isNotEmpty)Text(data.specialization.join(", ").toCapitalized(), style: AppStyle.grey12.copyWith(color: AppColors.hintGrey2),),
+              if(data.languages.isNotEmpty)Text(data.languages.join("| ").toCapitalized(), style: AppStyle.grey12.copyWith(color: AppColors.hintGrey2),),
               20.height,
               TitleDropdown(text: AppStrings.personalDetails, leadingIcon: SvgImage(image: AppSvg.user),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(PersonalDetailsScreen()),),
               TitleDropdown(text: AppStrings.bankDetails, leadingIcon: SvgImage(image: AppSvg.bank),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(BankDetailsScreen()),),
@@ -88,7 +95,12 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      );
+          },
+        ),
+
+      )
+      ,
     );
   }
 }

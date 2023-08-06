@@ -1,10 +1,8 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:jyotishee/main.dart';
 class AppStrings {
-  static String appName = AppLocalizations.of(MyApp.appContext)!.appName;
-  static String appPrefName = AppLocalizations.of(MyApp.appContext)!.appPrefName;
-  static String appFirstTime = AppLocalizations.of(MyApp.appContext)!.appFirstTime;
-  static String noInternet = AppLocalizations.of(MyApp.appContext)!.noInternet;
+  static String appName = "Jyotishee";
+  static String appPrefName = "Jyotishee";
   static String yes = AppLocalizations.of(MyApp.appContext)!.yes;
   static String no = AppLocalizations.of(MyApp.appContext)!.no;
 

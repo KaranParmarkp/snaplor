@@ -37,7 +37,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         showProfile: true,
         showNotification: true,
       ),
-      body:   SingleChildScrollView(
+      body:
+      SingleChildScrollView(
         clipBehavior: Clip.none,
         child: Padding(
           padding: const EdgeInsets.all(15.0),

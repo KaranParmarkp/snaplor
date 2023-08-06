@@ -25,7 +25,7 @@ class Loader extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Image.asset(
-                  "assets/images/appicontransparent.png",
+                  "assets/images/app_logo1.jpeg",
                   fit: BoxFit.fitWidth,
                   height: 80,width: 80,alignment: Alignment.center,
                 ),

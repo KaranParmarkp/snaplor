@@ -73,7 +73,5 @@ buildProviders() {
   return MultiProvider(providers: [
     ChangeNotifierProvider.value(value: AuthProvider.initialize()),
     ChangeNotifierProvider.value(value: AppProvider()),
-    ChangeNotifierProvider.value(value: ShiftsProvider()),
-    ChangeNotifierProvider.value(value: ProvidersListProvider()),
   ], child: const MyApp());
 }

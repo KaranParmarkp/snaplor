@@ -3,13 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:jyotishee/presentation/screens/auth/register/register_mobile_screen.dart';
 import 'package:jyotishee/presentation/screens/base/base_screen.dart';
-
 import '../../../../app/utils/preferences/preferences.dart';
 import '../../../../main.dart';
 import '../../../widgets/widgets.dart';
-import '../forgot_password/forgot_screen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -20,9 +18,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final mobileController = TextEditingController();
-  final passwordController = TextEditingController();
   final mobileFocus = FocusNode();
-  final passwordFocus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -118,150 +114,137 @@ class _LoginScreenState extends State<LoginScreen> {
                 header: AppStrings.phoneNumber,
                 controller: mobileController,
                 icon: AppSvg.mobile),
-            AppButton(title: AppStrings.getOtp,onTap: () {
-              _showOTPSheet();
-            },)
+            AppButton(title: AppStrings.getOtp,onTap: () => _getOtpTap(),)
           ],
         ));
   }
   void _showOTPSheet() {
+    String otp = "";
     AppHelper.showBottomSheet(
         context: context,
         isScrollControlled: true,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 5),
-              child: Text(
-                AppStrings.enterCode,
-                style: AppStyle.black30W700,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 35),
-              child: Text.rich(
-                TextSpan(
-                  children: [
+        child: StatefulBuilder(
+          builder: (context, setState) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Text(
+                    AppStrings.enterCode,
+                    style: AppStyle.black30W700,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 35),
+                  child: Text.rich(
                     TextSpan(
-                      text: AppStrings.weSentSMS,
-                      style: AppStyle.grey14,
+                      children: [
+                        TextSpan(
+                          text: AppStrings.weSentSMS,
+                          style: AppStyle.grey14,
+                        ),
+                        TextSpan(
+                          text: "+91 ${mobileController.text}",
+                          style: AppStyle.black14.copyWith(
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ],
                     ),
-                    TextSpan(
-                      text: "+91 9112547856",
-                      style: AppStyle.black14.copyWith(
-                        decoration: TextDecoration.underline,
+                  ),
+                ),
+                OtpTextField(
+                  numberOfFields: 4,
+                  handleControllers: (controllers) {
+
+                  },
+                  borderColor: AppColors.colorPrimary,
+                  showFieldAsBox: true,
+                  enabledBorderColor: AppColors.colorPrimary,borderWidth: 1,
+                  textStyle: AppStyle.black20,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  fieldWidth: 65,
+                  borderRadius: BorderRadius.circular(15),
+                  fillColor: AppColors.white,
+                  filled: true,
+                  cursorColor: AppColors.colorPrimary,
+                  onCodeChanged: (String code) {
+                    otp = code;
+                    setState(() {
+
+                    },);
+                  },
+                  onSubmit: (String verificationCode){
+                    otp = verificationCode;
+                    setState(() {
+
+                    },);
+                  }, // end onSubmit
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: InkWell(
+                    onTap: () {
+                       Provider.of<AuthProvider>(context, listen: false).login(
+                        phone: mobileController.text,);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20,top: 14,right: 16),
+                      child: Text(
+                        AppStrings.resentOTP,
+                        style: AppStyle.black12.copyWith(color: AppColors.colorPrimary),
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            OtpTextField(
-              numberOfFields: 4,
-              handleControllers: (controllers) {
-
-              },
-              borderColor: AppColors.colorPrimary,
-              showFieldAsBox: true,
-              enabledBorderColor: AppColors.colorPrimary,borderWidth: 1,
-              textStyle: AppStyle.black20,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              fieldWidth: 65,
-              borderRadius: BorderRadius.circular(15),
-              fillColor: AppColors.white,
-              filled: true,
-              cursorColor: AppColors.colorPrimary,
-              onCodeChanged: (String code) {
-                //handle validation or checks here
-              },
-              onSubmit: (String verificationCode){
-
-              }, // end onSubmit
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 20,top: 14,right: 16),
-                child: Text(
-                  AppStrings.resentOTP,
-                  style: AppStyle.black12.copyWith(color: AppColors.colorPrimary),
-                ),
-              ),
-            ),
-            AppButton(title: AppStrings.verify,onTap: () {
-                context.push(BaseScreen());
-            },),
-            InkWell(
-              onTap: () => context.pop(),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 15,left: 10,bottom: 5),
-                child: Row(
-                  children: [
-                    Icon(Icons.arrow_back_ios,size: 10,),
-                    4.width,
-                    Text(AppStrings.enteredWrongNumber,style: AppStyle.black12.copyWith(decoration: TextDecoration.underline),),
-                  ],
-                ),
-              ),
-            )
-          ],
+                AppButton(title: AppStrings.verify,onTap: () async {
+                  if(otp.isEmpty || otp.length<4){
+                    AppHelper.showToast(message: AppValidator.messageBuilder("OTP")!);
+                  }  else{
+                     Provider.of<AuthProvider>(context, listen: false).verificationVerify(
+                      mobile: mobileController.text,
+                    code: otp
+                    );
+                  }
+                  //context.push(BaseScreen());
+                },),
+                InkWell(
+                  onTap: () => context.pop(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 15,left: 10,bottom: 5),
+                    child: Row(
+                      children: [
+                        Icon(Icons.arrow_back_ios,size: 10,),
+                        4.width,
+                        Text(AppStrings.enteredWrongNumber,style: AppStyle.black12.copyWith(decoration: TextDecoration.underline),),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            );
+          }
         ));
   }
 
-  Future<void> onLoginTap() async {
+  Future<void> _getOtpTap() async {
     AppHelper.hideKeyboard();
     if (mobileController.text.isEmpty) {
-      AppHelper.showImageToast(message: AppValidator.messageBuilder("email")!);
+      AppHelper.showToast(message: AppValidator.messageBuilder("mobile")!);
       mobileFocus.requestFocusDelayed();
-    } else if (mobileController.validateEmailAddress()) {
-      AppHelper.showImageToast(
-        message: AppValidator.messageBuilder("Email Address",
+    } else if (mobileController.validatePhoneMaxDigit()) {
+      AppHelper.showToast(
+        message: AppValidator.messageBuilder("mobile",
             validationType: ErrorType.INVALID)!,
       );
       mobileFocus.requestFocusDelayed();
-    } else if (passwordController.text.isEmpty) {
-      AppHelper.showImageToast(
-          message: AppValidator.messageBuilder("password")!);
-      passwordFocus.requestFocusDelayed();
-    } else if (passwordController.text.length < 8) {
-      AppHelper.showImageToast(
-          message: "Password must be at least 6 characters.");
-      passwordFocus.requestFocusDelayed();
-    } else {
-      TextInput.finishAutofillContext();
-      await Provider.of<AuthProvider>(context, listen: false).login(
-          email: mobileController.text,
-          password: passwordController.text,
-          fromTouchId: false);
+    }else {
+      bool? response = await Provider.of<AuthProvider>(context, listen: false).login(
+          phone: mobileController.text,);
+      if(response.isTrue)_showOTPSheet();
     }
   }
 
-  Future<void> onTouchIDTap() async {
-    AppHelper.hideKeyboard();
-    var isBiometric = await preference.getBoolData(PreferenceKeys.isBiometric);
-    if (isBiometric.isTrue) {
-      var provider = await Provider.of<AuthProvider>(context, listen: false);
-      print(provider.userModel?.email);
-      print(provider.userModel?.password);
-      await Provider.of<AuthProvider>(context, listen: false).login(
-          email: provider.userModel!.email!,
-          password: provider.userModel!.password!,
-          fromTouchId: true);
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          content: Text(
-            AppStrings.enableTouchId,
-            style: AppStyle.black14,
-          ),
-          actions: [
-            TextButton(
-                onPressed: () => context.pop(), child: Text(AppStrings.ok))
-          ],
-        ),
-      );
-    }
-  }
+
 }
