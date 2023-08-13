@@ -4,6 +4,9 @@ import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
 
+import '../../../data/models/models.dart';
+import '../../../data/providers/providers.dart';
+
 class ReviewsScreen extends StatefulWidget {
   const ReviewsScreen({super.key});
 
@@ -25,20 +28,27 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         width: double.infinity,
         padding: EdgeInsets.all(15),
         clipBehavior: Clip.none,
-        child: ListView.builder(
-          clipBehavior: Clip.none,
-          itemBuilder: (context, index) => WaitlistCard(index: index),
-          itemCount: 10,
-          shrinkWrap: true,
+        child: AppConsumer<AuthProvider, List<ReviewModel>>(
+          taskName: AuthProvider.reviewListKey,
+          load: (provider) => provider.reviewList(),
+          successBuilder: (data, provider) => ListView.builder(
+            clipBehavior: Clip.none,
+            itemBuilder: (context, index) => ReviewCard(model: data[index]),
+            itemCount: data.length,
+            shrinkWrap: true,
+          ),
         ),
       ),
     );
   }
 }
 
-class WaitlistCard extends StatelessWidget {
-  const WaitlistCard({super.key, required this.index});
-  final int index;
+class ReviewCard extends StatelessWidget {
+  ReviewCard({super.key, required this.model});
+
+  final ReviewModel model;
+  final TextEditingController controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,13 +62,15 @@ class WaitlistCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Order Id: #1654358757",
-                  style: AppStyle.grey12
-                      .copyWith(color: AppColors.greyDark, fontSize: 10),
+                Expanded(
+                  child: Text(
+                    "Order Id: #${model.orderId}",
+                    style: AppStyle.grey12
+                        .copyWith(color: AppColors.greyDark, fontSize: 10),
+                  ),
                 ),
                 Text(
-                  "8 May 2023, 04:15 Pm",
+                  "${DateTimeHelper.dateMonthWithTime(model.createdAt)}",
                   style: AppStyle.grey12
                       .copyWith(color: AppColors.greyDark, fontSize: 10),
                 ),
@@ -69,7 +81,7 @@ class WaitlistCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              UserDP(radius: 22),
+              UserDP(image: model.user!.image, radius: 22),
               20.width,
               Expanded(
                 child: Row(
@@ -79,9 +91,9 @@ class WaitlistCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Suhel Ahmed", style: AppStyle.black14),
+                        Text(model.user?.name ?? "", style: AppStyle.black14),
                         RatingBar.builder(
-                          initialRating: 3,
+                          initialRating: model.rating.toString().toDouble(),
                           minRating: 1,
                           itemSize: 15,
                           direction: Axis.horizontal,
@@ -99,46 +111,81 @@ class WaitlistCard extends StatelessWidget {
                       ],
                     ),
                     Spacer(),
-                    SvgImage(image: AppSvg.deleteRed)
+                    SvgImage(image: AppSvg.deleteRed,onTap: () => context.read<AuthProvider>().deleteReview(id: model.id!),)
                   ],
                 ),
               ),
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 10,top: 10),
+            padding: const EdgeInsets.only(bottom: 0, top: 10),
             child: Text(
-              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard...",
+              model.message ?? "",
               style: AppStyle.black12,
             ),
           ),
-          if(index!=1)Padding(
-            padding: const EdgeInsets.only(top: 10,bottom: 10),
-            child: Row(
-              children: [
-                Expanded(
-                  child: AppRoundedButton(text: AppStrings.viewChat,color: AppColors.colorPrimary,onTap: () => context.push(ChatScreen()),),
-                ),
-                20.width,
-                Expanded(
-                  child: AppRoundedButton(text: AppStrings.reply,color: AppColors.colorPrimary,),
-                ),
-              ],
+          if (model.astrologerResponse.isNotNull)
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10, top: 0),
+                    child: Text(
+                      "Replied : " + (model.astrologerResponse?.message ?? ""),
+                      style: AppStyle.black12,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: AppRoundedButton(
+                          text: AppStrings.viewChat,
+                          color: AppColors.colorPrimary,
+                          onTap: () => context.push(ChatScreen()),
+                        ),
+                      ),
+                      20.width,
+                      Expanded(
+                        child: AppRoundedButton(
+                          text: AppStrings.reply,
+                          color: AppColors.colorPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          if(index==1)Container(
-            padding: EdgeInsets.all(15),
-            decoration: AppDecoration.whiteShadowRounded.copyWith(
-              color: AppColors.hintGrey3,boxShadow: []
+          if (model.astrologerResponse.isNull)
+            Container(
+              padding: EdgeInsets.all(15),
+              margin: EdgeInsets.only(top: 10),
+              decoration: AppDecoration.whiteShadowRounded
+                  .copyWith(color: AppColors.hintGrey3, boxShadow: []),
+              child: Column(
+                children: [
+                  HeaderTextField(
+                    hint: "Enter your message here..",
+                    controller: controller,
+                    maxLines: 5,
+                  ),
+                  AppButton(
+                    title: AppStrings.reply,
+                    onTap: () {
+                      if(controller.isEmpty()){
+                        AppHelper.showToast(message: "Please enter message");
+                      }else{
+                        context.read<AuthProvider>().addReview(id: model.id!,message: controller.text);
+                      }
+                    },
+                  )
+                ],
+              ),
             ),
-            child: Column(
-              children: [
-                HeaderTextField(hint: "Enter your message here..",maxLines: 5,),
-                AppButton(title: AppStrings.reply,)
-              ],
-            ),
-          ),
-
         ],
       ),
     );

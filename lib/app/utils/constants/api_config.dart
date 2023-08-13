@@ -11,5 +11,7 @@ class ApiConfig {
 
   static const String offersList = "offers/astrologers";
   static const String ordersList = "orders";
+  static const String amountRefund = "payments/wallet/refund/";
+  static const String reviewList = "reviews/";
 
 }

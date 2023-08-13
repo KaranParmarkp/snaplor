@@ -115,7 +115,7 @@ class AuthProvider extends BaseProvider {
   }
 
   // Offer list api
-  static String offerListKey = 'offerListDetailsKey';
+  static String offerListKey = 'offerListKey';
    offerList() async {
     setLoading(taskName: offerListKey);
     try {
@@ -128,7 +128,7 @@ class AuthProvider extends BaseProvider {
   }
 
   // Offer list api
-  static String orderListKey = 'orderListDetailsKey';
+  static String orderListKey = 'orderListKey';
   orderList(ComType type) async {
     setLoading(taskName: orderListKey);
     try {
@@ -140,5 +140,45 @@ class AuthProvider extends BaseProvider {
     }
   }
 
+  // Reviews list api
+  static String reviewListKey = 'reviewListKey';
+  reviewList() async {
+    setLoading(taskName: reviewListKey);
+    try {
+      setData(taskName: reviewListKey,data: await _authRepo.reviewList());
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: reviewListKey,errorMessage:  e.toString(),);
+    }
+  }
+
+  // Add Review api
+  static String addReviewKey = 'addReviewKey';
+  addReview({required String id,required String message}) async {
+    setLoading(taskName: addReviewKey,showDialogLoader: true);
+    try {
+      setData(taskName: addReviewKey,data: await _authRepo.addReview(id,message),hideLoader: true);
+      reviewList();
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: addReviewKey,errorMessage:  e.toString(),);
+    }
+  }
+
+  // Add Review api
+  static String deleteReviewKey = 'deleteReviewKey';
+  deleteReview({required String id}) async {
+    setLoading(taskName: deleteReviewKey,showDialogLoader: true);
+    try {
+      setData(taskName: deleteReviewKey,data: await _authRepo.deleteReview(id),hideLoader: true);
+      reviewList();
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: deleteReviewKey,errorMessage:  e.toString(),);
+    }
+  }
 
 }

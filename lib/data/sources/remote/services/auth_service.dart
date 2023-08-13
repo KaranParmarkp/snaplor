@@ -25,7 +25,6 @@ class AuthService extends ApiService {
 
   Future<Response<GenericResponse>> orderList(ComType type) async {
     String url = '''?filter={"astrologer.id": "${MyApp.appContext.read<AuthProvider>().userModel!.id}", "order_source": "${type.name}"}&limit=10&skip=0''';
-
     return getData(ApiConfig.ordersList+url,
         /*queryParameters: {
       "filter": {"astrologer.id": "${MyApp.appContext.read<AuthProvider>().userModel!.id}", "order_source": "${type.name}"},
@@ -34,7 +33,27 @@ class AuthService extends ApiService {
     }*/
     );
   }
-   /*Future<IOWebSocketChannel> chats() async {
+
+  Future<Response<GenericResponse>> refundAmount(int id) async {
+    return getData(ApiConfig.amountRefund,);
+  }
+
+  Future<Response<GenericResponse>> reviewList() async {
+    return getData(
+      ApiConfig.reviewList + MyApp.appContext.read<AuthProvider>().userModel!.id + "/list",);
+  }
+
+  Future<Response<GenericResponse>> addReview(String id,String message) async {
+    return putData(
+      ApiConfig.reviewList + id,data: {"message":message});
+  }
+  Future<Response<GenericResponse>> deleteReview(String id) async {
+    return deleteData(
+        ApiConfig.reviewList + id);
+  }
+
+
+/*Future<IOWebSocketChannel> chats() async {
     return webSocketChannel();
   }
 */

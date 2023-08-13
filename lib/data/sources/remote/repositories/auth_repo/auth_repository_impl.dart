@@ -63,4 +63,35 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
     );
   }
 
+  @override
+  Future<List<ReviewModel>> reviewList() {
+    return serviceHandler(
+      serviceFunction: () => service.reviewList(),
+      successFunction: (response) async {
+        List<ReviewModel> list = [];
+        list = List<ReviewModel>.from(response.data!.map((x) => ReviewModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+  @override
+  Future<GenericResponse> addReview(String id,String message) {
+    return serviceHandler(
+      serviceFunction: () => service.addReview(id,message),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+
+  @override
+  Future<GenericResponse> deleteReview(String id) {
+    return serviceHandler(
+      serviceFunction: () => service.deleteReview(id,),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+
 }

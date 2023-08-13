@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jyotishee/main.dart';
 
 import '../../app/utils/utils.dart';
 
@@ -11,6 +10,9 @@ class BaseProvider with ChangeNotifier {
   setStatus({required String taskName, required Status status}) {
     this.status[taskName] = status;
     notifyListeners();
+  }
+  getStatus({required String taskName}){
+    return status[taskName];
   }
   setLoading({required String taskName,bool showDialogLoader=false}) {
     if(showDialogLoader)AppHelper.showLoading();

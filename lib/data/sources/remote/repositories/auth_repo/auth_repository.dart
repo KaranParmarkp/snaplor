@@ -8,5 +8,7 @@ abstract class AuthRepository{
   Future<UserModel> userData(UserModel? model);
   Future<List<OfferModel>> offerList();
   Future<List<OrderModel>> orderList(ComType type);
-
+  Future<List<ReviewModel>> reviewList();
+  Future<GenericResponse> addReview(String id,String message);
+  Future<GenericResponse> deleteReview(String id);
 }
