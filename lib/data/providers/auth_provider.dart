@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/base_provider.dart';
@@ -125,6 +124,19 @@ class AuthProvider extends BaseProvider {
       e.printDebug;
       s.printDebug;
       setError(taskName: offerListKey,errorMessage:  e.toString(),);
+    }
+  }
+
+  // Offer list api
+  static String orderListKey = 'orderListDetailsKey';
+  orderList(ComType type) async {
+    setLoading(taskName: orderListKey);
+    try {
+      setData(taskName: orderListKey,data: await _authRepo.orderList(type));
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: orderListKey,errorMessage:  e.toString(),);
     }
   }
 

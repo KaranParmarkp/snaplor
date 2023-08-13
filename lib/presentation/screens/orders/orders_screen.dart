@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
 
+import '../../../data/models/models.dart';
+import '../../../data/providers/providers.dart';
+
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
 
@@ -67,10 +70,25 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
             Expanded(child: TabBarView(
               controller: _tabController,
               children: [
-              ListView.builder(
-                clipBehavior: Clip.none,
-                itemBuilder: (context, index) => OrderCard(),itemCount: 10,shrinkWrap: true,),
-              ListView.builder(itemBuilder: (context, index) => OrderCard(),itemCount: 10,shrinkWrap: true,),
+                AppConsumer<AuthProvider, List<OrderModel>>(
+                  taskName: AuthProvider.orderListKey,
+                  load: (provider) => provider.orderList(ComType.chat),
+                  successBuilder: (data, provider) => ListView.builder(
+                    itemBuilder: (context, index) => OrderCard(model: data[index]),
+                    itemCount: data.length,
+                    shrinkWrap: true,
+                  ),
+                ),
+                AppConsumer<AuthProvider, List<OrderModel>>(
+                  taskName: AuthProvider.orderListKey,
+                  load: (provider) => provider.orderList(ComType.call),
+                  successBuilder: (data, provider) => ListView.builder(
+                    itemBuilder: (context, index) => OrderCard(model: data[index]),
+                    itemCount: data.length,
+                    shrinkWrap: true,
+                  ),
+                ),
+
             ],))
           ],
         ),
@@ -80,8 +98,8 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
 }
 
 class OrderCard extends StatelessWidget {
-  const OrderCard({super.key});
-
+  const OrderCard({super.key, required this.model});
+  final OrderModel model;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -93,19 +111,19 @@ class OrderCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(child: NameValue(name: AppStrings.name, value: "Shruti Shukla")),
-              Text(AppStrings.completed,style: AppStyle.black12.copyWith(color: AppColors.lightGreen),)
+              Expanded(child: NameValue(name: AppStrings.name, value: model.user?.name ?? "")),
+              Text(model.status??"",style: AppStyle.black12.copyWith(color: AppColors.lightGreen),)
             ],
           ),
-          NameValue(name: AppStrings.gender, value: "Female"),
+          NameValue(name: AppStrings.gender, value: model.user?.gender ?? ""),
           NameValue(name: AppStrings.dob, value: "17 March, 1998, 9:45 PM"),
           NameValue(name: AppStrings.pob, value: "Kanpur, Uttar Pradesh, India"),
           NameValue(name: AppStrings.problemArea, value: "Career and Business"),
-          NameValue(name: AppStrings.duration, value: "5 Minutes"),
+          NameValue(name: AppStrings.duration, value: "${model.duration} Minutes"),
           Row(
             children: [
-              Expanded(child: NameValue(name: AppStrings.rateWithout, value: AppStrings.rupee+"5/Min")),
-              Text(AppStrings.rs+"16",style: AppStyle.purple14.copyWith(fontWeight: FontWeight.w800),)
+              Expanded(child: NameValue(name: AppStrings.rateWithout, value: AppStrings.rupee+"${model.astrologerAmount}/Min")),
+              Text(AppStrings.rs+"${model.totalPaid}",style: AppStyle.purple14.copyWith(fontWeight: FontWeight.w800),)
             ],
           ),
           Padding(

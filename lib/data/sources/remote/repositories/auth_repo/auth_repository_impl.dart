@@ -1,5 +1,6 @@
 import 'package:jyotishee/data/models/generic_response_model.dart';
 
+import '../../../../../app/utils/utils.dart';
 import '../../../../models/models.dart';
 import '../../network_services/abstract_api.dart';
 import '../../services/auth_service.dart';
@@ -45,6 +46,18 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
       successFunction: (response) async {
         List<OfferModel> list = [];
         list = List<OfferModel>.from(response.data!.map((x) => OfferModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+
+  @override
+  Future<List<OrderModel>> orderList(ComType type) {
+    return serviceHandler(
+      serviceFunction: () => service.orderList(type),
+      successFunction: (response) async {
+        List<OrderModel> list = [];
+        list = List<OrderModel>.from(response.data!.map((x) => OrderModel.fromJson(x))).toList();
         return list;
       },
     );

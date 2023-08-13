@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:jyotishee/data/models/generic_response_model.dart';
+import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/src/channel.dart';
-import '../../../../app/utils/constants/api_config.dart';
+import 'package:jyotishee/main.dart';
+import '../../../providers/providers.dart';
 import '../network_services/api_service.dart';
 
 class AuthService extends ApiService {
@@ -22,6 +21,18 @@ class AuthService extends ApiService {
 
   Future<Response<GenericResponse>> offerList() async {
     return getData(ApiConfig.offersList,);
+  }
+
+  Future<Response<GenericResponse>> orderList(ComType type) async {
+    String url = '''?filter={"astrologer.id": "${MyApp.appContext.read<AuthProvider>().userModel!.id}", "order_source": "${type.name}"}&limit=10&skip=0''';
+
+    return getData(ApiConfig.ordersList+url,
+        /*queryParameters: {
+      "filter": {"astrologer.id": "${MyApp.appContext.read<AuthProvider>().userModel!.id}", "order_source": "${type.name}"},
+      "limit":10,
+      "skip":0
+    }*/
+    );
   }
    /*Future<IOWebSocketChannel> chats() async {
     return webSocketChannel();

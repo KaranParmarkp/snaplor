@@ -10,5 +10,6 @@ class ApiConfig {
   static const String userData = "astrologers/me";
 
   static const String offersList = "offers/astrologers";
+  static const String ordersList = "orders";
 
 }

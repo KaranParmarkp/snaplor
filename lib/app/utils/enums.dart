@@ -1,19 +1,3 @@
-enum ShiftsTypes {
-  totalTodayShiftType,
-  unfilledTodayShiftType,
-  completedTodayShiftType,
-  missedTodayShiftType,
-  totalTomorrowShiftType,
-  unfilledTomorrowShiftType,
-  acceptBidShiftType,
-  shiftList
-}
-enum CreditSpend {
-  outStandingInvoices,
-  unInvoiceTimesheet,
-  runningShifts,
-  confirmedShifts
-}
 enum PostType{
   image,
   video,
@@ -21,4 +5,7 @@ enum PostType{
 }
 enum MessageType {
   sender,receiver
+}
+enum ComType{
+  chat,call
 }
