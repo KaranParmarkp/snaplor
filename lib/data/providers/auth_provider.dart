@@ -115,4 +115,18 @@ class AuthProvider extends BaseProvider {
     return null;
   }
 
+  // Offer list api
+  static String offerListKey = 'offerListDetailsKey';
+   offerList() async {
+    setLoading(taskName: offerListKey);
+    try {
+      setData(taskName: offerListKey,data: await _authRepo.offerList());
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: offerListKey,errorMessage:  e.toString(),);
+    }
+  }
+
+
 }

@@ -38,4 +38,16 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
     );
   }
 
+  @override
+  Future<List<OfferModel>> offerList() {
+    return serviceHandler(
+      serviceFunction: () => service.offerList(),
+      successFunction: (response) async {
+        List<OfferModel> list = [];
+        list = List<OfferModel>.from(response.data!.map((x) => OfferModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+
 }

@@ -516,32 +516,4 @@ class AppHelper {
     }
   }
 
-  static Future<ButtonModel?> showGenericTypeSheet(
-      {required BuildContext context, required List<ButtonModel> list}) async {
-    return await AppHelper.showBottomSheet<ButtonModel?>(
-        context: context,
-        padding: EdgeInsets.zero,
-        child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: list.length,
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      context.pop(list[index]);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Text(
-                        list[index].value,
-                        style: AppStyle.blue16,
-                      ),
-                    ),
-                  ),
-                  Divider(),
-                ],
-              );
-            }));
-  }
 }

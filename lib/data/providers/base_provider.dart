@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jyotishee/main.dart';
 
 import '../../app/utils/utils.dart';
 
@@ -6,7 +7,7 @@ class BaseProvider with ChangeNotifier {
   Map<String, dynamic> data = <String, dynamic>{};
   Map<String, Status> status = {"main": Status.Idle};
   Map<String, String> error = {};
-
+  //BuildContext context = MyApp.appContext;
   setStatus({required String taskName, required Status status}) {
     this.status[taskName] = status;
     notifyListeners();

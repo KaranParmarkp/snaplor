@@ -31,10 +31,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final res =  IOWebSocketChannel.connect(Uri.parse(ApiConfig.baseUrlSocket),headers: {
+    /*final res =  IOWebSocketChannel.connect(Uri.parse(ApiConfig.baseUrlSocket),headers: {
       'Authorization': 'Bearer ${ApiService.getToken()}',
     });
-    return Scaffold(
+    */return Scaffold(
       appBar: DashboardAppBar(
         title: '',
       ),
@@ -51,14 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       ImportantNotice(),
 
-                      StreamBuilder(
-                        stream: res.stream,
-                        builder: (context, snapshot) {
-                          print("data="+snapshot.data.toString());
-                          return Text("${snapshot.connectionState}");
-                          },
-
-                      ),
                       //total earnings
                       Container(
                         margin: EdgeInsets.only(top: 30),

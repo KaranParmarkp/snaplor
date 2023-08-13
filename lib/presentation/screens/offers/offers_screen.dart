@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
+import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
+
+import '../../../data/providers/providers.dart';
 
 class OffersScreen extends StatefulWidget {
   const OffersScreen({super.key});
@@ -10,28 +13,40 @@ class OffersScreen extends StatefulWidget {
   State<OffersScreen> createState() => _OffersScreenState();
 }
 
-class _OffersScreenState extends State<OffersScreen>{
+class _OffersScreenState extends State<OffersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: AppStrings.offers,showNotification: true,showProfile: true,),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        padding: EdgeInsets.all(15),
-        child: ListView.builder(itemBuilder: (context, index) => OfferCard(),itemCount: 10,shrinkWrap: true,),
+      appBar: CustomAppBar(
+        title: AppStrings.offers,
+        showNotification: true,
+        showProfile: true,
       ),
+      body: Container(
+          height: double.infinity,
+          width: double.infinity,
+          padding: EdgeInsets.all(15),
+          child: AppConsumer<AuthProvider, List<OfferModel>>(
+            taskName: AuthProvider.offerListKey,
+            load: (provider) => provider.offerList(),
+            successBuilder: (data, provider) => ListView.builder(
+              itemBuilder: (context, index) => OfferCard(model: data[index]),
+              itemCount: data.length,
+              shrinkWrap: true,
+            ),
+          )),
     );
   }
 }
-class OfferCard extends StatelessWidget {
-  const OfferCard({super.key});
 
+class OfferCard extends StatelessWidget {
+  const OfferCard({super.key, required this.model});
+  final OfferModel model;
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(15),
-      margin: EdgeInsets.only(bottom: 10,right: 4,left: 4,top: 8),
+      margin: EdgeInsets.only(bottom: 10, right: 4, left: 4, top: 8),
       width: double.infinity,
       decoration: AppDecoration.whiteShadowRounded,
       child: Column(
@@ -43,9 +58,21 @@ class OfferCard extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    NameValue(name: AppStrings.offerName, value: "75% off",valueColor: AppColors.lightGreen,),
-                    NameValue(name: AppStrings.displayName, value: "75% off",valueColor: AppColors.colorPrimary,),
-                    NameValue(name: AppStrings.userType, value: "All User",valueColor: AppColors.colorPrimary,),
+                    NameValue(
+                      name: AppStrings.offerName,
+                      value: "${model.name}",
+                      valueColor: AppColors.lightGreen,
+                    ),
+                    NameValue(
+                      name: AppStrings.displayName,
+                      value: "${model.name}",
+                      valueColor: AppColors.colorPrimary,
+                    ),
+                    NameValue(
+                      name: AppStrings.userType,
+                      value: "${model.userType?.toUpperCase()}",
+                      valueColor: AppColors.colorPrimary,
+                    ),
                   ],
                 ),
               ),
@@ -61,9 +88,24 @@ class OfferCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              NameValue(name: AppStrings.myShare, value: AppStrings.rupee+"8",valueColor: AppColors.colorPrimary,fontSize: 10,),
-              NameValue(name: AppStrings.jyotisheeShare, value: AppStrings.rupee+"8",valueColor: AppColors.colorPrimary,fontSize: 10,),
-              NameValue(name: AppStrings.customerPay, value: AppStrings.rupee+"8",valueColor: AppColors.colorPrimary,fontSize: 10,),
+              NameValue(
+                name: AppStrings.myShare,
+                value: AppStrings.rupee + "8",
+                valueColor: AppColors.colorPrimary,
+                fontSize: 10,
+              ),
+              NameValue(
+                name: AppStrings.jyotisheeShare,
+                value: AppStrings.rupee + "8",
+                valueColor: AppColors.colorPrimary,
+                fontSize: 10,
+              ),
+              NameValue(
+                name: AppStrings.customerPay,
+                value: AppStrings.rupee + "8",
+                valueColor: AppColors.colorPrimary,
+                fontSize: 10,
+              ),
             ],
           ),
         ],
@@ -71,4 +113,3 @@ class OfferCard extends StatelessWidget {
     );
   }
 }
-

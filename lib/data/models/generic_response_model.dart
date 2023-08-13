@@ -10,7 +10,7 @@ class GenericResponse<T> {
   factory GenericResponse.fromJson(Map<String, dynamic> json) =>
       GenericResponse(
           code: json["data"] != null ? true : false,//if response contains data means it is success
-          message: json["error"]!=null ? json["error"]["message"] : json["data"]!=null ? json["data"]["message"]  ?? "":  "",
+          message: json["error"]!=null ? json["error"]["message"] : json["data"]!=null && (json["data"] is List<dynamic>)==false ? json["data"]["message"]:  "",
           data: json["data"]);
 
 }

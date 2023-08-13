@@ -19,6 +19,10 @@ class AuthService extends ApiService {
   Future<Response<GenericResponse>> userData(UserModel? model) async {
     return model!=null ? putData(ApiConfig.userData,data: model.toJsonUpdateProfile()):getData(ApiConfig.userData,);
   }
+
+  Future<Response<GenericResponse>> offerList() async {
+    return getData(ApiConfig.offersList,);
+  }
    /*Future<IOWebSocketChannel> chats() async {
     return webSocketChannel();
   }
