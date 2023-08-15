@@ -11,10 +11,13 @@ class ApiConfig {
 
   static const String offersList = "offers/astrologers";
   static const String ordersList = "orders";
+  static const String productsList = "products";
   static const String amountRefund = "payments/wallet/refund/";
   static const String reviewList = "reviews/";
   static const String callWaitingList = "call/waiting-list";
   static const String chatWaitingList = "chat/requests";
   static const String wallet = "payments/astrologer/wallet/history";
+  static const String notificationList = "notifications";
+  static const String searchProduct = "notifications";
 
 }

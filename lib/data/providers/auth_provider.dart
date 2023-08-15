@@ -208,7 +208,7 @@ class AuthProvider extends BaseProvider {
     }
   }
 
-  // WaitList list api
+  // Wallet list api
   static String walletKey = 'walletKey';
   wallet() async {
     setLoading(taskName: walletKey);
@@ -221,5 +221,18 @@ class AuthProvider extends BaseProvider {
     }
   }
 
+
+  // Wallet list api
+  static String searchProductKey = 'searchProductKey';
+  searchProduct() async {
+    setLoading(taskName: searchProductKey);
+    try {
+      setData(taskName: searchProductKey,data: await _authRepo.searchProduct());
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: searchProductKey,errorMessage:  e.toString(),);
+    }
+  }
 
 }

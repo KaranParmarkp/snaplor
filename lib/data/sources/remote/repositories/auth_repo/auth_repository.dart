@@ -14,4 +14,5 @@ abstract class AuthRepository{
   Future<GenericResponse> deleteReview(String id);
   Future<List<WaitListModel>> waitList(ComType type);
   Future<List<WalletModel>> wallet();
+  Future<List<ProductModel>> searchProduct();
 }

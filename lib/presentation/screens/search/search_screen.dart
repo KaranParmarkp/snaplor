@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/constants/app_strings.dart';
 import 'package:jyotishee/app/utils/utils.dart';
+import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/presentation/widgets/app_textfield.dart';
 import 'package:jyotishee/presentation/widgets/custom_app_bar.dart';
 import 'package:jyotishee/presentation/widgets/dismiss_keyboard_widget.dart';
 
+import '../../../data/providers/providers.dart';
 import '../../widgets/widgets.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -13,26 +15,31 @@ class SearchScreen extends StatefulWidget {
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
+class FilterModel {
+  String? name;
+  String? category;
+  String? weight;
 
+  FilterModel({this.name, this.category, this.weight});
+}
 class _SearchScreenState extends State<SearchScreen> {
-  bool search = false;
+  bool search = true;
   RangeValues rangeValues = RangeValues(1000, 8999);
   List<RadioModel> categories = [
-    RadioModel(name: "Gemstones", status: false),
-    RadioModel(name: "Rudraksha", status: false),
-    RadioModel(name: "Pendants", status: false),
-    RadioModel(name: "Bracelets", status: false),
-    RadioModel(name: "Healing Crystals", status: false),
+    RadioModel(name: "Gemstone", status: false,nameKey: "gemstone"),
+    RadioModel(name: "Rudraksha", status: false,nameKey: "rudraksha"),
+    RadioModel(name: "Tulsi Mala", status: false,nameKey: "tulsi_mala"),
+    RadioModel(name: "Evil Eye", status: false,nameKey: "evil_eye"),
+    RadioModel(name: "Healing Crystal", status: false,nameKey: "healing_crystal"),
   ];
-
   List<RadioModel> weights = [
-    RadioModel(name: "5.05 ct.", status: false),
-    RadioModel(name: "5.85 ct.", status: false),
-    RadioModel(name: "6.00 ct.", status: false),
-    RadioModel(name: "6.35 ct.", status: false),
-    RadioModel(name: "7.00 ct.", status: false),
+    RadioModel(name: "5.05 ct.", status: false,nameKey: ""),
+    RadioModel(name: "5.85 ct.", status: false,nameKey: ""),
+    RadioModel(name: "6.00 ct.", status: false,nameKey: ""),
+    RadioModel(name: "6.35 ct.", status: false,nameKey: ""),
+    RadioModel(name: "7.00 ct.", status: false,nameKey: ""),
   ];
-
+  FilterModel filterModel = FilterModel();
   @override
   Widget build(BuildContext context) {
     return DismissKeyBoard(
@@ -76,27 +83,7 @@ class _SearchScreenState extends State<SearchScreen> {
               10.height,
               AppDivider(),
               20.height,
-              if (!search) ...[
-                Text(
-                  AppStrings.recentSearch,
-                  style: AppStyle.black14,
-                ),
-                20.height,
-                Wrap(
-                  runSpacing: 20,
-                  spacing: 10,
-                  children: [
-                    AppChips(title: "Gemstones", color: AppColors.greyDark),
-                    AppChips(title: "Rudraksha", color: AppColors.greyDark),
-                    AppChips(title: "Pendants", color: AppColors.greyDark),
-                    AppChips(title: "Bracelets", color: AppColors.greyDark),
-                    AppChips(
-                        title: "Healing Crystal", color: AppColors.greyDark),
-                  ],
-                )
-              ],
-              if (search)
-                Expanded(
+              Expanded(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,84 +114,17 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                         20.height,
                         Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) => Container(
-                              decoration: AppDecoration.whiteShadowRounded,
-                              padding: EdgeInsets.all(15),
-                              margin: EdgeInsets.only(
-                                  bottom: 20, left: 4, right: 4, top: 4),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(18),
-                                    decoration: AppDecoration.roundedBorder,
-                                    child: CircleNetworkImageAvatar(
-                                        radius: 20,
-                                        image:
-                                            "https://images.unsplash.com/photo-1567324216289-97cc4134f626?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cG9ydHJhaXQlMjBtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80"),
-                                  ),
-                                  20.width,
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                                child: Text(
-                                                    "Natural Ruby | Quality",
-                                                    style: AppStyle.black14)),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10),
-                                              child: Icon(
-                                                Icons.share_rounded,
-                                                size: 20,
-                                                color: AppColors.greyDark,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Text(
-                                          "Lorem Ipsum By accessing and placing an order with , you confirm that you are in agreement with and bound by the terms of service ",
-                                          style: AppStyle.grey12.copyWith(
-                                              color: AppColors.greyDark),
-                                          maxLines: 2,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              '\u{20B9}',
-                                              style: TextStyle(
-                                                color: AppColors.colorPrimary,
-                                                fontSize: 17,
-                                                fontFamily: 'Poppins',
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                            Text(
-                                              "500",
-                                              style: AppStyle.purple14,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                          child: AppConsumer<AuthProvider, List<ProductModel>>(
+                            taskName: AuthProvider.searchProductKey,
+                            load: (provider) => provider.searchProduct(),
+                            successBuilder: (data, provider) => ListView.builder(
+                              //clipBehavior: Clip.none,
+                              itemBuilder: (context, index) => ProductCard(model: data[index]),
+                              itemCount: data.length,
+                              shrinkWrap: true,
                             ),
-                            itemCount: 20,
                           ),
-                        )
+                        ),
                       ]),
                 )
             ],
@@ -358,13 +278,96 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
+class ProductCard extends StatelessWidget {
+  const ProductCard({
+    super.key, required this.model,
+  });
+  final ProductModel model;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: AppDecoration.whiteShadowRounded,
+      padding: EdgeInsets.all(15),
+      margin: EdgeInsets.only(
+          bottom: 20, left: 4, right: 4, top: 4),
+      child: IntrinsicHeight(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.all(16),
+              decoration: AppDecoration.roundedBorder,
+              child: CircleNetworkImageAvatar(
+                  radius: 23,
+                  image: model.thumbnailImage),
+            ),
+            10.width,
+            Expanded(
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          child: Text(
+                              model.productName!.toCapitalized(),maxLines: 2,overflow: TextOverflow.ellipsis,
+                              style: AppStyle.black12)),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 10),
+                        child: Icon(
+                          Icons.share_rounded,
+                          size: 20,
+                          color: AppColors.greyDark,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    model.description??"",
+                    style: AppStyle.grey12.copyWith(
+                      overflow: TextOverflow.ellipsis,fontSize: 10,
+                        color: AppColors.greyDark),
+                    maxLines: 3,
+                  ),
+                  Spacer(),
+                  4.height,
+                  Row(
+                    mainAxisAlignment:
+                        MainAxisAlignment.start,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      Rupee(fontSize: 14),
+                      Text(
+                        model.pricePerRatti.toString(),
+                        style: AppStyle.purple12,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class RadioModel {
   String name;
+  String nameKey;
   bool status;
 
   RadioModel({
     required this.name,
     required this.status,
+    required this.nameKey,
   });
 }
 
