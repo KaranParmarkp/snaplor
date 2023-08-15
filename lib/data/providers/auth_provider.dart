@@ -224,10 +224,10 @@ class AuthProvider extends BaseProvider {
 
   // Wallet list api
   static String searchProductKey = 'searchProductKey';
-  searchProduct() async {
+  searchProduct({required FilterModel filterModel}) async {
     setLoading(taskName: searchProductKey);
     try {
-      setData(taskName: searchProductKey,data: await _authRepo.searchProduct());
+      setData(taskName: searchProductKey,data: await _authRepo.searchProduct(filterModel));
     } catch (e, s) {
       e.printDebug;
       s.printDebug;

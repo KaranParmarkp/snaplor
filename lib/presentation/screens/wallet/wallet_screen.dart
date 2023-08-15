@@ -114,7 +114,7 @@ class _WalletScreenState extends State<WalletScreen> {
                         ),
                         10.height,
                         ListView.builder(
-                          itemCount: 20,
+                          itemCount: data.length,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) => WalletTransactionCard(model : data[index]),

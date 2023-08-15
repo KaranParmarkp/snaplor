@@ -15,13 +15,7 @@ class SearchScreen extends StatefulWidget {
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
-class FilterModel {
-  String? name;
-  String? category;
-  String? weight;
 
-  FilterModel({this.name, this.category, this.weight});
-}
 class _SearchScreenState extends State<SearchScreen> {
   bool search = true;
   RangeValues rangeValues = RangeValues(1000, 8999);
@@ -40,6 +34,8 @@ class _SearchScreenState extends State<SearchScreen> {
     RadioModel(name: "7.00 ct.", status: false,nameKey: ""),
   ];
   FilterModel filterModel = FilterModel();
+
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return DismissKeyBoard(
@@ -65,7 +61,12 @@ class _SearchScreenState extends State<SearchScreen> {
                   Expanded(
                       child: HeaderTextField(
                     hint: AppStrings.searchHere,
-                    borderRadius: 30,
+                    controller: searchController,
+                    borderRadius: 30,onChanged: (p0) {
+                      if(p0.isEmpty){
+                        filterModel.name=null;
+                      }
+                    },
                   )),
                   20.width,
                   AppRoundedButton(
@@ -73,8 +74,9 @@ class _SearchScreenState extends State<SearchScreen> {
                       color: AppColors.colorPrimary,
                       radius: 30,
                       onTap: () {
-                        search = !search;
+                        filterModel.name=searchController.text;
                         setState(() {});
+                        _searchProduct();
                       },
                       padding:
                           EdgeInsets.symmetric(vertical: 15, horizontal: 20)),
@@ -116,7 +118,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         Expanded(
                           child: AppConsumer<AuthProvider, List<ProductModel>>(
                             taskName: AuthProvider.searchProductKey,
-                            load: (provider) => provider.searchProduct(),
+                            load: (provider) => _searchProduct(),
                             successBuilder: (data, provider) => ListView.builder(
                               //clipBehavior: Clip.none,
                               itemBuilder: (context, index) => ProductCard(model: data[index]),
@@ -140,7 +142,7 @@ class _SearchScreenState extends State<SearchScreen> {
         isScrollControlled: true,padding: EdgeInsets.zero,
         innerPadding: EdgeInsets.zero,
         child: StatefulBuilder(
-          builder: (context,setState) {
+          builder: (context,setStateSheet) {
             return SizedBox(
               height: context.screenHeight * 0.90,
               child: Column(
@@ -174,8 +176,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                 physics: NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) => InkWell(
                                     onTap: () {
-                                      categories[index].status =
-                                      !categories[index].status;
+                                      categories.forEach((element) {
+                                        element.status=false;
+                                      });
+                                      categories[index].status = true;
+                                      setStateSheet(() {});
                                       setState(() {});
                                     },
                                     child: RadioWidget(
@@ -199,8 +204,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                 physics: NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) => InkWell(
                                     onTap: () {
-                                      weights[index].status =
-                                      !weights[index].status;
+                                      weights.forEach((element) {
+                                        element.status=false;
+                                      });
+                                      weights[index].status = true;
+                                      filterModel.weight = weights[index].nameKey;
+                                      setStateSheet(() {});
                                       setState(() {});
                                     },
                                     child: RadioWidget(
@@ -253,13 +262,29 @@ class _SearchScreenState extends State<SearchScreen> {
                                 children: [
                                   Expanded(
                                     child: AppRoundedButton(text: AppStrings.clearAll,color: AppColors.red,onTap: () {
+                                      weights.forEach((element) {
+                                        element.status=false;
+                                      });
+                                      categories.forEach((element) {
+                                        element.status=false;
+                                      });
+                                      filterModel.category=null;
+                                      filterModel.weight=null;
+                                      setStateSheet(() {});
+                                      setState(() {});
                                       context.pop();
+                                      _searchProduct();
                                     },),
                                   ),
                                   10.width,
                                   Expanded(
                                     child: AppRoundedButton(text: AppStrings.applyFilters,color: AppColors.colorPrimary,onTap: () {
+                                      filterModel.category = categories.where((element) => element.status.isTrue).firstOrNull?.nameKey;
+                                      filterModel.weight = weights.where((element) => element.status.isTrue).firstOrNull?.nameKey;
+                                      setStateSheet(() {});
+                                      setState(() {});
                                       context.pop();
+                                      _searchProduct();
                                     },),
                                   ),
                                 ],
@@ -275,6 +300,10 @@ class _SearchScreenState extends State<SearchScreen> {
             );
           }
         ));
+  }
+
+  _searchProduct() {
+    context.read<AuthProvider>().searchProduct(filterModel: filterModel);
   }
 }
 

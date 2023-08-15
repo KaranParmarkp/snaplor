@@ -166,7 +166,7 @@ class HeaderTextField extends StatelessWidget {
       this.onTap,
       this.headerColor = Colors.black,
       this.borderRadius = 15,this.bottomPadding=15,
-      this.icon, this.suffixIcon});
+      this.icon, this.suffixIcon, this.onChanged});
 
   final String hint;
   final String? header;
@@ -190,6 +190,7 @@ class HeaderTextField extends StatelessWidget {
   final String? icon;
   final double bottomPadding;
   final Widget? suffixIcon;
+  final void Function(String)? onChanged;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -236,7 +237,7 @@ class HeaderTextField extends StatelessWidget {
                   maxLength: maxLength,
                   obscureText: obscureText ?? false,
                   obscuringCharacter: '●',
-                  style: AppStyle.black14,
+                  style: AppStyle.black14,onChanged: onChanged,
                   maxLines: maxLines ?? 1,
                   decoration: InputDecoration(
                       counterText: counterText ?? "",

@@ -73,9 +73,9 @@ class AuthService extends ApiService {
     return getData(ApiConfig.notificationList);
   }
 
-  Future<Response<GenericResponse>> searchProduct() async {
-    String url =
-        '''?filter={"product_name": {"\$regex": ""}}&limit=10&skip=0''';
+  Future<Response<GenericResponse>> searchProduct(FilterModel filterModel) async {
+    print("kapsaaaaaaaa->"+filterModel.category.toString());
+    String url = '''?filter={"product_name": {"\$regex": "${filterModel.name??""}"},"product_category":{"\$regex": "${filterModel.category??""}"}}&limit=10&skip=0''';
     return getData(
       ApiConfig.productsList + url,
     );

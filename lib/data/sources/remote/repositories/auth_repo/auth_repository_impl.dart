@@ -129,9 +129,9 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
   }
 
   @override
-  Future<List<ProductModel>> searchProduct() {
+  Future<List<ProductModel>> searchProduct(FilterModel filterModel) {
     return serviceHandler(
-      serviceFunction: () => service.searchProduct(),
+      serviceFunction: () => service.searchProduct(filterModel),
       successFunction: (response) async {
         List<ProductModel> list = [];
         list = List<ProductModel>.from(response.data!.map((x) => ProductModel.fromJson(x))).toList();
