@@ -50,7 +50,7 @@ class _CommentScreenState extends State<CommentScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            UserDP(radius: 18),
+                            UserDP(radius: 18,image: data[index].user?.image),
                             10.width,
                             Expanded(
                               child: Column(

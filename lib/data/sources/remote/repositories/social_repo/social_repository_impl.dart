@@ -43,9 +43,9 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
   }
 
   @override
-  Future<GenericResponse> commentPost(String id,String message) {
+  Future<GenericResponse> commentPost(String id,String message,String? commentID) {
     return serviceHandler(
-      serviceFunction: () => service.commentPost(id,message),
+      serviceFunction: () => service.commentPost(id,message,commentID),
       successFunction: (response) async {
         return response;
       },

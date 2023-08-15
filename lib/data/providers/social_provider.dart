@@ -49,10 +49,10 @@ class SocialProvider extends BaseProvider {
 
   // Comments Post api
   static String commentPostKey = 'commentPostKey';
-  addCommentPost({required String id,required String message}) async {
+  addCommentPost({required String id,required String message,String? commentID}) async {
     setLoading(taskName: commentPostKey,showDialogLoader: true);
     try {
-      setData(taskName: commentPostKey,data: await _repository.commentPost(id,message),hideLoader: true);
+      setData(taskName: commentPostKey,data: await _repository.commentPost(id,message,commentID),hideLoader: true);
       getComments(id: id,showLoader: true);
     } catch (e, s) {
       e.printDebug;
