@@ -31,6 +31,7 @@ class OrderModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
+  final int? pricePerMinute;
 
   OrderModel({
     this.id,
@@ -54,7 +55,7 @@ class OrderModel {
     this.products,
     this.createdAt,
     this.updatedAt,
-    this.v,
+    this.v,this.pricePerMinute
   });
 
   OrderModel copyWith({
@@ -124,6 +125,7 @@ class OrderModel {
     paymentStatus: json["payment_status"],
     isExchange: json["is_exchange"],
     isCod: json["is_cod"],
+    pricePerMinute: json["price_per_minute"],
     isRefunded: json["is_refunded"],
     products: json["products"] == null ? [] : List<dynamic>.from(json["products"]!.map((x) => x)),
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),

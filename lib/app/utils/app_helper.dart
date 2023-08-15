@@ -143,65 +143,6 @@ class AppHelper {
   }
 
 
-  static showNoticeDialog(
-      {required BuildContext context, required String text}) async {
-    return await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Container(
-                //constraints: BoxConstraints(maxHeight: 500),
-                decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(20)),
-                padding: EdgeInsets.symmetric(horizontal: 18),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 30),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 30),
-                        child: Text(
-                          AppStrings.notice,
-                          style: AppStyle.black18.copyWith(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 19),
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 30,
-                        ),
-                        child: Text(
-                          text,
-                          style: AppStyle.black18
-                              .copyWith(color: Colors.red, fontSize: 19),
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      SizedBox(
-                          height: 45,
-                          child: AppButton(
-                            title: AppStrings.ok.toUpperCase(),
-                            textFontSize: 14,
-                            onTap: () => context.pop(),
-                          ))
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        });
-  }
 
   static Future<bool> willPopScope() {
     if (Platform.isIOS) {
@@ -372,7 +313,7 @@ class AppHelper {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 18, vertical: 14),
                           child: Text(
-                            AppStrings.cancel,
+                            "Cancel",
                             style: AppStyle.white16,
                           ),
                         ),
@@ -386,7 +327,7 @@ class AppHelper {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 18, vertical: 14),
                           child: Text(
-                            AppStrings.OK,
+                            "OK",
                             style: AppStyle.white16,
                           ),
                         ),

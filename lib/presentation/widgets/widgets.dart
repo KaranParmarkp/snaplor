@@ -23,7 +23,7 @@ export 'square_box_avatar.dart';
 export 'square_network_image_avatar.dart';
 export 'svg_image.dart';
 export 'text_hashtag.dart';
-export 'text_post.dart';
+export 'post_card.dart';
 export 'title_dropwodn.dart';
 export 'user_dp.dart';
 export 'will_pop_exit.dart';

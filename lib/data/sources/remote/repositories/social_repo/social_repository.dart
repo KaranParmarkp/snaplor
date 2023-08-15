@@ -5,4 +5,5 @@ abstract class SocialRepository{
   Future<List<SocialPostModel>> getPosts();
   Future<GenericResponse> likePost(String id);
   Future<GenericResponse> commentPost(String id,String message);
+  Future<List<PostCommentModel>> getComments(String id,);
 }

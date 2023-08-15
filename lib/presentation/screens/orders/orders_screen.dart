@@ -120,10 +120,10 @@ class OrderCard extends StatelessWidget {
           NameValue(name: AppStrings.dob, value: "17 March, 1998, 9:45 PM"),
           NameValue(name: AppStrings.pob, value: "Kanpur, Uttar Pradesh, India"),
           NameValue(name: AppStrings.problemArea, value: "Career and Business"),
-          NameValue(name: AppStrings.duration, value: "${model.duration} Minutes"),
+          NameValue(name: AppStrings.duration, value: "${model.pricePerMinute??""} Minutes"),
           Row(
             children: [
-              Expanded(child: NameValue(name: AppStrings.rateWithout, value: AppStrings.rupee+"${model.astrologerAmount}/Min")),
+              Expanded(child: NameValue(name: AppStrings.rateWithout, value: AppStrings.rupee+"${model.pricePerMinute}/Min")),
               Text(AppStrings.rs+"${model.totalPaid}",style: AppStyle.purple14.copyWith(fontWeight: FontWeight.w800),)
             ],
           ),

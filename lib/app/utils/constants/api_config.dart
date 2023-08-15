@@ -15,7 +15,7 @@ class ApiConfig {
   static const String amountRefund = "payments/wallet/refund/";
   static const String reviewList = "reviews/";
   static const String callWaitingList = "call/waiting-list";
-  static const String chatWaitingList = "chat/requests";
+  static const String chatWaitingList = "chats/requests";
   static const String wallet = "payments/astrologer/wallet/history";
   static const String notificationList = "notifications";
 

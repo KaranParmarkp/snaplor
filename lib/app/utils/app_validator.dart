@@ -20,7 +20,7 @@ class AppValidator {
 
   static String? validatePassword(String? value) {
     if (value!.isEmpty) {
-      return AppStrings.enterPass;
+      return "Enter password";
     }
     return null;
   }
@@ -51,7 +51,7 @@ class AppValidator {
 
   static String? validateAddress(String? value) {
     if (value!.isEmpty || value.length < 5) {
-      return AppStrings.enterAddress;
+      return "Enter address";
     }
     return null;
   }

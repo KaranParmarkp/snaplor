@@ -5,6 +5,7 @@ import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/social_profile/jyotishee_social.dart';
 import '../../widgets/widgets.dart';
+import 'add_post_screen.dart';
 
 class SocialProfile extends StatefulWidget {
   const SocialProfile({super.key});
@@ -26,6 +27,14 @@ class _SocialProfileState extends State<SocialProfile> {
     return Scaffold(
       appBar: CustomAppBar(
           title: AppStrings.jyotisheeSocial, showNotification: true),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        backgroundColor: AppColors.colorPrimary, onPressed: () {
+        AppHelper.showBottomSheet(context: context, isScrollControlled: true,padding: EdgeInsets.zero,
+            innerPadding: EdgeInsets.zero,
+            child: AddPostScreen());
+      },
+      ),
       body: Container(
         padding: const EdgeInsets.all(20.0),
         height: context.screenHeight,

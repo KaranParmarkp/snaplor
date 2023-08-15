@@ -20,7 +20,11 @@ class SocialService extends ApiService {
   }
 
   Future<Response<GenericResponse>> commentPost(String id,String message) async {
-    return putData(ApiConfig.addPost+"/"+id+"/comments");
+    return putData(ApiConfig.addPost+"/"+id+"/comments",data: {"message":message});
+  }
+
+  Future<Response<GenericResponse>> getComments(String id) async {
+    return getData(ApiConfig.addPost+"/"+id+"/comments");
   }
 
 

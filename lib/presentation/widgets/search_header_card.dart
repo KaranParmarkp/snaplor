@@ -35,7 +35,7 @@ class SearchHeaderCard extends StatelessWidget {
             12.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Text(subTitle ?? AppStrings.pleaseSelect,style: AppStyle.black16.copyWith(color: subTitle.isNotNull ? Colors.black : AppColors.hintGrey),),
+              child: Text(subTitle ?? "Please select",style: AppStyle.black16.copyWith(color: subTitle.isNotNull ? Colors.black : AppColors.hintGrey),),
             ),
           ],
         ),

@@ -47,16 +47,30 @@ class SocialProvider extends BaseProvider {
     }
   }
 
-  // Like Post api
+  // Comments Post api
   static String commentPostKey = 'commentPostKey';
-  commentPost({required String id,required String message}) async {
+  addCommentPost({required String id,required String message}) async {
     setLoading(taskName: commentPostKey,showDialogLoader: true);
     try {
       setData(taskName: commentPostKey,data: await _repository.commentPost(id,message),hideLoader: true);
+      getComments(id: id,showLoader: true);
     } catch (e, s) {
       e.printDebug;
       s.printDebug;
       setError(taskName: commentPostKey,errorMessage:  e.toString(),showToast: true);
+    }
+  }
+
+  // Comments Post api
+  static String getCommentsKey = 'getCommentsKey';
+  getComments({required String id,bool showLoader = false}) async {
+    setLoading(taskName: getCommentsKey,showDialogLoader: showLoader);
+    try {
+      setData(taskName: getCommentsKey,data: await _repository.getComments(id),hideLoader: true);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: getCommentsKey,errorMessage:  e.toString(),showToast: true);
     }
   }
 

@@ -36,7 +36,10 @@ class UserModel {
   final int? totalChatMinutes;
   final int? totalCallMinutes;
   final int? totalChatOrders;
+  final int? todayChatOrders;
   final int? totalCallOrders;
+  final int? todayCallOrders;
+  final int? todayTotalEarnings;
   final int? balanceAmount;
   final bool? isDeleted;
   final bool? isFirstLogin;
@@ -78,7 +81,10 @@ class UserModel {
     this.totalChatMinutes,
     this.totalCallMinutes,
     this.totalChatOrders,
+    this.todayChatOrders,
     this.totalCallOrders,
+    this.todayCallOrders,
+    this.todayTotalEarnings,
     this.balanceAmount,
     this.isDeleted,
     this.isFirstLogin,
@@ -205,7 +211,10 @@ class UserModel {
     totalChatMinutes: json["total_chat_minutes"],
     totalCallMinutes: json["total_call_minutes"],
     totalChatOrders: json["total_chat_orders"],
-    totalCallOrders: json["total_call_orders"],
+    todayChatOrders: json["today_chat_orders"] ?? 0,
+    totalCallOrders: json["total_call_orders"] ?? 0,
+    todayCallOrders: json["today_call_orders"],
+    todayTotalEarnings: json["today_total_earning"] ?? 0,
     balanceAmount: json["balance_amount"],
     isDeleted: json["is_deleted"],
     isFirstLogin: json["is_first_login"],

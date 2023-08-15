@@ -6,6 +6,7 @@ import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/data/sources/remote/network_services/api_service.dart';
 import 'package:jyotishee/data/sources/remote/services/auth_service.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_support_screen.dart';
+import 'package:jyotishee/presentation/screens/social_profile/jyotishee_social.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -81,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             children: [
                                               Rupee(fontSize: 25),
                                               Text(
-                                                "${data.balanceAmount}",
+                                                "${data.todayTotalEarnings}",
                                                 style: AppStyle.purple14.copyWith(
                                                   fontSize: 25,
                                                   fontWeight: FontWeight.bold,
@@ -133,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       ),
                                                       const SizedBox(width: 2),
                                                       Text(
-                                                        "${data.totalCallMinutes}",
+                                                        "${data.todayCallOrders}",
                                                         style: AppStyle.purple12,
                                                       ),
                                                     ],
@@ -177,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       ),
                                                       const SizedBox(width: 2),
                                                       Text(
-                                                        "${data.totalChatMinutes}",
+                                                        "${data.todayChatOrders}",
                                                         style: AppStyle.purple12,
                                                       ),
                                                     ],
@@ -351,7 +352,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-
+                      20.height,
+                      SquareBoxAvatar(image: AppSvg.user, text: AppStrings.jyotisheeSocial,onTap: () => context.push(JyotisheeSocial()),),
                       Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: Row(
