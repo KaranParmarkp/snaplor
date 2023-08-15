@@ -15,18 +15,23 @@ class _TextHashtagState extends State<TextHashtag> {
   bool showFullText = false;
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      children: [
-        buildHighlightedText(widget.name,widget.text,showFullText),
-        InkWell(
-            onTap: () {
-              showFullText = !showFullText;
-              setState(() {
+    return Container(
+      width: double.infinity,
+      child: Wrap(
+        alignment: WrapAlignment.start,
+        crossAxisAlignment: WrapCrossAlignment.start,
+        children: [
+          buildHighlightedText(widget.name,widget.text,showFullText),
+          if(widget.text.length>=50)InkWell(
+              onTap: () {
+                showFullText = !showFullText;
+                setState(() {
 
-              });
-            },
-            child: Text(!showFullText ? "...more" : "...less",style: AppStyle.black12.copyWith(color: AppColors.hintGrey2),))
-      ],
+                });
+              },
+              child: Text(!showFullText ? "...more" : "...less",style: AppStyle.black12.copyWith(color: AppColors.hintGrey2),))
+        ],
+      ),
     );
   }
 
@@ -91,7 +96,7 @@ class _TextHashtagState extends State<TextHashtag> {
       }
     });
 
-    return RichText(text: TextSpan(children: textSpans,style: AppStyle.black12),maxLines: showFull ? null : 3,);
+    return RichText(text: TextSpan(children: textSpans,style: AppStyle.black12,),textAlign: TextAlign.start,maxLines: showFull ? null : 3,);
   }
 
   String cleanText(String text) {

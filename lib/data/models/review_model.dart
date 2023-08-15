@@ -124,28 +124,33 @@ class User {
   final String? id;
   final String? name;
   final String? image;
+  final bool? isVerified;
 
   User({
     this.id,
     this.name,
-    this.image
+    this.image,
+    this.isVerified,
   });
 
   User copyWith({
     String? id,
     String? name,
     String? image,
+    bool? isVerified,
   }) =>
       User(
         id: id ?? this.id,
         name: name ?? this.name,
         image: image ?? this.image,
+        isVerified: isVerified ?? this.isVerified,
       );
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
     name: json["name"],
     image: json["image"] ?? "",
+    isVerified: json["is_verified"],
   );
 
   Map<String, dynamic> toJson() => {

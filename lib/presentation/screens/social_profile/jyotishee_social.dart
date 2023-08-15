@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:jyotishee/data/models/models.dart';
+import 'package:jyotishee/data/models/models.dart';
+import 'package:jyotishee/data/models/models.dart';
+import 'package:jyotishee/data/models/models.dart';
+import 'package:jyotishee/data/providers/providers.dart';
 
 import '../../../app/utils/utils.dart';
 import '../../widgets/widgets.dart';
@@ -57,10 +62,10 @@ class JyotisheeSocial extends StatelessWidget {
                 ),
               ),),
             ),
-            Post(type: PostType.text,showSave: true,),
-            Post(type: PostType.video,showSave: true,),
-            Post(type: PostType.text,showSave: true,),
-            Post(type: PostType.image,showSave: true,),
+            PostCard(type: PostType.text,showSave: true,model: SocialPostModel()),
+            PostCard(type: PostType.video,showSave: true,model: SocialPostModel()),
+            PostCard(type: PostType.text,showSave: true,model: SocialPostModel()),
+            PostCard(type: PostType.image,showSave: true,model: SocialPostModel()),
           ],
         ),
       ),
@@ -119,7 +124,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
           Padding(
             padding: const EdgeInsets.only(top: 15,right: 15,left: 15,bottom: 20),
-            child: AppButton(title: AppStrings.createPost,borderRadius: BorderRadius.circular(30)),
+            child: AppButton(title: AppStrings.createPost,borderRadius: BorderRadius.circular(30),onTap: () {
+              if(commentController.isEmpty()){
+                AppHelper.showToast(message: "Please enter text");
+              }else{
+                context.read<SocialProvider>().addPost(message: commentController.text);
+                context.pop();
+              }
+            },),
           )
         ],
       ),

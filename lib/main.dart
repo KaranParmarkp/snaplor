@@ -6,6 +6,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jyotishee/app/utils/preferences/preferences.dart';
 import 'package:jyotishee/data/providers/providers.dart';
+import 'package:jyotishee/data/providers/social_provider.dart';
+import 'package:jyotishee/data/sources/remote/repositories/social_repo/social_repository.dart';
+import 'package:jyotishee/data/sources/remote/repositories/social_repo/social_repository_impl.dart';
 import 'package:jyotishee/presentation/screens/splash/splash_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -73,5 +76,6 @@ buildProviders() {
   return MultiProvider(providers: [
     ChangeNotifierProvider.value(value: AuthProvider.initialize()),
     ChangeNotifierProvider.value(value: AppProvider()),
+    ChangeNotifierProvider.value(value: SocialProvider()),
   ], child: const MyApp());
 }

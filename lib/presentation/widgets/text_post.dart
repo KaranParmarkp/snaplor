@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:jyotishee/data/models/models.dart';
+import 'package:jyotishee/data/providers/providers.dart';
 
 import '../../app/utils/utils.dart';
 import 'widgets.dart';
 
-class Post extends StatelessWidget {
-  const Post({
-    super.key,  this.showShadow=false, this.type=PostType.text,this.showSave=false
+class PostCard extends StatelessWidget {
+  const PostCard({
+    super.key,  this.showShadow=false, this.type=PostType.text,this.showSave=false, required this.model
   });
   final bool showShadow;
   final bool showSave;
   final PostType type;
+  final SocialPostModel model;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +24,7 @@ class Post extends StatelessWidget {
         children: [
           Row(
             children: [
-              UserDP(),
+              UserDP(image: model.imageUrl),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 14),
@@ -29,9 +32,9 @@ class Post extends StatelessWidget {
                     crossAxisAlignment:
                     CrossAxisAlignment.start,
                     children: [
-                      NameVerified(),
+                      NameVerified(name: model.user?.name,verified: model.user?.isVerified ?? false),
                       Text(
-                        "Exp : 10+ years | 125486 Orders",
+                        "pending Exp : 10+ years | 125486 Orders",
                         style: AppStyle.grey12.copyWith(
                             color: AppColors.hintGrey2,
                             fontWeight: FontWeight.w500,
@@ -68,21 +71,21 @@ class Post extends StatelessWidget {
               ],
             ),
           ),
-          if(type!=PostType.text)LikeCommentShare(showSave: showSave),
+          if(type!=PostType.text)LikeCommentShare(showSave: showSave,model: model),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: TextHashtag(
-                name:  type!=PostType.text ? "Madhusudan" : null,
-                text: ''' You can write your caption here, so just write blah blah blah and bleh bleh bleh  more of the caption part blah blah blah. The fiery planet is known as the factor of the father. A well-positioned Sun would benefit the native in multiple ways. In July 2022, Sun will transit from the dual sign. It will move in the moon sign of its friend, i.e., Cancer. This combination of fire and water possesses the potential to bring about huge changes in the life of the native.
+                name:  type!=PostType.text ? model.user?.name ?? "Madhusudan" : null,
+                text: model.content ?? ''' You can write your caption here, so just write blah blah blah and bleh bleh bleh  more of the caption part blah blah blah. The fiery planet is known as the factor of the father. A well-positioned Sun would benefit the native in multiple ways. In July 2022, Sun will transit from the dual sign. It will move in the moon sign of its friend, i.e., Cancer. This combination of fire and water possesses the potential to bring about huge changes in the life of the native.
  #Caption #CaptionForLife #CaptionZindagi'''),
           ),
           //like comment and share widget
-          if(type==PostType.text)LikeCommentShare(showSave: showSave),
+          if(type==PostType.text)LikeCommentShare(showSave: showSave,model: model,),
           10.height,
           Align(
             alignment: Alignment.topLeft,
             child: Text(
-              "View all 145 comments",
+              "View all ${model.totalComment} comments",
               style: AppStyle.grey12.copyWith(
                   color: AppColors.hintGrey1,
                   fontWeight: FontWeight.w500,
@@ -93,7 +96,7 @@ class Post extends StatelessWidget {
           Align(
             alignment: Alignment.topLeft,
             child: Text(
-              "7 Hour ago",
+              model.createdAt.isNotNull ? model.createdAt!.formatElapsedTimeString() : "",
               style: AppStyle.grey12.copyWith(
                   color: AppColors.hintGrey2,
                   fontWeight: FontWeight.w500,
@@ -109,21 +112,22 @@ class Post extends StatelessWidget {
 class LikeCommentShare extends StatelessWidget {
   const LikeCommentShare({
     super.key,
-    required this.showSave,
+    required this.showSave, required this.model,
   });
 
   final bool showSave;
-
+  final SocialPostModel model;
   @override
   Widget build(BuildContext context) {
+    var provider = context.read<SocialProvider>();
     return Row(
       children: [
         Row(
           children: [
-            SvgImage(image: AppSvg.unLike),
+            SvgImage(image: AppSvg.unLike,onTap: () => provider.likePost(id: model.id.toString()),),
             10.width,
             Text(
-              "525",
+              "${model.totalLikes ?? 0}",
               style: AppStyle.black12,
             )
           ],
@@ -138,7 +142,7 @@ class LikeCommentShare extends StatelessWidget {
               SvgImage(image: AppSvg.msg),
               10.width,
               Text(
-                "145",
+                "${model.totalComment ?? 0}",
                 style: AppStyle.black12,
               )
             ],
@@ -150,7 +154,7 @@ class LikeCommentShare extends StatelessWidget {
             SvgImage(image: AppSvg.share),
             10.width,
             Text(
-              "25",
+              "${model.totalShare ?? 0}",
               style: AppStyle.black12,
             )
           ],

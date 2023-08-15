@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
+import 'package:jyotishee/data/models/models.dart';
+import 'package:jyotishee/data/providers/providers.dart';
+import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/social_profile/jyotishee_social.dart';
 import '../../widgets/widgets.dart';
 
@@ -128,9 +131,17 @@ class _SocialProfileState extends State<SocialProfile> {
                     ),
                   if (selectedIndex == 2)
                     Expanded(
-                        child: ListView.builder(
-                      itemBuilder: (context, index) => Post(showShadow: true,),
-                    ))
+                      child: AppConsumer<SocialProvider, List<SocialPostModel>>(
+                        taskName: SocialProvider.getPostKey,
+                        load: (provider) => provider.getPost(),
+                        successBuilder: (data, provider) => ListView.builder(
+                          itemBuilder: (context, index) => PostCard(type: PostType.text,showShadow: true,model: data[index]),
+                          itemCount: data.length,
+                          shrinkWrap: true,
+                        ),
+                      ),
+                    ),
+
                 ],
               ),
             )
