@@ -43,7 +43,8 @@ abstract class ApiService {
   }
 
   static Future<String?> getToken() async {
-    return await MyApp.navKey.currentState!.context.read<AuthProvider>().userModel?.accessToken;
+    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NzI1OWNjYTFkZjRjYjZlY2Y4YTdkOSIsInJvbGUiOiJhc3Ryb2xvZ2VyIiwiZW1haWwiOiJzdWhlbG5pZEBnbWFpbC5jb20iLCJwaG9uZSI6Ijk3MTYxMDgwNTUiLCJ1c2VybmFtZSI6IlBoYW5pYmh1c2hhbiIsIm5hbWUiOiJTdWhlbCBBaG1hZCIsImlhdCI6MTY5MTkwMzYzOSwiZXhwIjoxNzIzNDM5NjM5fQ.9I7wqvTRpiK6ScxhYJ78MRgspP-0djbOtktvpeUIcK0";
+    //return await MyApp.navKey.currentState!.context.read<AuthProvider>().userModel?.accessToken;
   }
 
   Future<Map<String, String>> getDioHeaders() async {

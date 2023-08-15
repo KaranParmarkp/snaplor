@@ -74,7 +74,7 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                   taskName: AuthProvider.orderListKey,
                   load: (provider) => provider.orderList(ComType.chat),
                   successBuilder: (data, provider) => ListView.builder(
-                    itemBuilder: (context, index) => OrderCard(model: data[index]),
+                    itemBuilder: (context, index) => OrderCard(model: data[index],type: ComType.chat),
                     itemCount: data.length,
                     shrinkWrap: true,
                   ),
@@ -83,7 +83,7 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
                   taskName: AuthProvider.orderListKey,
                   load: (provider) => provider.orderList(ComType.call),
                   successBuilder: (data, provider) => ListView.builder(
-                    itemBuilder: (context, index) => OrderCard(model: data[index]),
+                    itemBuilder: (context, index) => OrderCard(model: data[index],type : ComType.call),
                     itemCount: data.length,
                     shrinkWrap: true,
                   ),
@@ -98,8 +98,9 @@ class _OrdersScreenState extends State<OrdersScreen> with SingleTickerProviderSt
 }
 
 class OrderCard extends StatelessWidget {
-  const OrderCard({super.key, required this.model});
+  const OrderCard({super.key, required this.model, required this.type});
   final OrderModel model;
+  final ComType type;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -112,7 +113,7 @@ class OrderCard extends StatelessWidget {
           Row(
             children: [
               Expanded(child: NameValue(name: AppStrings.name, value: model.user?.name ?? "")),
-              Text(model.status??"",style: AppStyle.black12.copyWith(color: AppColors.lightGreen),)
+              Text(model.status.isNotNull ? model.status!.toCapitalized():"",style: AppStyle.black12.copyWith(color: AppColors.lightGreen),)
             ],
           ),
           NameValue(name: AppStrings.gender, value: model.user?.gender ?? ""),
@@ -131,7 +132,13 @@ class OrderCard extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: AppRoundedButton(text: AppStrings.refundAmount,color: AppColors.red,),
+                  child: AppRoundedButton(text: AppStrings.refundAmount,color: AppColors.red,onTap: () {
+                    var provider = context.read<AuthProvider>();
+                    provider.refundAmount(id: model.id.toString());
+                    if(provider.getStatus(taskName: AuthProvider.refundAmountKey)==Status.Success){
+                      provider.orderList(type);
+                    }
+                  },),
                 ),
                 20.width,
                 Expanded(

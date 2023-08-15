@@ -91,7 +91,7 @@ class ReviewCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(model.user?.name ?? "", style: AppStyle.black14),
+                        Text(model.user!.name!.toCapitalized(), style: AppStyle.black14),
                         RatingBar.builder(
                           initialRating: model.rating.toString().toDouble(),
                           minRating: 1,

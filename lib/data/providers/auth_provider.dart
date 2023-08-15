@@ -127,7 +127,7 @@ class AuthProvider extends BaseProvider {
     }
   }
 
-  // Offer list api
+  // Order list api
   static String orderListKey = 'orderListKey';
   orderList(ComType type) async {
     setLoading(taskName: orderListKey);
@@ -139,6 +139,20 @@ class AuthProvider extends BaseProvider {
       setError(taskName: orderListKey,errorMessage:  e.toString(),);
     }
   }
+
+  // Delete Review api
+  static String refundAmountKey = 'refundAmountKey';
+  refundAmount({required String id}) async {
+    setLoading(taskName: refundAmountKey,showDialogLoader: true);
+    try {
+      setData(taskName: refundAmountKey,data: await _authRepo.refundAmount(id),hideLoader: true);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: refundAmountKey,errorMessage:  e.toString(),showToast: true);
+    }
+  }
+
 
   // Reviews list api
   static String reviewListKey = 'reviewListKey';
@@ -167,7 +181,7 @@ class AuthProvider extends BaseProvider {
     }
   }
 
-  // Add Review api
+  // Delete Review api
   static String deleteReviewKey = 'deleteReviewKey';
   deleteReview({required String id}) async {
     setLoading(taskName: deleteReviewKey,showDialogLoader: true);
@@ -180,5 +194,32 @@ class AuthProvider extends BaseProvider {
       setError(taskName: deleteReviewKey,errorMessage:  e.toString(),);
     }
   }
+
+  // WaitList list api
+  static String waitListKey = 'waitListKey';
+  waitList(ComType type) async {
+    setLoading(taskName: waitListKey);
+    try {
+      setData(taskName: waitListKey,data: await _authRepo.waitList(type));
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: waitListKey,errorMessage:  e.toString(),);
+    }
+  }
+
+  // WaitList list api
+  static String walletKey = 'walletKey';
+  wallet() async {
+    setLoading(taskName: walletKey);
+    try {
+      setData(taskName: walletKey,data: await _authRepo.wallet());
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: walletKey,errorMessage:  e.toString(),);
+    }
+  }
+
 
 }

@@ -72,7 +72,7 @@ class _AppConsumerState<T extends BaseProvider, K>
                     onTap: () async => await widget.load(_provider),
                   );
           }
-        case Status.Done:
+        case Status.Success:
           return RefreshIndicator(
             onRefresh: () async {
               if (widget.refresh) await widget.load(_provider);

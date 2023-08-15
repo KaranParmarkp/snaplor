@@ -21,7 +21,7 @@ class BaseProvider with ChangeNotifier {
   }
   setData({required String taskName, dynamic data,bool hideLoader=true}) {
     this.data[taskName] = data;
-    status[taskName] = Status.Done;
+    status[taskName] = Status.Success;
     if(hideLoader)AppHelper.hideLoading();
     notifyListeners();
   }
@@ -43,4 +43,4 @@ class BaseProvider with ChangeNotifier {
   }
 }
 
-enum Status { Idle, Loading, Done, Error }
+enum Status { Idle, Loading, Success, Error }

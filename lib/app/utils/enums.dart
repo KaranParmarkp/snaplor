@@ -9,3 +9,6 @@ enum MessageType {
 enum ComType{
   chat,call
 }
+enum TransactionType{
+  add,subtract
+}

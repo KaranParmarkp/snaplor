@@ -62,6 +62,15 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
       },
     );
   }
+  @override
+  Future<GenericResponse> refundAmount(String id) {
+    return serviceHandler(
+      serviceFunction: () => service.refundAmount(id),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
 
   @override
   Future<List<ReviewModel>> reviewList() {
@@ -74,6 +83,7 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
       },
     );
   }
+
   @override
   Future<GenericResponse> addReview(String id,String message) {
     return serviceHandler(
@@ -93,5 +103,30 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
       },
     );
   }
+
+  @override
+  Future<List<WaitListModel>> waitList(ComType type) {
+    return serviceHandler(
+      serviceFunction: () => service.waitList(type),
+      successFunction: (response) async {
+        List<WaitListModel> list = [];
+        list = List<WaitListModel>.from(response.data!.map((x) => WaitListModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+
+  @override
+  Future<List<WalletModel>> wallet() {
+    return serviceHandler(
+      serviceFunction: () => service.wallet(),
+      successFunction: (response) async {
+        List<WalletModel> list = [];
+        list = List<WalletModel>.from(response.data!.map((x) => WalletModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+
 
 }
