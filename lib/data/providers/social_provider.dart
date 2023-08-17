@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/providers/base_provider.dart';
 import 'package:jyotishee/data/sources/remote/repositories/social_repo/social_repository.dart';
@@ -10,7 +12,7 @@ class SocialProvider extends BaseProvider {
 
   // Add Post api
   static String addPostKey = 'addPostKey';
-  addPost({required String message}) async {
+  addPost({required String message,File? file,UploadFileType? type}) async {
     setLoading(taskName: addPostKey,showDialogLoader: true);
     try {
       setData(taskName: addPostKey,data: await _repository.addPost(message),hideLoader: true);
@@ -23,8 +25,8 @@ class SocialProvider extends BaseProvider {
 
   // Get Posts api
   static String getPostKey = 'getPostKey';
-  getPost() async {
-    setLoading(taskName: getPostKey);
+  getPost({bool refresh=false}) async {
+    setLoading(taskName: getPostKey,showDialogLoader: refresh);
     try {
       setData(taskName: getPostKey,data: await _repository.getPosts());
     } catch (e, s) {

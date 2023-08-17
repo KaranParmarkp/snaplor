@@ -15,4 +15,5 @@ abstract class AuthRepository{
   Future<List<WaitListModel>> waitList(ComType type);
   Future<List<WalletModel>> wallet();
   Future<List<ProductModel>> searchProduct(FilterModel filterModel);
+  Future<GenericResponse> acceptCall(ComType type,String id);
 }

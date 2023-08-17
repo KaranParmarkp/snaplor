@@ -18,6 +18,8 @@ class ApiConfig {
   static const String chatWaitingList = "chats/requests";
   static const String wallet = "payments/astrologer/wallet/history";
   static const String notificationList = "notifications";
+  static const String acceptCallRequest = "call/accept/";
+  static const String acceptChatRequest = "chats/accept-astrologer/";
 
   // Social
   static const String addPost = "posts";

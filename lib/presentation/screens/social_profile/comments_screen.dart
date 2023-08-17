@@ -159,6 +159,7 @@ class _CommentScreenState extends State<CommentScreen> {
                       color: AppColors.colorPrimary,
                       radius: 30,
                       onTap: () {
+                        AppHelper.hideKeyboard();
                         if(commentController.isEmpty()){
                           AppHelper.showToast(message: "Please enter comment");
                           commentFocus.requestFocus();

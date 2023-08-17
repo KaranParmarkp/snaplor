@@ -74,11 +74,14 @@ class AuthService extends ApiService {
   }
 
   Future<Response<GenericResponse>> searchProduct(FilterModel filterModel) async {
-    print("kapsaaaaaaaa->"+filterModel.category.toString());
     String url = '''?filter={"product_name": {"\$regex": "${filterModel.name??""}"},"product_category":{"\$regex": "${filterModel.category??""}"}}&limit=10&skip=0''';
     return getData(
       ApiConfig.productsList + url,
     );
+  }
+
+  Future<Response<GenericResponse>> acceptCall(ComType type,String id) async {
+    return type==ComType.chat ? putData(ApiConfig.acceptChatRequest+id): getData(ApiConfig.notificationList);
   }
 
 /*Future<IOWebSocketChannel> chats() async {

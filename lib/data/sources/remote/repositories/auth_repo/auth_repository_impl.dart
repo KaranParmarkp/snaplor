@@ -139,6 +139,14 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
       },
     );
   }
-
+  @override
+  Future<GenericResponse> acceptCall(ComType type,String id) {
+    return serviceHandler(
+      serviceFunction: () => service.deleteReview(id,),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
 
 }

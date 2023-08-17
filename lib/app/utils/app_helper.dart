@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,7 @@ import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/widgets/loader_ring.dart';
 import 'package:jyotishee/presentation/widgets/ftoast.dart' as ft;
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:path/path.dart' as p;
 import '../../data/models/models.dart';
 import '../../main.dart';
 import '../../presentation/widgets/widgets.dart';
@@ -17,6 +18,8 @@ import '../../presentation/widgets/widgets.dart';
 ///AppHelper class contains function that will help in ui related code
 class AppHelper {
   static BuildContext? dialogContext;
+
+
 
   static Future<void> showLoading() async {
     ///do not remove this await
@@ -142,8 +145,30 @@ class AppHelper {
     return files;
   }
 
+  static Future<File?> pickVideo({required bool fromCamera}) async {
+    final ImagePicker imagePicker = ImagePicker();
+    final XFile? video = await imagePicker.pickVideo(
+        source: fromCamera ? ImageSource.camera : ImageSource.gallery,);
+    return video != null ? File(video.path) : null;
+  }
 
-
+  static Future<File?> pickFile() async {
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc'],
+    );
+    if(result!=null && result.files.single.path!=null) {
+      File file = File(result.files.single.path!);
+      print(file.path);
+      if(p.extension(file.path) == ".pdf" || p.extension(file.path) == ".doc"){
+        return file;
+      } else {
+        AppHelper.showToast(message: "File Not allowed");
+      }
+    }
+    return null;
+  }
   static Future<bool> willPopScope() {
     if (Platform.isIOS) {
       SystemNavigator.pop();

@@ -78,7 +78,7 @@ class _WaitListScreenState extends State<WaitListScreen> with SingleTickerProvid
                   load: (provider) => provider.waitList(ComType.chat),
                   successBuilder: (data, provider) => ListView.builder(
                     clipBehavior: Clip.none,
-                    itemBuilder: (context, index) => WaitListCard(model: data[index]),
+                    itemBuilder: (context, index) => WaitListCard(model: data[index],type: ComType.chat),
                     itemCount: data.length,
                     shrinkWrap: true,
                   ),
@@ -88,7 +88,7 @@ class _WaitListScreenState extends State<WaitListScreen> with SingleTickerProvid
                   load: (provider) => provider.waitList(ComType.call),
                   successBuilder: (data, provider) => ListView.builder(
                     clipBehavior: Clip.none,
-                    itemBuilder: (context, index) => WaitListCard(model: data[index]),
+                    itemBuilder: (context, index) => WaitListCard(model: data[index],type: ComType.call),
                     itemCount: data.length,
                     shrinkWrap: true,
                   ),
@@ -102,8 +102,9 @@ class _WaitListScreenState extends State<WaitListScreen> with SingleTickerProvid
   }
 }
 class WaitListCard extends StatelessWidget {
-  const WaitListCard({super.key, required this.model});
+  const WaitListCard({super.key, required this.model, required this.type});
   final WaitListModel model;
+  final ComType type;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -126,13 +127,27 @@ class WaitListCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(model.createdAt.isNotNull ? model.createdAt!.formatElapsedTimeString() : "",style: AppStyle.grey12.copyWith(color: AppColors.greyDark),),
+                        Text(model.createdAt!.formatElapsedTimeString(),style: AppStyle.grey12.copyWith(color: AppColors.greyDark),),
                         Text(model.user?.name ?? "",style: AppStyle.black14),
-                        Text(AppStrings.rupee+"${"pending"}/Min",style: AppStyle.grey12.copyWith(color: AppColors.greyDark),),
+                        Text(AppStrings.rupee+"${model.pricePerMinute}/Min",style: AppStyle.grey12.copyWith(color: AppColors.greyDark),),
                       ],
                     ),
                     Spacer(),
-                    Text(AppStrings.call.toUpperCase(),style: AppStyle.purple12.copyWith(fontWeight: FontWeight.w700),)
+                    InkWell(
+                      onTap: () => context.read<AuthProvider>().acceptCall(type: type, id: model.id!),
+                      child: CircleAvatar(
+                        radius: 16,
+                        child: Icon(Icons.done,color: AppColors.white),
+                        backgroundColor: AppColors.lightGreen,
+                      ),
+                    ),
+                    10.width,
+                    CircleAvatar(
+                      radius: 16,
+                      child: Icon(Icons.delete_forever,color: AppColors.white),
+                      backgroundColor: AppColors.red,
+                    ),
+                    //Text(AppStrings.call.toUpperCase(),style: AppStyle.purple12.copyWith(fontWeight: FontWeight.w700),)
                   ],
                 ),
               ),

@@ -235,4 +235,17 @@ class AuthProvider extends BaseProvider {
     }
   }
 
+  // Accept Call api
+  static String acceptCallChatKey = 'acceptCallChatKey';
+  acceptCall({required ComType type,required String id}) async {
+    setLoading(taskName: acceptCallChatKey,showDialogLoader: true);
+    try {
+      setData(taskName: acceptCallChatKey,data: await _authRepo.acceptCall(type, id));
+      waitList(type);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: acceptCallChatKey,errorMessage:  e.toString(),showToast: true);
+    }
+  }
 }

@@ -21,6 +21,7 @@ class WaitListModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
+  final int? pricePerMinute;
 
   WaitListModel({
     this.user,
@@ -32,7 +33,7 @@ class WaitListModel {
     this.statusHistory,
     this.createdAt,
     this.updatedAt,
-    this.v,
+    this.v,this.pricePerMinute
   });
 
   WaitListModel copyWith({
@@ -68,9 +69,10 @@ class WaitListModel {
     status: json["status"],
     isFree: json["is_free"],
     statusHistory: json["status_history"] == null ? [] : List<dynamic>.from(json["status_history"]!.map((x) => x)),
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    createdAt: json["createdAt"] == null ? json["created_at"] == null ? null : DateTime.parse(json["created_at"]): DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
+    pricePerMinute: json["price_per_minute"],
   );
 
   Map<String, dynamic> toJson() => {

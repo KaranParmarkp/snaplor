@@ -125,6 +125,7 @@ class LikeCommentShare extends StatelessWidget {
       children: [
         Row(
           children: [
+            //TODO : updating icon on like
             SvgImage(image: AppSvg.unLike,onTap: () => provider.likePost(id: model.id.toString()),),
             10.width,
             Text(
@@ -135,8 +136,9 @@ class LikeCommentShare extends StatelessWidget {
         ),
         20.width,
         InkWell(
-          onTap: () {
-            _showCommentSheet(context,model.id!);
+          onTap: () async {
+            await _showCommentSheet(context,model.id!,provider);
+
           },
           child: Row(
             children: [
@@ -170,8 +172,8 @@ class LikeCommentShare extends StatelessWidget {
       ],
     );
   }
-  _showCommentSheet(BuildContext context,String id){
-    AppHelper.showBottomSheet(
+  _showCommentSheet(BuildContext context,String id,SocialProvider provider) async {
+    await AppHelper.showBottomSheet(
         context: context,
         isScrollControlled: true,
         padding: EdgeInsets.zero,
@@ -181,6 +183,7 @@ class LikeCommentShare extends StatelessWidget {
               return CommentScreen(id: id,);
             }
         ));
+    provider.getPost(refresh: true);
   }
 }
 

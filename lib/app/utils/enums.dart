@@ -12,3 +12,6 @@ enum ComType{
 enum TransactionType{
   add,subtract
 }
+enum UploadFileType{
+  image,video,file
+}
