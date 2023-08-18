@@ -5,7 +5,6 @@ import 'package:jyotishee/presentation/screens/notification/notification_screen.
 import 'package:jyotishee/presentation/screens/settings/profile/profile_screen.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
 import '../../app/utils/utils.dart';
-import '../screens/base/base_screen.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar(
@@ -105,8 +104,8 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("${AppStrings.hi} ${authProvider.userModel!.name}", style: AppStyle.black14.copyWith(fontWeight: FontWeight.bold)),
-              Text("${authProvider.userModel!.email}", style: AppStyle.grey12),
+              Text("${AppStrings.hi} ${authProvider.userModel?.name}", style: AppStyle.black14.copyWith(fontWeight: FontWeight.bold)),
+              Text("${authProvider.userModel?.email}", style: AppStyle.grey12),
             ],
           ),
           centerTitle: false,
@@ -137,7 +136,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
                 padding: const EdgeInsets.only(right: 20,left: 10),
                 child: CircleNetworkImageAvatar(
                 radius: 20,
-                    image: authProvider.userModel!.profileImage),
+                    image: authProvider.userModel?.profileImage),
               ),
             ),
           ],

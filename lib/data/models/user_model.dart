@@ -36,10 +36,11 @@ class UserModel {
   final int? totalChatMinutes;
   final int? totalCallMinutes;
   final int? totalChatOrders;
-  final int? todayChatOrders;
   final int? totalCallOrders;
+  final int? todayChatOrders;
   final int? todayCallOrders;
   final int? todayTotalEarnings;
+  final int? lifeTimeEarnings;
   final int? balanceAmount;
   final bool? isDeleted;
   final bool? isFirstLogin;
@@ -81,10 +82,11 @@ class UserModel {
     this.totalChatMinutes,
     this.totalCallMinutes,
     this.totalChatOrders,
-    this.todayChatOrders,
+     this.todayChatOrders,
     this.totalCallOrders,
     this.todayCallOrders,
     this.todayTotalEarnings,
+    this.lifeTimeEarnings,
     this.balanceAmount,
     this.isDeleted,
     this.isFirstLogin,
@@ -128,6 +130,11 @@ class UserModel {
     int? totalChatOrders,
     int? totalCallOrders,
     int? balanceAmount,
+    int? todayChatOrders,
+    int? todayCallOrders,
+    int? todayTotalEarnings,
+    int? lifeTimeEarnings,
+
     bool? isDeleted,
     bool? isFirstLogin,
     int? adminShare,
@@ -169,7 +176,11 @@ class UserModel {
         totalCallMinutes: totalCallMinutes ?? this.totalCallMinutes,
         totalChatOrders: totalChatOrders ?? this.totalChatOrders,
         totalCallOrders: totalCallOrders ?? this.totalCallOrders,
+        todayCallOrders: totalCallOrders ?? this.totalCallOrders,
+        todayChatOrders: totalChatOrders ?? this.totalChatOrders,
+        todayTotalEarnings: todayTotalEarnings ?? this.todayTotalEarnings,
         balanceAmount: balanceAmount ?? this.balanceAmount,
+        lifeTimeEarnings: lifeTimeEarnings ?? this.lifeTimeEarnings,
         isDeleted: isDeleted ?? this.isDeleted,
         isFirstLogin: isFirstLogin ?? this.isFirstLogin,
         adminShare: adminShare ?? this.adminShare,
@@ -211,10 +222,11 @@ class UserModel {
     totalChatMinutes: json["total_chat_minutes"],
     totalCallMinutes: json["total_call_minutes"],
     totalChatOrders: json["total_chat_orders"],
-    todayChatOrders: json["today_chat_orders"] ?? 0,
     totalCallOrders: json["total_call_orders"] ?? 0,
-    todayCallOrders: json["today_call_orders"],
-    todayTotalEarnings: json["today_total_earning"] ?? 0,
+    todayChatOrders: json["today_chat_order"],
+    todayCallOrders: json["today_call_order"],
+    lifeTimeEarnings: json["life_time_earning"],
+    todayTotalEarnings: json["today_total_earning"]!=null &&  json["today_total_earning"] is int ?json["today_total_earning"]   : 0,
     balanceAmount: json["balance_amount"],
     isDeleted: json["is_deleted"],
     isFirstLogin: json["is_first_login"],
@@ -241,9 +253,9 @@ class UserModel {
     "gender": gender,
     "thumbnail_images": thumbnailImages == null ? [] : List<dynamic>.from(thumbnailImages!.map((x) => x)),
     "experience": experience,
-    "specialization": specialization == null ? [] : List<dynamic>.from(specialization!.map((x) => x)),
-    "skills": skills == null ? [] : List<dynamic>.from(skills!.map((x) => x)),
-    "languages": languages == null ? [] : List<dynamic>.from(languages!.map((x) => x)),
+    "specialization":  List<dynamic>.from(specialization.map((x) => x)),
+    "skills":List<dynamic>.from(skills.map((x) => x)),
+    "languages": List<dynamic>.from(languages.map((x) => x)),
     "address": address?.toJson(),
     "description": description,
     "bank_info": bankInfo?.toJson(),
@@ -271,9 +283,9 @@ class UserModel {
   Map<String, dynamic> toJsonUpdateProfile() => {
     "name": name,
     "experience": experience,
-    "specialization": specialization == null ? [] : List<dynamic>.from(specialization!.map((x) => x)),
-    "skills": skills == null ? [] : List<dynamic>.from(skills!.map((x) => x)),
-    "languages": languages == null ? [] : List<dynamic>.from(languages!.map((x) => x)),
+    "specialization": List<dynamic>.from(specialization.map((x) => x)),
+    "skills":  List<dynamic>.from(skills.map((x) => x)),
+    "languages": List<dynamic>.from(languages.map((x) => x)),
     "address": address?.toJson(),
     "description": description,
     //"bank_info": bankInfo?.toJson(),

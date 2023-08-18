@@ -1,15 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jyotishee/data/models/models.dart';
-import 'package:jyotishee/data/providers/auth_provider.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:jyotishee/data/sources/remote/network_services/api_service.dart';
-import 'package:jyotishee/data/sources/remote/services/auth_service.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_support_screen.dart';
 import 'package:jyotishee/presentation/screens/social_profile/jyotishee_social.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:web_socket_channel/io.dart';
-
 import '../../../app/utils/utils.dart';
 import '../../widgets/widgets.dart';
 import '../offers/offers_screen.dart';
@@ -27,9 +22,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool chatSwitch = false;
-  bool callSwitch = false;
-
   @override
   Widget build(BuildContext context) {
     /*final res =  IOWebSocketChannel.connect(Uri.parse(ApiConfig.baseUrlSocket),headers: {

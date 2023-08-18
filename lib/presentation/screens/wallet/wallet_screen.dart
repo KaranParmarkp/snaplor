@@ -51,7 +51,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                               Text(
-                                '2,65,000',
+                                "${context.read<AuthProvider>().userModel?.lifeTimeEarnings}",
                                 style: AppStyle.purple14.copyWith(
                                   fontSize: 40,
                                   fontWeight: FontWeight.bold,
@@ -87,7 +87,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                               Text(
-                                '12000',
+                                "${context.read<AuthProvider>().userModel?.balanceAmount}",
                                 style: AppStyle.purple14.copyWith(
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
