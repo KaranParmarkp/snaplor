@@ -20,8 +20,12 @@ class ApiConfig {
   static const String notificationList = "notifications";
   static const String acceptCallRequest = "call/accept/";
   static const String acceptChatRequest = "chats/accept-astrologer/";
+  static const String cancelChatRequest = "chats/cancel-request/";
+  static const String cancelCallRequest = "call/cancel/";
+  static const String getMessages = "chats/";
 
   // Social
   static const String addPost = "posts";
+
 
 }

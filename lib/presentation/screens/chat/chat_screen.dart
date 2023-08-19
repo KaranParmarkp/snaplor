@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:jyotishee/data/models/message_model.dart';
+import 'package:jyotishee/data/models/waitlist_model.dart';
 import 'package:jyotishee/presentation/widgets/custom_app_bar.dart';
 
 import '../../../app/utils/utils.dart';
+import '../../../data/providers/providers.dart';
 import '../../widgets/widgets.dart';
 
-class ChatScreen extends StatelessWidget {
-  ChatScreen({super.key});
+class ChatScreen extends StatefulWidget {
+  ChatScreen({super.key,  this.model});
+  final WaitListModel? model;
 
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
   final List<String> chats = [
     "Hey",
     "How are you?",
@@ -21,8 +30,8 @@ class ChatScreen extends StatelessWidget {
     return DismissKeyBoard(
       child: Scaffold(
         appBar: CustomAppBar(
-          title: "Suhel Ahmed",
-          showProfile: true,
+          title: widget.model?.user?.name ?? "",
+          //showProfile: true,
         ),
         backgroundColor: AppColors.white,
         body: Container(
@@ -32,14 +41,15 @@ class ChatScreen extends StatelessWidget {
             children: [
               20.height,
               Expanded(
-                child: ListView.builder(
-                itemCount: chats.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) => MessageText(
-                      text: chats[index],
-                      messageType: index % 2 == 0
-                          ? MessageType.sender
-                          : MessageType.receiver),
+                child: AppConsumer<AuthProvider, List<MessageModel>>(
+                  taskName: AuthProvider.getMessagesKey,
+                  load: (provider) => provider.getMessages(id: widget.model!.id.toString()),
+                  successBuilder: (data, provider) => ListView.builder(
+                    //reverse: true,
+                    itemBuilder: (context, index) => MessageText(text: data[index].message ?? "", messageType: data[index].senderId!=provider.userModel?.id ? MessageType.sender  : MessageType.receiver),
+                    itemCount: data.length,
+                    shrinkWrap: true,
+                  ),
                 ),
               ),
               Container(

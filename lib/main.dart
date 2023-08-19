@@ -42,12 +42,12 @@ class MyApp extends StatelessWidget {
       navigatorKey: navKey,
       builder: EasyLoading.init(),
       scrollBehavior: MaterialScrollBehavior().copyWith(
-        dragDevices: {
+        /*dragDevices: {
           PointerDeviceKind.mouse,
           PointerDeviceKind.touch,
           PointerDeviceKind.stylus,
           PointerDeviceKind.unknown
-        },
+        },*/
         physics: BouncingScrollPhysics(),
         scrollbars: true,
       ),

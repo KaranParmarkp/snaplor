@@ -80,8 +80,16 @@ class AuthService extends ApiService {
     );
   }
 
-  Future<Response<GenericResponse>> acceptCall(ComType type,String id) async {
-    return type==ComType.chat ? putData(ApiConfig.acceptChatRequest+id): getData(ApiConfig.notificationList);
+  Future<Response<GenericResponse>> acceptRequest(ComType type,String id) async {
+    return putData(type==ComType.chat ? ApiConfig.acceptChatRequest+id : ApiConfig.acceptCallRequest+id);
+  }
+
+  Future<Response<GenericResponse>> cancelRequest(ComType type,String id) async {
+    return putData(type==ComType.chat ? ApiConfig.cancelChatRequest+id : ApiConfig.cancelCallRequest+id);
+  }
+
+  Future<Response<GenericResponse>> getMessages(String id) async {
+    return getData(ApiConfig.getMessages+id);
   }
 
 /*Future<IOWebSocketChannel> chats() async {

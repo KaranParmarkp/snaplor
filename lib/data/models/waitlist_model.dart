@@ -22,7 +22,7 @@ class WaitListModel {
   final DateTime? updatedAt;
   final int? v;
   final int? pricePerMinute;
-
+  final bool? isAcceptedByAstrologer;
   WaitListModel({
     this.user,
     this.astrologer,
@@ -33,33 +33,8 @@ class WaitListModel {
     this.statusHistory,
     this.createdAt,
     this.updatedAt,
-    this.v,this.pricePerMinute
+    this.v,this.pricePerMinute,this.isAcceptedByAstrologer
   });
-
-  WaitListModel copyWith({
-    User? user,
-    User? astrologer,
-    IntakeForm? intakeForm,
-    String? id,
-    String? status,
-    bool? isFree,
-    List<dynamic>? statusHistory,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    int? v,
-  }) =>
-      WaitListModel(
-        user: user ?? this.user,
-        astrologer: astrologer ?? this.astrologer,
-        intakeForm: intakeForm ?? this.intakeForm,
-        id: id ?? this.id,
-        status: status ?? this.status,
-        isFree: isFree ?? this.isFree,
-        statusHistory: statusHistory ?? this.statusHistory,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        v: v ?? this.v,
-      );
 
   factory WaitListModel.fromJson(Map<String, dynamic> json) => WaitListModel(
     user: json["user"] == null ? null : User.fromJson(json["user"]),
@@ -68,6 +43,7 @@ class WaitListModel {
     id: json["_id"],
     status: json["status"],
     isFree: json["is_free"],
+    isAcceptedByAstrologer: json["is_accepted_by_astrologer"],
     statusHistory: json["status_history"] == null ? [] : List<dynamic>.from(json["status_history"]!.map((x) => x)),
     createdAt: json["createdAt"] == null ? json["created_at"] == null ? null : DateTime.parse(json["created_at"]): DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),

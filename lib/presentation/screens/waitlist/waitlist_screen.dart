@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
+import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
 
 import '../../../data/providers/providers.dart';
@@ -128,13 +129,13 @@ class WaitListCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(model.createdAt!.formatElapsedTimeString(),style: AppStyle.grey12.copyWith(color: AppColors.greyDark),),
-                        Text(model.user?.name ?? "",style: AppStyle.black14),
+                        Text(model.user?.name ?? model.intakeForm?.name ??  "",style: AppStyle.black14),
                         Text(AppStrings.rupee+"${model.pricePerMinute}/Min",style: AppStyle.grey12.copyWith(color: AppColors.greyDark),),
                       ],
                     ),
                     Spacer(),
-                    InkWell(
-                      onTap: () => context.read<AuthProvider>().acceptCall(type: type, id: model.id!),
+                    if(model.isAcceptedByAstrologer.isFalse)...[InkWell(
+                      onTap: () => context.read<AuthProvider>().acceptRequest(type: type, id: model.id!),
                       child: CircleAvatar(
                         radius: 16,
                         child: Icon(Icons.done,color: AppColors.white),
@@ -142,12 +143,17 @@ class WaitListCard extends StatelessWidget {
                       ),
                     ),
                     10.width,
-                    CircleAvatar(
-                      radius: 16,
-                      child: Icon(Icons.delete_forever,color: AppColors.white),
-                      backgroundColor: AppColors.red,
-                    ),
-                    //Text(AppStrings.call.toUpperCase(),style: AppStyle.purple12.copyWith(fontWeight: FontWeight.w700),)
+                    InkWell(
+                      onTap: () => context.read<AuthProvider>().cancelRequest(type: type, id: model.id!),
+                      child: CircleAvatar(
+                        radius: 16,
+                        child: Icon(Icons.delete_forever,color: AppColors.white),
+                        backgroundColor: AppColors.red,
+                      ),
+                    ),],
+                    if(model.isAcceptedByAstrologer.isTrue && type==ComType.chat)InkWell(
+                        onTap: () => context.push(ChatScreen(model : model)),
+                        child: Text(type.name.toUpperCase(),style: AppStyle.purple12.copyWith(fontWeight: FontWeight.w700),))
                   ],
                 ),
               ),

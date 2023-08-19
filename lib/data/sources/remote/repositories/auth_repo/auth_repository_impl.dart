@@ -140,11 +140,32 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
     );
   }
   @override
-  Future<GenericResponse> acceptCall(ComType type,String id) {
+  Future<GenericResponse> acceptRequest(ComType type,String id) {
     return serviceHandler(
-      serviceFunction: () => service.deleteReview(id,),
+      serviceFunction: () => service.acceptRequest(type,id),
       successFunction: (response) async {
         return response;
+      },
+    );
+  }
+
+  @override
+  Future<GenericResponse> cancelRequest(ComType type,String id) {
+    return serviceHandler(
+      serviceFunction: () => service.cancelRequest(type,id),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+  @override
+  Future<List<MessageModel>> getMessages(String id) {
+    return serviceHandler(
+      serviceFunction: () => service.getMessages(id),
+      successFunction: (response) async {
+        List<MessageModel> list = [];
+        list = List<MessageModel>.from(response.data!.map((x) => MessageModel.fromJson(x))).toList();
+        return list;
       },
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
+import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/search/search_screen.dart';
 import 'package:jyotishee/presentation/screens/wallet/wallet_screen.dart';
 import '../../widgets/widgets.dart';
@@ -24,7 +25,11 @@ class _BaseScreenState extends State<BaseScreen> {
     SettingsScreen(),
   ];
   int selectedIndex = 0;
-
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => context.read<AuthProvider>().initializeSocket());
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

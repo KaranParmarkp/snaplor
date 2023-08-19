@@ -2,6 +2,7 @@
 export 'error_model.dart';
 export 'filter_request_model.dart';
 export 'generic_response_model.dart';
+export 'message_model.dart';
 export 'offer_model.dart';
 export 'order_model.dart';
 export 'post_comments_model.dart';

@@ -4,8 +4,10 @@ import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/base_provider.dart';
 import 'package:jyotishee/presentation/screens/auth/login/login_screen.dart';
 import 'package:jyotishee/presentation/screens/base/base_screen.dart';
+import 'package:web_socket_channel/io.dart';
 import '../../app/utils/preferences/preferences.dart';
 import '../../main.dart';
+import '../sources/remote/network_services/network_services.dart';
 import '../sources/remote/repositories/auth_repo/auth_repository.dart';
 import '../sources/remote/repositories/auth_repo/auth_repository_impl.dart';
 
@@ -19,7 +21,7 @@ class AuthProvider extends BaseProvider {
 
   AuthStatus _authStatus = AuthStatus.unAuthenticated;
   AuthStatus get authStatus => _authStatus;
-
+  IOWebSocketChannel? socket;
   AuthProvider.initialize() {
     _authRepo = AuthRepositoryImpl();
     checkUserIsLoggedIn();
@@ -57,6 +59,12 @@ class AuthProvider extends BaseProvider {
     MyApp.navKey.currentContext!.pushReplace(LoginScreen());
   }
 
+  initializeSocket(){
+    socket =  IOWebSocketChannel.connect(Uri.parse(ApiConfig.baseUrlSocket),headers: {
+      'Authorization': 'Bearer ${ApiService.getToken()}',
+    });
+    notifyListeners();
+  }
   // Login API
   Future<bool?> login({required String phone}) async {
     AppHelper.showLoading();
@@ -235,17 +243,44 @@ class AuthProvider extends BaseProvider {
     }
   }
 
-  // Accept Call api
-  static String acceptCallChatKey = 'acceptCallChatKey';
-  acceptCall({required ComType type,required String id}) async {
-    setLoading(taskName: acceptCallChatKey,showDialogLoader: true);
+  // Accept Request api
+  static String acceptRequestKey = 'acceptCallChatKey';
+  acceptRequest({required ComType type,required String id}) async {
+    setLoading(taskName: acceptRequestKey,showDialogLoader: true);
     try {
-      setData(taskName: acceptCallChatKey,data: await _authRepo.acceptCall(type, id));
+      setData(taskName: acceptRequestKey,data: await _authRepo.acceptRequest(type, id));
       waitList(type);
     } catch (e, s) {
       e.printDebug;
       s.printDebug;
-      setError(taskName: acceptCallChatKey,errorMessage:  e.toString(),showToast: true);
+      setError(taskName: acceptRequestKey,errorMessage:  e.toString(),showToast: true);
+    }
+  }
+
+  // Cancel request api
+  static String cancelRequestKey = 'cancelRequestChatKey';
+  cancelRequest({required ComType type,required String id}) async {
+    setLoading(taskName: cancelRequestKey,showDialogLoader: true);
+    try {
+      setData(taskName: cancelRequestKey,data: await _authRepo.cancelRequest(type, id));
+      waitList(type);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: cancelRequestKey,errorMessage:  e.toString(),showToast: true);
+    }
+  }
+
+  // Get Messages api
+  static String getMessagesKey = 'getMessagesChatKey';
+  getMessages({required String id}) async {
+    setLoading(taskName: getMessagesKey,showDialogLoader: true);
+    try {
+      setData(taskName: getMessagesKey,data: await _authRepo.getMessages(id));
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: getMessagesKey,errorMessage:  e.toString(),showToast: true);
     }
   }
 }
