@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/data/models/message_model.dart';
 import 'package:jyotishee/data/models/waitlist_model.dart';
-import 'package:jyotishee/presentation/widgets/custom_app_bar.dart';
-
 import '../../../app/utils/utils.dart';
 import '../../../data/providers/providers.dart';
+import '../../../data/sources/remote/network_services/api_service.dart';
 import '../../widgets/widgets.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 class ChatScreen extends StatefulWidget {
   ChatScreen({super.key,  this.model});
   final WaitListModel? model;
@@ -24,7 +23,54 @@ class _ChatScreenState extends State<ChatScreen> {
     "I'm good what you doin nowadays",
     "I'm good what you doin nowadays",
   ];
+   IO.Socket? socket;
+  Future<void> initSocket() async {
+    print('Connecting to chat service');
+    String? token = await ApiService.getToken();
+    socket = IO.io("http://api.jyotishee.com:3000/",<String, dynamic>{
+      "Authorization": "Bearer $token",
+      "transports": ["websocket","polling"],
+    });
+    socket!.connect();
+    setState(() {
 
+    });
+    socket!.onConnect((_) {
+      print('connected to websocket');
+    });
+    socket!.onConnectError((m) {
+      print('connected to websocket Error'+m);
+    });
+
+    socket!.on('chatStatus', (message) {
+      print("ChatStatus");
+      print(message);
+      setState(() {
+        //MessagesModel.messages.add(message);
+      });
+    });
+    socket!.on('privateMessage', (message) {
+      print("private message");
+      print(message);
+      setState(() {
+        //MessagesModel.messages.add(message);
+      });
+    });
+  }
+
+
+  @override
+  void initState() {
+    initSocket();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    socket?.disconnect();
+    //context.read<AuthProvider>().socket!.sink.close();
+  }
   @override
   Widget build(BuildContext context) {
     return DismissKeyBoard(
@@ -40,7 +86,15 @@ class _ChatScreenState extends State<ChatScreen> {
           child: Column(
             children: [
               20.height,
-              Expanded(
+
+              Text("${socket?.opts}"),
+              Text("${socket?.acks}"),
+              Text("${socket?.flags}"),
+              Text("${socket?.connected}"),
+              InkWell(
+                  onTap: () => initSocket(),
+                  child: Text("connect")),
+              /*Expanded(
                 child: AppConsumer<AuthProvider, List<MessageModel>>(
                   taskName: AuthProvider.getMessagesKey,
                   load: (provider) => provider.getMessages(id: widget.model!.id.toString()),
@@ -51,7 +105,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     shrinkWrap: true,
                   ),
                 ),
-              ),
+              ),*/
+              Spacer(),
               Container(
                 height: 80,
                 decoration: AppDecoration.whiteShadow,

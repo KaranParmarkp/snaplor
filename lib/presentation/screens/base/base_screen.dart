@@ -28,7 +28,13 @@ class _BaseScreenState extends State<BaseScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<AuthProvider>().initializeSocket());
+    //Future.microtask(() => context.read<AuthProvider>().initializeSocket());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    //context.read<AuthProvider>().disposeSocket();
   }
   @override
   Widget build(BuildContext context) {

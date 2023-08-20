@@ -3,8 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jyotishee/data/models/generic_response_model.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../../../app/utils/constants/api_config.dart';
 import '../../../../main.dart';
 
@@ -43,8 +41,8 @@ abstract class ApiService {
   }
 
   static Future<String?> getToken() async {
-    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NzI1OWNjYTFkZjRjYjZlY2Y4YTdkOSIsInJvbGUiOiJhc3Ryb2xvZ2VyIiwiZW1haWwiOiJzdWhlbG5pZEBnbWFpbC5jb20iLCJwaG9uZSI6Ijk3MTYxMDgwNTUiLCJ1c2VybmFtZSI6IlBoYW5pYmh1c2hhbiIsIm5hbWUiOiJTdWhlbCBBaG1hZCIsImlhdCI6MTY5MTkwMzYzOSwiZXhwIjoxNzIzNDM5NjM5fQ.9I7wqvTRpiK6ScxhYJ78MRgspP-0djbOtktvpeUIcK0";
-    //return await MyApp.navKey.currentState!.context.read<AuthProvider>().userModel?.accessToken;
+    //return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NzI1OWNjYTFkZjRjYjZlY2Y4YTdkOSIsInJvbGUiOiJhc3Ryb2xvZ2VyIiwiZW1haWwiOiJzdWhlbG5pZEBnbWFpbC5jb20iLCJwaG9uZSI6Ijk3MTYxMDgwNTUiLCJ1c2VybmFtZSI6IlBoYW5pYmh1c2hhbiIsIm5hbWUiOiJTdWhlbCBBaG1hZCIsImlhdCI6MTY5MTkwMzYzOSwiZXhwIjoxNzIzNDM5NjM5fQ.9I7wqvTRpiK6ScxhYJ78MRgspP-0djbOtktvpeUIcK0";
+    return await MyApp.navKey.currentState!.context.read<AuthProvider>().userModel?.accessToken;
   }
 
   Future<Map<String, String>> getDioHeaders() async {
@@ -130,10 +128,5 @@ abstract class ApiService {
     return result;
   }
 
-   static dynamic webSocketChannel() async {
-    final res =  IOWebSocketChannel.connect(Uri.parse(ApiConfig.baseUrlSocket),headers: {
-      'Authorization': 'Bearer ${getToken()}',
-    });
-    return res.stream;
-  }
+
 }

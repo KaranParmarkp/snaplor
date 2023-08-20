@@ -4,10 +4,8 @@ import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/base_provider.dart';
 import 'package:jyotishee/presentation/screens/auth/login/login_screen.dart';
 import 'package:jyotishee/presentation/screens/base/base_screen.dart';
-import 'package:web_socket_channel/io.dart';
 import '../../app/utils/preferences/preferences.dart';
 import '../../main.dart';
-import '../sources/remote/network_services/network_services.dart';
 import '../sources/remote/repositories/auth_repo/auth_repository.dart';
 import '../sources/remote/repositories/auth_repo/auth_repository_impl.dart';
 
@@ -21,7 +19,7 @@ class AuthProvider extends BaseProvider {
 
   AuthStatus _authStatus = AuthStatus.unAuthenticated;
   AuthStatus get authStatus => _authStatus;
-  IOWebSocketChannel? socket;
+
   AuthProvider.initialize() {
     _authRepo = AuthRepositoryImpl();
     checkUserIsLoggedIn();
@@ -59,12 +57,7 @@ class AuthProvider extends BaseProvider {
     MyApp.navKey.currentContext!.pushReplace(LoginScreen());
   }
 
-  initializeSocket(){
-    socket =  IOWebSocketChannel.connect(Uri.parse(ApiConfig.baseUrlSocket),headers: {
-      'Authorization': 'Bearer ${ApiService.getToken()}',
-    });
-    notifyListeners();
-  }
+
   // Login API
   Future<bool?> login({required String phone}) async {
     AppHelper.showLoading();
@@ -283,4 +276,11 @@ class AuthProvider extends BaseProvider {
       setError(taskName: getMessagesKey,errorMessage:  e.toString(),showToast: true);
     }
   }
+
+
+  getChatStatus({required String id}){
+
+  }
+
+
 }
