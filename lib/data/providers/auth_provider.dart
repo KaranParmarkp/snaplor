@@ -20,7 +20,8 @@ class AuthProvider extends BaseProvider {
 
   AuthStatus _authStatus = AuthStatus.unAuthenticated;
   AuthStatus get authStatus => _authStatus;
-  late IO.Socket socket;
+  late IO.Socket _socket;
+  IO.Socket get socket => _socket;
   AuthProvider.initialize() {
     _authRepo = AuthRepositoryImpl();
     checkUserIsLoggedIn();
@@ -28,22 +29,22 @@ class AuthProvider extends BaseProvider {
    initSocket() async {
     print('Connecting to chat service');
     String? token = await ApiService.getToken();
-    socket = IO.io(
+    _socket = IO.io(
       'http://api.jyotishee.com:3000',
       IO.OptionBuilder()
           .setTransports(['websocket'])
           .setExtraHeaders({'Authorization': 'Bearer $token'})
           .build(),
     );
-    socket.connect();
-    socket.onConnect((_) {
+    _socket.connect();
+    _socket.onConnect((_) {
       print('connected to websocket');
     });
-    socket.onConnectError((m) {
+    _socket.onConnectError((m) {
       print('connected to websocket Error'+m);
     });
     notifyListeners();
-    socket.on('chatStatus', (message) {
+    _socket.on('chatStatus', (message) {
       print("ChatStatus");
       print(message);
     });
@@ -51,8 +52,8 @@ class AuthProvider extends BaseProvider {
   }
 
   disposeSocket(){
-    socket.disconnect();
-    socket.dispose();
+    _socket.disconnect();
+    _socket.dispose();
   }
 
 
@@ -301,7 +302,7 @@ class AuthProvider extends BaseProvider {
     setLoading(taskName: getMessagesKey,showDialogLoader: true);
     try {
       setData(taskName: getMessagesKey,data: await _authRepo.getMessages(id));
-      socket.on('privateMessage', (message) {
+      _socket.on('privateMessage', (message) {
         print("private message");
         print(message);
       });
@@ -316,8 +317,12 @@ class AuthProvider extends BaseProvider {
   getChatStatus({required String id}){
 
   }
-  sendMessage({required String id}){
-
+  sendMessage({required String chatId,required String recipientId,required String message}){
+    _socket.emit('privateMessage',{
+      "recipient_id" : recipientId,
+      "sender_id" : _userModel!.id,
+      "message":message
+    });
   }
 
 
