@@ -6,9 +6,10 @@ import 'package:jyotishee/presentation/screens/auth/login/login_screen.dart';
 import 'package:jyotishee/presentation/screens/base/base_screen.dart';
 import '../../app/utils/preferences/preferences.dart';
 import '../../main.dart';
+import '../sources/remote/network_services/api_service.dart';
 import '../sources/remote/repositories/auth_repo/auth_repository.dart';
 import '../sources/remote/repositories/auth_repo/auth_repository_impl.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 enum AuthStatus { authenticated, unAuthenticated }
 
 class AuthProvider extends BaseProvider {
@@ -19,11 +20,41 @@ class AuthProvider extends BaseProvider {
 
   AuthStatus _authStatus = AuthStatus.unAuthenticated;
   AuthStatus get authStatus => _authStatus;
-
+  late IO.Socket socket;
   AuthProvider.initialize() {
     _authRepo = AuthRepositoryImpl();
     checkUserIsLoggedIn();
   }
+   initSocket() async {
+    print('Connecting to chat service');
+    String? token = await ApiService.getToken();
+    socket = IO.io(
+      'http://api.jyotishee.com:3000',
+      IO.OptionBuilder()
+          .setTransports(['websocket'])
+          .setExtraHeaders({'Authorization': 'Bearer $token'})
+          .build(),
+    );
+    socket.connect();
+    socket.onConnect((_) {
+      print('connected to websocket');
+    });
+    socket.onConnectError((m) {
+      print('connected to websocket Error'+m);
+    });
+    notifyListeners();
+    socket.on('chatStatus', (message) {
+      print("ChatStatus");
+      print(message);
+    });
+    notifyListeners();
+  }
+
+  disposeSocket(){
+    socket.disconnect();
+    socket.dispose();
+  }
+
 
   checkUserIsLoggedIn() async {
     String? encodedMap = await preference.getData(PreferenceKeys.appPrefName);
@@ -270,6 +301,10 @@ class AuthProvider extends BaseProvider {
     setLoading(taskName: getMessagesKey,showDialogLoader: true);
     try {
       setData(taskName: getMessagesKey,data: await _authRepo.getMessages(id));
+      socket.on('privateMessage', (message) {
+        print("private message");
+        print(message);
+      });
     } catch (e, s) {
       e.printDebug;
       s.printDebug;
@@ -279,6 +314,9 @@ class AuthProvider extends BaseProvider {
 
 
   getChatStatus({required String id}){
+
+  }
+  sendMessage({required String id}){
 
   }
 

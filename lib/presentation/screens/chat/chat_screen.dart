@@ -27,10 +27,14 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> initSocket() async {
     print('Connecting to chat service');
     String? token = await ApiService.getToken();
-    socket = IO.io("http://api.jyotishee.com:3000/",<String, dynamic>{
-      "Authorization": "Bearer $token",
-      "transports": ["websocket","polling"],
-    });
+    socket = IO.io(
+      'http://api.jyotishee.com:3000',
+      IO.OptionBuilder()
+          .setTransports(['websocket'])
+          .setExtraHeaders({'Authorization': 'Bearer $token'})
+          .build(),
+    );
+
     socket!.connect();
     setState(() {
 
@@ -68,7 +72,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     super.dispose();
-    socket?.disconnect();
+    socket?.dispose();
     //context.read<AuthProvider>().socket!.sink.close();
   }
   @override
