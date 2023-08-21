@@ -303,8 +303,12 @@ class AuthProvider extends BaseProvider {
     try {
       setData(taskName: getMessagesKey,data: await _authRepo.getMessages(id));
       _socket.on('privateMessage', (message) {
-        print("private message");
         print(message);
+        var d = MessageModel.fromJson(message  as Map<String, dynamic>);
+        print("adding...");
+        if(message!=null)data[getMessagesKey].add(MessageModel.fromJson(message  as Map<String, dynamic>));
+        notify();
+
       });
     } catch (e, s) {
       e.printDebug;
@@ -318,11 +322,11 @@ class AuthProvider extends BaseProvider {
 
   }
   sendMessage({required String chatId,required String recipientId,required String message}){
-    _socket.emit('privateMessage',{
+    _socket.emit('privateMessage',jsonEncode({
       "recipient_id" : recipientId,
       "sender_id" : _userModel!.id,
-      "message":message
-    });
+      "message":message}
+    ));
   }
 
 

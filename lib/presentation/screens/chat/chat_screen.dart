@@ -15,64 +15,16 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final List<String> chats = [
-    "Hey",
-    "How are you?",
-    "How are you?",
-    "I'm fine, what about you?",
-    "I'm good what you doin nowadays",
-    "I'm good what you doin nowadays",
-  ];
-   IO.Socket? socket;
-  Future<void> initSocket() async {
-    print('Connecting to chat service');
-    String? token = await ApiService.getToken();
-    socket = IO.io(
-      'http://api.jyotishee.com:3000',
-      IO.OptionBuilder()
-          .setTransports(['websocket'])
-          .setExtraHeaders({'Authorization': 'Bearer $token'})
-          .build(),
-    );
-
-    socket!.connect();
-    setState(() {
-
-    });
-    socket!.onConnect((_) {
-      print('connected to websocket');
-    });
-    socket!.onConnectError((m) {
-      print('connected to websocket Error'+m);
-    });
-
-    socket!.on('chatStatus', (message) {
-      print("ChatStatus");
-      print(message);
-      setState(() {
-        //MessagesModel.messages.add(message);
-      });
-    });
-    socket!.on('privateMessage', (message) {
-      print("private message");
-      print(message);
-      setState(() {
-        //MessagesModel.messages.add(message);
-      });
-    });
-  }
-
-
+  final messageController = TextEditingController();
+  final messageFocus = FocusNode();
   @override
   void initState() {
-    initSocket();
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
-    socket?.dispose();
     //context.read<AuthProvider>().socket!.sink.close();
   }
   @override
@@ -90,15 +42,7 @@ class _ChatScreenState extends State<ChatScreen> {
           child: Column(
             children: [
               20.height,
-
-              Text("${socket?.opts}"),
-              Text("${socket?.acks}"),
-              Text("${socket?.flags}"),
-              Text("${socket?.connected}"),
-              InkWell(
-                  onTap: () => initSocket(),
-                  child: Text("connect")),
-              /*Expanded(
+              Expanded(
                 child: AppConsumer<AuthProvider, List<MessageModel>>(
                   taskName: AuthProvider.getMessagesKey,
                   load: (provider) => provider.getMessages(id: widget.model!.id.toString()),
@@ -109,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     shrinkWrap: true,
                   ),
                 ),
-              ),*/
+              ),
               Spacer(),
               Container(
                 height: 80,
@@ -122,8 +66,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     Expanded(
                       child: HeaderTextField(
                         hint: AppStrings.messageHere,
-                        //focusNode: commentFocus,
-                        //controller: commentController,
+                        focusNode: messageFocus,
+                        controller: messageController,
                         borderRadius: 30,bottomPadding: 0,
                         suffixIcon: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -138,8 +82,18 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                     10.width,
-                    CircleAvatar(radius: 20,
-                        backgroundColor: AppColors.colorPrimary,child:SvgImage(image: AppSvg.send,))
+                    InkWell(
+                      onTap: () {
+                        if(messageController.isEmpty()){
+                          AppHelper.showToast(message: "Please enter message");
+                        }else{
+                          context.read<AuthProvider>().sendMessage(chatId: widget.model!.id!, recipientId: widget.model!.user!.id!, message: messageController.text);
+                          messageController.clear();
+                        }
+                      },
+                      child: CircleAvatar(radius: 20,
+                          backgroundColor: AppColors.colorPrimary,child:SvgImage(image: AppSvg.send,)),
+                    )
                   ],
                 ),
               )
