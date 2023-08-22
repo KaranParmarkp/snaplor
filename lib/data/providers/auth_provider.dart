@@ -46,8 +46,16 @@ class AuthProvider extends BaseProvider {
       getChatStatus();
     });
     _socket.onConnectError((m) {
-      print('connected to websocket Error'+m);
+      print(' websocket Error');
+      _socket.disconnect();
+      initSocket();
+      print(m);
     });
+    _socket.onError((m) {
+      print(' websocket on  Error');
+      print(m);
+    });
+
     notifyListeners();
   }
 
@@ -338,8 +346,11 @@ class AuthProvider extends BaseProvider {
     notifyListeners();
   }
   sendMessage({required String chatId,required String recipientId,required String message}){
-    Map<String,dynamic> data = {"recipient_id":recipientId,"sender_id": _userModel!.id,"message": message};
-    _socket.emit('privateMessage',data);
+    Map data = {"chat_id":chatId,"recipient_id":recipientId,"message":message};
+    var kaps = (chatId,recipientId,message);
+    print(data);
+    print(kaps);
+    _socket.emit('privateMessage', {chatId,recipientId,message});
   }
 
 

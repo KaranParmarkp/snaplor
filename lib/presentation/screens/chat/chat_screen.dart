@@ -54,11 +54,10 @@ class _ChatScreenState extends State<ChatScreen> {
                     //reverse: true,
                     itemBuilder: (context, index) => MessageText(text: data[index].message ?? "", messageType: data[index].senderId!=provider.userModel?.id ? MessageType.sender  : MessageType.receiver),
                     itemCount: data.length,
-                    shrinkWrap: true,
+
                   ),
                 ),
               ),
-              Spacer(),
               Container(
                 height: 80,
                 decoration: AppDecoration.whiteShadow,
