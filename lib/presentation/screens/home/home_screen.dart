@@ -360,7 +360,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                        padding:  EdgeInsets.only(top: 20,bottom: context.read<AuthProvider>().currentChat.isNotNull ?  140:20),
                         child: Row(
                           children: [
                             Expanded(child: SquareBoxAvatar(image: AppSvg.bill, text: AppStrings.waitList,onTap: () => context.push(WaitListScreen()),)),

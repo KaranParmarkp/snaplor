@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
@@ -14,8 +13,10 @@ class WaitListScreen extends StatefulWidget {
   State<WaitListScreen> createState() => _WaitListScreenState();
 }
 
-class _WaitListScreenState extends State<WaitListScreen> with SingleTickerProviderStateMixin {
+class _WaitListScreenState extends State<WaitListScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
+
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -31,13 +32,16 @@ class _WaitListScreenState extends State<WaitListScreen> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: AppStrings.waitList,showNotification: true,showProfile: true,),
+      appBar: CustomAppBar(
+        title: AppStrings.waitList,
+        showNotification: true,
+        showProfile: true,
+      ),
       body: Container(
         height: double.infinity,
         width: double.infinity,
         padding: EdgeInsets.all(15),
         child: Column(
-
           children: [
             Container(
               height: 45,
@@ -71,7 +75,9 @@ class _WaitListScreenState extends State<WaitListScreen> with SingleTickerProvid
                 ],
               ),
             ),
-            Expanded(child: TabBarView(clipBehavior: Clip.none,
+            Expanded(
+                child: TabBarView(
+              clipBehavior: Clip.none,
               controller: _tabController,
               children: [
                 AppConsumer<AuthProvider, List<WaitListModel>>(
@@ -79,7 +85,8 @@ class _WaitListScreenState extends State<WaitListScreen> with SingleTickerProvid
                   load: (provider) => provider.waitList(ComType.chat),
                   successBuilder: (data, provider) => ListView.builder(
                     clipBehavior: Clip.none,
-                    itemBuilder: (context, index) => WaitListCard(model: data[index],type: ComType.chat),
+                    itemBuilder: (context, index) =>
+                        WaitListCard(model: data[index], type: ComType.chat),
                     itemCount: data.length,
                     shrinkWrap: true,
                   ),
@@ -89,23 +96,27 @@ class _WaitListScreenState extends State<WaitListScreen> with SingleTickerProvid
                   load: (provider) => provider.waitList(ComType.call),
                   successBuilder: (data, provider) => ListView.builder(
                     clipBehavior: Clip.none,
-                    itemBuilder: (context, index) => WaitListCard(model: data[index],type: ComType.call),
+                    itemBuilder: (context, index) =>
+                        WaitListCard(model: data[index], type: ComType.call),
                     itemCount: data.length,
                     shrinkWrap: true,
                   ),
                 ),
-
-              ],))
+              ],
+            ))
           ],
         ),
       ),
     );
   }
 }
+
 class WaitListCard extends StatelessWidget {
   const WaitListCard({super.key, required this.model, required this.type});
+
   final WaitListModel model;
   final ComType type;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -128,36 +139,59 @@ class WaitListCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(model.createdAt!.formatElapsedTimeString(),style: AppStyle.grey12.copyWith(color: AppColors.greyDark),),
-                        Text(model.user?.name ?? model.intakeForm?.name ??  "",style: AppStyle.black14),
-                        Text(AppStrings.rupee+"${model.pricePerMinute}/Min",style: AppStyle.grey12.copyWith(color: AppColors.greyDark),),
+                        Text(
+                          model.createdAt!.formatElapsedTimeString(),
+                          style: AppStyle.grey12
+                              .copyWith(color: AppColors.greyDark),
+                        ),
+                        Text(model.user?.name ?? model.intakeForm?.name ?? "",
+                            style: AppStyle.black14),
+                        Text(
+                          AppStrings.rupee + "${model.pricePerMinute}/Min",
+                          style: AppStyle.grey12
+                              .copyWith(color: AppColors.greyDark),
+                        ),
                       ],
                     ),
                     Spacer(),
-                    if(model.isAcceptedByAstrologer.isFalse)...[InkWell(
-                      onTap: () => context.read<AuthProvider>().acceptRequest(type: type, id: model.id!),
-                      child: CircleAvatar(
-                        radius: 16,
-                        child: Icon(Icons.done,color: AppColors.white),
-                        backgroundColor: AppColors.lightGreen,
+                    if (model.isAcceptedByAstrologer.isFalse) ...[
+                      InkWell(
+                        onTap: () async {
+                          await context.read<AuthProvider>().acceptRequest(type: type, model: model);
+                          context.read<AuthProvider>().waitList(type);
+
+                        },
+                        child: CircleAvatar(
+                          radius: 16,
+                          child: Icon(Icons.done, color: AppColors.white),
+                          backgroundColor: AppColors.lightGreen,
+                        ),
                       ),
-                    ),
-                    10.width,
-                    InkWell(
-                      onTap: () => context.read<AuthProvider>().cancelRequest(type: type, id: model.id!),
-                      child: CircleAvatar(
-                        radius: 16,
-                        child: Icon(Icons.delete_forever,color: AppColors.white),
-                        backgroundColor: AppColors.red,
+                      10.width,
+                      InkWell(
+                        onTap: () => context
+                            .read<AuthProvider>()
+                            .cancelRequest(type: type, id: model.id!),
+                        child: CircleAvatar(
+                          radius: 16,
+                          child: Icon(Icons.delete_forever,
+                              color: AppColors.white),
+                          backgroundColor: AppColors.red,
+                        ),
                       ),
-                    ),],
-                    if(model.isAcceptedByAstrologer.isTrue && type==ComType.chat)InkWell(
-                        onTap: () => context.push(ChatScreen(model : model)),
-                        child: Text(type.name.toUpperCase(),style: AppStyle.purple12.copyWith(fontWeight: FontWeight.w700),))
+                    ],
+                    if (model.isAcceptedByAstrologer.isTrue &&
+                        type == ComType.chat)
+                      InkWell(
+                          onTap: () => context.push(ChatScreen(model: model)),
+                          child: Text(
+                            type.name.toUpperCase(),
+                            style: AppStyle.purple12
+                                .copyWith(fontWeight: FontWeight.w700),
+                          ))
                   ],
                 ),
               ),
-
             ],
           ),
         ],
@@ -165,4 +199,3 @@ class WaitListCard extends StatelessWidget {
     );
   }
 }
-

@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/base_provider.dart';
 import 'package:jyotishee/presentation/screens/auth/login/login_screen.dart';
 import 'package:jyotishee/presentation/screens/base/base_screen.dart';
+import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
 import '../../app/utils/preferences/preferences.dart';
 import '../../main.dart';
 import '../sources/remote/network_services/api_service.dart';
@@ -22,12 +24,14 @@ class AuthProvider extends BaseProvider {
   AuthStatus get authStatus => _authStatus;
   late IO.Socket _socket;
   IO.Socket get socket => _socket;
+  WaitListModel? _currentChat;
+  WaitListModel? get currentChat => _currentChat;
+
   AuthProvider.initialize() {
     _authRepo = AuthRepositoryImpl();
     checkUserIsLoggedIn();
   }
    initSocket() async {
-    print('Connecting to chat service');
     String? token = await ApiService.getToken();
     _socket = IO.io(
       'http://api.jyotishee.com:3000',
@@ -38,15 +42,11 @@ class AuthProvider extends BaseProvider {
     );
     _socket.connect();
     _socket.onConnect((_) {
-      print('connected to websocket');
+      'connected to websocket'.printDebug;
+      getChatStatus();
     });
     _socket.onConnectError((m) {
       print('connected to websocket Error'+m);
-    });
-    notifyListeners();
-    _socket.on('chatStatus', (message) {
-      print("ChatStatus");
-      print(message);
     });
     notifyListeners();
   }
@@ -270,11 +270,12 @@ class AuthProvider extends BaseProvider {
 
   // Accept Request api
   static String acceptRequestKey = 'acceptCallChatKey';
-  acceptRequest({required ComType type,required String id}) async {
+  acceptRequest({required ComType type,required WaitListModel model}) async {
     setLoading(taskName: acceptRequestKey,showDialogLoader: true);
     try {
-      setData(taskName: acceptRequestKey,data: await _authRepo.acceptRequest(type, id));
-      waitList(type);
+      setData(taskName: acceptRequestKey,data: await _authRepo.acceptRequest(type, model.id!));
+      MyApp.appContext.push(ChatScreen(model: model,));
+      //waitList(type);
     } catch (e, s) {
       e.printDebug;
       s.printDebug;
@@ -303,9 +304,8 @@ class AuthProvider extends BaseProvider {
     try {
       setData(taskName: getMessagesKey,data: await _authRepo.getMessages(id));
       _socket.on('privateMessage', (message) {
+        debugPrint("privateMessage");
         print(message);
-        var d = MessageModel.fromJson(message  as Map<String, dynamic>);
-        print("adding...");
         if(message!=null)data[getMessagesKey].add(MessageModel.fromJson(message  as Map<String, dynamic>));
         notify();
 
@@ -317,16 +317,29 @@ class AuthProvider extends BaseProvider {
     }
   }
 
+  updateCurrentChatModel(WaitListModel? model){
+    _currentChat = model;
+    notifyListeners();
+  }
+  getChatStatus(){
+    _socket.on('chatStatus', (message) {
+      "ChatStatus".printDebug;
+      print(message);
+      if(message!=null && message['status']=="completed"){
+        _currentChat=null;
+        notifyListeners();
+      }
+    });
+    notifyListeners();
+  }
 
-  getChatStatus({required String id}){
-
+  endChat(){
+    _currentChat=null;
+    notifyListeners();
   }
   sendMessage({required String chatId,required String recipientId,required String message}){
-    _socket.emit('privateMessage',jsonEncode({
-      "recipient_id" : recipientId,
-      "sender_id" : _userModel!.id,
-      "message":message}
-    ));
+    Map<String,dynamic> data = {"recipient_id":recipientId,"sender_id": _userModel!.id,"message": message};
+    _socket.emit('privateMessage',data);
   }
 
 

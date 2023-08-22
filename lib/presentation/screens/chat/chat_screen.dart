@@ -3,9 +3,7 @@ import 'package:jyotishee/data/models/message_model.dart';
 import 'package:jyotishee/data/models/waitlist_model.dart';
 import '../../../app/utils/utils.dart';
 import '../../../data/providers/providers.dart';
-import '../../../data/sources/remote/network_services/api_service.dart';
 import '../../widgets/widgets.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 class ChatScreen extends StatefulWidget {
   ChatScreen({super.key,  this.model});
   final WaitListModel? model;
@@ -20,12 +18,12 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() => context.read<AuthProvider>().updateCurrentChatModel(widget.model));
   }
 
   @override
   void dispose() {
     super.dispose();
-    //context.read<AuthProvider>().socket!.sink.close();
   }
   @override
   Widget build(BuildContext context) {
@@ -33,6 +31,12 @@ class _ChatScreenState extends State<ChatScreen> {
       child: Scaffold(
         appBar: CustomAppBar(
           title: widget.model?.user?.name ?? "",
+          trailingIcon: Padding(
+            padding: const EdgeInsets.only(right: 10,left: 10),
+            child: CircleNetworkImageAvatar(
+                radius: 20,
+                image: widget.model?.user?.image),
+          ),
           //showProfile: true,
         ),
         backgroundColor: AppColors.white,
