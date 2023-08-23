@@ -190,19 +190,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
     if (firstNameController.text.isEmpty) {
       AppHelper.showToast(message: AppValidator.messageBuilder("name")!);
       firstNameFocus.requestFocusDelayed();
-    }/* else if (mobileController.text.isEmpty) {
-      AppHelper.showToast(message: AppValidator.messageBuilder("mobile")!,);
-      mobileFocus.requestFocusDelayed();
-    }else if (mobileController.validatePhoneMaxDigit()) {
-      AppHelper.showToast(message: AppValidator.messageBuilder("mobile", validationType: ErrorType.INVALID)!,);
-      mobileFocus.requestFocusDelayed();
-    }else if (emailController.text.isEmpty) {
-      AppHelper.showToast(message: AppValidator.messageBuilder("email")!,);
-      emailFocus.requestFocusDelayed();
-    }else if (emailController.text.isNotEmpty && emailController.validateEmailAddress()) {
-      AppHelper.showToast(message: AppValidator.messageBuilder("email",validationType: ErrorType.INVALID)!,);
-      emailFocus.requestFocusDelayed();
-    }*/else if (experienceController.isEmpty()) {
+    }else if (experienceController.isEmpty()) {
       AppHelper.showToast(message: AppValidator.messageBuilder("experience")!,);
       experienceFocus.requestFocusDelayed();
     }else if (cityController.isEmpty()) {

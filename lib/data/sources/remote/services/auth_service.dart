@@ -92,6 +92,10 @@ class AuthService extends ApiService {
     return getData(ApiConfig.getMessages+id);
   }
 
+  Future<Response<GenericResponse>> endChat(String id) async {
+    return putData(ApiConfig.endChat+id);
+  }
+
 /*Future<IOWebSocketChannel> chats() async {
     return webSocketChannel();
   }

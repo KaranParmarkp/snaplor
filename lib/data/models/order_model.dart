@@ -32,6 +32,7 @@ class OrderModel {
   final DateTime? updatedAt;
   final int? v;
   final int? pricePerMinute;
+  final IntakeForm? intakeForm;
 
   OrderModel({
     this.id,
@@ -55,7 +56,7 @@ class OrderModel {
     this.products,
     this.createdAt,
     this.updatedAt,
-    this.v,this.pricePerMinute
+    this.v,this.pricePerMinute,this.intakeForm
   });
 
   OrderModel copyWith({
@@ -81,6 +82,7 @@ class OrderModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? v,
+    IntakeForm? intakeForm,
   }) =>
       OrderModel(
         id: id ?? this.id,
@@ -105,6 +107,7 @@ class OrderModel {
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         v: v ?? this.v,
+          intakeForm : intakeForm ?? this.intakeForm
       );
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
@@ -131,6 +134,7 @@ class OrderModel {
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     v: json["__v"],
+    intakeForm: json["intake_form"] == null ? null : IntakeForm.fromJson(json["intake_form"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -190,5 +194,48 @@ class Astrologer {
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
+  };
+}
+class IntakeForm {
+  final String? name;
+  final String? gender;
+  final String? mobileNo;
+  final DateTime? dateOfBirth;
+  final String? timeOfBirth;
+  final String? birthPlace;
+  final String? occupation;
+  final String? topicOfConcern;
+
+  IntakeForm({
+    this.name,
+    this.gender,
+    this.mobileNo,
+    this.dateOfBirth,
+    this.timeOfBirth,
+    this.birthPlace,
+    this.occupation,
+    this.topicOfConcern,
+  });
+
+  factory IntakeForm.fromJson(Map<String, dynamic> json) => IntakeForm(
+    name: json["name"],
+    gender: json["gender"],
+    mobileNo: json["mobile_no"],
+    dateOfBirth: json["date_of_birth"] == null ? null : DateTime.parse(json["date_of_birth"]),
+    timeOfBirth: json["time_of_birth"],
+    birthPlace: json["birth_place"],
+    occupation: json["occupation"],
+    topicOfConcern: json["topic_of_concern"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "gender": gender,
+    "mobile_no": mobileNo,
+    "date_of_birth": "${dateOfBirth!.year.toString().padLeft(4, '0')}-${dateOfBirth!.month.toString().padLeft(2, '0')}-${dateOfBirth!.day.toString().padLeft(2, '0')}",
+    "time_of_birth": timeOfBirth,
+    "birth_place": birthPlace,
+    "occupation": occupation,
+    "topic_of_concern": topicOfConcern,
   };
 }

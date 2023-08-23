@@ -16,7 +16,7 @@ class CircleNetworkImageAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: image.isNotNull ? image! : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+      imageUrl: image.isNotNull ? image! : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
       placeholder: (context, url) => SizedBox(
         height: radius?? 36,
         width: radius ?? 36,

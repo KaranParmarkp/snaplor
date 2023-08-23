@@ -18,5 +18,6 @@ abstract class AuthRepository{
   Future<GenericResponse> acceptRequest(ComType type,String id);
   Future<GenericResponse> cancelRequest(ComType type,String id);
   Future<List<MessageModel>> getMessages(String id);
+  Future<GenericResponse> endChat(String id);
 
 }

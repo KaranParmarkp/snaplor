@@ -117,10 +117,10 @@ class OrderCard extends StatelessWidget {
             ],
           ),
           NameValue(name: AppStrings.gender, value: model.user?.gender ?? ""),
-          NameValue(name: AppStrings.dob, value: "17 March, 1998, 9:45 PM"),
-          NameValue(name: AppStrings.pob, value: "Kanpur, Uttar Pradesh, India"),
-          NameValue(name: AppStrings.problemArea, value: "Career and Business"),
-          NameValue(name: AppStrings.duration, value: "${model.pricePerMinute??""} Minutes"),
+          NameValue(name: AppStrings.dob, value: "${DateTimeHelper.dateMonthWithTime(model.intakeForm?.dateOfBirth)}",),
+          NameValue(name: AppStrings.pob, value: model.intakeForm?.birthPlace ?? ""),
+          NameValue(name: AppStrings.problemArea, value: model.intakeForm?.topicOfConcern??""),
+          NameValue(name: AppStrings.duration, value: "${model.duration??""} Minutes"),
           Row(
             children: [
               Expanded(child: NameValue(name: AppStrings.rateWithout, value: AppStrings.rupee+"${model.pricePerMinute}/Min")),

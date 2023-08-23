@@ -5,9 +5,9 @@ import '../../../app/utils/utils.dart';
 import '../../../data/providers/providers.dart';
 import '../../widgets/widgets.dart';
 class ChatScreen extends StatefulWidget {
-  ChatScreen({super.key,  this.model});
+  ChatScreen({super.key,  this.model,this.readOnly=false});
   final WaitListModel? model;
-
+  final bool readOnly;
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
@@ -18,7 +18,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<AuthProvider>().updateCurrentChatModel(widget.model));
+    if(!widget.readOnly)Future.microtask(() => context.read<AuthProvider>().updateCurrentChatModel(widget.model));
   }
 
   @override
@@ -31,11 +31,19 @@ class _ChatScreenState extends State<ChatScreen> {
       child: Scaffold(
         appBar: CustomAppBar(
           title: widget.model?.user?.name ?? "",
-          trailingIcon: Padding(
-            padding: const EdgeInsets.only(right: 10,left: 10),
-            child: CircleNetworkImageAvatar(
-                radius: 20,
-                image: widget.model?.user?.image),
+          trailingIcon: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 10,left: 10),
+                child: CircleNetworkImageAvatar(
+                    radius: 20,
+                    image: widget.model?.user?.image),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 10,left: 10),
+                child: AppRoundedButton(text: "End chat",color: AppColors.colorPrimary,onTap: () => context.read<AuthProvider>().endChat(id:widget.model!.id!),),
+              ),
+            ],
           ),
           //showProfile: true,
         ),
@@ -58,7 +66,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
               ),
-              Container(
+              if(!widget.readOnly)Container(
                 height: 80,
                 decoration: AppDecoration.whiteShadow,
                 padding: EdgeInsets.only(left: 15,right: 15,bottom: 15,top: 15),

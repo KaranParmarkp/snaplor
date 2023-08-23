@@ -22,8 +22,8 @@ class AuthProvider extends BaseProvider {
 
   AuthStatus _authStatus = AuthStatus.unAuthenticated;
   AuthStatus get authStatus => _authStatus;
-  late IO.Socket _socket;
-  IO.Socket get socket => _socket;
+  IO.Socket? _socket;
+  IO.Socket? get socket => _socket;
   WaitListModel? _currentChat;
   WaitListModel? get currentChat => _currentChat;
 
@@ -40,18 +40,18 @@ class AuthProvider extends BaseProvider {
           .setExtraHeaders({'Authorization': 'Bearer $token'})
           .build(),
     );
-    _socket.connect();
-    _socket.onConnect((_) {
+    _socket?.connect();
+    _socket?.onConnect((_) {
       'connected to websocket'.printDebug;
       getChatStatus();
     });
-    _socket.onConnectError((m) {
+    _socket?.onConnectError((m) {
       print(' websocket Error');
-      _socket.disconnect();
+      _socket?.disconnect();
       initSocket();
       print(m);
     });
-    _socket.onError((m) {
+    _socket?.onError((m) {
       print(' websocket on  Error');
       print(m);
     });
@@ -60,8 +60,8 @@ class AuthProvider extends BaseProvider {
   }
 
   disposeSocket(){
-    _socket.disconnect();
-    _socket.dispose();
+    if(_socket.isNotNull)_socket?.disconnect();
+    if(_socket.isNotNull)_socket?.dispose();
   }
 
 
@@ -311,7 +311,7 @@ class AuthProvider extends BaseProvider {
     setLoading(taskName: getMessagesKey,showDialogLoader: true);
     try {
       setData(taskName: getMessagesKey,data: await _authRepo.getMessages(id));
-      _socket.on('privateMessage', (message) {
+      _socket?.on('privateMessage', (message) {
         debugPrint("privateMessage");
         print(message);
         if(message!=null)data[getMessagesKey].add(MessageModel.fromJson(message  as Map<String, dynamic>));
@@ -330,27 +330,46 @@ class AuthProvider extends BaseProvider {
     notifyListeners();
   }
   getChatStatus(){
-    _socket.on('chatStatus', (message) {
+    _socket?.on('chatStatus', (message) {
       "ChatStatus".printDebug;
       print(message);
       if(message!=null && message['status']=="completed"){
         _currentChat=null;
+        MyApp.appContext.pushRemoveUntil(BaseScreen());
         notifyListeners();
       }
     });
     notifyListeners();
   }
 
-  endChat(){
-    _currentChat=null;
-    notifyListeners();
-  }
   sendMessage({required String chatId,required String recipientId,required String message}){
-    Map data = {"chat_id":chatId,"recipient_id":recipientId,"message":message};
-    var kaps = (chatId,recipientId,message);
-    print(data);
-    print(kaps);
-    _socket.emit('privateMessage', {chatId,recipientId,message});
+    Map request = {"chat_id":chatId,"recipient_id":recipientId,"message":message};
+    _socket?.emitWithAck('privateMessage', request,ack:(response){
+      print(response);
+      print(response is Map);
+      //var data = json.decode(response);
+      if(response !=null && response["data"]!=null){
+        print("----------");
+        data[getMessagesKey].add(MessageModel.fromJson(response["data"] as Map<String, dynamic>));
+        notify();
+
+      }
+    });
+  }
+  // end request api
+  static String endChatKey = 'endChatChatKey';
+  endChat({required String id}) async {
+    setLoading(taskName: endChatKey,showDialogLoader: true);
+    try {
+      setData(taskName: endChatKey,data: await _authRepo.endChat(id));
+      _currentChat=null;
+      MyApp.appContext.pushRemoveUntil(BaseScreen());
+      notifyListeners();
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: endChatKey,errorMessage:  e.toString(),showToast: true);
+    }
   }
 
 

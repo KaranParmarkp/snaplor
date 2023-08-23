@@ -145,6 +145,7 @@ class AppStrings {
   static String emailNotification=AppLocalizations.of(MyApp.appContext)!.emailNotification;
   static String version=AppLocalizations.of(MyApp.appContext)!.version;
   static String profileUpdated="Profile updated successfully";
+  static String bankUpdated="Bank details successfully";
   static String post="Post";
   static String experience="Experience";
   static String add="Add";

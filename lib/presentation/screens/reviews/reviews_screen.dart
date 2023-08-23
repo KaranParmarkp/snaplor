@@ -145,7 +145,7 @@ class ReviewCard extends StatelessWidget {
                         child: AppRoundedButton(
                           text: AppStrings.viewChat,
                           color: AppColors.colorPrimary,
-                          onTap: () => context.push(ChatScreen()),
+                          onTap: () => context.push(ChatScreen(model: WaitListModel(id: model.id,user: model.user),readOnly: true,)),
                         ),
                       ),
                       20.width,

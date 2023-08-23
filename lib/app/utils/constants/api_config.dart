@@ -23,6 +23,7 @@ class ApiConfig {
   static const String cancelChatRequest = "chats/cancel-request/";
   static const String cancelCallRequest = "call/cancel/";
   static const String getMessages = "chats/";
+  static const String endChat = "chats/complete-customer-astrologer/";
 
   // Social
   static const String addPost = "posts";

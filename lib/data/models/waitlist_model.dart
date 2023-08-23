@@ -13,7 +13,7 @@ String waitlistModelToJson(List<WaitListModel> data) => json.encode(List<dynamic
 class WaitListModel {
   final User? user;
   final User? astrologer;
-  final IntakeForm? intakeForm;
+  final IntakeFormWaitlist? intakeForm;
   final String? id;
   final String? status;
   final bool? isFree;
@@ -39,7 +39,7 @@ class WaitListModel {
   factory WaitListModel.fromJson(Map<String, dynamic> json) => WaitListModel(
     user: json["user"] == null ? null : User.fromJson(json["user"]),
     astrologer: json["astrologer"] == null ? null : User.fromJson(json["astrologer"]),
-    intakeForm: json["intake_form"] == null ? null : IntakeForm.fromJson(json["intake_form"]),
+    intakeForm: json["intake_form"] == null ? null : IntakeFormWaitlist.fromJson(json["intake_form"]),
     id: json["_id"],
     status: json["status"],
     isFree: json["is_free"],
@@ -66,7 +66,7 @@ class WaitListModel {
 }
 
 
-class IntakeForm {
+class IntakeFormWaitlist {
   final String? name;
   final String? gender;
   final String? mobileNo;
@@ -76,7 +76,7 @@ class IntakeForm {
   final String? occupation;
   final String? topicOfConcern;
 
-  IntakeForm({
+  IntakeFormWaitlist({
     this.name,
     this.gender,
     this.mobileNo,
@@ -87,7 +87,7 @@ class IntakeForm {
     this.topicOfConcern,
   });
 
-  IntakeForm copyWith({
+  IntakeFormWaitlist copyWith({
     String? name,
     String? gender,
     String? mobileNo,
@@ -97,7 +97,7 @@ class IntakeForm {
     String? occupation,
     String? topicOfConcern,
   }) =>
-      IntakeForm(
+      IntakeFormWaitlist(
         name: name ?? this.name,
         gender: gender ?? this.gender,
         mobileNo: mobileNo ?? this.mobileNo,
@@ -108,7 +108,7 @@ class IntakeForm {
         topicOfConcern: topicOfConcern ?? this.topicOfConcern,
       );
 
-  factory IntakeForm.fromJson(Map<String, dynamic> json) => IntakeForm(
+  factory IntakeFormWaitlist.fromJson(Map<String, dynamic> json) => IntakeFormWaitlist(
     name: json["name"],
     gender: json["gender"],
     mobileNo: json["mobile_no"],
