@@ -90,8 +90,9 @@ class ReviewCard extends StatelessWidget {
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+
                       children: [
-                        Text(model.user!.name!.toCapitalized(), style: AppStyle.black14),
+                        Text(model.user!.name!.toCapitalized(), style: AppStyle.black14,),
                         RatingBar.builder(
                           initialRating: model.rating.toString().toDouble(),
                           minRating: 1,
@@ -117,11 +118,12 @@ class ReviewCard extends StatelessWidget {
               ),
             ],
           ),
-          Padding(
+          Container(
+            width: double.infinity,
             padding: const EdgeInsets.only(bottom: 0, top: 10),
             child: Text(
               model.message ?? "",
-              style: AppStyle.black12,
+              style: AppStyle.black12,textAlign: TextAlign.start,
             ),
           ),
           if (model.astrologerResponse.isNotNull)

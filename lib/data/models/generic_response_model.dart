@@ -1,4 +1,4 @@
-import 'package:jyotishee/app/utils/utils.dart';
+
 
 class GenericResponse<T> {
   bool code;

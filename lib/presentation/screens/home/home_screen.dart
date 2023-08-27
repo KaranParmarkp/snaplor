@@ -5,9 +5,9 @@ import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_support_screen.dart';
 import 'package:jyotishee/presentation/screens/social_profile/jyotishee_social.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+
 import '../../../app/utils/utils.dart';
 import '../../widgets/widgets.dart';
-import '../chat/chat_screen.dart';
 import '../offers/offers_screen.dart';
 import '../orders/orders_screen.dart';
 import '../reviews/reviews_screen.dart';
@@ -43,9 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      InkWell(
-                          onTap: () => context.push(ChatScreen(model: WaitListModel(id: "64e0c13ba5a496616663419e"),)),
-                          child: ImportantNotice()),
+                      ImportantNotice(),
 
                       //total earnings
                       Container(

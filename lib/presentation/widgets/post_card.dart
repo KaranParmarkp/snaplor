@@ -20,7 +20,7 @@ class PostCard extends StatelessWidget {
       decoration: showShadow ? AppDecoration.whiteShadowRounded:BoxDecoration(),
       padding: EdgeInsets.all(15),
       margin:
-      EdgeInsets.symmetric(horizontal: 8, vertical: showShadow ? 10 : 2),
+      EdgeInsets.symmetric(horizontal: 12, vertical: showShadow ? 10 : 2),
       child: Column(
         children: [
           Row(

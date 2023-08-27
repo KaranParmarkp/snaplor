@@ -129,7 +129,7 @@ class WaitListCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              UserDP(radius: 22),
+              UserDP(radius: 22,image: model.user?.image),
               20.width,
               Expanded(
                 child: Row(

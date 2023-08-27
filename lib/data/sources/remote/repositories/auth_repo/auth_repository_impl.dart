@@ -1,5 +1,3 @@
-import 'package:jyotishee/data/models/generic_response_model.dart';
-
 import '../../../../../app/utils/utils.dart';
 import '../../../../models/models.dart';
 import '../../network_services/abstract_api.dart';

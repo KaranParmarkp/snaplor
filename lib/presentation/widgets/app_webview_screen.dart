@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'widgets.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class AppWebViewScreen extends StatefulWidget {
   const AppWebViewScreen({Key? key, required this.title, required this.url}) : super(key: key);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/widgets/app_consumer/status_screens/error_screen.dart';
 import 'package:jyotishee/presentation/widgets/app_consumer/status_screens/loader.dart';
-import '../../../data/providers/providers.dart';
+
 import '../../../data/providers/providers.dart';
 
 /// T is used for provider whereas K is used for result type like list of model

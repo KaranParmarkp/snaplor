@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jyotishee/app/utils/constants/app_strings.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/bank_details/bank_details_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/personal_details/personal_details_screen.dart';
-import 'package:jyotishee/presentation/widgets/custom_app_bar.dart';
 
 import '../../../../app/utils/utils.dart';
 import '../../../../data/models/models.dart';

@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
-import 'package:jyotishee/main.dart';
-import '../../../providers/providers.dart';
+
 import '../network_services/api_service.dart';
 
 class SocialService extends ApiService {

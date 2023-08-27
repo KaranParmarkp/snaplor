@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
@@ -28,6 +29,7 @@ extension DynamicNullCheckExtension on dynamic  {
 extension StringNullCheckExtension<T> on String?  {
   bool get isNull => this == null;
   bool get isNotNull => this != null;
+  String toCapitalized() => this !=null && this!.length > 0 ?'${this![0].toUpperCase()}${this!.substring(1).toLowerCase()}':'';
 }
 
 

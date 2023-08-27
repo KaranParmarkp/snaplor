@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jyotishee/app/utils/constants/app_strings.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
-import 'package:jyotishee/presentation/widgets/app_textfield.dart';
-import 'package:jyotishee/presentation/widgets/custom_app_bar.dart';
-import 'package:jyotishee/presentation/widgets/dismiss_keyboard_widget.dart';
 
 import '../../../data/providers/providers.dart';
 import '../../widgets/widgets.dart';

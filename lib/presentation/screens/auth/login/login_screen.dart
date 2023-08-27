@@ -3,9 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:jyotishee/presentation/screens/base/base_screen.dart';
-import '../../../../app/utils/preferences/preferences.dart';
-import '../../../../main.dart';
+
 import '../../../widgets/widgets.dart';
 
 

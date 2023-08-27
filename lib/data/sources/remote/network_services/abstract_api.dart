@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:io';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/generic_response_model.dart';
-import 'package:jyotishee/main.dart';
-import 'package:jyotishee/presentation/screens/auth/login/login_screen.dart';
+
 import '../../../models/error_model.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 abstract class AbstractApi {
   final String errorsKey = 'error';
   final String successKey = 'success';

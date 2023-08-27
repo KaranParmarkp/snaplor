@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +8,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jyotishee/app/utils/utils.dart';
-import 'package:jyotishee/presentation/widgets/loader_ring.dart';
 import 'package:jyotishee/presentation/widgets/ftoast.dart' as ft;
-import 'package:url_launcher/url_launcher.dart';
 import 'package:path/path.dart' as p;
-import '../../data/models/models.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../main.dart';
 import '../../presentation/widgets/widgets.dart';
 

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jyotishee/app/utils/constants/app_strings.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:jyotishee/presentation/widgets/custom_app_bar.dart';
 
 import '../../../../widgets/widgets.dart';
 

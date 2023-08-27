@@ -148,7 +148,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
-    name: json["name"],
+    name: json["name"] ?? json["first_name"],
     image: json["image"] ?? "",
     isVerified: json["is_verified"],
   );

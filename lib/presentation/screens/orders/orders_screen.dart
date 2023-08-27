@@ -112,11 +112,11 @@ class OrderCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(child: NameValue(name: AppStrings.name, value: model.user?.name ?? "")),
+              Expanded(child: NameValue(name: AppStrings.name, value: model.intakeForm!.name.toCapitalized())),
               Text(model.status.isNotNull ? model.status!.toCapitalized():"",style: AppStyle.black12.copyWith(color: AppColors.lightGreen),)
             ],
           ),
-          NameValue(name: AppStrings.gender, value: model.user?.gender ?? ""),
+          NameValue(name: AppStrings.gender, value: model.intakeForm?.gender.toCapitalized() ?? ""),
           NameValue(name: AppStrings.dob, value: "${DateTimeHelper.dateMonthWithTime(model.intakeForm?.dateOfBirth)}",),
           NameValue(name: AppStrings.pob, value: model.intakeForm?.birthPlace ?? ""),
           NameValue(name: AppStrings.problemArea, value: model.intakeForm?.topicOfConcern??""),

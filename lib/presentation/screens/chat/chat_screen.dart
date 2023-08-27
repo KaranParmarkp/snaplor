@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/data/models/message_model.dart';
 import 'package:jyotishee/data/models/waitlist_model.dart';
+
 import '../../../app/utils/utils.dart';
 import '../../../data/providers/providers.dart';
 import '../../widgets/widgets.dart';
@@ -31,7 +32,7 @@ class _ChatScreenState extends State<ChatScreen> {
       child: Scaffold(
         appBar: CustomAppBar(
           title: widget.model?.user?.name ?? "",
-          trailingIcon: Row(
+          trailingIcon: !widget.readOnly ?  Row(
             children: [
               Padding(
                 padding: const EdgeInsets.only(right: 10,left: 10),
@@ -44,7 +45,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: AppRoundedButton(text: "End chat",color: AppColors.colorPrimary,onTap: () => context.read<AuthProvider>().endChat(id:widget.model!.id!),),
               ),
             ],
-          ),
+          ) : SizedBox(),
+
           //showProfile: true,
         ),
         backgroundColor: AppColors.white,

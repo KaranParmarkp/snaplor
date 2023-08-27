@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/providers/providers.dart';
+
 import '../../../../../data/models/models.dart';
 import '../../../../widgets/widgets.dart';
 

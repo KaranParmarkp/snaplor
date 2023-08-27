@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/data/models/models.dart';
+
 import '../../../app/utils/utils.dart';
 import '../../../data/providers/providers.dart';
 import '../../widgets/widgets.dart';
@@ -148,7 +149,7 @@ class WalletTransactionCard extends StatelessWidget {
             backgroundColor: AppColors.colorPrimary,
             child: CircleNetworkImageAvatar(
                 radius: 20,
-                image:""),
+                image:model.user?.image),
           ),
           20.width,
           Expanded(
@@ -156,7 +157,7 @@ class WalletTransactionCard extends StatelessWidget {
               crossAxisAlignment:
                   CrossAxisAlignment.start,
               children: [
-                Text("pending",
+                Text(model.user?.name ?? "",
                     style: AppStyle.black14),
                 Text(
                   "${DateTimeHelper.dateMonthWithTime(model.createdAt)}",

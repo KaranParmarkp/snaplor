@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jyotishee/app/utils/constants/app_images.dart';
-import 'package:jyotishee/app/utils/constants/app_style.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/widgets/app_button.dart';
 import 'package:jyotishee/presentation/widgets/svg_image.dart';

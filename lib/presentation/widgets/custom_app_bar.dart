@@ -4,6 +4,7 @@ import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/notification/notification_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/profile_screen.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
+
 import '../../app/utils/utils.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {

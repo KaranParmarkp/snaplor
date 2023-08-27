@@ -90,19 +90,19 @@ class OfferCard extends StatelessWidget {
             children: [
               NameValue(
                 name: AppStrings.myShare,
-                value: AppStrings.rupee + "8",
+                value: "${AppStrings.rupee}${model.myShare}",
                 valueColor: AppColors.colorPrimary,
                 fontSize: 10,
               ),
               NameValue(
                 name: AppStrings.jyotisheeShare,
-                value: AppStrings.rupee + "8",
+                value: "${AppStrings.rupee}${model.jyotisheeShare}",
                 valueColor: AppColors.colorPrimary,
                 fontSize: 10,
               ),
               NameValue(
                 name: AppStrings.customerPay,
-                value: AppStrings.rupee + "8",
+                value: "${AppStrings.rupee}${model.customerShare ?? ""}",
                 valueColor: AppColors.colorPrimary,
                 fontSize: 10,
               ),

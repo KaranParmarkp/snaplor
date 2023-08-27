@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
@@ -6,12 +7,13 @@ import 'package:jyotishee/data/providers/base_provider.dart';
 import 'package:jyotishee/presentation/screens/auth/login/login_screen.dart';
 import 'package:jyotishee/presentation/screens/base/base_screen.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+
 import '../../app/utils/preferences/preferences.dart';
 import '../../main.dart';
 import '../sources/remote/network_services/api_service.dart';
 import '../sources/remote/repositories/auth_repo/auth_repository.dart';
 import '../sources/remote/repositories/auth_repo/auth_repository_impl.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 enum AuthStatus { authenticated, unAuthenticated }
 
 class AuthProvider extends BaseProvider {
@@ -94,7 +96,7 @@ class AuthProvider extends BaseProvider {
   logout() async{
     _authStatus = AuthStatus.unAuthenticated;
     notifyListeners();
-    MyApp.navKey.currentContext!.pushReplace(LoginScreen());
+    MyApp.navKey.currentContext!.pushRemoveUntil(LoginScreen());
   }
 
 

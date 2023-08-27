@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jyotishee/app/utils/constants/app_decoration.dart';
-import 'package:jyotishee/app/utils/constants/app_images.dart';
-import 'package:jyotishee/app/utils/constants/app_strings.dart';
-import 'package:jyotishee/app/utils/constants/app_style.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_support_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/notification_settings/notification_settings_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/profile_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../../../app/utils/constants/app_colors.dart';
 import '../../widgets/widgets.dart';
 import 'faq_screen.dart';
 

@@ -4,6 +4,7 @@ import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
 import 'package:jyotishee/presentation/screens/search/search_screen.dart';
 import 'package:jyotishee/presentation/screens/wallet/wallet_screen.dart';
+
 import '../../widgets/widgets.dart';
 import '../home/home_screen.dart';
 import '../settings/settings_screen.dart';
@@ -42,7 +43,7 @@ class _BaseScreenState extends State<BaseScreen> {
     return Consumer<AuthProvider>(
   builder: (context, provider, child) {
   return Scaffold(
-      key: scaffoldKey,
+      //key: scaffoldKey,
       resizeToAvoidBottomInset: false,
       //drawer: AppDrawer(),
       body: Stack(

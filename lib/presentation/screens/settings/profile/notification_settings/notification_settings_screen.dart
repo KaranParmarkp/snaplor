@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
+
 import '../../../../widgets/widgets.dart';
 
 class NotificationSettingsScreen extends StatefulWidget {

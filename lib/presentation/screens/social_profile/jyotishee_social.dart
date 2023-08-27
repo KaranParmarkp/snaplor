@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/data/models/models.dart';
-import 'package:jyotishee/data/models/models.dart';
-import 'package:jyotishee/data/models/models.dart';
-import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/providers.dart';
 
 import '../../../app/utils/utils.dart';
@@ -25,7 +22,7 @@ class JyotisheeSocial extends StatelessWidget {
               child: AddPostScreen());
       },
       ),
-      body: SingleChildScrollView(
+      body: SizedBox.expand(
         child: Column(
           children: [
             SizedBox(
@@ -63,10 +60,17 @@ class JyotisheeSocial extends StatelessWidget {
                 ),
               ),),
             ),
-            PostCard(type: PostType.text,showSave: true,model: SocialPostModel()),
-            PostCard(type: PostType.video,showSave: true,model: SocialPostModel()),
-            PostCard(type: PostType.text,showSave: true,model: SocialPostModel()),
-            PostCard(type: PostType.image,showSave: true,model: SocialPostModel()),
+            Expanded(
+              child: AppConsumer<SocialProvider, List<SocialPostModel>>(
+                taskName: SocialProvider.getPostKey,
+                load: (provider) => provider.getPost(),
+                successBuilder: (data, provider) => ListView.builder(
+                  itemBuilder: (context, index) => PostCard(type: PostType.text,showShadow: true,model: data[index]),
+                  itemCount: data.length,
+                  shrinkWrap: true,
+                ),
+              ),
+            ),
           ],
         ),
       ),

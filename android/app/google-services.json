@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1052770902003",
+    "project_id": "jyotishee-f390d",
+    "storage_bucket": "jyotishee-f390d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1052770902003:android:04578ad5dc6f97a0c53c86",
+        "android_client_info": {
+          "package_name": "com.jyotishee.jyotishee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1052770902003-5bvian2haolcfeurqb1ftc8ehi6uhpi1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAeu5RqUdk8AlH7aZkBaX9mMkMU42sdmE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1052770902003-5bvian2haolcfeurqb1ftc8ehi6uhpi1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'constants/app_strings.dart';
 
 class AppValidator {
   static String? validateName(String? value, String label) {

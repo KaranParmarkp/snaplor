@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
-import 'package:jyotishee/presentation/widgets/custom_app_bar.dart';
 
 import '../../widgets/widgets.dart';
 

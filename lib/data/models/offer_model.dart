@@ -20,6 +20,9 @@ class OfferModel {
   final bool? isDeleted;
   final bool? isActive;
   final int? v;
+  final int? myShare;
+  final int? jyotisheeShare;
+  final int? customerShare;
 
   OfferModel({
     this.id,
@@ -33,6 +36,7 @@ class OfferModel {
     this.isDeleted,
     this.isActive,
     this.v,
+    this.jyotisheeShare,this.myShare,this.customerShare
   });
 
   OfferModel copyWith({
@@ -47,6 +51,10 @@ class OfferModel {
     bool? isDeleted,
     bool? isActive,
     int? v,
+     int? myShare,
+     int? jyotisheeShare,
+     int? customerShare,
+
   }) =>
       OfferModel(
         id: id ?? this.id,
@@ -60,6 +68,9 @@ class OfferModel {
         isDeleted: isDeleted ?? this.isDeleted,
         isActive: isActive ?? this.isActive,
         v: v ?? this.v,
+        jyotisheeShare: jyotisheeShare ?? this.jyotisheeShare,
+        customerShare: customerShare ?? this.customerShare,
+        myShare: myShare ?? this.myShare,
       );
 
   factory OfferModel.fromJson(Map<String, dynamic> json) => OfferModel(
@@ -74,6 +85,9 @@ class OfferModel {
     isDeleted: json["is_deleted"],
     isActive: json["is_active"],
     v: json["__v"],
+    customerShare: json["customer_share"],
+    myShare: json["my_share"],
+    jyotisheeShare: json["jyotishee_share"],
   );
 
   Map<String, dynamic> toJson() => {

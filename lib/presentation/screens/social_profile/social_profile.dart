@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/social_profile/jyotishee_social.dart';
+
 import '../../widgets/widgets.dart';
 import 'add_post_screen.dart';
 

@@ -1,9 +1,5 @@
-import 'package:jyotishee/data/models/post_comments_model.dart';
-
-import '../../../../../app/utils/utils.dart';
 import '../../../../models/models.dart';
 import '../../network_services/abstract_api.dart';
-import '../../services/auth_service.dart';
 import '../../services/social_service.dart';
 import 'social_repository.dart';
 

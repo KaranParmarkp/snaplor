@@ -158,13 +158,14 @@ class _CommentScreenState extends State<CommentScreen> {
                       text: AppStrings.post,
                       color: AppColors.colorPrimary,
                       radius: 30,
-                      onTap: () {
+                      onTap: () async {
                         AppHelper.hideKeyboard();
                         if(commentController.isEmpty()){
                           AppHelper.showToast(message: "Please enter comment");
                           commentFocus.requestFocus();
                         }else{
-                          context.read<SocialProvider>().addCommentPost(id: widget.id, message: commentController.text);
+                          await context.read<SocialProvider>().addCommentPost(id: widget.id, message: commentController.text);
+                          commentController.clear();
                         }
                       },
                       padding:

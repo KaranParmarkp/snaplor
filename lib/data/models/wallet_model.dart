@@ -6,6 +6,8 @@ import 'dart:convert';
 
 import 'package:jyotishee/app/utils/enums.dart';
 
+import 'models.dart';
+
 List<WalletModel> walletModelFromJson(String str) => List<WalletModel>.from(json.decode(str).map((x) => WalletModel.fromJson(x)));
 
 String walletModelToJson(List<WalletModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -23,6 +25,7 @@ class WalletModel {
   final DateTime? updatedAt;
   final int? v;
   final String? payoutId;
+  final User? user;
 
   WalletModel({
     this.id,
@@ -37,6 +40,7 @@ class WalletModel {
     this.updatedAt,
     this.v,
     this.payoutId,
+    this.user
   });
 
   WalletModel copyWith({
@@ -52,6 +56,7 @@ class WalletModel {
     DateTime? updatedAt,
     int? v,
     String? payoutId,
+    User? user
   }) =>
       WalletModel(
         id: id ?? this.id,
@@ -66,6 +71,7 @@ class WalletModel {
         updatedAt: updatedAt ?? this.updatedAt,
         v: v ?? this.v,
         payoutId: payoutId ?? this.payoutId,
+        user: user ?? this.user
       );
 
   factory WalletModel.fromJson(Map<String, dynamic> json) => WalletModel(
@@ -81,6 +87,7 @@ class WalletModel {
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     v: json["__v"],
     payoutId: json["payout_id"],
+    user: User.fromJson( json["user"]),
   );
 
   Map<String, dynamic> toJson() => {

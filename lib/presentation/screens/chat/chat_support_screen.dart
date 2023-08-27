@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jyotishee/app/utils/constants/app_decoration.dart';
 import 'package:jyotishee/app/utils/constants/app_strings.dart';
 import 'package:jyotishee/app/utils/constants/app_style.dart';
 
