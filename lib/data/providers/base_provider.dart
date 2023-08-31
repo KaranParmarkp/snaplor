@@ -14,6 +14,9 @@ class BaseProvider with ChangeNotifier {
   getStatus({required String taskName}){
     return status[taskName];
   }
+  getSuccessStatus({required String taskName}){
+    return status[taskName]==Status.Success ? true : false;
+  }
   setLoading({required String taskName,bool showDialogLoader=false}) {
     if(showDialogLoader)AppHelper.showLoading();
     if(!showDialogLoader)this.status[taskName] = Status.Loading;

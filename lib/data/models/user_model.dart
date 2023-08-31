@@ -40,8 +40,8 @@ class UserModel {
   final int? todayChatOrders;
   final int? todayCallOrders;
   final int? todayTotalEarnings;
-  final int? lifeTimeEarnings;
-  final int? balanceAmount;
+  final dynamic lifeTimeEarnings;
+  final dynamic balanceAmount;
   final bool? isDeleted;
   final bool? isFirstLogin;
   final int? adminShare;
@@ -129,11 +129,11 @@ class UserModel {
     int? totalCallMinutes,
     int? totalChatOrders,
     int? totalCallOrders,
-    int? balanceAmount,
+    double? balanceAmount,
     int? todayChatOrders,
     int? todayCallOrders,
     int? todayTotalEarnings,
-    int? lifeTimeEarnings,
+    double? lifeTimeEarnings,
 
     bool? isDeleted,
     bool? isFirstLogin,

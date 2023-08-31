@@ -11,6 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jyotishee/app/utils/preferences/preferences.dart';
 import 'package:jyotishee/data/providers/providers.dart';
+import 'package:jyotishee/presentation/screens/base/base_screen.dart';
 import 'package:jyotishee/presentation/screens/splash/splash_screen.dart';
 
 import 'app/utils/utils.dart';
@@ -120,7 +121,7 @@ class _MyAppState extends State<MyApp> {
         textTheme: GoogleFonts.poppinsTextTheme(),
         //scaffoldBackgroundColor: Colors.white,
       ),
-      home: const SplashScreen(),
+      home: const BaseScreen(),
     );
   }
 }

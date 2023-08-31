@@ -48,7 +48,7 @@ class WaitListModel {
     createdAt: json["createdAt"] == null ? json["created_at"] == null ? null : DateTime.parse(json["created_at"]): DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
-    pricePerMinute: json["price_per_minute"],
+    pricePerMinute: json["price_per_minute"] ?? json["call_price"],
   );
 
   Map<String, dynamic> toJson() => {

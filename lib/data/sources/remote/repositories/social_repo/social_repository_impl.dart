@@ -1,3 +1,5 @@
+import 'package:jyotishee/app/utils/enums.dart';
+
 import '../../../../models/models.dart';
 import '../../network_services/abstract_api.dart';
 import '../../services/social_service.dart';
@@ -20,6 +22,17 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
   Future<List<SocialPostModel>> getPosts() {
     return serviceHandler(
       serviceFunction: () => service.getPosts(),
+      successFunction: (response) async {
+        List<SocialPostModel> list = [];
+        list = List<SocialPostModel>.from(response.data!.map((x) => SocialPostModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+  @override
+  Future<List<SocialPostModel>> getMyPosts(PostType? type) {
+    return serviceHandler(
+      serviceFunction: () => service.getMyPosts(type),
       successFunction: (response) async {
         List<SocialPostModel> list = [];
         list = List<SocialPostModel>.from(response.data!.map((x) => SocialPostModel.fromJson(x))).toList();

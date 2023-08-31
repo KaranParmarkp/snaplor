@@ -35,6 +35,18 @@ class SocialProvider extends BaseProvider {
       setError(taskName: getPostKey,errorMessage:  e.toString());
     }
   }
+  // Get Posts api
+  static String getMyPostKey = 'getMyPostKey';
+  getMyPost({bool refresh=false,PostType? type}) async {
+    setLoading(taskName: getMyPostKey,showDialogLoader: refresh);
+    try {
+      setData(taskName: getMyPostKey,data: await _repository.getMyPosts(type));
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: getMyPostKey,errorMessage:  e.toString());
+    }
+  }
 
   // Like Post api
   static String likePostKey = 'likePostKey';

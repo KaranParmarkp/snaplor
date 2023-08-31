@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import '../../app/utils/utils.dart';
 import 'models.dart';
 
 List<SocialPostModel> socialPostModelFromJson(String str) => List<SocialPostModel>.from(json.decode(str).map((x) => SocialPostModel.fromJson(x)));
@@ -25,6 +26,7 @@ class SocialPostModel {
   final int? v;
   final String? imageUrl;
   final String? videoUrl;
+  final PostType? type;
 
   SocialPostModel({
     this.id,
@@ -41,6 +43,7 @@ class SocialPostModel {
     this.v,
     this.imageUrl,
     this.videoUrl,
+    this.type
   });
 
   SocialPostModel copyWith({
@@ -58,6 +61,7 @@ class SocialPostModel {
     int? v,
     String? imageUrl,
     String? videoUrl,
+    PostType? type
   }) =>
       SocialPostModel(
         id: id ?? this.id,
@@ -74,6 +78,8 @@ class SocialPostModel {
         v: v ?? this.v,
         imageUrl: imageUrl ?? this.imageUrl,
         videoUrl: videoUrl ?? this.videoUrl,
+        type: type ?? this.type,
+
       );
 
   factory SocialPostModel.fromJson(Map<String, dynamic> json) => SocialPostModel(
@@ -91,6 +97,7 @@ class SocialPostModel {
     v: json["__v"],
     imageUrl: json["image_url"],
     videoUrl: json["video_url"],
+    type: json["video_url"]!=null ? PostType.video : json["image_url"] !=null ? PostType.image : PostType.text,
   );
 
   Map<String, dynamic> toJson() => {

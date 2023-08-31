@@ -19,12 +19,15 @@ class _SocialProfileState extends State<SocialProfile> {
 
   _onTabTap(int index) {
     selectedIndex = index;
+    context.read<SocialProvider>().getMyPost(type: selectedIndex==0 ? PostType.image : selectedIndex==1 ? PostType.video : PostType.text);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Consumer<AuthProvider>(
+  builder: (context, provider, child) {
+  return Scaffold(
       appBar: CustomAppBar(
           title: AppStrings.jyotisheeSocial, showNotification: true),
       floatingActionButton: FloatingActionButton(
@@ -46,7 +49,7 @@ class _SocialProfileState extends State<SocialProfile> {
                 CircleNetworkImageAvatar(
                     radius: 40,
                     image:
-                        "https://images.unsplash.com/photo-1567324216289-97cc4134f626?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cG9ydHJhaXQlMjBtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80"),
+                        provider.userModel?.profileImage),
                 20.width,
                 Expanded(
                   child: Row(
@@ -79,11 +82,12 @@ class _SocialProfileState extends State<SocialProfile> {
               ],
             ),
             10.height,
-            InkWell(onTap: () => context.push(JyotisheeSocial()),child: NameVerified()),
+            NameVerified(name: provider.userModel?.name,verified: provider.userModel?.isVerified),
             4.height,
             Text(
-              "Astrology is a predictive science with its own sets of methods, claims and findings that have forever inspired and allowed people with insights into different aspects of their life. Astrology, with its wows and hows, is contentful and approving enough to make people a believer of the same.",
+              provider.userModel!.description ?? provider.userModel!.specialization.join(", ").toCapitalized(),
               style: AppStyle.grey12.copyWith(color: AppColors.hintGrey2),
+              overflow: TextOverflow.ellipsis,
               maxLines: 3,
             ),
             10.height,
@@ -113,7 +117,7 @@ class _SocialProfileState extends State<SocialProfile> {
                     ],
                   ),
                   10.height,
-                  if (selectedIndex == 0 || selectedIndex == 1)
+                  /*if (selectedIndex == 0 || selectedIndex == 1)
                     Expanded(
                       child: GridView.builder(
                         shrinkWrap: true,
@@ -138,13 +142,14 @@ class _SocialProfileState extends State<SocialProfile> {
                         ),
                       ),
                     ),
-                  if (selectedIndex == 2)
-                    Expanded(
+                  */
+
+                  Expanded(
                       child: AppConsumer<SocialProvider, List<SocialPostModel>>(
-                        taskName: SocialProvider.getPostKey,
-                        load: (provider) => provider.getPost(),
+                        taskName: SocialProvider.getMyPostKey,
+                        load: (provider) => provider.getMyPost(type: selectedIndex==0 ? PostType.image : selectedIndex==1 ? PostType.video : PostType.text),
                         successBuilder: (data, provider) => ListView.builder(
-                          itemBuilder: (context, index) => PostCard(type: PostType.text,showShadow: true,model: data[index]),
+                          itemBuilder: (context, index) => PostCard(showShadow: true,model: data[index],fromMyPost: true),
                           itemCount: data.length,
                           shrinkWrap: true,
                         ),
@@ -158,6 +163,8 @@ class _SocialProfileState extends State<SocialProfile> {
         ),
       ),
     );
+  },
+);
   }
 }
 

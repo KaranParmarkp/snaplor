@@ -85,7 +85,7 @@ class OfferModel {
     isDeleted: json["is_deleted"],
     isActive: json["is_active"],
     v: json["__v"],
-    customerShare: json["customer_share"],
+    customerShare: (json["my_share"] ?? 0) + (json["jyotishee_share"] ?? 0),
     myShare: json["my_share"],
     jyotisheeShare: json["jyotishee_share"],
   );

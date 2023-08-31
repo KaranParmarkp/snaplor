@@ -27,6 +27,7 @@ class ApiConfig {
 
   // Social
   static const String addPost = "posts";
+  static const String myPost = "posts/astrologers";
 
 
 }

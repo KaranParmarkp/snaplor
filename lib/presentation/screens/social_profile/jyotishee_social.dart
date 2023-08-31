@@ -65,7 +65,7 @@ class JyotisheeSocial extends StatelessWidget {
                 taskName: SocialProvider.getPostKey,
                 load: (provider) => provider.getPost(),
                 successBuilder: (data, provider) => ListView.builder(
-                  itemBuilder: (context, index) => PostCard(type: PostType.text,showShadow: true,model: data[index]),
+                  itemBuilder: (context, index) => PostCard(showShadow: true,model: data[index]),
                   itemCount: data.length,
                   shrinkWrap: true,
                 ),

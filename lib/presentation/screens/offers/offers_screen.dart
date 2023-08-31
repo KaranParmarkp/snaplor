@@ -102,7 +102,7 @@ class OfferCard extends StatelessWidget {
               ),
               NameValue(
                 name: AppStrings.customerPay,
-                value: "${AppStrings.rupee}${model.customerShare ?? ""}",
+                value: "${AppStrings.rupee}${model.customerShare}",
                 valueColor: AppColors.colorPrimary,
                 fontSize: 10,
               ),

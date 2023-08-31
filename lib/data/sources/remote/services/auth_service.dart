@@ -39,7 +39,7 @@ class AuthService extends ApiService {
   }
 
   Future<Response<GenericResponse>> refundAmount(String id) async {
-    return getData(
+    return putData(
       ApiConfig.amountRefund + id.toString(),
     );
   }

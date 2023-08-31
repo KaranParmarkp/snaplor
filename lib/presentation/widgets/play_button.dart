@@ -4,8 +4,8 @@ import '../../app/utils/utils.dart';
 import 'widgets.dart';
 
 class PlayButton extends StatelessWidget {
-  const PlayButton({super.key});
-
+  const PlayButton({super.key, this.playing=false});
+  final bool playing;
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
@@ -14,9 +14,9 @@ class PlayButton extends StatelessWidget {
         child: CircleAvatar(
             radius: 16,
             backgroundColor: AppColors.purpleLight,
-            child: SvgImage(
+            child: !playing ? SvgImage(
               image: AppSvg.play,
               size: 25,
-            )));
+            ): Icon(Icons.pause,color: AppColors.colorPrimary,size: 25,)));
   }
 }

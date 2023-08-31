@@ -61,7 +61,7 @@ class ReviewModel {
   factory ReviewModel.fromJson(Map<String, dynamic> json) => ReviewModel(
     id: json["_id"],
     astrologerId: json["astrologer_id"],
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
+    user: json["user"] == null ? User(name: "",id: "") : User.fromJson(json["user"]),
     orderId: json["order_id"],
     rating: json["rating"],
     message: json["message"],

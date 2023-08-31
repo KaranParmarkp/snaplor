@@ -21,8 +21,8 @@ class OrderModel {
   final int? totalShippingDiscount;
   final int? totalDiscount;
   final String? callRequestId;
-  final int? astrologerAmount;
-  final int? adminAmount;
+  final dynamic astrologerAmount;
+  final dynamic adminAmount;
   final String? paymentStatus;
   final bool? isExchange;
   final bool? isCod;
