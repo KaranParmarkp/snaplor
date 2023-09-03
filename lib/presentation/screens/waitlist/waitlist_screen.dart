@@ -78,6 +78,7 @@ class _WaitListScreenState extends State<WaitListScreen>
             Expanded(
                 child: TabBarView(
               clipBehavior: Clip.none,
+              physics: NeverScrollableScrollPhysics(),
               controller: _tabController,
               children: [
                 AppConsumer<AuthProvider, List<WaitListModel>>(
@@ -129,7 +130,7 @@ class WaitListCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              UserDP(radius: 22,image: model.user?.image),
+              UserDP(radius: 22, image: model.user?.image),
               20.width,
               Expanded(
                 child: Row(
@@ -157,9 +158,10 @@ class WaitListCard extends StatelessWidget {
                     if (model.isAcceptedByAstrologer.isFalse) ...[
                       InkWell(
                         onTap: () async {
-                          await context.read<AuthProvider>().acceptRequest(type: type, model: model);
+                          await context
+                              .read<AuthProvider>()
+                              .acceptRequest(type: type, model: model);
                           context.read<AuthProvider>().waitList(type);
-
                         },
                         child: CircleAvatar(
                           radius: 16,

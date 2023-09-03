@@ -30,3 +30,49 @@ class TitleDropdown extends StatelessWidget {
     );
   }
 }
+class TitleDropdownFAQ extends StatefulWidget {
+  const TitleDropdownFAQ({super.key, required this.text,required this.header});
+  final String text;
+  final String header;
+
+  @override
+  State<TitleDropdownFAQ> createState() => _TitleDropdownFAQState();
+}
+
+class _TitleDropdownFAQState extends State<TitleDropdownFAQ> {
+
+  bool isOpened = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          InkWell(
+            onTap: () {
+              isOpened = !isOpened;
+              setState(() {
+
+              });
+            },
+            child: Container(
+              decoration: AppDecoration.whiteShadowRounded,
+              padding: EdgeInsets.all(15),
+              margin: EdgeInsets.only(bottom: 10,top: 10),
+              child: Row(
+                children: [
+                  Expanded(child: Text(widget.header,style: AppStyle.black14.copyWith(color: AppColors.black),)),
+                  Icon(isOpened ? Icons.keyboard_arrow_up_rounded: Icons.keyboard_arrow_down_rounded)
+                ],
+              ),
+            ),
+          ),
+          if(isOpened)Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 6),
+            child: Text(widget.text,style: AppStyle.black14,),
+          ),
+        ],
+      ),
+    );
+  }
+}

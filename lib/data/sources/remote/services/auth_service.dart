@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
@@ -27,6 +29,11 @@ class AuthService extends ApiService {
   Future<Response<GenericResponse>> offerList() async {
     return getData(
       ApiConfig.offersList,
+    );
+  }
+  Future<Response<GenericResponse>> offerStatus(String id,bool activate) async {
+    return getData(
+      ApiConfig.offersList+"/"+id+"/${activate ? "activate" : "deactivate"}",
     );
   }
 
@@ -93,15 +100,16 @@ class AuthService extends ApiService {
     return getData(ApiConfig.getMessages+id);
   }
 
+  Future<Response<GenericResponse>> onGoingChat() async {
+    return putData(ApiConfig.onGoingChat);
+  }
   Future<Response<GenericResponse>> endChat(String id) async {
     return putData(ApiConfig.endChat+id);
   }
 
-/*Future<IOWebSocketChannel> chats() async {
-    return webSocketChannel();
+  Future<Response<GenericResponse>> uploadFile(File? file) async {
+    return putData(ApiConfig.upload+"${MyApp.appContext.read<AuthProvider>().userModel!.id}/");
   }
-*/
-/*Future<Response<GenericResponse>> register(RegisterModel model) async {
-    return postData(ApiConfig.register, data: await model.toFormData());
-  }*/
+
+
 }

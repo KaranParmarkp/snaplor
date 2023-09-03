@@ -79,7 +79,7 @@ class OfferCard extends StatelessWidget {
               CupertinoSwitch(
                 value: true,
                 onChanged: (value) {
-                  //chatSwitch = !chatSwitch;
+                  context.read<AuthProvider>().offerStatusChange(id: model.id!, activate: model.isActive.isTrue?false:true);
                 },
                 activeColor: AppColors.colorPrimary,
               )

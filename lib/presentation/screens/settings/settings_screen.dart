@@ -3,6 +3,7 @@ import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_support_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/notification_settings/notification_settings_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/profile_screen.dart';
+import 'package:jyotishee/presentation/screens/settings/terms_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../widgets/widgets.dart';
@@ -50,8 +51,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               TitleDropdown(text: AppStrings.notification, leadingIcon: SvgImage(image: AppSvg.bell),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(NotificationSettingsScreen()),),
               TitleDropdown(text: AppStrings.language, leadingIcon: SvgImage(image: AppSvg.language),icon: Icon(Icons.keyboard_arrow_right_rounded)),
               TitleDropdown(text: AppStrings.faqs, leadingIcon: SvgImage(image: AppSvg.terms),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(faqScreen()),),
-              TitleDropdown(text: AppStrings.terms, leadingIcon: SvgImage(image: AppSvg.terms),icon: Icon(Icons.keyboard_arrow_right_rounded)),
-              TitleDropdown(text: AppStrings.privacy, leadingIcon: SvgImage(image: AppSvg.privacy),icon: Icon(Icons.keyboard_arrow_right_rounded)),
+              TitleDropdown(text: AppStrings.terms, leadingIcon: SvgImage(image: AppSvg.terms),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(TermsScreen(title: AppStrings.terms,data: AppStrings.termsDesc,)),),
+              TitleDropdown(text: AppStrings.privacy, leadingIcon: SvgImage(image: AppSvg.privacy),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(TermsScreen(title: AppStrings.privacy,data: AppStrings.privacyDesc,)),),
               TitleDropdown(text: AppStrings.version,leadingIcon: SvgImage(image: AppSvg.terms),icon: Text(packageInfo?.version ?? '')),
               TitleDropdown(text: AppStrings.logOut,fontColor: AppColors.red, leadingIcon: SvgImage(image: AppSvg.logout),),
             ],

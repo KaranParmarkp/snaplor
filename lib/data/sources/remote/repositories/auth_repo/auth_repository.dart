@@ -6,12 +6,14 @@ abstract class AuthRepository{
   Future<UserModel> verificationVerify(String mobile,String code);
   Future<UserModel> userData(UserModel? model);
   Future<List<OfferModel>> offerList();
+  Future<GenericResponse> offerStatus(String id,bool activate);
   Future<List<OrderModel>> orderList(ComType type);
   Future<GenericResponse> refundAmount(String id);
   Future<List<ReviewModel>> reviewList();
   Future<GenericResponse> addReview(String id,String message);
   Future<GenericResponse> deleteReview(String id);
   Future<List<WaitListModel>> waitList(ComType type);
+  Future<WaitListModel?> onGoingChat();
   Future<List<WalletModel>> wallet();
   Future<List<ProductModel>> searchProduct(FilterModel filterModel);
   Future<GenericResponse> acceptRequest(ComType type,String id);

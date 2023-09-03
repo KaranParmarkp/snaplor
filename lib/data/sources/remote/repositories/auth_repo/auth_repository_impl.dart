@@ -50,6 +50,17 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
   }
 
   @override
+  Future<GenericResponse> offerStatus(String id,bool activate) {
+    return serviceHandler(
+      serviceFunction: () => service.offerStatus(id, activate),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+
+
+  @override
   Future<List<OrderModel>> orderList(ComType type) {
     return serviceHandler(
       serviceFunction: () => service.orderList(type),
@@ -113,6 +124,17 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
       },
     );
   }
+
+  @override
+  Future<WaitListModel?> onGoingChat() {
+    return serviceHandler(
+      serviceFunction: () => service.onGoingChat(),
+      successFunction: (response) async {
+        return WaitListModel.fromJson(response.data);
+      },
+    );
+  }
+
 
   @override
   Future<List<WalletModel>> wallet() {

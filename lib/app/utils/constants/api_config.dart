@@ -24,6 +24,8 @@ class ApiConfig {
   static const String cancelCallRequest = "call/cancel/";
   static const String getMessages = "chats/";
   static const String endChat = "chats/complete-customer-astrologer/";
+  static const String onGoingChat = "chats/on-going";
+  static const String upload = "s3/pre-signed-url?key=astrologers/";
 
   // Social
   static const String addPost = "posts";

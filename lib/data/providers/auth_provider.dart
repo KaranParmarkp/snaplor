@@ -46,6 +46,7 @@ class AuthProvider extends BaseProvider {
     _socket?.onConnect((_) {
       'connected to websocket'.printDebug;
       getChatStatus();
+      onGoingChat();
     });
     _socket?.onConnectError((m) {
       print(' websocket Error');
@@ -128,7 +129,7 @@ class AuthProvider extends BaseProvider {
       await saveDataToLocally(model);
       loadUserData();
       AppHelper.hideLoading();
-      MyApp.navKey.currentContext!.pushReplace(BaseScreen());
+      MyApp.navKey.currentContext!.pushRemoveUntil(BaseScreen());
       notifyListeners();
     } catch (e, s) {
       AppHelper.hideLoading();
@@ -248,6 +249,18 @@ class AuthProvider extends BaseProvider {
       e.printDebug;
       s.printDebug;
       setError(taskName: waitListKey,errorMessage:  e.toString(),);
+    }
+  }
+
+  // On Going Chat api
+  static String onGoingChatKey = 'onGoingChatKey';
+  onGoingChat() async {
+    try {
+      _currentChat = await _authRepo.onGoingChat();
+      notifyListeners();
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
     }
   }
 
@@ -374,5 +387,18 @@ class AuthProvider extends BaseProvider {
     }
   }
 
+  // Offer status change
+  static String offerStatusChangeKey = 'offerStatusChangeKey';
+  offerStatusChange({required String id,required bool activate}) async {
+    setLoading(taskName: offerStatusChangeKey,showDialogLoader: true);
+    try {
+      setData(taskName: offerStatusChangeKey,data: await _authRepo.offerStatus(id,activate),hideLoader: true);
+      offerList();
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: offerStatusChangeKey,errorMessage:  e.toString(),);
+    }
+  }
 
 }
