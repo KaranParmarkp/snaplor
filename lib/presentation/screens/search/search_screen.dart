@@ -354,9 +354,7 @@ class ProductCard extends StatelessWidget {
                   ),
                   Text(
                     model.description??"",
-                    style: AppStyle.grey12.copyWith(
-                      overflow: TextOverflow.ellipsis,fontSize: 10,
-                        color: AppColors.greyDark),
+                    style: AppStyle.grayDark12,overflow: TextOverflow.ellipsis,
                     maxLines: 3,
                   ),
                   Spacer(),

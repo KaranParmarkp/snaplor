@@ -145,9 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         TextSpan(
                           text: "+91 ${mobileController.text}",
-                          style: AppStyle.black14.copyWith(
-                            decoration: TextDecoration.underline,
-                          ),
+                          style: AppStyle.black14Underline,
                         ),
                       ],
                     ),
@@ -192,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.only(bottom: 20,top: 14,right: 16),
                       child: Text(
                         AppStrings.resentOTP,
-                        style: AppStyle.black12.copyWith(color: AppColors.colorPrimary),
+                        style: AppStyle.primary12,
                       ),
                     ),
                   ),
@@ -216,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Icon(Icons.arrow_back_ios,size: 10,),
                         4.width,
-                        Text(AppStrings.enteredWrongNumber,style: AppStyle.black12.copyWith(decoration: TextDecoration.underline),),
+                        Text(AppStrings.enteredWrongNumber,style: AppStyle.black12Underline,),
                       ],
                     ),
                   ),

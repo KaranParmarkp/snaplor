@@ -37,4 +37,8 @@ class SocialService extends ApiService {
   Future<Response<GenericResponse>> getComments(String id) async {
     return getData(ApiConfig.addPost + "/" + id + "/comments");
   }
+
+  /*Future<Response<GenericResponse>> uploadFile() async {
+    return getData(ApiConfig.addPost + "/" + id + "/comments");
+  }*/
 }

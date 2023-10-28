@@ -92,7 +92,7 @@ class AppHelper {
     Platform.isMacOS ? ft.FToast.toast(
       context ?? MyApp.navKey.currentContext!,
       msg: message,
-      msgStyle: AppStyle.whiteBold16.copyWith(),
+      msgStyle: AppStyle.whiteBold16,
       duration: duration,
       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
       //imageDirection: AxisDirection.up,

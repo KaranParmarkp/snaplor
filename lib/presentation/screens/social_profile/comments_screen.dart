@@ -66,7 +66,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                           children: [
                                             Row(
                                               children: [
-                                                Text(data[index].user!.name!.toCapitalized(),style: AppStyle.black12.copyWith(fontWeight: FontWeight.w700),),
+                                                Text(data[index].user!.name!.toCapitalized(),style: AppStyle.black12w700,),
                                                 10.width,
                                                 Text(data[index].createdAt!.formatElapsedTimeString(),style: AppStyle.grey10w400),
                                               ],
@@ -74,7 +74,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                             4.height,
                                             Container(
                                                 width: double.infinity,
-                                                child: Text(data[index].comment??"",style: AppStyle.black12.copyWith(fontWeight: FontWeight.w400),textAlign: TextAlign.start)),
+                                                child: Text(data[index].comment??"",style: AppStyle.black12w400,textAlign: TextAlign.start)),
                                             6.height,
                                             Row(
                                               children: [
@@ -117,7 +117,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                           return [
                                             PopupMenuItem(child: Row(children: [SvgImage(image: AppSvg.pin),10.width,Text(AppStrings.pinToTop,style: AppStyle.black12,)],),),
                                             PopupMenuItem(child: Row(children: [SvgImage(image: AppSvg.eye),10.width,Text(AppStrings.hide,style: AppStyle.black12,)],),),
-                                            PopupMenuItem(child: Row(children: [SvgImage(image: AppSvg.deleteRed),10.width, Text(AppStrings.delete,style: AppStyle.black12.copyWith(color: AppColors.red),)],),),
+                                            PopupMenuItem(child: Row(children: [SvgImage(image: AppSvg.deleteRed),10.width, Text(AppStrings.delete,style: AppStyle.red12,)],),),
                                           ];
                                         },),
 

@@ -48,7 +48,7 @@ class NotificationScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("7 min ago",style: AppStyle.grey12.copyWith(color: AppColors.greyDark),),
+                            Text("7 min ago",style: AppStyle.grayDark12,),
                             Text("Suhel Ahmed",style: AppStyle.black14),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -63,7 +63,7 @@ class NotificationScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
-                                Text(" 5/Min",style: AppStyle.grey12.copyWith(color: AppColors.greyDark),),
+                                Text(" 5/Min",style: AppStyle.grayDark12,),
                               ],
                             ),
                           ],
@@ -117,9 +117,9 @@ class NotificationScreen extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("15 min ago",style: AppStyle.grey12.copyWith(color: AppColors.greyDark),),
+                                Text("15 min ago",style: AppStyle.grayDark12,),
                                 Text("Amount Transfer to Bank",style: AppStyle.black14),
-                                Text("27 Jun, 01:00 PM",style: AppStyle.grey12.copyWith(color: AppColors.greyDark),),
+                                Text("27 Jun, 01:00 PM",style: AppStyle.grayDark12,),
                               ],
                             ),
                             Spacer(),

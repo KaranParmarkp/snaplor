@@ -45,8 +45,8 @@ class AuthProvider extends BaseProvider {
     _socket?.connect();
     _socket?.onConnect((_) {
       'connected to websocket'.printDebug;
-      getChatStatus();
-      onGoingChat();
+    //  getChatStatus();
+    //  onGoingChat();
     });
     _socket?.onConnectError((m) {
       print(' websocket Error');
@@ -96,6 +96,7 @@ class AuthProvider extends BaseProvider {
 
   logout() async{
     _authStatus = AuthStatus.unAuthenticated;
+    preference.clearPref();
     notifyListeners();
     MyApp.navKey.currentContext!.pushRemoveUntil(LoginScreen());
   }

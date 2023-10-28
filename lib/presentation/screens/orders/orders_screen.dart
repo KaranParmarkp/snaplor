@@ -113,7 +113,7 @@ class OrderCard extends StatelessWidget {
           Row(
             children: [
               Expanded(child: NameValue(name: AppStrings.name, value: model.intakeForm!.name.toCapitalized())),
-              Text(model.status.isNotNull ? model.status!.toCapitalized():"",style: AppStyle.black12.copyWith(color: AppColors.lightGreen),)
+              Text(model.status.isNotNull ? model.status!.toCapitalized():"",style: AppStyle.lightGreen12,)
             ],
           ),
           NameValue(name: AppStrings.gender, value: model.intakeForm?.gender.toCapitalized() ?? ""),
@@ -124,7 +124,7 @@ class OrderCard extends StatelessWidget {
           Row(
             children: [
               Expanded(child: NameValue(name: AppStrings.rateWithout, value: AppStrings.rupee+"${model.pricePerMinute}/Min")),
-              Text(AppStrings.rs+"${model.totalPaid}",style: AppStyle.purple14.copyWith(fontWeight: FontWeight.w800),)
+              Text(AppStrings.rs+"${model.totalPaid}",style: AppStyle.purple14w800,)
             ],
           ),
           Padding(

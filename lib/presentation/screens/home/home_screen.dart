@@ -29,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'Authorization': 'Bearer ${ApiService.getToken()}',
     });
     */return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: DashboardAppBar(
         title: '',
       ),
@@ -47,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       //total earnings
                       Container(
-                        margin: EdgeInsets.only(top: 30),
+                        margin: EdgeInsets.only(top: 20),
                         padding: const EdgeInsets.all(15),
                         decoration: AppDecoration.whiteShadowRounded,
                         child: Row(
@@ -76,10 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               Rupee(fontSize: 25),
                                               Text(
                                                 "${data.todayTotalEarnings}",
-                                                style: AppStyle.purple14.copyWith(
-                                                  fontSize: 25,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                                style: AppStyle.purple25Bold
                                               ),
                                             ],
                                           ),
@@ -220,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       // call and chat switches
                       Container(
-                        margin: EdgeInsets.only(top: 30),
+                        margin: EdgeInsets.only(top: 20),
                         padding: const EdgeInsets.all(15),
                         decoration: AppDecoration.whiteShadowRounded,
                         child: Column(
@@ -346,7 +344,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       20.height,
-                      SquareBoxAvatar(image: AppSvg.user, text: AppStrings.jyotisheeSocial,onTap: () => context.push(JyotisheeSocial()),),
+                      SquareBoxAvatar(image: AppSvg.user, text:"Jyotishee Social" /*AppStrings.jyotisheeSocial*/,onTap: () => context.push(JyotisheeSocial()),),
                       Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: Row(
@@ -414,6 +412,7 @@ class ImportantNotice extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: AppDecoration.purpleLightRounded,
+      width: context.screenWidth,
       padding: const EdgeInsets.all(15),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -422,31 +421,25 @@ class ImportantNotice extends StatelessWidget {
         children: [
           Text(
             AppStrings.importantPolices,
-            style: AppStyle.purple14.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppStyle.purple14w600,
           ),
           10.height,
           Text(
             AppStrings.neverBeRude,
-            style: AppStyle.purple12.copyWith(
-              fontWeight: FontWeight.w400,
-            ),
+            style: AppStyle.purple12w400
           ),
           Text(
             AppStrings.neverShare,
-            style: AppStyle.purple12.copyWith(
-              fontWeight: FontWeight.w400,
-            ),
+            style: AppStyle.purple12w400
           ),
           10.height,
-          Text(
+          /*Text(
             AppStrings.showMore,
             style: AppStyle.purple12.copyWith(
               color: AppColors.lightGreen,
               fontWeight: FontWeight.w400,
             ),
-          ),
+          ),*/
         ],
       ),
     );

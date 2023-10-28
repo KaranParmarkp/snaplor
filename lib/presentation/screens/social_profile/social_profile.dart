@@ -86,7 +86,7 @@ class _SocialProfileState extends State<SocialProfile> {
             4.height,
             Text(
               provider.userModel!.description ?? provider.userModel!.specialization.join(", ").toCapitalized(),
-              style: AppStyle.grey12.copyWith(color: AppColors.hintGrey2),
+              style: AppStyle.greyHint12,
               overflow: TextOverflow.ellipsis,
               maxLines: 3,
             ),
@@ -200,10 +200,7 @@ class TabBarBox extends StatelessWidget {
                 10.width,
                 Text(
                   "1500",
-                  style: AppStyle.purple14.copyWith(
-                    color:
-                        selected ? AppColors.colorPrimary : AppColors.hintGrey,
-                  ),
+                  style: selected ? AppStyle.purple14 : AppStyle.hintGray14,
                 )
               ],
             ),

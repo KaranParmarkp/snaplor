@@ -143,10 +143,7 @@ class MessageText extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
         child: Text(
           text,
-          style: AppStyle.black12.copyWith(
-              color: messageType == MessageType.sender
-                  ? AppColors.white
-                  : AppColors.black),
+          style: messageType == MessageType.sender ? AppStyle.white12w500 : AppStyle.black12,
         ),
       ),
     );

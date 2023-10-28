@@ -53,10 +53,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               ),
                               Text(
                                 "${context.read<AuthProvider>().userModel?.lifeTimeEarnings}",
-                                style: AppStyle.purple14.copyWith(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: AppStyle.purple40Bold,
                               ),
                             ],
                           ),
@@ -89,10 +86,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               ),
                               Text(
                                 "${context.read<AuthProvider>().userModel?.balanceAmount}",
-                                style: AppStyle.purple14.copyWith(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: AppStyle.purple30Bold,
                               ),
                             ],
                           ),
@@ -161,8 +155,7 @@ class WalletTransactionCard extends StatelessWidget {
                     style: AppStyle.black14),
                 Text(
                   "${DateTimeHelper.dateMonthWithTime(model.createdAt)}",
-                  style: AppStyle.grey12.copyWith(
-                      color: AppColors.greyDark),
+                  style: AppStyle.grayDark12
                 ),
               ],
             ),
@@ -171,17 +164,16 @@ class WalletTransactionCard extends StatelessWidget {
               children: [
                 Text(
                   model.transactionType==TransactionType.add ? "+" : "-" ,
-                  style: AppStyle.black16.copyWith(
+                  style: model.transactionType==TransactionType.add ? AppStyle.lightGreen16 : AppStyle.redMain16,
+                  /*style: AppStyle.black16.copyWith(
                       color: model.transactionType==TransactionType.add ? AppColors.lightGreen: AppColors.red,
-                      fontWeight: FontWeight.w500),
+                      fontWeight: FontWeight.w500),*/
                 ),
                 2.width,
                 Rupee(removeSpace: true,fontSize: 16, color: model.transactionType==TransactionType.add ? AppColors.lightGreen:AppColors.red),
                 Text(
                   model.amount.toString(),
-                  style: AppStyle.black16.copyWith(
-                      color: model.transactionType==TransactionType.add ? AppColors.lightGreen:AppColors.red,
-                      fontWeight: FontWeight.w500),
+                  style: model.transactionType==TransactionType.add ? AppStyle.lightGreen16 : AppStyle.redMain16,
                 )
               ],
             )
