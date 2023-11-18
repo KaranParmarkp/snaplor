@@ -21,6 +21,7 @@ class OrderModel {
   final int? totalShippingDiscount;
   final int? totalDiscount;
   final String? callRequestId;
+  final String? chatRequestId;
   final dynamic astrologerAmount;
   final dynamic adminAmount;
   final String? paymentStatus;
@@ -33,6 +34,8 @@ class OrderModel {
   final int? v;
   final int? pricePerMinute;
   final IntakeForm? intakeForm;
+  final ReviewOrder? reviewOrder;
+  final String? voiceCallUrl;
 
   OrderModel({
     this.id,
@@ -47,6 +50,7 @@ class OrderModel {
     this.totalShippingDiscount,
     this.totalDiscount,
     this.callRequestId,
+    this.chatRequestId,
     this.astrologerAmount,
     this.adminAmount,
     this.paymentStatus,
@@ -56,7 +60,7 @@ class OrderModel {
     this.products,
     this.createdAt,
     this.updatedAt,
-    this.v,this.pricePerMinute,this.intakeForm
+    this.v,this.pricePerMinute,this.intakeForm,this.reviewOrder,this.voiceCallUrl
   });
 
   OrderModel copyWith({
@@ -72,6 +76,7 @@ class OrderModel {
     int? totalShippingDiscount,
     int? totalDiscount,
     String? callRequestId,
+    String? chatRequestId,
     int? astrologerAmount,
     int? adminAmount,
     String? paymentStatus,
@@ -83,6 +88,9 @@ class OrderModel {
     DateTime? updatedAt,
     int? v,
     IntakeForm? intakeForm,
+   ReviewOrder? reviewOrder,
+   String? voiceCallUrl,
+
   }) =>
       OrderModel(
         id: id ?? this.id,
@@ -97,6 +105,7 @@ class OrderModel {
         totalShippingDiscount: totalShippingDiscount ?? this.totalShippingDiscount,
         totalDiscount: totalDiscount ?? this.totalDiscount,
         callRequestId: callRequestId ?? this.callRequestId,
+        chatRequestId: chatRequestId ?? this.chatRequestId,
         astrologerAmount: astrologerAmount ?? this.astrologerAmount,
         adminAmount: adminAmount ?? this.adminAmount,
         paymentStatus: paymentStatus ?? this.paymentStatus,
@@ -107,7 +116,9 @@ class OrderModel {
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         v: v ?? this.v,
-          intakeForm : intakeForm ?? this.intakeForm
+          intakeForm : intakeForm ?? this.intakeForm,
+          reviewOrder : reviewOrder ?? this.reviewOrder,
+          voiceCallUrl : voiceCallUrl ?? this.voiceCallUrl,
       );
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
@@ -123,6 +134,7 @@ class OrderModel {
     totalShippingDiscount: json["total_shipping_discount"],
     totalDiscount: json["total_discount"],
     callRequestId: json["call_request_id"],
+    chatRequestId: json["chat_request_id"],
     astrologerAmount: json["astrologer_amount"],
     adminAmount: json["admin_amount"],
     paymentStatus: json["payment_status"],
@@ -135,6 +147,9 @@ class OrderModel {
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     v: json["__v"],
     intakeForm: json["intake_form"] == null ? null : IntakeForm.fromJson(json["intake_form"]),
+    reviewOrder: json["review"] == null ? null : ReviewOrder.fromJson(json["review"]),
+    voiceCallUrl: json["uri"],
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -167,28 +182,33 @@ class Astrologer {
   final String? id;
   final String? name;
   final String? gender;
+  final String? image;
 
   Astrologer({
     this.id,
     this.name,
     this.gender,
+    this.image,
   });
 
   Astrologer copyWith({
     String? id,
     String? name,
     String? gender,
+    String? image,
   }) =>
       Astrologer(
         id: id ?? this.id,
         name: name ?? this.name,
         gender: gender ?? this.gender,
+        image: image ?? this.image,
       );
 
   factory Astrologer.fromJson(Map<String, dynamic> json) => Astrologer(
     id: json["id"],
     name: json["name"],
     gender: json["gender"],
+    image: json["image"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -238,4 +258,18 @@ class IntakeForm {
     "occupation": occupation,
     "topic_of_concern": topicOfConcern,
   };
+}
+class ReviewOrder {
+  String? id;
+  String? orderId;
+  int? rating;
+  String? message;
+  ReviewOrder({this.id,this.orderId,this.rating,this.message});
+  factory ReviewOrder.fromJson(Map<String, dynamic> json) => ReviewOrder(
+    id: json["_id"],
+    orderId: json["order_id"],
+    rating: json["rating"],
+    message: json["message"],
+  );
+
 }
