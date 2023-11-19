@@ -13,7 +13,7 @@ class JyotisheeSocial extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-          title: AppStrings.jyotisheeSocial, showProfile: true,),
+          title: AppStrings.jyotisheeSocial, showProfile: true,showBack: false,),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: AppColors.colorPrimary, onPressed: () {

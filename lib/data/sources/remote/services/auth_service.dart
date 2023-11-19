@@ -111,5 +111,11 @@ class AuthService extends ApiService {
     return putData(ApiConfig.upload+"${MyApp.appContext.read<AuthProvider>().userModel!.id}/");
   }
 
+  Future<Response<GenericResponse>> callCount() async {
+    return getData(ApiConfig.callCount);
+  }
+  Future<Response<GenericResponse>> chatCount() async {
+    return getData(ApiConfig.chatCount);
+  }
 
 }

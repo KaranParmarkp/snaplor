@@ -402,4 +402,21 @@ class AuthProvider extends BaseProvider {
     }
   }
 
+  int _callChatCount = 0;
+  int get callChatCount =>_callChatCount;
+  static String callChatCountKey = 'callChatCountChatKey';
+  getCallChatCount({required String id}) async {
+    _callChatCount = 0;
+    notifyListeners();
+    try {
+      final callCount = await _authRepo.callCount();
+      final chatCount = await _authRepo.chatCount();
+      notifyListeners();
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: callChatCountKey,errorMessage:  e.toString(),showToast: true);
+    }
+  }
+
 }

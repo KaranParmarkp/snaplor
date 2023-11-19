@@ -199,4 +199,24 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
     );
   }
 
+  @override
+  Future<GenericResponse> callCount() {
+    return serviceHandler(
+      serviceFunction: () => service.callCount(),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+  @override
+  Future<GenericResponse> chatCount() {
+    return serviceHandler(
+      serviceFunction: () => service.chatCount(),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+
+
 }

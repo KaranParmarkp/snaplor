@@ -343,8 +343,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-                      20.height,
-                      SquareBoxAvatar(image: AppSvg.user, text:"Jyotishee Social" /*AppStrings.jyotisheeSocial*/,onTap: () => context.push(JyotisheeSocial()),),
+                      //20.height,
+                      //SquareBoxAvatar(image: AppSvg.user, text:"Jyotishee Social" /*AppStrings.jyotisheeSocial*/,onTap: () => context.push(JyotisheeSocial()),),
                       Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: Row(
@@ -359,7 +359,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding:  EdgeInsets.only(top: 20,bottom: context.read<AuthProvider>().currentChat.isNotNull ?  140:20),
                         child: Row(
                           children: [
-                            Expanded(child: SquareBoxAvatar(image: AppSvg.bill, text: AppStrings.waitList,onTap: () => context.push(WaitListScreen()),)),
+                            Expanded(child: SquareBoxAvatar(image: AppSvg.bill, text: AppStrings.waitList,onTap: () => context.push(WaitListScreen()),badgeCount: context.read<AuthProvider>().callChatCount,)),
                             Expanded(child: SquareBoxAvatar(image: AppSvg.invoice, text: AppStrings.reviews,onTap: () => context.push(ReviewsScreen()),)),
                             Expanded(child: SquareBoxAvatar(image: AppSvg.callHelp, text: AppStrings.supports,onTap: () => context.push(ChatSupportScreen()),)),
                           ],

@@ -1,14 +1,12 @@
-import 'package:audioplayers/audioplayers.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
-import 'package:audioplayers/audioplayers.dart';
 import '../../../data/models/models.dart';
 import '../../../data/providers/providers.dart';
+import 'package:just_audio/just_audio.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -126,7 +124,6 @@ class _OrderCardState extends State<OrderCard> {
   int maxduration = 100;
   int currentpos = 0;
   String currentpostlabel = "00:00";
-  String audioasset = "assets/audio/red-indian-music.mp3";
   bool isplaying = false;
   bool audioplayed = false;
 
@@ -134,7 +131,7 @@ class _OrderCardState extends State<OrderCard> {
 
   @override
   void initState() {
-    Future.delayed(Duration.zero, () async {
+    /*Future.delayed(Duration.zero, () async {
       player.onDurationChanged.listen((Duration d) {
         //get the duration of audio
         maxduration = d.inMilliseconds;
@@ -187,7 +184,72 @@ class _OrderCardState extends State<OrderCard> {
       }
 
     });
+    */
     super.initState();
+    initSetup();
+  }
+
+  initSetup() async {
+    setAudio(widget.model.voiceCallUrl??"http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3");
+    //setAudio("http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3");
+    //final duration = await player.setUrl("http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    player.stop();
+    player.dispose();
+  }
+
+  String currentTime = "", endTime = "";
+  double minDuration = 0, maxDuration = 0, currentDuration = 0;
+  bool isLoadAudio = false;
+  bool isPlaying = false;
+  bool isRepeating = false;
+
+  void setAudio(String url) async {
+    setState(() => isLoadAudio = true);
+    await player.setUrl(url);
+    currentDuration = minDuration;
+    maxDuration = player.duration!.inMilliseconds.toDouble();
+    setState(() {
+      currentTime = getDuration(currentDuration);
+      endTime = getDuration(maxDuration);
+    });
+    isPlaying = false;
+    //changeStatusPlaying();
+    player.positionStream.listen((duration) {
+      currentDuration = duration.inMilliseconds.toDouble();
+      setState(() => currentTime = getDuration(currentDuration));
+    });
+    setState(() => isLoadAudio = false);
+    player.playerStateStream.listen((state) {
+      if (state.processingState == ProcessingState.completed) {
+        setState(() {
+          currentDuration = minDuration;
+          if (isRepeating == true) {
+            isPlaying = true;
+          } else {
+            isPlaying = false;
+            isRepeating = false;
+          }
+        });
+      }
+    });
+  }
+
+  void changeStatusPlaying() {
+    setState(() => isPlaying = !isPlaying);
+    isPlaying ? player.play() : player.pause();
+    currentDuration == maxDuration ? isPlaying : !isPlaying;
+  }
+
+  String getDuration(double value) {
+    Duration duration = Duration(milliseconds: value.round());
+    return [duration.inHours, duration.inMinutes, duration.inSeconds]
+        .map((e) => e.remainder(60).toString().padLeft(2, "0"))
+        .join(":");
   }
 
   @override
@@ -262,45 +324,43 @@ class _OrderCardState extends State<OrderCard> {
             ),
             if (widget.type == ComType.call)
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
-                    currentpostlabel + " ",
-                    style: AppStyle.purple14w600,
-                  ),
                   Expanded(
-                    child: Container(
-                        child: Slider(
-                      value: double.parse(currentpos.toString()),
-                      min: 0,
-                      max: double.parse(maxduration.toString()),
-                      divisions: maxduration,
-                      label: currentpostlabel,
-                      activeColor: AppColors.colorPrimary,
-                      thumbColor: AppColors.colorPrimary,
-                      inactiveColor: AppColors.colorPrimary.withOpacity(0.50),
-                      onChanged: (double value) async {
-                        int seekval = value.round();
-                        await player
-                            .seek(Duration(milliseconds: seekval))
-                            .then((value) {
-                          currentpos = seekval;
-                          /*if(value == 1){ //seek successful
-                              currentpos = seekval;
-                            }else{
-                              print("Seek unsuccessful.");
-                            }*/
-                        });
+                    child: StreamBuilder(
+                        stream: player.positionStream,
+                        builder: (context, snapshot) {
+                          return ProgressBar(
+                            progress:
+                                snapshot.data ?? const Duration(seconds: 0),
+                            total:
+                                player.duration ?? const Duration(seconds: 0),
+                            thumbColor: AppColors.colorPrimary,
+                            baseBarColor:
+                                AppColors.colorPrimary.withOpacity(0.50),
+                            bufferedBarColor:
+                                AppColors.colorPrimary.withOpacity(0.70),
+                            progressBarColor: AppColors.colorPrimary,
+                            timeLabelTextStyle: AppStyle.purple14w600,
+                            onSeek: (duration) {
+                              player.seek(duration);
+                              setState(() {});
+                            },
+                          );
+                        }),
+                  ),
+                  10.width,
+                  InkWell(
+                      onTap: () async {
+                        if (!player.playing) await player.play();
+                        if (player.playing) await player.pause();
                       },
-                    )),
-                  ),
-                  IconButton(
-                    icon: Icon(isplaying ? Icons.pause:Icons.play_arrow),
-                    color: AppColors.colorPrimary,
-                    onPressed: () async {
-                      await player.play(UrlSource('http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3'));
-                      //if(!isplaying)await player.pause();
-                    },
-                  ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 10,right: 0,left: 10),
+                        child: Icon(
+                            player.playing ? Icons.pause : Icons.play_arrow,color: AppColors.colorPrimary,),
+                      )),
                 ],
               ),
             Padding(
