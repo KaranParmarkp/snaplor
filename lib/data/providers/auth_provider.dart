@@ -327,7 +327,7 @@ class AuthProvider extends BaseProvider {
     setLoading(taskName: getMessagesKey,showDialogLoader: true);
     try {
       setData(taskName: getMessagesKey,data: await _authRepo.getMessages(id));
-      _socket?.on('privateMessage', (message) {
+      _socket?.on(ApiConfig.privateMessage, (message) {
         debugPrint("privateMessage");
         print(message);
         if(message!=null)data[getMessagesKey].add(MessageModel.fromJson(message  as Map<String, dynamic>));
@@ -360,7 +360,7 @@ class AuthProvider extends BaseProvider {
 
   sendMessage({required String chatId,required String recipientId,required String message}){
     Map request = {"chat_id":chatId,"recipient_id":recipientId,"message":message};
-    _socket?.emitWithAck('privateMessage', request,ack:(response){
+    _socket?.emitWithAck(ApiConfig.privateMessage, request,ack:(response){
       print(response);
       print(response is Map);
       //var data = json.decode(response);

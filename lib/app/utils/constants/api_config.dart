@@ -33,5 +33,9 @@ class ApiConfig {
   static const String addPost = "posts";
   static const String myPost = "posts/astrologers";
 
+  // Socket
+  static const String privateMessage = "privateMessage";
+
+
 
 }
