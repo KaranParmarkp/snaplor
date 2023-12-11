@@ -4,7 +4,6 @@ export 'app_button.dart';
 export 'app_chips.dart';
 export 'app_container.dart';
 export 'app_divider.dart';
-export 'app_logo.dart';
 export 'app_textfield.dart';
 export 'app_webview_screen.dart';
 export 'circle_network_image_avatar.dart';

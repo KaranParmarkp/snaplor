@@ -48,7 +48,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDAeu5RqUdk8AlH7aZkBaX9mMkMU42sdmE',
-    appId: '1:1052770902003:android:04578ad5dc6f97a0c53c86',
+    appId: '1:1052770902003:android:d9109cd89031bf36c53c86',
     messagingSenderId: '1052770902003',
     projectId: 'jyotishee-f390d',
     storageBucket: 'jyotishee-f390d.appspot.com',
@@ -56,12 +56,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyATk485ppqyaM6E97J0mnOSne_btywsc8U',
-    appId: '1:1052770902003:ios:91dc9b56ad6852b2c53c86',
+    appId: '1:1052770902003:ios:5d8f01947d258e5fc53c86',
     messagingSenderId: '1052770902003',
     projectId: 'jyotishee-f390d',
     storageBucket: 'jyotishee-f390d.appspot.com',
-    iosClientId: '1052770902003-9t4avqklaqiici9ebe9ec43u03sg2pha.apps.googleusercontent.com',
-    iosBundleId: 'com.jyotishee.jyotishee',
+    iosBundleId: 'com.snaplor',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(

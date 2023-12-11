@@ -27,9 +27,10 @@ class _SplashScreenState extends State<SplashScreen> {
     return Container(
         width: double.infinity,
         color: AppColors.white,
-        child: Padding(
-          padding: EdgeInsets.only(bottom: 100),
-          child: AppLogo(),
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 300),
+          padding:  EdgeInsets.symmetric(horizontal: 65),
+          child: SvgImage(image: AppSvg.appLogoRound),
         ),
       )
 

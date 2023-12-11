@@ -61,6 +61,8 @@ class AppSvg{
   static const String sms = "assets/icons/message-square-typing.svg";
   static const String mail = "assets/icons/mail-03.svg";
   static const String edit = "assets/icons/edit.svg";
+  static const String appLogo = "assets/icons/app_logo.svg";
+  static const String appLogoRound = "assets/icons/app_logo_round.svg";
 
 
 

@@ -94,7 +94,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Jyotishee',
+      title: 'Snaplor',
       debugShowCheckedModeBanner: false,
       navigatorKey: MyApp.navKey,
       builder: EasyLoading.init(),

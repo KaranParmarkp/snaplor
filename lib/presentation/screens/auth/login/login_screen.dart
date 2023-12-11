@@ -40,9 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       50.height,
-                      AppLogo(
+                      /*AppLogo(
                         whiteLogo: true,
-                      ),
+                      ),*/
+                      //SvgImage(image: AppSvg.appLogo,size: 200,),
                       Spacer(),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),

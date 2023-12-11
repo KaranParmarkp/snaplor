@@ -29,6 +29,49 @@
             {
               "client_id": "1052770902003-5bvian2haolcfeurqb1ftc8ehi6uhpi1.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1052770902003-9t4avqklaqiici9ebe9ec43u03sg2pha.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jyotishee.jyotishee"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1052770902003:android:d9109cd89031bf36c53c86",
+        "android_client_info": {
+          "package_name": "com.snaplor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1052770902003-5bvian2haolcfeurqb1ftc8ehi6uhpi1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAeu5RqUdk8AlH7aZkBaX9mMkMU42sdmE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1052770902003-5bvian2haolcfeurqb1ftc8ehi6uhpi1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1052770902003-9t4avqklaqiici9ebe9ec43u03sg2pha.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jyotishee.jyotishee"
+              }
             }
           ]
         }
