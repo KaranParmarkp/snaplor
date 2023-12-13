@@ -42,9 +42,9 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
   }
 
   @override
-  Future<GenericResponse> likePost(String id) {
+  Future<GenericResponse> likePost(String id,bool isLike) {
     return serviceHandler(
-      serviceFunction: () => service.likePost(id),
+      serviceFunction: () => service.likePost(id,isLike),
       successFunction: (response) async {
         return response;
       },

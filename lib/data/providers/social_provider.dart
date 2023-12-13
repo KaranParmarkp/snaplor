@@ -50,10 +50,10 @@ class SocialProvider extends BaseProvider {
 
   // Like Post api
   static String likePostKey = 'likePostKey';
-  likePost({required String id,bool showLoader=false}) async {
+  likePost({required String id,bool showLoader=false,bool isLike=false}) async {
     setLoading(taskName: likePostKey,showDialogLoader: showLoader);
     try {
-      setData(taskName: likePostKey,data: await _repository.likePost(id),hideLoader: showLoader);
+      setData(taskName: likePostKey,data: await _repository.likePost(id,isLike),hideLoader: showLoader);
     } catch (e, s) {
       e.printDebug;
       s.printDebug;

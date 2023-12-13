@@ -25,8 +25,8 @@ class SocialService extends ApiService {
 
   }
 
-  Future<Response<GenericResponse>> likePost(String id) async {
-    return putData(ApiConfig.addPost + "/" + id + "/like");
+  Future<Response<GenericResponse>> likePost(String id,bool isLike) async {
+    return isLike ? putData(ApiConfig.addPost + "/" + id + "/like") : putData(ApiConfig.addPost + "/" + id + "/unlike");
   }
 
   Future<Response<GenericResponse>> commentPost(

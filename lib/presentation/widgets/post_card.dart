@@ -219,7 +219,7 @@ class LikeCommentShare extends StatelessWidget {
             SvgImage(
                 image: model.isLiked.isTrue ? AppSvg.like: AppSvg.unLike,size: 24,
                 onTap: () async {
-                  await provider.likePost(id: model.id.toString());
+                  await provider.likePost(id: model.id.toString(),isLike: model.isLiked.isFalse);
                   if(provider.getSuccessStatus(taskName: SocialProvider.likePostKey) && !fromMyPost)provider.getPost(refresh: false,showMainLoader: false);
                   if(provider.getSuccessStatus(taskName: SocialProvider.likePostKey) && fromMyPost)provider.getMyPost(refresh: false,type: model.type);
                 }),
