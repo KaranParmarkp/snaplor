@@ -125,12 +125,16 @@ class User {
   final String? name;
   final String? image;
   final bool? isVerified;
+  final dynamic order;
+  final String? experience;
 
   User({
     this.id,
     this.name,
     this.image,
     this.isVerified,
+    this.order,
+    this.experience
   });
 
   User copyWith({
@@ -138,18 +142,24 @@ class User {
     String? name,
     String? image,
     bool? isVerified,
+    dynamic order,
+    String? experience
   }) =>
       User(
         id: id ?? this.id,
         name: name ?? this.name,
         image: image ?? this.image,
         isVerified: isVerified ?? this.isVerified,
+        order: order ?? this.order,
+        experience: experience ?? this.experience,
       );
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
     name: json["name"] ?? json["first_name"],
     image: json["image"] ?? "",
+    order: json["order"] ?? "",
+    experience: json["experience"] ?? "",
     isVerified: json["is_verified"],
   );
 

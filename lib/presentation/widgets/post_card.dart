@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:video_player/video_player.dart';
 
 import '../../app/utils/utils.dart';
 import '../screens/social_profile/comments_screen.dart';
 import 'widgets.dart';
-
-class PostCard extends StatefulWidget {
+/// Video post is commented in this phase.
+class PostCard extends StatelessWidget {
   const PostCard(
       {super.key,
       this.showShadow = false,
@@ -20,7 +19,7 @@ class PostCard extends StatefulWidget {
   final SocialPostModel model;
   final bool fromMyPost;
 
-  @override
+/*  @override
   State<PostCard> createState() => _PostCardState();
 }
 
@@ -30,8 +29,8 @@ class _PostCardState extends State<PostCard> {
   @override
   void initState() {
     super.initState();
-    if(widget.model.type==PostType.video)_controller = VideoPlayerController.networkUrl(Uri.parse(
-        widget.model.videoUrl!))
+    if(model.type==PostType.video)_controller = VideoPlayerController.networkUrl(Uri.parse(
+        model.videoUrl!))
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
@@ -42,19 +41,20 @@ class _PostCardState extends State<PostCard> {
     super.dispose();
     _controller?.dispose();
   }
+  */
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration:
-          widget.showShadow ? AppDecoration.whiteShadowRounded : BoxDecoration(),
+          showShadow ? AppDecoration.whiteShadowRounded : BoxDecoration(),
       padding: EdgeInsets.all(15),
       margin:
-          EdgeInsets.symmetric(horizontal: 12, vertical: widget.showShadow ? 10 : 2),
+          EdgeInsets.symmetric(horizontal: 12, vertical: showShadow ? 10 : 2),
       child: Column(
         children: [
           Row(
             children: [
-              UserDP(image: widget.model.user?.image),
+              UserDP(image: model.user?.image),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 14),
@@ -62,10 +62,10 @@ class _PostCardState extends State<PostCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       NameVerified(
-                          name: widget.model.user?.name,
-                          verified: widget.model.user?.isVerified ?? false),
+                          name: model.user?.name,
+                          verified: model.user?.isVerified ?? false),
                       Text(
-                        "pending Exp : 10+ years | 125486 Orders",
+                        "Exp : ${model.user?.experience.toStringOrEmpty} years | ${model.user?.order} Orders",
                         style: AppStyle.grey12.copyWith(
                             color: AppColors.hintGrey2,
                             fontWeight: FontWeight.w500,
@@ -113,7 +113,7 @@ class _PostCardState extends State<PostCard> {
               )
             ],
           ),
-          if (widget.model.type != PostType.text)
+          if (model.type != PostType.text)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Stack(
@@ -121,14 +121,14 @@ class _PostCardState extends State<PostCard> {
                 fit: StackFit.passthrough,
                 clipBehavior: Clip.none,
                 children: [
-                  if(widget.model.type==PostType.image)SquareNetworkImageAvatar(
+                  if(model.type==PostType.image)SquareNetworkImageAvatar(
                     radius: 12,
                     height: 150,
                     width: double.infinity,
                     image:
                         "https://images.unsplash.com/photo-1567324216289-97cc4134f626?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cG9ydHJhaXQlMjBtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80",
                   ),
-                  if(widget.model.type==PostType.video) Container(
+                  /*if(model.type==PostType.video) Container(
                     height: 150,
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -143,34 +143,34 @@ class _PostCardState extends State<PostCard> {
                       ),
                     ) : Container(),
                   ),
-                  if (widget.model.type == PostType.video) InkWell(
+                  if (model.type == PostType.video) InkWell(
                       onTap: () => !_controller!.value.isPlaying ? _controller!.play() : _controller!.pause(),
-                      child: PlayButton(playing: _controller!.value.isPlaying,))
+                      child: PlayButton(playing: _controller!.value.isPlaying,))*/
                 ],
               ),
             ),
-          if (widget.model.type != PostType.text)
-            LikeCommentShare(showSave: widget.showSave, model: widget.model),
+          if (model.type != PostType.text)
+            LikeCommentShare(showSave: showSave, model: model),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: TextHashtag(
-                name: widget.model.type != PostType.text
-                    ? widget.model.user?.name ?? "Madhusudan"
+                name: model.type != PostType.text
+                    ? model.user?.name ?? "Madhusudan"
                     : null,
-                text: widget.model.content ??
+                text: model.content ??
                     ""),
           ),
           //like comment and share widget
-          if (widget.model.type == PostType.text)
+          if (model.type == PostType.text)
             LikeCommentShare(
-              showSave: widget.showSave,
-              model: widget.model,
+              showSave: showSave,
+              model: model,
             ),
           10.height,
           Align(
             alignment: Alignment.topLeft,
             child: Text(
-              "View all ${widget.model.totalComment} comments",
+              "View all ${model.totalComment} comments",
               style: AppStyle.grey12.copyWith(
                   color: AppColors.hintGrey1,
                   fontWeight: FontWeight.w500,
@@ -181,8 +181,8 @@ class _PostCardState extends State<PostCard> {
           Align(
             alignment: Alignment.topLeft,
             child: Text(
-              widget.model.createdAt.isNotNull
-                  ? widget.model.createdAt!.formatElapsedTimeString()
+              model.createdAt.isNotNull
+                  ? model.createdAt!.formatElapsedTimeString()
                   : "",
               style: AppStyle.grey12.copyWith(
                   color: AppColors.hintGrey2,
@@ -217,12 +217,11 @@ class LikeCommentShare extends StatelessWidget {
           children: [
             //TODO : updating icon on like
             SvgImage(
-                image: AppSvg.unLike,
-                onTap: () {
-                  provider.likePost(id: model.id.toString());
-                  if(provider.getSuccessStatus(taskName: SocialProvider.likePostKey) && !fromMyPost)provider.getPost(refresh: true);
-                  if(provider.getSuccessStatus(taskName: SocialProvider.likePostKey) && fromMyPost)provider.getMyPost(refresh: true,type: model.type);
-
+                image: model.isLiked.isTrue ? AppSvg.like: AppSvg.unLike,size: 24,
+                onTap: () async {
+                  await provider.likePost(id: model.id.toString());
+                  if(provider.getSuccessStatus(taskName: SocialProvider.likePostKey) && !fromMyPost)provider.getPost(refresh: false,showMainLoader: false);
+                  if(provider.getSuccessStatus(taskName: SocialProvider.likePostKey) && fromMyPost)provider.getMyPost(refresh: false,type: model.type);
                 }),
             10.width,
             Text(
@@ -238,7 +237,7 @@ class LikeCommentShare extends StatelessWidget {
           },
           child: Row(
             children: [
-              SvgImage(image: AppSvg.msg),
+              SvgImage(image: AppSvg.msg,size: 24,),
               10.width,
               Text(
                 "${model.totalComment ?? 0}",
@@ -250,7 +249,7 @@ class LikeCommentShare extends StatelessWidget {
         20.width,
         Row(
           children: [
-            SvgImage(image: AppSvg.share),
+            SvgImage(image: AppSvg.share,size: 24,),
             10.width,
             Text(
               "${model.totalShare ?? 0}",

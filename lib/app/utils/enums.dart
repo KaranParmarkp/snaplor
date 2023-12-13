@@ -1,7 +1,8 @@
 enum PostType{
   image,
   video,
-  text
+  text,
+  all
 }
 enum MessageType {
   sender,receiver

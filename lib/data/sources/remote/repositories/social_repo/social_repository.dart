@@ -8,4 +8,6 @@ abstract class SocialRepository{
   Future<GenericResponse> likePost(String id);
   Future<GenericResponse> commentPost(String id,String message,String? commentID);
   Future<List<PostCommentModel>> getComments(String id,);
+  Future<GenericResponse> deleteComment(String id);
+  Future<GenericResponse> deletePost(String id);
 }

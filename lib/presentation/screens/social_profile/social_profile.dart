@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:jyotishee/presentation/screens/social_profile/jyotishee_social.dart';
-
 import '../../widgets/widgets.dart';
 import 'add_post_screen.dart';
 
@@ -17,12 +15,12 @@ class SocialProfile extends StatefulWidget {
 class _SocialProfileState extends State<SocialProfile> {
   int selectedIndex = 0;
 
-  _onTabTap(int index) {
+  /*_onTabTap(int index) {
     selectedIndex = index;
     context.read<SocialProvider>().getMyPost(type: selectedIndex==0 ? PostType.image : selectedIndex==1 ? PostType.video : PostType.text);
     setState(() {});
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
@@ -92,6 +90,19 @@ class _SocialProfileState extends State<SocialProfile> {
             ),
             10.height,
             Expanded(
+              child: AppConsumer<SocialProvider, List<SocialPostModel>>(
+                taskName: SocialProvider.getMyPostKey,
+                //load: (provider) => provider.getMyPost(type: selectedIndex==0 ? PostType.image : selectedIndex==1 ? PostType.video : PostType.text),
+                load: (provider) => provider.getMyPost(type: PostType.all),
+                successBuilder: (data, provider) => ListView.builder(
+                  itemBuilder: (context, index) => PostCard(showShadow: true,model: data[index],fromMyPost: true),
+                  itemCount: data.length,
+                  shrinkWrap: true,
+                ),
+              ),
+            ),
+            /// old flow commented showing posts in grids.
+            /*Expanded(
               child: Column(
                 children: [
                   Row(
@@ -117,7 +128,7 @@ class _SocialProfileState extends State<SocialProfile> {
                     ],
                   ),
                   10.height,
-                  /*if (selectedIndex == 0 || selectedIndex == 1)
+                  *//*if (selectedIndex == 0 || selectedIndex == 1)
                     Expanded(
                       child: GridView.builder(
                         shrinkWrap: true,
@@ -142,12 +153,12 @@ class _SocialProfileState extends State<SocialProfile> {
                         ),
                       ),
                     ),
-                  */
-
+                  *//*
                   Expanded(
                       child: AppConsumer<SocialProvider, List<SocialPostModel>>(
                         taskName: SocialProvider.getMyPostKey,
-                        load: (provider) => provider.getMyPost(type: selectedIndex==0 ? PostType.image : selectedIndex==1 ? PostType.video : PostType.text),
+                        //load: (provider) => provider.getMyPost(type: selectedIndex==0 ? PostType.image : selectedIndex==1 ? PostType.video : PostType.text),
+                        load: (provider) => provider.getMyPost(type: PostType.all),
                         successBuilder: (data, provider) => ListView.builder(
                           itemBuilder: (context, index) => PostCard(showShadow: true,model: data[index],fromMyPost: true),
                           itemCount: data.length,
@@ -158,7 +169,7 @@ class _SocialProfileState extends State<SocialProfile> {
 
                 ],
               ),
-            )
+            )*/
           ],
         ),
       ),

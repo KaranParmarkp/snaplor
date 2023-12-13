@@ -73,4 +73,23 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
     );
   }
 
+  @override
+  Future<GenericResponse> deleteComment(String id) {
+    return serviceHandler(
+      serviceFunction: () => service.deleteComment(id),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+
+  @override
+  Future<GenericResponse> deletePost(String id) {
+    return serviceHandler(
+      serviceFunction: () => service.deletePost(id),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
 }
