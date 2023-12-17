@@ -8,9 +8,10 @@ import '../../../data/providers/providers.dart';
 /// T is used for provider whereas K is used for result type like list of model
 class AppConsumer<T extends BaseProvider, K> extends StatefulWidget {
   final Function(T provider) load;
-  final Widget Function(K data,T provider) successBuilder;
+  final Widget Function(K data, T provider) successBuilder;
   final Widget Function(T)? errorBuilder;
   final Widget Function(T)? loaderBuilder;
+  final Widget Function(T)? emptyBuilder;
   final String taskName;
   final bool showError;
   final bool refresh;
@@ -24,6 +25,7 @@ class AppConsumer<T extends BaseProvider, K> extends StatefulWidget {
     this.showError = false,
     this.loaderBuilder,
     this.refresh = true,
+    this.emptyBuilder,
   }) : super(key: key);
 
   @override
@@ -37,11 +39,11 @@ class _AppConsumerState<T extends BaseProvider, K>
   void initState() {
     super.initState();
     //WidgetsBinding.instance!.addPostFrameCallback((_) async {
-     Future.microtask(() async {
-       var _provider = Provider.of<T>(context, listen: false);
-       //await
-       widget.load(_provider);
-     });
+    Future.microtask(() async {
+      var _provider = Provider.of<T>(context, listen: false);
+      //await
+      widget.load(_provider);
+    });
 
     //});
   }
@@ -74,29 +76,28 @@ class _AppConsumerState<T extends BaseProvider, K>
           }
         case Status.Success:
           return RefreshIndicator(
-            onRefresh: () async {
-              if (widget.refresh) await widget.load(_provider);
-            },
-            color: AppColors.black,
-            child: _provider.data[widget.taskName] == null
-                ? ErrorScreen(
-                    error: "No Data Available",
-                  )
-                : _provider.data[widget.taskName] is List &&
-                        _provider.data[widget.taskName].isEmpty
-                    ? ErrorScreen(
-                        error: "No Data Available",
-                      )
-                    :
-            Scrollbar(
-              child: widget.successBuilder(
-                  _provider.data[widget.taskName] as K,_provider),
-            )
-          );
+              onRefresh: () async {
+                if (widget.refresh) await widget.load(_provider);
+              },
+              color: AppColors.black,
+              child: _provider.data[widget.taskName] == null
+                  ? ErrorScreen(
+                      error: "No Data Available",
+                    )
+                  : _provider.data[widget.taskName] is List &&
+                          _provider.data[widget.taskName].isEmpty
+                      ? widget.errorBuilder != null
+                          ? widget.errorBuilder!(_provider)
+                          : ErrorScreen(
+                              error: "No Data Available",
+                            )
+                      : Scrollbar(
+                          child: widget.successBuilder(
+                              _provider.data[widget.taskName] as K, _provider),
+                        ));
         default:
           return SizedBox();
       }
-
     });
   }
 }

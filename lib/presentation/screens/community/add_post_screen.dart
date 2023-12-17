@@ -7,8 +7,8 @@ import '../../../data/providers/providers.dart';
 import '../../widgets/widgets.dart';
 
 class AddPostScreen extends StatefulWidget {
-  const AddPostScreen({super.key});
-
+  const AddPostScreen({super.key, required this.fromMyPost});
+  final bool fromMyPost;
   @override
   State<AddPostScreen> createState() => _AddPostScreenState();
 }
@@ -33,7 +33,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 20,right: 15,left: 15),
             child: HeaderTextField(
-              hint: AppStrings.whatsHappening,
+              hint: AppStrings.shareThought,
               focusNode: commentFocus,
               controller: commentController,
               borderRadius: 30,bottomPadding: 0,
@@ -64,15 +64,15 @@ alignment: Alignment.centerLeft,
                   20.width,
                   InkWell(onTap: () =>  showSelectImageSheet(image: true),child: SvgImage(image: AppSvg.addImage)),
                   10.width,
-                  InkWell(onTap: () async => await showSelectImageSheet(image: false),child: SvgImage(image: AppSvg.videoPost)),
-                  10.width,
-                  InkWell(onTap: () async{
+                  //InkWell(onTap: () async => await showSelectImageSheet(image: false),child: SvgImage(image: AppSvg.videoPost)),
+                  //10.width,
+                  /*InkWell(onTap: () async{
                     imageFile = await  AppHelper.pickFile();
                     if(imageFile!=null)fileType=UploadFileType.file;
                     setState(() {
 
                     });
-                  },child: SvgImage(image: AppSvg.attach)),
+                  },child: SvgImage(image: AppSvg.attach)),*/
                   //10.width,
                   //InkWell(onTap: () {},child: SvgImage(image: AppSvg.happy)),
                 ],
@@ -86,7 +86,7 @@ alignment: Alignment.centerLeft,
               if(commentController.isEmpty()){
                 AppHelper.showToast(message: "Please enter text");
               }else{
-                context.read<SocialProvider>().addPost(message: commentController.text,file: imageFile,type: fileType);
+                context.read<SocialProvider>().addPost(message: commentController.text,file: imageFile,type: fileType,fromMyPost: widget.fromMyPost);
                 context.pop();
               }
             },),

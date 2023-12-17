@@ -12,13 +12,14 @@ class CommunityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    backgroundColor: AppColors.white,
       appBar: CustomAppBar(title: AppStrings.community, showProfile: true,showBack: showBack,communityScreen: true,showNotification: true,),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: AppColors.colorPrimary, onPressed: () {
           AppHelper.showBottomSheet(context: context, isScrollControlled: true,padding: EdgeInsets.zero,
               innerPadding: EdgeInsets.zero,
-              child: AddPostScreen());
+              child: AddPostScreen(fromMyPost: false,));
       },
       ),
       body: SizedBox.expand(
@@ -63,8 +64,9 @@ class CommunityScreen extends StatelessWidget {
               child: AppConsumer<SocialProvider, List<SocialPostModel>>(
                 taskName: SocialProvider.getPostKey,
                 load: (provider) => provider.getPost(),
-                successBuilder: (data, provider) => ListView.builder(
-                  itemBuilder: (context, index) => PostCard(showShadow: true,model: data[index]),
+                successBuilder: (data, provider) => ListView.separated(
+                  separatorBuilder: (context, index) => AppDivider(color: AppColors.hintGrey3),
+                  itemBuilder: (context, index) => PostCard(model: data[index]),
                   itemCount: data.length,
                   shrinkWrap: true,
                 ),

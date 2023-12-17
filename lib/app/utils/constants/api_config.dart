@@ -32,6 +32,9 @@ class ApiConfig {
   // Social
   static const String addPost = "posts";
   static const String myPost = "posts/astrologers";
+  static const String deletePost = "posts/deletepost/";
+  static const String deleteComment = "posts/deletecomment/";
+  //static const String deleteComment = "posts/deletecomment/";
 
   // Socket
   static const String privateMessage = "privateMessage";

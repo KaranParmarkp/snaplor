@@ -29,7 +29,7 @@ class _TextHashtagState extends State<TextHashtag> {
 
                 });
               },
-              child: Text(!showFullText ? "...more" : "...less",style: AppStyle.black12.copyWith(color: AppColors.hintGrey2),))
+              child: Text(!showFullText ? "...more" : "...less",style: AppStyle.hintGray12,))
         ],
       ),
     );
@@ -76,7 +76,7 @@ class _TextHashtagState extends State<TextHashtag> {
     if(name.isNotNull){
       textSpans.add(TextSpan(
         text: '$name ',
-        style: AppStyle.black12.copyWith(fontWeight: FontWeight.w700),
+        style: AppStyle.black12w600,
       ));
 
     }

@@ -64,6 +64,8 @@ class AppSvg{
   static const String appLogo = "assets/icons/app_logo.svg";
   static const String appLogoRound = "assets/icons/app_logo_round.svg";
   static const String community = "assets/icons/community.svg";
+  static const String eyeOpen = "assets/icons/eye-open.svg";
+  static const String repost = "assets/icons/repost.svg";
 
 
 

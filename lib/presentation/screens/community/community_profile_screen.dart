@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:jyotishee/presentation/screens/social_profile/jyotishee_social.dart';
+
 
 import '../../widgets/widgets.dart';
 import 'add_post_screen.dart';
@@ -26,93 +26,93 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
-  builder: (context, provider, child) {
-  return Scaffold(
-    backgroundColor: AppColors.white,
-      appBar: CustomAppBar(
-          title: AppStrings.communityProfile, showNotification: true),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: AppColors.colorPrimary, onPressed: () {
-        AppHelper.showBottomSheet(context: context, isScrollControlled: true,padding: EdgeInsets.zero,
-            innerPadding: EdgeInsets.zero,
-            child: AddPostScreen());
-      },
-      ),
-      body: Container(
-        height: context.screenHeight,
-        child: Column(
-          children: [
-            //header
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  10.height,
-                  Row(
+      builder: (context, provider, child) {
+        return Scaffold(
+          backgroundColor: AppColors.white,
+          appBar: CustomAppBar(
+              title: AppStrings.communityProfile, showNotification: true),
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            backgroundColor: AppColors.colorPrimary, onPressed: () {
+            AppHelper.showBottomSheet(context: context, isScrollControlled: true,padding: EdgeInsets.zero,
+                innerPadding: EdgeInsets.zero,
+                child: AddPostScreen(fromMyPost: true,));
+          },
+          ),
+          body: Container(
+            height: context.screenHeight,
+            child: Column(
+              children: [
+                //header
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
                     children: [
-                      CircleNetworkImageAvatar(
-                          radius: 40,
-                          image:
+                      10.height,
+                      Row(
+                        children: [
+                          CircleNetworkImageAvatar(
+                              radius: 40,
+                              image:
                               provider.userModel?.profileImage),
-                      20.width,
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Column(
+                          20.width,
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Text(
-                                  "45",
-                                  style: AppStyle.black14,
+                                Column(
+                                  children: [
+                                    Text(
+                                      "45",
+                                      style: AppStyle.black14,
+                                    ),
+                                    5.height,
+                                    Text(AppStrings.posts),
+                                  ],
                                 ),
-                                5.height,
-                                Text(AppStrings.posts),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "45",
+                                      style: AppStyle.black14,
+                                    ),
+                                    5.height,
+                                    Text(AppStrings.followers),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "45",
+                                      style: AppStyle.black14,
+                                    ),
+                                    5.height,
+                                    Text(AppStrings.following),
+                                  ],
+                                ),
+                                //SizedBox()
                               ],
                             ),
-                            Column(
-                              children: [
-                                Text(
-                                  "45",
-                                  style: AppStyle.black14,
-                                ),
-                                5.height,
-                                Text(AppStrings.followers),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "45",
-                                  style: AppStyle.black14,
-                                ),
-                                5.height,
-                                Text(AppStrings.following),
-                              ],
-                            ),
-                            //SizedBox()
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
+                      10.height,
+                      NameVerified(name: provider.userModel?.name,verified: provider.userModel?.isVerified),
+                      4.height,
+                      Text(
+                        provider.userModel!.description ?? provider.userModel!.specialization.join(", ").toCapitalized(),
+                        style: AppStyle.greyHint12,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                      ),
+                      8.height,
                     ],
                   ),
-                  10.height,
-                  NameVerified(name: provider.userModel?.name,verified: provider.userModel?.isVerified),
-                  4.height,
-                  Text(
-                    provider.userModel!.description ?? provider.userModel!.specialization.join(", ").toCapitalized(),
-                    style: AppStyle.greyHint12,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                  ),
-                  8.height,
-                ],
-              ),
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  /*Row(
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      /*Row(
                     children: [
                       TabBarBox(
                         text: "103",
@@ -133,9 +133,9 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                         onTap: () => _onTabTap(2),
                       ),
                     ],
-                  ),
-                  10.height,
-                  /*if (selectedIndex == 0 || selectedIndex == 1)
+                  ),*/
+                      5.height,
+                      /*if (selectedIndex == 0 || selectedIndex == 1)
                     Expanded(
                       child: GridView.builder(
                         shrinkWrap: true,
@@ -161,29 +161,39 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                       ),
                     ),
                   */
-
-                  Expanded(
-                      child: AppConsumer<SocialProvider, List<SocialPostModel>>(
-                        taskName: SocialProvider.getMyPostKey,
-                        load: (provider) => provider.getMyPost(type: selectedIndex==0 ? PostType.image : selectedIndex==1 ? PostType.video : PostType.text),
-                        successBuilder: (data, provider) => ListView.builder(
-                          padding: EdgeInsets.zero,
-                          itemBuilder: (context, index) => PostCard(showShadow: false,model: data[index],fromMyPost: true,),
-                          itemCount: data.length,
-
+                      AppDivider(),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          AppStrings.yourPost,
+                          style: AppStyle.black12w400,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    ),
+                      AppDivider(),
+                      Expanded(
+                        child: AppConsumer<SocialProvider, List<SocialPostModel>>(
+                          taskName: SocialProvider.getMyPostKey,
+                          load: (provider) => provider.getMyPost(/*type: selectedIndex==0 ? PostType.image : selectedIndex==1 ? PostType.video : PostType.text*/type: PostType.all),
+                          successBuilder: (data, provider) => ListView.separated(
+                            padding: EdgeInsets.zero,
+                            separatorBuilder: (context, index) => AppDivider(color: AppColors.hintGrey3),
+                            itemBuilder: (context, index) => PostCard(model: data[index],fromMyPost: true,),
+                            itemCount: data.length,
 
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
-  },
-);
   }
 }
 
@@ -191,10 +201,10 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
 class TabBarBox extends StatelessWidget {
   const TabBarBox(
       {super.key,
-      required this.text,
-      required this.image,
-      required this.selected,
-      required this.onTap});
+        required this.text,
+        required this.image,
+        required this.selected,
+        required this.onTap});
 
   final String text;
   final String image;

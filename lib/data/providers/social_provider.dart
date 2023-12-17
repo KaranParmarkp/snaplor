@@ -12,10 +12,15 @@ class SocialProvider extends BaseProvider {
 
   // Add Post api
   static String addPostKey = 'addPostKey';
-  addPost({required String message,File? file,UploadFileType? type}) async {
+  addPost({required String message,File? file,UploadFileType? type,required bool fromMyPost}) async {
     setLoading(taskName: addPostKey,showDialogLoader: true);
     try {
-      setData(taskName: addPostKey,data: await _repository.addPost(message),hideLoader: true);
+      setData(taskName: addPostKey,data: await _repository.addPost(message,file),hideLoader: true);
+      if(fromMyPost){
+        getMyPost(refresh: false,);
+      }else{
+      getPost(showMainLoader: false,refresh: false);
+      }
     } catch (e, s) {
       e.printDebug;
       s.printDebug;
@@ -50,10 +55,15 @@ class SocialProvider extends BaseProvider {
 
   // Like Post api
   static String likePostKey = 'likePostKey';
-  likePost({required String id,bool showLoader=false,bool isLike=false}) async {
+  likePost({required String id,bool showLoader=false,bool isLike=false,required bool fromMyPost}) async {
     setLoading(taskName: likePostKey,showDialogLoader: showLoader);
     try {
       setData(taskName: likePostKey,data: await _repository.likePost(id,isLike),hideLoader: showLoader);
+      if(fromMyPost){
+        getMyPost(refresh: false,);
+      }else{
+        getPost(showMainLoader: false,refresh: false);
+      }
     } catch (e, s) {
       e.printDebug;
       s.printDebug;
@@ -67,7 +77,7 @@ class SocialProvider extends BaseProvider {
     setLoading(taskName: commentPostKey,showDialogLoader: true);
     try {
       setData(taskName: commentPostKey,data: await _repository.commentPost(id,message,commentID),hideLoader: true);
-      getComments(id: id,showLoader: true);
+      getComments(id: id,showLoader: false);
     } catch (e, s) {
       e.printDebug;
       s.printDebug;
@@ -75,7 +85,7 @@ class SocialProvider extends BaseProvider {
     }
   }
 
-  // Comments Post api
+  // Comments get api
   static String getCommentsKey = 'getCommentsKey';
   getComments({required String id,bool showLoader = false}) async {
     setLoading(taskName: getCommentsKey,showDialogLoader: showLoader);
@@ -85,6 +95,81 @@ class SocialProvider extends BaseProvider {
       e.printDebug;
       s.printDebug;
       setError(taskName: getCommentsKey,errorMessage:  e.toString(),showToast: true);
+    }
+  }
+
+  // Replies Comments get api
+  static String getCommentsRepliesKey = 'getCommentsRepliesKey';
+  getCommentsReplies({required String id,bool showLoader = false,required String commentId}) async {
+    setLoading(taskName: getCommentsRepliesKey,showDialogLoader: showLoader);
+    try {
+      setData(taskName: getCommentsRepliesKey,data: await _repository.getCommentsReplies(id,commentId),hideLoader: true);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: getCommentsRepliesKey,errorMessage:  e.toString(),showToast: true);
+    }
+  }
+
+
+  // Delete Post api
+  static String deletePostKey = 'deletePostKey';
+  deletePost({required String id,bool showLoader=false,required bool fromMyPost}) async {
+    setLoading(taskName: deletePostKey,showDialogLoader: showLoader);
+    try {
+      setData(taskName: deletePostKey,data: await _repository.deletePost(id),hideLoader: showLoader);
+      if(fromMyPost){
+        getMyPost(refresh: false,);
+      }else{
+        getPost(showMainLoader: false,refresh: false);
+      }
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: deletePostKey,errorMessage:  e.toString(),showToast: showLoader);
+    }
+  }
+
+  // Delete Comment api
+  static String deleteCommentKey = 'deleteCommentKey';
+  deleteComment({required String id,bool showLoader=false,required String postId}) async {
+    setLoading(taskName: deleteCommentKey,showDialogLoader: showLoader);
+    try {
+      setData(taskName: deleteCommentKey,data: await _repository.deleteComment(id),hideLoader: showLoader);
+      getComments(id: postId,showLoader: false);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: deleteCommentKey,errorMessage:  e.toString(),showToast: showLoader);
+    }
+  }
+
+
+  // Delete comment reply Post api
+  static String deleteCommentReplyKey = 'deleteCommentReplyKey';
+  deleteCommentReply({required String id,bool showLoader=false,required String postId,required String commentId,required String replyId}) async {
+    setLoading(taskName: deleteCommentReplyKey,showDialogLoader: showLoader);
+    try {
+      setData(taskName: deleteCommentReplyKey,data: await _repository.deleteCommentReply(postId, commentId, replyId),hideLoader: showLoader);
+      getComments(id: postId,showLoader: false);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: deleteCommentReplyKey,errorMessage:  e.toString(),showToast: showLoader);
+    }
+  }
+
+
+  // Liked users api
+  static String getLikedUsersKey = 'getLikedUsersKey';
+  getLikedUsers({required String id,bool showLoader = false}) async {
+    setLoading(taskName: getLikedUsersKey,showDialogLoader: showLoader);
+    try {
+      setData(taskName: getLikedUsersKey,data: await _repository.likedPostUsers(id),hideLoader: true);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: getLikedUsersKey,errorMessage:  e.toString(),showToast: true);
     }
   }
 

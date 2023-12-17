@@ -28,8 +28,8 @@ class SquareNetworkImageAvatar extends StatelessWidget {
         ),
       ),
       placeholder: (context, url) => SizedBox(
-        height: size ?? 60,
-        width: size ?? 60,
+        height: size ??height?? 60,
+        width: size ??width?? 60,
         child:
         SkeletonAvatar(style: SkeletonAvatarStyle()),
       ),

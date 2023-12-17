@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/providers.dart';
+import 'package:jyotishee/presentation/screens/community/liked_users_screen.dart';
 
 import '../../app/utils/utils.dart';
 import '../screens/community/comments_screen.dart';
 import 'widgets.dart';
+
 /// Video post is commented in this phase.
 class PostCard extends StatelessWidget {
-  const PostCard(
-      {super.key,
-      this.showShadow = false,
-      this.showSave = false,
-      required this.model,
-      this.fromMyPost = false});
+  const PostCard({super.key,
+    this.showSave = false,
+    required this.model,
+    this.fromMyPost = false});
 
-  final bool showShadow;
   final bool showSave;
   final SocialPostModel model;
   final bool fromMyPost;
@@ -44,16 +43,18 @@ class _PostCardState extends State<PostCard> {
   */
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration:
-          showShadow ? AppDecoration.whiteShadowRounded : BoxDecoration(),
+    return Consumer<SocialProvider>(
+  builder: (context, provider, child) {
+  return Container(
       padding: EdgeInsets.all(15),
-      margin: EdgeInsets.symmetric(vertical: showShadow ? 10 : 2),
+      margin: EdgeInsets.symmetric(vertical: 2),
       child: Column(
         children: [
+
+          /// header title
           Row(
             children: [
-              UserDP(image: model.user?.image),
+              UserDP(image: model.user?.image,),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 14),
@@ -61,10 +62,13 @@ class _PostCardState extends State<PostCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       NameVerified(
-                          name: model.user?.name,
-                          verified: model.user?.isVerified ?? false),
+                        name: model.user?.name,
+                        verified: model.user?.isVerified.isTrue,
+                        showAst: model.user?.role == "astrologer",
+                      ),
                       Text(
-                        "Exp : ${model.user?.experience.toStringOrEmpty} years | ${model.user?.order} Orders",
+                        "Exp : ${model.user?.experience} years | ${model.user
+                            ?.order} Orders",
                         style: AppStyle.grey12.copyWith(
                             color: AppColors.hintGrey2,
                             fontWeight: FontWeight.w500,
@@ -74,60 +78,50 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ),
               ),
-              PopupMenuButton(
+              if(model.user?.id == context
+                  .read<AuthProvider>()
+                  .userModel
+                  ?.id)PopupMenuButton(
+                //icon: Icon(Icons.met),
+                offset: Offset(20, 40),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                padding: EdgeInsets.zero,
                 itemBuilder: (context) {
                   return [
                     PopupMenuItem(
-                      child: Row(
-                        children: [
-                          Text(
-                            AppStrings.pinToTop,
-                            style: AppStyle.black12,
-                          )
-                        ],
-                      ),
+                      child: Row(children: [SvgImage(image: AppSvg.edit),10.width,Text(AppStrings.editPost,style: AppStyle.black12,)],),
                     ),
                     PopupMenuItem(
-                      child: Row(
-                        children: [
-                          Text(
-                            AppStrings.pinToTop,
-                            style: AppStyle.black12,
-                          )
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      child: Row(
-                        children: [
-                          Text(
-                            AppStrings.pinToTop,
-                            style: AppStyle.black12,
-                          )
-                        ],
-                      ),
-                    ),
+                        onTap: () {
+                          provider.deletePost(id: model.id.toStringOrEmpty,fromMyPost: fromMyPost,showLoader: true);
+                        },
+                        child: Row(children: [SvgImage(image: AppSvg.deleteRed),10.width, Text(AppStrings.delete,style: AppStyle.red12,)],)
+                  ,
+                  )
+                  ,
+
                   ];
                 },
               )
             ],
           ),
-          if (model.type != PostType.text)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Stack(
-                alignment: Alignment.center,
-                fit: StackFit.passthrough,
-                clipBehavior: Clip.none,
-                children: [
-                  if(model.type==PostType.image)SquareNetworkImageAvatar(
+          if (model.type != PostType.text)Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Stack(
+              alignment: Alignment.center,
+              fit: StackFit.passthrough,
+              clipBehavior: Clip.none,
+              children: [
+                if (model.type == PostType.image)
+                  SquareNetworkImageAvatar(
                     radius: 12,
                     height: 150,
                     width: double.infinity,
-                    image:
-                        "https://images.unsplash.com/photo-1567324216289-97cc4134f626?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cG9ydHJhaXQlMjBtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80",
+                    image: model.imageUrl,
                   ),
-                  /*if(model.type==PostType.video) Container(
+                /*if(model.type==PostType.video) Container(
                     height: 150,
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -145,38 +139,22 @@ class _PostCardState extends State<PostCard> {
                   if (model.type == PostType.video) InkWell(
                       onTap: () => !_controller!.value.isPlaying ? _controller!.play() : _controller!.pause(),
                       child: PlayButton(playing: _controller!.value.isPlaying,))*/
-                ],
-              ),
+              ],
             ),
-          if (model.type != PostType.text)
-            LikeCommentShare(showSave: showSave, model: model),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: TextHashtag(
                 name: model.type != PostType.text
                     ? model.user?.name ?? "Madhusudan"
                     : null,
-                text: model.content ??
-                    ""),
+                text: model.content ?? ""),
           ),
-          //like comment and share widget
-          if (model.type == PostType.text)
-            LikeCommentShare(
-              showSave: showSave,
-              model: model,
-            ),
+          LikeCommentShare(
+            showSave: showSave,
+            model: model,
+          ),
           10.height,
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              "View all ${model.totalComment} comments",
-              style: AppStyle.grey12.copyWith(
-                  color: AppColors.hintGrey1,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 10),
-            ),
-          ),
-          5.height,
           Align(
             alignment: Alignment.topLeft,
             child: Text(
@@ -192,6 +170,8 @@ class _PostCardState extends State<PostCard> {
         ],
       ),
     );
+  },
+);
   }
 }
 
@@ -211,65 +191,50 @@ class LikeCommentShare extends StatelessWidget {
   Widget build(BuildContext context) {
     var provider = context.read<SocialProvider>();
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Row(
-          children: [
-            //TODO : updating icon on like
-            SvgImage(
-                image: model.isLiked.isTrue ? AppSvg.like: AppSvg.unLike,size: 24,
-                onTap: () async {
-                  await provider.likePost(id: model.id.toString(),isLike: model.isLiked.isFalse);
-                  if(provider.getSuccessStatus(taskName: SocialProvider.likePostKey) && !fromMyPost)provider.getPost(refresh: false,showMainLoader: false);
-                  if(provider.getSuccessStatus(taskName: SocialProvider.likePostKey) && fromMyPost)provider.getMyPost(refresh: false,type: model.type);
-                }),
-            10.width,
-            Text(
-              "${model.totalLikes ?? 0}",
-              style: AppStyle.black12,
-            )
-          ],
+        IconTitle(
+          icon: AppSvg.msg,
+          title: "${model.totalComment ?? 0}",
+          iconTap: () async =>
+          await _showCommentSheet(context, model.id!, provider),
+          titleTap: () async =>
+          await _showCommentSheet(context, model.id!, provider),
         ),
-        20.width,
-        InkWell(
-          onTap: () async {
-            await _showCommentSheet(context, model.id!, provider);
+        IconTitle(
+          icon: model.isLiked.isTrue ? AppSvg.like : AppSvg.unLike,
+          title: "${model.totalLikes ?? 0}",
+          iconTap: () async {
+            await provider.likePost(id: model.id.toString(), isLike: model.isLiked.isFalse,fromMyPost: fromMyPost);
           },
-          child: Row(
-            children: [
-              SvgImage(image: AppSvg.msg,size: 24,),
-              10.width,
-              Text(
-                "${model.totalComment ?? 0}",
-                style: AppStyle.black12,
-              )
-            ],
-          ),
+          titleTap: () async =>
+          await _showLikedUsersSheet(context, model.id!, provider),
         ),
-        20.width,
-        Row(
-          children: [
-            SvgImage(image: AppSvg.share,size: 24,),
-            10.width,
-            Text(
-              "${model.totalShare ?? 0}",
-              style: AppStyle.black12,
-            )
-          ],
+        IconTitle(
+          icon: AppSvg.repost,
+          title: "${model.totalShare ?? 0}",
+          //iconTap: () async => await _showCommentSheet(context, model.id!, provider),
+          //titleTap: () async => await _showCommentSheet(context, model.id!, provider),
         ),
-        Spacer(),
-        if (showSave)
-          Row(
-            children: [
-              SvgImage(image: AppSvg.bookmark),
-              10.width,
-            ],
-          ),
+        IconTitle(
+          icon: AppSvg.eyeOpen,
+          iconColor: AppColors.hintGrey1,
+          title: "${model.totalShare ?? 0}",
+          //iconTap: () async => await _showCommentSheet(context, model.id!, provider),
+          //titleTap: () async => await _showCommentSheet(context, model.id!, provider),
+        ),
+        IconTitle(
+          icon: AppSvg.share,
+          title: "${model.totalShare ?? 0}",
+          //iconTap: () async => await _showCommentSheet(context, model.id!, provider),
+          //titleTap: () async => await _showCommentSheet(context, model.id!, provider),
+        ),
       ],
     );
   }
 
-  _showCommentSheet(
-      BuildContext context, String id, SocialProvider provider) async {
+  _showCommentSheet(BuildContext context, String id,
+      SocialProvider provider) async {
     await AppHelper.showBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -281,5 +246,56 @@ class LikeCommentShare extends StatelessWidget {
           );
         }));
     provider.getPost(refresh: true);
+  }
+  _showLikedUsersSheet(BuildContext context, String id, SocialProvider provider) async {
+    await AppHelper.showBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        padding: EdgeInsets.zero,
+        innerPadding: EdgeInsets.zero,
+        child: StatefulBuilder(builder: (context, setState) {
+          return LikedUsersScreen(
+            id: id,
+          );
+        }));
+    provider.getPost(refresh: true);
+  }
+}
+
+class IconTitle extends StatelessWidget {
+  const IconTitle({super.key,
+    required this.icon,
+    required this.title,
+    this.iconTap,
+    this.titleTap, this.iconColor});
+
+  final String icon;
+  final String title;
+  final VoidCallback? iconTap;
+  final VoidCallback? titleTap;
+  final Color? iconColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Row(
+        children: [
+          InkWell(
+              onTap: iconTap,
+              child: SvgImage(
+                image: icon,
+                size: 24, color: iconColor,
+              )),
+          10.width,
+          InkWell(
+            onTap: titleTap,
+            child: Text(
+              title,
+              style: AppStyle.greyHint14w500,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

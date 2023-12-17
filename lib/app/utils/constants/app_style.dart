@@ -7,10 +7,15 @@ class AppStyle {
   static TextStyle get white12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.white);
   static TextStyle get white12w500 => GoogleFonts.poppins(fontSize: 12,color: AppColors.white,fontWeight: FontWeight.w500);
   static TextStyle get black12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.black,fontWeight: FontWeight.w500);
-  static TextStyle get black10Bold => GoogleFonts.poppins(fontSize: 10,color: AppColors.black,fontWeight: FontWeight.bold);
-  static TextStyle get red12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.red,fontWeight: FontWeight.w500);
-  static TextStyle get black12w400 => GoogleFonts.poppins(fontSize: 12,color: AppColors.black,fontWeight: FontWeight.w400);
   static TextStyle get black12w700 => GoogleFonts.poppins(fontSize: 12,color: AppColors.black,fontWeight: FontWeight.w700);
+  static TextStyle get black12w600 => GoogleFonts.poppins(fontSize: 12,color: AppColors.black,fontWeight: FontWeight.w600);
+  static TextStyle get hintGray12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.hintGrey2,fontWeight: FontWeight.w500);
+  static TextStyle get black10Bold => GoogleFonts.poppins(fontSize: 10,color: AppColors.black,fontWeight: FontWeight.bold);
+  static TextStyle get black10w400 => GoogleFonts.poppins(fontSize: 10,color: AppColors.black,fontWeight: FontWeight.w400);
+  static TextStyle get black8w400 => GoogleFonts.poppins(fontSize: 8,color: AppColors.black,fontWeight: FontWeight.w400);
+  static TextStyle get red12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.red,fontWeight: FontWeight.w500);
+  static TextStyle get red12w400 => GoogleFonts.poppins(fontSize: 12,color: AppColors.red,fontWeight: FontWeight.w400);
+  static TextStyle get black12w400 => GoogleFonts.poppins(fontSize: 12,color: AppColors.black,fontWeight: FontWeight.w400);
   static TextStyle get lightGreen12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.lightGreen,fontWeight: FontWeight.w500);
   static TextStyle get black12Underline => GoogleFonts.poppins(fontSize: 12,color: AppColors.black,fontWeight: FontWeight.w500,decoration: TextDecoration.underline);
   static TextStyle get primary12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.colorPrimary,fontWeight: FontWeight.w500);
@@ -36,6 +41,7 @@ class AppStyle {
   static TextStyle get grey16 => GoogleFonts.poppins(fontSize: 16,color: AppColors.hintGrey);
   static TextStyle get grey12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.hintGrey);
   static TextStyle get greyHint12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.hintGrey2);
+  static TextStyle get greyHint14w500 => GoogleFonts.poppins(fontSize: 14,color: AppColors.hintGrey1,fontWeight: FontWeight.w500);
   static TextStyle get grayDark12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.greyDark);
   static TextStyle get grayDark10 => GoogleFonts.poppins(fontSize: 10,color: AppColors.greyDark);
   static TextStyle get grey10w400 => GoogleFonts.poppins(fontSize: 10,color: AppColors.hintGrey1,fontWeight: FontWeight.w400);
@@ -43,6 +49,7 @@ class AppStyle {
   static TextStyle get black20 => GoogleFonts.poppins(fontSize: 20,color: AppColors.black,);
   static TextStyle get black18Nova => GoogleFonts.poppins(fontSize: 18,color: AppColors.black,);
   static TextStyle get black16 => GoogleFonts.poppins(fontSize: 16,color: AppColors.black);
+  static TextStyle get black16w500 => GoogleFonts.poppins(fontSize: 16,color: AppColors.black,fontWeight: FontWeight.w500);
   static TextStyle get lightGreen16 => GoogleFonts.poppins(fontSize: 16,color: AppColors.lightGreen,fontWeight: FontWeight.w500);
   static TextStyle get redMain16 => GoogleFonts.poppins(fontSize: 16,color: AppColors.red,fontWeight: FontWeight.w500);
   static TextStyle get black16Bold => GoogleFonts.poppins(fontSize: 16,color: AppColors.black,fontWeight: FontWeight.bold);
