@@ -25,8 +25,8 @@ class SocialProvider extends BaseProvider {
 
   // Get Posts api
   static String getPostKey = 'getPostKey';
-  getPost({bool refresh=false}) async {
-    setLoading(taskName: getPostKey,showDialogLoader: refresh);
+  getPost({bool refresh=false,bool showMainLoader = true}) async {
+    if(showMainLoader)setLoading(taskName: getPostKey,showDialogLoader: refresh);
     try {
       setData(taskName: getPostKey,data: await _repository.getPosts());
     } catch (e, s) {
@@ -50,14 +50,14 @@ class SocialProvider extends BaseProvider {
 
   // Like Post api
   static String likePostKey = 'likePostKey';
-  likePost({required String id}) async {
-    setLoading(taskName: likePostKey,showDialogLoader: false);
+  likePost({required String id,bool showLoader=false,bool isLike=false}) async {
+    setLoading(taskName: likePostKey,showDialogLoader: showLoader);
     try {
-      setData(taskName: likePostKey,data: await _repository.likePost(id),hideLoader: true);
+      setData(taskName: likePostKey,data: await _repository.likePost(id,isLike),hideLoader: showLoader);
     } catch (e, s) {
       e.printDebug;
       s.printDebug;
-      setError(taskName: likePostKey,errorMessage:  e.toString(),showToast: true);
+      setError(taskName: likePostKey,errorMessage:  e.toString(),showToast: showLoader);
     }
   }
 

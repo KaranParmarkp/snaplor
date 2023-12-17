@@ -27,6 +27,7 @@ class SocialPostModel {
   final String? imageUrl;
   final String? videoUrl;
   final PostType? type;
+  final bool? isLiked;
 
   SocialPostModel({
     this.id,
@@ -43,7 +44,8 @@ class SocialPostModel {
     this.v,
     this.imageUrl,
     this.videoUrl,
-    this.type
+    this.type,
+    this.isLiked
   });
 
   SocialPostModel copyWith({
@@ -61,7 +63,8 @@ class SocialPostModel {
     int? v,
     String? imageUrl,
     String? videoUrl,
-    PostType? type
+    PostType? type,
+    bool? isLiked
   }) =>
       SocialPostModel(
         id: id ?? this.id,
@@ -79,6 +82,7 @@ class SocialPostModel {
         imageUrl: imageUrl ?? this.imageUrl,
         videoUrl: videoUrl ?? this.videoUrl,
         type: type ?? this.type,
+        isLiked: isLiked?? this.isLiked
 
       );
 
@@ -97,6 +101,7 @@ class SocialPostModel {
     v: json["__v"],
     imageUrl: json["image_url"],
     videoUrl: json["video_url"],
+    isLiked: json["isLike"],
     type: json["video_url"]!=null ? PostType.video : json["image_url"] !=null ? PostType.image : PostType.text,
   );
 

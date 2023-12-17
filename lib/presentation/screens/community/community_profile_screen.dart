@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-
+import 'package:jyotishee/presentation/screens/social_profile/jyotishee_social.dart';
 
 import '../../widgets/widgets.dart';
 import 'add_post_screen.dart';
@@ -133,8 +133,8 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                         onTap: () => _onTabTap(2),
                       ),
                     ],
-                  ),*/
-                  5.height,
+                  ),
+                  10.height,
                   /*if (selectedIndex == 0 || selectedIndex == 1)
                     Expanded(
                       child: GridView.builder(
@@ -161,20 +161,11 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                       ),
                     ),
                   */
-                  AppDivider(),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      AppStrings.yourPost,
-                      style: AppStyle.black12w400,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  AppDivider(),
+
                   Expanded(
                       child: AppConsumer<SocialProvider, List<SocialPostModel>>(
                         taskName: SocialProvider.getMyPostKey,
-                        load: (provider) => provider.getMyPost(/*type: selectedIndex==0 ? PostType.image : selectedIndex==1 ? PostType.video : PostType.text*/),
+                        load: (provider) => provider.getMyPost(type: selectedIndex==0 ? PostType.image : selectedIndex==1 ? PostType.video : PostType.text),
                         successBuilder: (data, provider) => ListView.builder(
                           padding: EdgeInsets.zero,
                           itemBuilder: (context, index) => PostCard(showShadow: false,model: data[index],fromMyPost: true,),
