@@ -19,7 +19,8 @@ class SocialService extends ApiService {
 
       if(type==PostType.video)return  getData(ApiConfig.myPost+'''?filter={"video_url":true}''');
       if(type==PostType.image)return getData(ApiConfig.myPost+'''?filter={"image_url":true}''');
-      else return getData(ApiConfig.myPost+'''?filter={"content":true}''');
+      //else return getData(ApiConfig.myPost+'''?filter={"content":true}''');
+      else return getData(ApiConfig.myPost);
 
 
   }

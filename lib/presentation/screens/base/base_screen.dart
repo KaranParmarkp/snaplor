@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
-import 'package:jyotishee/presentation/screens/search/search_screen.dart';
-import 'package:jyotishee/presentation/screens/social_profile/jyotishee_social.dart';
 import 'package:jyotishee/presentation/screens/wallet/wallet_screen.dart';
-
 import '../../widgets/widgets.dart';
+import '../community/community_screen.dart';
 import '../home/home_screen.dart';
 import '../settings/settings_screen.dart';
 
@@ -23,7 +21,7 @@ class BaseScreen extends StatefulWidget {
 class _BaseScreenState extends State<BaseScreen> {
   List<Widget> screens = [
     HomeScreen(),
-    JyotisheeSocial(),
+    CommunityScreen(),
     //SearchScreen(),
     WalletScreen(),
     SettingsScreen(),

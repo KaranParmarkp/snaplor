@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:jyotishee/presentation/screens/social_profile/jyotishee_social.dart';
+
 
 import '../../widgets/widgets.dart';
 import 'add_post_screen.dart';
 
-class SocialProfile extends StatefulWidget {
-  const SocialProfile({super.key});
+class CommunityProfileScreen extends StatefulWidget {
+  const CommunityProfileScreen({super.key});
 
   @override
-  State<SocialProfile> createState() => _SocialProfileState();
+  State<CommunityProfileScreen> createState() => _CommunityProfileScreenState();
 }
 
-class _SocialProfileState extends State<SocialProfile> {
+class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
   int selectedIndex = 0;
 
   _onTabTap(int index) {
@@ -28,8 +28,9 @@ class _SocialProfileState extends State<SocialProfile> {
     return Consumer<AuthProvider>(
   builder: (context, provider, child) {
   return Scaffold(
+    backgroundColor: AppColors.white,
       appBar: CustomAppBar(
-          title: AppStrings.jyotisheeSocial, showNotification: true),
+          title: AppStrings.communityProfile, showNotification: true),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: AppColors.colorPrimary, onPressed: () {
@@ -39,62 +40,79 @@ class _SocialProfileState extends State<SocialProfile> {
       },
       ),
       body: Container(
-        padding: const EdgeInsets.all(20.0),
         height: context.screenHeight,
         child: Column(
           children: [
             //header
-            Row(
-              children: [
-                CircleNetworkImageAvatar(
-                    radius: 40,
-                    image:
-                        provider.userModel?.profileImage),
-                20.width,
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  10.height,
+                  Row(
                     children: [
-                      Column(
-                        children: [
-                          Text(
-                            "45",
-                            style: AppStyle.black14,
-                          ),
-                          5.height,
-                          Text(AppStrings.posts),
-                        ],
+                      CircleNetworkImageAvatar(
+                          radius: 40,
+                          image:
+                              provider.userModel?.profileImage),
+                      20.width,
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  "45",
+                                  style: AppStyle.black14,
+                                ),
+                                5.height,
+                                Text(AppStrings.posts),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  "45",
+                                  style: AppStyle.black14,
+                                ),
+                                5.height,
+                                Text(AppStrings.followers),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  "45",
+                                  style: AppStyle.black14,
+                                ),
+                                5.height,
+                                Text(AppStrings.following),
+                              ],
+                            ),
+                            //SizedBox()
+                          ],
+                        ),
                       ),
-                      Column(
-                        children: [
-                          Text(
-                            "45",
-                            style: AppStyle.black14,
-                          ),
-                          5.height,
-                          Text(AppStrings.posts),
-                        ],
-                      ),
-                      SizedBox()
                     ],
                   ),
-                ),
-              ],
+                  10.height,
+                  NameVerified(name: provider.userModel?.name,verified: provider.userModel?.isVerified),
+                  4.height,
+                  Text(
+                    provider.userModel!.description ?? provider.userModel!.specialization.join(", ").toCapitalized(),
+                    style: AppStyle.greyHint12,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                  ),
+                  8.height,
+                ],
+              ),
             ),
-            10.height,
-            NameVerified(name: provider.userModel?.name,verified: provider.userModel?.isVerified),
-            4.height,
-            Text(
-              provider.userModel!.description ?? provider.userModel!.specialization.join(", ").toCapitalized(),
-              style: AppStyle.greyHint12,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 3,
-            ),
-            10.height,
             Expanded(
               child: Column(
                 children: [
-                  Row(
+                  /*Row(
                     children: [
                       TabBarBox(
                         text: "103",
@@ -115,8 +133,8 @@ class _SocialProfileState extends State<SocialProfile> {
                         onTap: () => _onTabTap(2),
                       ),
                     ],
-                  ),
-                  10.height,
+                  ),*/
+                  5.height,
                   /*if (selectedIndex == 0 || selectedIndex == 1)
                     Expanded(
                       child: GridView.builder(
@@ -143,15 +161,25 @@ class _SocialProfileState extends State<SocialProfile> {
                       ),
                     ),
                   */
-
+                  AppDivider(),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      AppStrings.yourPost,
+                      style: AppStyle.black12w400,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  AppDivider(),
                   Expanded(
                       child: AppConsumer<SocialProvider, List<SocialPostModel>>(
                         taskName: SocialProvider.getMyPostKey,
-                        load: (provider) => provider.getMyPost(type: selectedIndex==0 ? PostType.image : selectedIndex==1 ? PostType.video : PostType.text),
+                        load: (provider) => provider.getMyPost(/*type: selectedIndex==0 ? PostType.image : selectedIndex==1 ? PostType.video : PostType.text*/),
                         successBuilder: (data, provider) => ListView.builder(
-                          itemBuilder: (context, index) => PostCard(showShadow: true,model: data[index],fromMyPost: true),
+                          padding: EdgeInsets.zero,
+                          itemBuilder: (context, index) => PostCard(showShadow: false,model: data[index],fromMyPost: true,),
                           itemCount: data.length,
-                          shrinkWrap: true,
+
                         ),
                       ),
                     ),

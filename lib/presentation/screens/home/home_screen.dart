@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_support_screen.dart';
-import 'package:jyotishee/presentation/screens/social_profile/jyotishee_social.dart';
+import 'package:jyotishee/presentation/screens/community/community_screen.dart';
+
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../app/utils/utils.dart';
@@ -11,7 +12,6 @@ import '../../widgets/widgets.dart';
 import '../offers/offers_screen.dart';
 import '../orders/orders_screen.dart';
 import '../reviews/reviews_screen.dart';
-import '../social_profile/social_profile.dart';
 import '../waitlist/waitlist_screen.dart';
 
 
@@ -349,7 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.only(top: 20),
                         child: Row(
                           children: [
-                            Expanded(child: SquareBoxAvatar(image: AppSvg.user, text: AppStrings.jsProfile,onTap: () => context.push(SocialProfile()),)),
+                            Expanded(child: SquareBoxAvatar(image: AppSvg.community, text: AppStrings.community,onTap: () => context.push(CommunityScreen(showBack: true,)),)),
                             Expanded(child: SquareBoxAvatar(image: AppSvg.invoice, text: AppStrings.orders,onTap: () => context.push(OrdersScreen()),)),
                             Expanded(child: SquareBoxAvatar(image: AppSvg.discount, text: AppStrings.offers,onTap: () => context.push(OffersScreen()),)),
                           ],

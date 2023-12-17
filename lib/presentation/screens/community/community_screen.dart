@@ -6,14 +6,13 @@ import '../../../app/utils/utils.dart';
 import '../../widgets/widgets.dart';
 import 'add_post_screen.dart';
 
-class JyotisheeSocial extends StatelessWidget {
-  const JyotisheeSocial({super.key});
-
+class CommunityScreen extends StatelessWidget {
+  const CommunityScreen({super.key, this.showBack=false});
+  final bool showBack;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-          title: AppStrings.jyotisheeSocial, showProfile: true,showBack: false,),
+      appBar: CustomAppBar(title: AppStrings.community, showProfile: true,showBack: showBack,communityScreen: true,showNotification: true,),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: AppColors.colorPrimary, onPressed: () {

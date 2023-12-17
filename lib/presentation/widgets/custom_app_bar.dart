@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jyotishee/data/providers/providers.dart';
+import 'package:jyotishee/presentation/screens/community/community_screen.dart';
 import 'package:jyotishee/presentation/screens/notification/notification_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/profile_screen.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
 
 import '../../app/utils/utils.dart';
+import '../screens/community/community_profile_screen.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar(
@@ -13,7 +15,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       required this.title,
       this.onBackTap,this.gradient=false,
       this.trailingIcon,
-      this.showProfile = false,  this.showNotification=false,  this.showBack=true})
+      this.showProfile = false,  this.showNotification=false,  this.showBack=true,this.communityScreen=false})
       : super(key: key);
   final String title;
   final VoidCallback? onBackTap;
@@ -22,7 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showNotification;
   final bool showBack;
   final bool gradient;
-
+  final bool communityScreen;
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
@@ -31,7 +33,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title, style: AppStyle.black16.copyWith(fontWeight: FontWeight.w500),
       ),
-      //centerTitle: true,
+      centerTitle: false,
       backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
       elevation: 8,
@@ -55,7 +57,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         if(showProfile)InkWell(
-          onTap: () => context.push(ProfileScreen()),
+          onTap: () => context.push(communityScreen ? CommunityProfileScreen():ProfileScreen()),
           child: Padding(
             padding: const EdgeInsets.only(right: 10,left: 10),
             child: CircleNetworkImageAvatar(
@@ -68,7 +70,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       systemOverlayStyle: SystemUiOverlayStyle(
           statusBarIconBrightness:  Brightness.dark,
           statusBarBrightness:  Brightness.light),
-      leading: showBack ? InkWell(
+    leadingWidth: showBack ? 50 : 0,
+    leading: showBack ? InkWell(
         onTap: () => onBackTap ?? context.pop(),
         child: Padding(
           padding: const EdgeInsets.only(left: 0),
@@ -102,13 +105,14 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Consumer2<AppProvider,AuthProvider>(
       builder: (context, provider,authProvider, child) {
         return AppBar(
-          title: Column(
+          /*title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("${AppStrings.hi} ${authProvider.userModel?.name}", style: AppStyle.black14.copyWith(fontWeight: FontWeight.bold)),
               Text("${authProvider.userModel?.email}", style: AppStyle.grey12),
             ],
-          ),
+          ),*/
+          title: Text("${AppStrings.hi} ${authProvider.userModel?.name}!", style: AppStyle.black14.copyWith(fontWeight: FontWeight.bold)),
           centerTitle: false,
           backgroundColor: AppColors.white,
           automaticallyImplyLeading: false,
@@ -150,5 +154,5 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size(double.infinity, 65);
+  Size get preferredSize => Size(double.infinity, 60);
 }

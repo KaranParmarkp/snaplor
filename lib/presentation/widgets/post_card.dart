@@ -4,7 +4,7 @@ import 'package:jyotishee/data/providers/providers.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../app/utils/utils.dart';
-import '../screens/social_profile/comments_screen.dart';
+import '../screens/community/comments_screen.dart';
 import 'widgets.dart';
 
 class PostCard extends StatefulWidget {
@@ -48,8 +48,7 @@ class _PostCardState extends State<PostCard> {
       decoration:
           widget.showShadow ? AppDecoration.whiteShadowRounded : BoxDecoration(),
       padding: EdgeInsets.all(15),
-      margin:
-          EdgeInsets.symmetric(horizontal: 12, vertical: widget.showShadow ? 10 : 2),
+      margin: EdgeInsets.symmetric(vertical: widget.showShadow ? 10 : 2),
       child: Column(
         children: [
           Row(
