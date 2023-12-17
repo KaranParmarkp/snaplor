@@ -58,14 +58,46 @@ class _CommentScreenState extends State<CommentScreen> {
                       itemBuilder: (context, index) => CommentCard(
                         model: data[index],
                         onCloseTap: () {
-                         // replyModel = null;
-                         // if(mounted)setState(() {});
+                          replyModel = null;
+                          if(mounted)setState(() {});
                         },
                         onReplyTap: (model) {
-                         // replyModel = model;
-                         // if(mounted)setState(() {});
+                          replyModel = model;
+                          if(mounted)setState(() {});
                         },
                         provider: provider,
+                        replyWidget: AppConsumer<SocialProvider, List<PostCommentModel>>(
+                          taskName: SocialProvider.getCommentsRepliesKey,
+                          load: (provider){},
+                          loaderBuilder: (p0) => SizedBox(
+                            height: 20,
+                            width: 70,
+                            child: CupertinoActivityIndicator(),
+                          ),
+                          successBuilder: (data, provider) => Container(
+                            padding: EdgeInsets.only(right: 0),
+                            margin: EdgeInsets.only(
+                                left: 15, right: 15, bottom: 0, top: 15),
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) => CommentCard(
+                                model: data[index],
+                                onCloseTap: () {
+                                  replyModel = null;
+                                  if(mounted)setState(() {});
+                                },
+                                onReplyTap: (model) {
+                                  replyModel = model;
+                                  if(mounted)setState(() {});
+                                },
+                                provider: provider,
+                              ),
+                              itemCount: data.length,
+                              shrinkWrap: true,
+                            ),
+                          ),
+                        ),
                       ),
                       itemCount: data.length,
                       shrinkWrap: true,
@@ -157,13 +189,14 @@ class _CommentScreenState extends State<CommentScreen> {
 
 class CommentCard extends StatelessWidget {
   const CommentCard(
-      {super.key, required this.model, this.onCloseTap, this.onReplyTap, required this.provider,this.isReply=false});
+      {super.key, required this.model, this.onCloseTap, this.onReplyTap, required this.provider,this.isReply=false, this.replyWidget});
 
   final PostCommentModel model;
   final VoidCallback? onCloseTap;
   final Function(PostCommentModel? model)? onReplyTap;
   final SocialProvider provider;
   final bool isReply;
+  final Widget? replyWidget;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -215,7 +248,7 @@ class CommentCard extends StatelessWidget {
                               ),
                               20.width,
                               InkWell(
-                                onTap: onReplyTap!(model),
+                                //onTap: onReplyTap!(model),
                                 child: Text(
                                   AppStrings.reply,
                                   style: AppStyle.grey10w400,
@@ -259,32 +292,7 @@ class CommentCard extends StatelessWidget {
                               ],
                             ),
                           ),
-                          AppConsumer<SocialProvider, List<PostCommentModel>>(
-                            taskName: SocialProvider.getCommentsRepliesKey,
-                            load: (provider){},
-                            loaderBuilder: (p0) => SizedBox(
-                              height: 20,
-                              width: 70,
-                              child: CupertinoActivityIndicator(),
-                            ),
-                            successBuilder: (data, provider) => Container(
-                              padding: EdgeInsets.only(right: 0),
-                              margin: EdgeInsets.only(
-                                  left: 15, right: 15, bottom: 0, top: 15),
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) => CommentCard(
-                                  model: data[index],
-                                  onCloseTap: onCloseTap,
-                                  onReplyTap: onReplyTap!(data[index]),
-                                  provider: provider,
-                                ),
-                                itemCount: data.length,
-                                shrinkWrap: true,
-                              ),
-                            ),
-                          ),
+                          if (model.totalReplies != 0)replyWidget ?? SizedBox()
 
                         ],
                       ),

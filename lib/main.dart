@@ -121,7 +121,7 @@ class _MyAppState extends State<MyApp> {
         textTheme: GoogleFonts.poppinsTextTheme(),
         //scaffoldBackgroundColor: Colors.white,
       ),
-      home: const BaseScreen(),
+      home: const SplashScreen(),
     );
   }
 }
