@@ -30,6 +30,7 @@ class AppStyle {
   static TextStyle get purple14w800 => GoogleFonts.poppins(fontSize: 14,color: AppColors.colorPrimary,fontWeight: FontWeight.w800);
   static TextStyle get purple25Bold => GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.bold,color: AppColors.colorPrimary);
   static TextStyle get purple14w600 => GoogleFonts.poppins(fontSize: 14,color: AppColors.colorPrimary,fontWeight: FontWeight.w600);
+  static TextStyle get purple18w600 => GoogleFonts.poppins(fontSize: 18,color: AppColors.colorPrimary,fontWeight: FontWeight.w600);
   static TextStyle get purple12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.colorPrimary,fontWeight: FontWeight.w500);
   static TextStyle get purple12w400 => GoogleFonts.poppins(fontSize: 12,color: AppColors.colorPrimary,fontWeight: FontWeight.w400);
   static TextStyle get white16 => GoogleFonts.poppins(fontSize: 16,color: AppColors.white);

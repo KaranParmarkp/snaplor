@@ -57,11 +57,11 @@ class _BankDetailsScreenState extends State<BankDetailsScreen> {
 
               children: [
                 10.height,
-                HeaderTextField(hint: "",header: AppStrings.bankName,controller: bankNameController,focusNode: bankNameFocus,),
-                HeaderTextField(hint: "",header: AppStrings.ifsc,controller: ifscController,focusNode: ifscFocus,),
-                HeaderTextField(hint: "",header: AppStrings.accountNum,controller: accountNumController,focusNode: accountNumFocus,),
+                HeaderTextField(hint: "",header: AppStrings.bankName,controller: bankNameController,focusNode: bankNameFocus,enable: false),
+                HeaderTextField(hint: "",header: AppStrings.ifsc,controller: ifscController,focusNode: ifscFocus,enable: false),
+                HeaderTextField(hint: "",header: AppStrings.accountNum,controller: accountNumController,focusNode: accountNumFocus,enable: false),
                 //HeaderTextField(hint: "",header: AppStrings.nameOnAccount,controller: nameOnAccountController,focusNode: nameOnAccountFocus,),
-                AppButton(title: AppStrings.requestToChange,)
+                //AppButton(title: AppStrings.requestToChange,)
               ],
             ),
           ),

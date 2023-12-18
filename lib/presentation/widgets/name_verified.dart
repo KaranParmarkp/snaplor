@@ -4,15 +4,16 @@ import 'package:jyotishee/presentation/widgets/svg_image.dart';
 import '../../app/utils/utils.dart';
 
 class NameVerified extends StatelessWidget {
-  const NameVerified({super.key, this.name, this.verified = false, this.showAst=false});
+  const NameVerified({super.key, this.name, this.verified = false, this.showAst=false,this.center=false});
 
   final String? name;
   final bool? verified;
   final bool showAst;
-
+  final bool center;
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: center ? MainAxisAlignment.center : MainAxisAlignment.start,
       children: [
         Text(
           name.toStringOrEmpty,

@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     */return Scaffold(
       backgroundColor: AppColors.white,
       appBar: DashboardAppBar(
-        title: '',
+        title: '',showProfile: false,
       ),
         body: SizedBox(
           height: double.infinity,
@@ -289,7 +289,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       isAvailableForCall: value
                                     ));
                                   },
-                                  activeColor: AppColors.colorPrimary,
+                                  activeColor: AppColors.lightGreen,
+                                  trackColor: AppColors.red,
                                 )
                               ],
                             ),
@@ -336,7 +337,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         isAvailableForChat: value
                                     ));
                                   },
-                                  activeColor: AppColors.colorPrimary,
+                                  activeColor: AppColors.lightGreen,
+                                  trackColor: AppColors.red,
                                 )
                               ],
                             ),
@@ -350,7 +352,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Row(
                           children: [
                             Expanded(child: SquareBoxAvatar(image: AppSvg.community, text: AppStrings.community,onTap: () => context.push(CommunityScreen(showBack: true,)),)),
-                            Expanded(child: SquareBoxAvatar(image: AppSvg.invoice, text: AppStrings.orders,onTap: () => context.push(OrdersScreen()),)),
+                            Expanded(child: SquareBoxAvatar(image: AppSvg.invoice, text: AppStrings.sessions,onTap: () => context.push(OrdersScreen()),)),
                             Expanded(child: SquareBoxAvatar(image: AppSvg.discount, text: AppStrings.offers,onTap: () => context.push(OffersScreen()),)),
                           ],
                         ),

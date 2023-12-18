@@ -15,7 +15,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
-        title: AppStrings.profile,
+        title: AppStrings.astrologerProfile,
         showNotification: true,
       ),
       body: SizedBox(
@@ -29,62 +29,64 @@ class ProfileScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                children: [
-                  CircleNetworkImageAvatar(
-                      radius: 40,
-                      image: data.profileImage),
-                  20.width,
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+              CircleNetworkImageAvatar(
+                  radius: 40,
+                  image: data.profileImage),
+              5.height,
+              NameVerified(name: data.name,verified: data.isVerified,center: true,),
+              5.height,
+              if(data.specialization.isNotEmpty)Text(data.specialization.join(", ").toCapitalized(), style: AppStyle.greyHint12,),
+              if(data.languages.isNotEmpty)Text(data.languages.join("| ").toCapitalized(), style: AppStyle.greyHint12,),
+              15.height,
+              Container(
+                decoration: AppDecoration.purpleLightRounded.copyWith(
+                  color: AppColors.purpleLight,
+                  borderRadius: BorderRadius.circular(15)
+                ),
+                padding: EdgeInsets.all(15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
                       children: [
-                        Column(
-                          children: [
 
-                            Text(AppStrings.call),
-                            5.height,
-                            Text(
-                              "${data.totalCallOrders}",
-                              style: AppStyle.black14,
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(AppStrings.chat),
-                            5.height,
-                            Text(
-                              "${data.totalChatOrders}",
-                              style: AppStyle.black14,
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(AppStrings.orders),
-                            5.height,
-                            Text(
-                              "${(data.totalChatOrders! + data.totalCallOrders!)}",
-                              style: AppStyle.black14,
-                            ),
-                          ],
+                        Text(AppStrings.call,style: AppStyle.black12w400,),
+                        5.height,
+                        Text(
+                          "${data.totalCallOrders}",
+                          style: AppStyle.purple18w600,
                         ),
                       ],
                     ),
-                  ),
-                ],
+                    Column(
+                      children: [
+                        Text(AppStrings.chat,style: AppStyle.black12w400,),
+                        5.height,
+                        Text(
+                          "${data.totalChatOrders}",
+                          style: AppStyle.purple18w600,
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(AppStrings.sessions,style: AppStyle.black12w400,),
+                        5.height,
+                        Text(
+                          "${(data.totalChatOrders! + data.totalCallOrders!)}",
+                          style: AppStyle.purple18w600,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              6.height,
-              NameVerified(name: data.name,verified: data.isVerified),
-              6.height,
-              if(data.specialization.isNotEmpty)Text(data.specialization.join(", ").toCapitalized(), style: AppStyle.greyHint12,),
-              if(data.languages.isNotEmpty)Text(data.languages.join("| ").toCapitalized(), style: AppStyle.greyHint12,),
               20.height,
               TitleDropdown(text: AppStrings.personalDetails, leadingIcon: SvgImage(image: AppSvg.user),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(PersonalDetailsScreen(user: data,)),),
               TitleDropdown(text: AppStrings.bankDetails, leadingIcon: SvgImage(image: AppSvg.bank),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(BankDetailsScreen(user: data,)),),
+              TitleDropdown(text: AppStrings.sessionsPrice, leadingIcon: SvgImage(image: AppSvg.ruppe),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(BankDetailsScreen(user: data,)),),
               // TitleDropdown(text: AppStrings.callRate, leadingIcon: SvgImage(image: AppSvg.call),icon: Icon(Icons.keyboard_arrow_right_rounded)),
               // TitleDropdown(text: AppStrings.chatRate, leadingIcon: SvgImage(image: AppSvg.chat),icon: Icon(Icons.keyboard_arrow_right_rounded)),
               // TitleDropdown(text: AppStrings.callHistory, leadingIcon: SvgImage(image: AppSvg.call),icon: Icon(Icons.keyboard_arrow_right_rounded)),

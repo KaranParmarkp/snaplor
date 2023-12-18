@@ -68,6 +68,7 @@ class _PostCardState extends State<PostCard> {
                           verified: model.user?.isVerified.isTrue,
                           showAst: model.user?.role == "astrologer",
                         ),
+                        2.height,
                         Text(
                           "Exp : ${model.user?.experience} years | ${model.user
                               ?.order} Orders",
@@ -120,7 +121,7 @@ class _PostCardState extends State<PostCard> {
                 if (model.type == PostType.image)
                   SquareNetworkImageAvatar(
                     radius: 0,
-                    height: 350,
+                    height: 390,
                     width: double.infinity,
                     image: model.imageUrl,
                   ),

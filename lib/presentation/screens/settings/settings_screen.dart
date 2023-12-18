@@ -32,8 +32,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: AppStrings.settings,
-        showProfile: true,
-        showNotification: true,
+        showProfile: false,
+        showNotification: false,
       ),
       body:
       SingleChildScrollView(
@@ -49,10 +49,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Expanded(child: SettingImageCard(image: AppSvg.callHelp,text: AppStrings.youNeedHelp,desc: AppStrings.contactSupport,onTap:() => context.push(ChatSupportScreen()),)),
                 ],
               ),
-              TitleDropdown(text: AppStrings.profile, leadingIcon: SvgImage(image: AppSvg.user),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(ProfileScreen()),),
-              TitleDropdown(text: AppStrings.notification, leadingIcon: SvgImage(image: AppSvg.bell),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(NotificationSettingsScreen()),),
+              //TitleDropdown(text: AppStrings.profile, leadingIcon: SvgImage(image: AppSvg.user),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(ProfileScreen()),),
+              //TitleDropdown(text: AppStrings.notification, leadingIcon: SvgImage(image: AppSvg.bell),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(NotificationSettingsScreen()),),
               TitleDropdown(text: AppStrings.language, leadingIcon: SvgImage(image: AppSvg.language),icon: Icon(Icons.keyboard_arrow_right_rounded)),
-              TitleDropdown(text: AppStrings.faqs, leadingIcon: SvgImage(image: AppSvg.terms),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(faqScreen()),),
+              //TitleDropdown(text: AppStrings.faqs, leadingIcon: SvgImage(image: AppSvg.terms),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(faqScreen()),),
               TitleDropdown(text: AppStrings.terms, leadingIcon: SvgImage(image: AppSvg.terms),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(TermsScreen(title: AppStrings.terms,data: AppStrings.termsDesc,)),),
               TitleDropdown(text: AppStrings.privacy, leadingIcon: SvgImage(image: AppSvg.privacy),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(TermsScreen(title: AppStrings.privacy,data: AppStrings.privacyDesc,)),),
               TitleDropdown(text: AppStrings.version,leadingIcon: SvgImage(image: AppSvg.terms),icon: Text(packageInfo?.version ?? '')),

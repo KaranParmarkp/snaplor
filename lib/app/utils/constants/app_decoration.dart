@@ -18,8 +18,8 @@ class AppDecoration {
         color: AppColors.white,
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadowColor.withOpacity(0.80),
-            blurRadius: 10,
+            color: AppColors.shadowColor.withOpacity(0.40),
+            blurRadius: 5,
             offset: Offset(0, 0),
             spreadRadius: 0,
           )

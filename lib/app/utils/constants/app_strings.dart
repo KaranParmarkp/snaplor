@@ -154,11 +154,14 @@ class AppStrings {
   static String settings="Settings";
   static String askForReview="Ask for review";
   static String community="Community";
+  static String snaplorCommunity="Snaplor Community";
   static String communityProfile="Community Profile";
   static String sessions="Sessions";
+  static String sessionsPrice="Session Price";
   static String following="Following";
   static String yourPost="Your Post";
   static String astrologer="Astrologer";
+  static String astrologerProfile="Astrologer Profile";
   static String shareThought="Share your thought!";
   static String replying="Replaying to";
   static String termsDesc='''<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:3pt;"><span style="font-size:26pt;font-family:Arial,sans-serif;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">Terms &amp; conditions</span></p>

@@ -16,6 +16,7 @@ class _WalletScreenState extends State<WalletScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
         appBar: DashboardAppBar(
           title: '',
         ),
@@ -97,7 +98,7 @@ class _WalletScreenState extends State<WalletScreen> {
                   Container(
                     margin: EdgeInsets.only(top: 30),
                     padding: const EdgeInsets.all(15),
-                    decoration: AppDecoration.whiteShadowRounded,
+                    //decoration: AppDecoration.whiteShadowRounded,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,

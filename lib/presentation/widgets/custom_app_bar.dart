@@ -33,6 +33,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title, style: AppStyle.black16.copyWith(fontWeight: FontWeight.w500),
       ),
+      titleSpacing: 0,
       centerTitle: false,
       backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
@@ -95,11 +96,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const DashboardAppBar({Key? key, this.title, this.trailingIcon})
+  const DashboardAppBar({Key? key, this.title, this.trailingIcon,this.showProfile=false})
       : super(key: key);
   final String? title;
   final Widget? trailingIcon;
-
+  final bool showProfile;
   @override
   Widget build(BuildContext context) {
     return Consumer2<AppProvider,AuthProvider>(
@@ -122,7 +123,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
             InkWell(
               onTap: () => context.push(NotificationScreen()),
               child: Padding(
-                padding: const EdgeInsets.only(left: 10,right: 10),
+                padding:  EdgeInsets.only(left: 10,right: showProfile ? 20 : 10),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -135,7 +136,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
             ),
-            InkWell(
+            if(showProfile)InkWell(
               onTap: () => context.push(ProfileScreen()),
               child: Padding(
                 padding: const EdgeInsets.only(right: 20,left: 10),
