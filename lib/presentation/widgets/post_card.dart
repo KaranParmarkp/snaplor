@@ -46,66 +46,69 @@ class _PostCardState extends State<PostCard> {
     return Consumer<SocialProvider>(
   builder: (context, provider, child) {
   return Container(
-      padding: EdgeInsets.all(15),
+      padding: EdgeInsets.only(top: 15,bottom: 15),
       margin: EdgeInsets.symmetric(vertical: 2),
       child: Column(
         children: [
 
           /// header title
-          Row(
-            children: [
-              UserDP(image: model.user?.image,),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 14),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      NameVerified(
-                        name: model.user?.name,
-                        verified: model.user?.isVerified.isTrue,
-                        showAst: model.user?.role == "astrologer",
-                      ),
-                      Text(
-                        "Exp : ${model.user?.experience} years | ${model.user
-                            ?.order} Orders",
-                        style: AppStyle.grey12.copyWith(
-                            color: AppColors.hintGrey2,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 10),
-                      ),
-                    ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
+              children: [
+                UserDP(image: model.user?.image,),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 14),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        NameVerified(
+                          name: model.user?.name,
+                          verified: model.user?.isVerified.isTrue,
+                          showAst: model.user?.role == "astrologer",
+                        ),
+                        Text(
+                          "Exp : ${model.user?.experience} years | ${model.user
+                              ?.order} Orders",
+                          style: AppStyle.grey12.copyWith(
+                              color: AppColors.hintGrey2,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 10),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              if(model.user?.id == context
-                  .read<AuthProvider>()
-                  .userModel
-                  ?.id)PopupMenuButton(
-                //icon: Icon(Icons.met),
-                offset: Offset(20, 40),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                padding: EdgeInsets.zero,
-                itemBuilder: (context) {
-                  return [
-                    PopupMenuItem(
-                      child: Row(children: [SvgImage(image: AppSvg.edit),10.width,Text(AppStrings.editPost,style: AppStyle.black12,)],),
-                    ),
-                    PopupMenuItem(
-                        onTap: () {
-                          provider.deletePost(id: model.id.toStringOrEmpty,fromMyPost: fromMyPost,showLoader: true);
-                        },
-                        child: Row(children: [SvgImage(image: AppSvg.deleteRed),10.width, Text(AppStrings.delete,style: AppStyle.red12,)],)
-                  ,
-                  )
-                  ,
+                if(model.user?.id == context
+                    .read<AuthProvider>()
+                    .userModel
+                    ?.id)PopupMenuButton(
+                  //icon: Icon(Icons.met),
+                  offset: Offset(20, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                        child: Row(children: [SvgImage(image: AppSvg.edit),10.width,Text(AppStrings.editPost,style: AppStyle.black12,)],),
+                      ),
+                      PopupMenuItem(
+                          onTap: () {
+                            provider.deletePost(id: model.id.toStringOrEmpty,fromMyPost: fromMyPost,showLoader: true);
+                          },
+                          child: Row(children: [SvgImage(image: AppSvg.deleteRed),10.width, Text(AppStrings.delete,style: AppStyle.red12,)],)
+                    ,
+                    )
+                    ,
 
-                  ];
-                },
-              )
-            ],
+                    ];
+                  },
+                )
+              ],
+            ),
           ),
           if (model.type != PostType.text)Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -116,8 +119,8 @@ class _PostCardState extends State<PostCard> {
               children: [
                 if (model.type == PostType.image)
                   SquareNetworkImageAvatar(
-                    radius: 12,
-                    height: 150,
+                    radius: 0,
+                    height: 350,
                     width: double.infinity,
                     image: model.imageUrl,
                   ),
@@ -143,28 +146,34 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
             child: TextHashtag(
                 name: model.type != PostType.text
                     ? model.user?.name ?? "Madhusudan"
                     : null,
                 text: model.content ?? ""),
           ),
-          LikeCommentShare(
-            showSave: showSave,
-            model: model,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: LikeCommentShare(
+              showSave: showSave,
+              model: model,
+            ),
           ),
           10.height,
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              model.createdAt.isNotNull
-                  ? model.createdAt!.formatElapsedTimeString()
-                  : "",
-              style: AppStyle.grey12.copyWith(
-                  color: AppColors.hintGrey2,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                model.createdAt.isNotNull
+                    ? model.createdAt!.formatElapsedTimeString()
+                    : "",
+                style: AppStyle.grey12.copyWith(
+                    color: AppColors.hintGrey2,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 10),
+              ),
             ),
           ),
         ],
