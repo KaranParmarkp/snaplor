@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import '../../app/utils/utils.dart';
 
 class TitleDropdown extends StatelessWidget {
-  const TitleDropdown({super.key, required this.text,  this.icon, this.onTap, this.leadingIcon, this.fontColor});
+  const TitleDropdown({super.key, required this.text,  this.icon, this.onTap, this.leadingIcon, this.fontColor, this.subWidget});
   final String text;
   final Widget? icon;
   final Widget? leadingIcon;
   final VoidCallback? onTap;
   final Color? fontColor;
+  final Widget? subWidget;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +22,14 @@ class TitleDropdown extends StatelessWidget {
           children: [
             leadingIcon??SizedBox.shrink(),
             10.width,
-            Expanded(child: Text(text,style: AppStyle.black14.copyWith(color: fontColor ?? AppColors.black),)),
+            Expanded(child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(text,style: AppStyle.black14.copyWith(color: fontColor ?? AppColors.black),),
+                subWidget??SizedBox()
+              ],
+            )),
             icon??SizedBox.shrink()
 
           ],

@@ -36,9 +36,9 @@ class _OrdersScreenState extends State<OrdersScreen>
     return Scaffold(
       appBar: CustomAppBar(
         title: AppStrings.orders,
-        showNotification: true,
+    /*    showNotification: true,
         showProfile: true,
-      ),
+    */  ),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -275,6 +275,26 @@ class _OrderCardState extends State<OrderCard> {
         },
         child: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Order Id: #${widget.model.id}",
+                      style: AppStyle.grey12
+                          .copyWith(color: AppColors.greyDark, fontSize: 10),
+                    ),
+                  ),
+                  Text(
+                    "${DateTimeHelper.dateMonthWithTime(widget.model.createdAt)}",
+                    style: AppStyle.grey12
+                        .copyWith(color: AppColors.greyDark, fontSize: 10),
+                  ),
+                ],
+              ),
+            ),
             Row(
               children: [
                 Expanded(
@@ -318,7 +338,7 @@ class _OrderCardState extends State<OrderCard> {
                             "${widget.model.pricePerMinute}/Min")),
                 Text(
                   AppStrings.rs + "${widget.model.totalPaid}",
-                  style: AppStyle.purple14w800,
+                  style: AppStyle.purple14w600,
                 )
               ],
             ),
@@ -394,7 +414,7 @@ class _OrderCardState extends State<OrderCard> {
                 ],
               ),
             ),
-            Padding(
+            /*Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Row(
                 children: [
@@ -422,7 +442,7 @@ class _OrderCardState extends State<OrderCard> {
                   ),
                 ],
               ),
-            )
+            )*/
           ],
         ),
       ),

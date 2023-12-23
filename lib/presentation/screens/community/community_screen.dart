@@ -26,7 +26,7 @@ class CommunityScreen extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: 180,
+              height: 150,
               child: ListView.builder(
                 itemCount: 10,
                 shrinkWrap: true,
@@ -76,7 +76,7 @@ class CommunityScreen extends StatelessWidget {
                     5.height,
                     NameVerified(name: "Karan",verified: true),
                     5.height,
-                    Row(
+                    /*Row(
                       children: [
                         Expanded(
                           child: Container(
@@ -114,7 +114,7 @@ class CommunityScreen extends StatelessWidget {
                           ),
                         ),
                       ],
-                    ),
+                    ),*/
                   ],
                 ),
               ),),

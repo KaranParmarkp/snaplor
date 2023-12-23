@@ -36,7 +36,7 @@ class AuthProvider extends BaseProvider {
    initSocket() async {
     String? token = await ApiService.getToken();
     _socket = IO.io(
-      'http://api.jyotishee.com:3000',
+      ApiConfig.baseUrlSocket,
       IO.OptionBuilder()
           .setTransports(['websocket'])
           .setExtraHeaders({'Authorization': 'Bearer $token'})

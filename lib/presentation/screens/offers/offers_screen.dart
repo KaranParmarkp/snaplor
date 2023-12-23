@@ -19,8 +19,6 @@ class _OffersScreenState extends State<OffersScreen> {
     return Scaffold(
       appBar: CustomAppBar(
         title: AppStrings.offers,
-        showNotification: true,
-        showProfile: true,
       ),
       body: Container(
           height: double.infinity,

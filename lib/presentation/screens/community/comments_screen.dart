@@ -248,7 +248,7 @@ class CommentCard extends StatelessWidget {
                               ),
                               20.width,
                               InkWell(
-                                //onTap: onReplyTap!(model),
+                                onTap: onReplyTap!(model),
                                 child: Text(
                                   AppStrings.reply,
                                   style: AppStyle.grey10w400,

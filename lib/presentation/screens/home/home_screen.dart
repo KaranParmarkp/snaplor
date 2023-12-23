@@ -238,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     'Type',
                                     style: AppStyle.black14,
                                   ),
-                                  const SizedBox(width: 185),
+                                  Spacer(),
                                   Text(
                                     'Status',
                                     style: AppStyle.black14,
@@ -257,9 +257,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       Text(
                                         AppStrings.calls,
-                                        style: AppStyle.black12,
+                                        style: AppStyle.black14,
                                       ),
-                                      Row(
+                                      /*Row(
                                         children: [
                                           Text(
                                             AppStrings.rate,
@@ -272,16 +272,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                             style: AppStyle.purple12,
                                           ),
                                         ],
-                                      ),
+                                      ),*/
                                     ],
                                   ),
                                 ),
                                 Spacer(),
-                                RoundAvatar(image: AppSvg.edit,onTap: () {
+                                /*RoundAvatar(image: AppSvg.edit,onTap: () {
                                   _showRateSheet(context: context,isCallRate: true,rate: data.callPrice.toString(),user: data);
                                 },),
+                                */
+                                Text(data.isAvailableForCall.isTrue ? "online" : "offline",style: data.isAvailableForCall.isTrue ? AppStyle.lightGreen12 : AppStyle.red12,),
                                 10.width,
-
                                 CupertinoSwitch(
                                   value: data.isAvailableForCall??false,
                                   onChanged: (value) {
@@ -306,9 +307,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       Text(
                                         AppStrings.chat,
-                                        style: AppStyle.black12,
+                                        style: AppStyle.black14,
                                       ),
-                                      Row(
+                                      /*Row(
                                         children: [
                                           Text(
                                             AppStrings.rate,
@@ -321,14 +322,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                             style: AppStyle.purple12,
                                           ),
                                         ],
-                                      ),
+                                      ),*/
                                     ],
                                   ),
                                 ),
                                 Spacer(),
-                                RoundAvatar(image: AppSvg.edit,onTap: () {
+                               /* RoundAvatar(image: AppSvg.edit,onTap: () {
                                   _showRateSheet(context: context,isCallRate: false,rate: data.chatPrice.toString(),user: data);
                                 },),
+                               */
+                                Text(data.isAvailableForChat.isTrue ? "online" : "offline",style: data.isAvailableForChat.isTrue ? AppStyle.lightGreen12 : AppStyle.red12,),
                                 10.width,
                                 CupertinoSwitch(
                                   value: data.isAvailableForChat??false,

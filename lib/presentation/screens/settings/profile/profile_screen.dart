@@ -23,84 +23,179 @@ class ProfileScreen extends StatelessWidget {
         child: AppConsumer<AuthProvider, UserModel>(
           taskName: AuthProvider.userDataKey,
           load: (provider) => provider.userData(),
-          successBuilder: (data,provider) {
+          successBuilder: (data, provider) {
             return SingleChildScrollView(
-        clipBehavior: Clip.none,
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CircleNetworkImageAvatar(
-                  radius: 40,
-                  image: data.profileImage),
-              5.height,
-              NameVerified(name: data.name,verified: data.isVerified,center: true,),
-              5.height,
-              if(data.specialization.isNotEmpty)Text(data.specialization.join(", ").toCapitalized(), style: AppStyle.greyHint12,),
-              if(data.languages.isNotEmpty)Text(data.languages.join("| ").toCapitalized(), style: AppStyle.greyHint12,),
-              15.height,
-              Container(
-                decoration: AppDecoration.purpleLightRounded.copyWith(
-                  color: AppColors.purpleLight,
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                padding: EdgeInsets.all(15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              clipBehavior: Clip.none,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-
-                        Text(AppStrings.call,style: AppStyle.black12w400,),
-                        5.height,
-                        Text(
-                          "${data.totalCallOrders}",
-                          style: AppStyle.purple18w600,
-                        ),
-                      ],
+                    CircleNetworkImageAvatar(
+                        radius: 40, image: data.profileImage),
+                    5.height,
+                    NameVerified(
+                      name: data.name,
+                      verified: data.isVerified,
+                      center: true,
                     ),
-                    Column(
-                      children: [
-                        Text(AppStrings.chat,style: AppStyle.black12w400,),
-                        5.height,
-                        Text(
-                          "${data.totalChatOrders}",
-                          style: AppStyle.purple18w600,
-                        ),
-                      ],
+                    5.height,
+                    if (data.specialization.isNotEmpty)
+                      Text(
+                        data.specialization.join(", ").toCapitalized(),
+                        style: AppStyle.greyHint12,
+                      ),
+                    if (data.languages.isNotEmpty)
+                      Text(
+                        data.languages.join("| ").toCapitalized(),
+                        style: AppStyle.greyHint12,
+                      ),
+                    15.height,
+                    Container(
+                      decoration: AppDecoration.purpleLightRounded.copyWith(
+                          color: AppColors.purpleLight,
+                          borderRadius: BorderRadius.circular(15)),
+                      padding: EdgeInsets.all(15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                AppStrings.call,
+                                style: AppStyle.black12w400,
+                              ),
+                              5.height,
+                              Text(
+                                "${data.totalCallOrders}",
+                                style: AppStyle.purple18w600,
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                AppStrings.chat,
+                                style: AppStyle.black12w400,
+                              ),
+                              5.height,
+                              Text(
+                                "${data.totalChatOrders}",
+                                style: AppStyle.purple18w600,
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                AppStrings.sessions,
+                                style: AppStyle.black12w400,
+                              ),
+                              5.height,
+                              Text(
+                                "${(data.totalChatOrders! + data.totalCallOrders!)}",
+                                style: AppStyle.purple18w600,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    Column(
-                      children: [
-                        Text(AppStrings.sessions,style: AppStyle.black12w400,),
-                        5.height,
-                        Text(
-                          "${(data.totalChatOrders! + data.totalCallOrders!)}",
-                          style: AppStyle.purple18w600,
-                        ),
-                      ],
+                    20.height,
+                    TitleDropdown(
+                      text: AppStrings.personalDetails,
+                      leadingIcon: SvgImage(image: AppSvg.user),
+                      icon: Icon(Icons.keyboard_arrow_right_rounded),
+                      onTap: () => context.push(PersonalDetailsScreen(
+                        user: data,
+                      )),
                     ),
+                    TitleDropdown(
+                      text: AppStrings.bankDetails,
+                      leadingIcon: SvgImage(image: AppSvg.bank),
+                      icon: Icon(Icons.keyboard_arrow_right_rounded),
+                      onTap: () => context.push(BankDetailsScreen(
+                        user: data,
+                      )),
+                    ),
+                    TitleDropdown(
+                      text: AppStrings.sessionsPrice,
+                      leadingIcon: SvgImage(image: AppSvg.ruppe),
+                      icon: Icon(Icons.keyboard_arrow_right_rounded),
+                      onTap: () => _showRateSheet(
+                          context: context,
+                          isCallRate: true,
+                          rate: data.callPrice.toString(),
+                          user: data),
+                      subWidget: Row(
+                        children: [
+                          Rupee(
+                            fontSize: 14,
+                            color: AppColors.hintGrey,
+                          ),
+                          Text(
+                            "${data.callPrice}/Min",
+                            style: AppStyle.grey12,
+                          ),
+                        ],
+                      ),
+                    ),
+                    // TitleDropdown(text: AppStrings.callRate, leadingIcon: SvgImage(image: AppSvg.call),icon: Icon(Icons.keyboard_arrow_right_rounded)),
+                    // TitleDropdown(text: AppStrings.chatRate, leadingIcon: SvgImage(image: AppSvg.chat),icon: Icon(Icons.keyboard_arrow_right_rounded)),
+                    // TitleDropdown(text: AppStrings.callHistory, leadingIcon: SvgImage(image: AppSvg.call),icon: Icon(Icons.keyboard_arrow_right_rounded)),
+                    // TitleDropdown(text: AppStrings.chatHistory, leadingIcon: SvgImage(image: AppSvg.chat),icon: Icon(Icons.keyboard_arrow_right_rounded)),
                   ],
                 ),
               ),
-              20.height,
-              TitleDropdown(text: AppStrings.personalDetails, leadingIcon: SvgImage(image: AppSvg.user),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(PersonalDetailsScreen(user: data,)),),
-              TitleDropdown(text: AppStrings.bankDetails, leadingIcon: SvgImage(image: AppSvg.bank),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(BankDetailsScreen(user: data,)),),
-              TitleDropdown(text: AppStrings.sessionsPrice, leadingIcon: SvgImage(image: AppSvg.ruppe),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(BankDetailsScreen(user: data,)),),
-              // TitleDropdown(text: AppStrings.callRate, leadingIcon: SvgImage(image: AppSvg.call),icon: Icon(Icons.keyboard_arrow_right_rounded)),
-              // TitleDropdown(text: AppStrings.chatRate, leadingIcon: SvgImage(image: AppSvg.chat),icon: Icon(Icons.keyboard_arrow_right_rounded)),
-              // TitleDropdown(text: AppStrings.callHistory, leadingIcon: SvgImage(image: AppSvg.call),icon: Icon(Icons.keyboard_arrow_right_rounded)),
-              // TitleDropdown(text: AppStrings.chatHistory, leadingIcon: SvgImage(image: AppSvg.chat),icon: Icon(Icons.keyboard_arrow_right_rounded)),
-
-            ],
-          ),
-        ),
-      );
+            );
           },
         ),
-
-      )
-      ,
+      ),
     );
+  }
+
+  void _showRateSheet(
+      {required BuildContext context,
+      required bool isCallRate,
+      required String rate,
+      required UserModel user}) {
+    TextEditingController controller = TextEditingController();
+    controller.text = rate;
+    AppHelper.showBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        child: Column(
+          children: [
+            HeaderTextField(
+              hint: '',
+              //header: (isCallRate ? AppStrings.call : AppStrings.chat) + " " + AppStrings.rateWithout,
+              header: AppStrings.sessionsPrice,
+              controller: controller,
+              keyboard: TextInputType.number,
+            ),
+            AppButton(
+              title: AppStrings.saveChanges,
+              onTap: () async {
+                if (controller.isEmpty()) {
+                  AppHelper.showToast(
+                    message: AppValidator.messageBuilder("rate")!,
+                  );
+                } else {
+                  bool? response = await context.read<AuthProvider>().userData(
+                      refresh: true,
+                      updateModel: user.copyWith(
+                        callPrice: isCallRate
+                            ? controller.text.toInt()
+                            : user.callPrice,
+                        chatPrice: !isCallRate
+                            ? controller.text.toInt()
+                            : user.chatPrice,
+                      ));
+                  if (response.isTrue) context.pop();
+                }
+              },
+            )
+          ],
+        ));
   }
 }

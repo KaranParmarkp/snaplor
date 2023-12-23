@@ -1,7 +1,7 @@
 class ApiConfig {
 
-  static const String baseUrl = "http://api.jyotishee.com/";
-  static const String baseUrlSocket = "http://api.jyotishee.com:3000";
+  static const String baseUrl = "http://api.snaplor.com/";
+  static const String baseUrlSocket = "http://api.snaplor.com:3000";
   static const String apiUrl = "${baseUrl}api/";
 
   // User Management
