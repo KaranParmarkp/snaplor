@@ -6,6 +6,7 @@ import 'package:jyotishee/presentation/screens/chat/chat_support_screen.dart';
 import 'package:jyotishee/presentation/screens/community/community_screen.dart';
 
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../app/utils/utils.dart';
 import '../../widgets/widgets.dart';
@@ -25,6 +26,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+     List<ChartData> chartData = [
+    ];
     /*final res =  IOWebSocketChannel.connect(Uri.parse(ApiConfig.baseUrlSocket),headers: {
       'Authorization': 'Bearer ${ApiService.getToken()}',
     });
@@ -39,6 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
             taskName: AuthProvider.userDataKey,
             load: (provider) => provider.userData(),
             successBuilder: (data,provider) {
+              chartData = [
+                ChartData('Call', data.todayCallOrders?.toDouble() ?? 0, AppColors.colorPrimary),
+                ChartData('Chat', data.todayChatOrders?.toDouble() ?? 0, AppColors.purpleLight1),
+
+              ];
               return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -147,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   width: 20,
                                                   height: 8,
                                                   decoration: ShapeDecoration(
-                                                    color: Color(0xFFFFECEC),
+                                                    color: AppColors.purpleLight1,
                                                     shape: RoundedRectangleBorder(
                                                       borderRadius:
                                                       BorderRadius.circular(10),
@@ -185,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            Stack(
+                            /*Stack(
                               alignment: Alignment.center,
                               children: [
                                 CircularPercentIndicator(
@@ -211,6 +219,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                           .copyWith(fontWeight: FontWeight.bold),
                                     ))
                               ],
+                            )*/
+                            SizedBox(
+                              height: 100,
+                              width: 100,
+                              child: SfCircularChart(
+                                series: [
+                                  DoughnutSeries<ChartData, String>(
+
+                                      dataSource: /*[
+                                        ChartData(size: data.totalChatOrders,color: AppColors.colorPrimary),
+                                        ChartData(size: data.totalCallOrders,color: AppColors.primaryAccent),
+                                      ],*/chartData,
+                                      pointColorMapper:(ChartData data,  _) => data.color,
+                                      xValueMapper: (ChartData data, _) => data.x,
+                                      yValueMapper: (ChartData data, _) => data.y,
+                                  )
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -449,4 +475,11 @@ class ImportantNotice extends StatelessWidget {
       ),
     );
   }
+}
+///Chart sample data
+class ChartData {
+  ChartData(this.x, this.y, this.color);
+  final String x;
+  final double y;
+  final Color color;
 }

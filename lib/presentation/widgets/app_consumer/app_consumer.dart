@@ -79,7 +79,7 @@ class _AppConsumerState<T extends BaseProvider, K>
               onRefresh: () async {
                 if (widget.refresh) await widget.load(_provider);
               },
-              color: AppColors.black,
+              color: AppColors.colorPrimary,
               child: _provider.data[widget.taskName] == null
                   ? ErrorScreen(
                       error: "No Data Available",

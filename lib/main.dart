@@ -119,6 +119,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textTheme: GoogleFonts.poppinsTextTheme(),
+        indicatorColor: AppColors.colorPrimary
         //scaffoldBackgroundColor: Colors.white,
       ),
       home: const SplashScreen(),
