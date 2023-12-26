@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 
+import '../../../data/providers/providers.dart';
 import '../../widgets/widgets.dart';
 
 class LanguageScreen extends StatefulWidget {
@@ -12,10 +13,6 @@ class LanguageScreen extends StatefulWidget {
 }
 
 class _LanguageScreenState extends State<LanguageScreen> {
-  bool push = true;
-  bool sms = true;
-  bool email = true;
-
   @override
   Widget build(BuildContext context) {
     return DismissKeyBoard(
@@ -24,28 +21,22 @@ class _LanguageScreenState extends State<LanguageScreen> {
         appBar: CustomAppBar(
           title: AppStrings.language,
         ),
-        body: SingleChildScrollView(
-          clipBehavior: Clip.none,
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+        body: Consumer<AppProvider>(
+          builder: (context, provider, child) {
+            return Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  10.height,
+                  InkWell(child: Text("English"), onTap: () {
+                    provider.updateLanguage(locale: Locale("hi"));
+                  },),
 
-              children: [
-                10.height,
-                TitleDropdown(
-                  leadingIcon: SvgImage(image: AppSvg.mobile),
-                  text: AppStrings.pushNotification,icon: CupertinoSwitch(
-                  value: push,
-                  onChanged: (value) {
-                    push = !push;
-                    setState(() {});
-                  },
-                  activeColor: AppColors.colorPrimary,
-                ),),
-              ],
-            ),
-          ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

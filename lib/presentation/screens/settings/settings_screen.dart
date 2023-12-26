@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_support_screen.dart';
+import 'package:jyotishee/presentation/screens/settings/language_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/notification_settings/notification_settings_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/profile_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/terms_screen.dart';
@@ -51,7 +52,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               //TitleDropdown(text: AppStrings.profile, leadingIcon: SvgImage(image: AppSvg.user),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(ProfileScreen()),),
               //TitleDropdown(text: AppStrings.notification, leadingIcon: SvgImage(image: AppSvg.bell),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(NotificationSettingsScreen()),),
-              TitleDropdown(text: AppStrings.language, leadingIcon: SvgImage(image: AppSvg.language),icon: Icon(Icons.keyboard_arrow_right_rounded)),
+              TitleDropdown(text: AppStrings.language, leadingIcon: SvgImage(image: AppSvg.language),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(LanguageScreen()),),
               //TitleDropdown(text: AppStrings.faqs, leadingIcon: SvgImage(image: AppSvg.terms),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(faqScreen()),),
               TitleDropdown(text: AppStrings.terms, leadingIcon: SvgImage(image: AppSvg.terms),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(TermsScreen(title: AppStrings.terms,data: AppStrings.termsDesc,)),),
               TitleDropdown(text: AppStrings.privacy, leadingIcon: SvgImage(image: AppSvg.privacy),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(TermsScreen(title: AppStrings.privacy,data: AppStrings.privacyDesc,)),),

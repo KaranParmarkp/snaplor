@@ -108,8 +108,8 @@ class _MyAppState extends State<MyApp> {
         physics: BouncingScrollPhysics(),
         scrollbars: true,
       ),
-      supportedLocales: L10n.all,
-      //locale: stateLocale.locale,
+      supportedLocales: context.watch<AppProvider>().localeList,
+      locale: context.watch<AppProvider>().currentLocale,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
