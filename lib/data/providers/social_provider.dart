@@ -4,6 +4,7 @@ import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/providers/base_provider.dart';
 import 'package:jyotishee/data/sources/remote/repositories/social_repo/social_repository.dart';
 
+import '../models/social_post_model.dart';
 import '../sources/remote/repositories/social_repo/social_repository_impl.dart';
 
 
@@ -30,14 +31,13 @@ class SocialProvider extends BaseProvider {
 
   // Get Posts api
   static String getPostKey = 'getPostKey';
-  getPost({bool refresh=false,bool showMainLoader = true}) async {
+  getPost({bool refresh=false,bool showMainLoader = true,int skip=0,Function(List<SocialPostModel> data)? onSuccess,bool resetData=false}) async {
+    if(resetData)reset(getPostKey);
     if(showMainLoader)setLoading(taskName: getPostKey,showDialogLoader: refresh);
     try {
-      setData(taskName: getPostKey,data: await _repository.getPosts());
+      setData(taskName: getPostKey,data: await _repository.getPosts(skip),isPaginated: true,onSuccess: (data) => onSuccess?.call(data),);
     } catch (e, s) {
-      e.printDebug;
-      s.printDebug;
-      setError(taskName: getPostKey,errorMessage:  e.toString());
+      setError(taskName: getPostKey,errorMessage:  e.toString(),s: s,e: e);
     }
   }
   // Get Posts api
@@ -55,15 +55,15 @@ class SocialProvider extends BaseProvider {
 
   // Like Post api
   static String likePostKey = 'likePostKey';
-  likePost({required String id,bool showLoader=false,bool isLike=false,required bool fromMyPost}) async {
+  likePost({required String id,bool showLoader=false,bool isLike=false,required bool fromMyPost,Function(SocialPostModel? data)? onSuccess}) async {
     setLoading(taskName: likePostKey,showDialogLoader: showLoader);
     try {
-      setData(taskName: likePostKey,data: await _repository.likePost(id,isLike),hideLoader: showLoader);
-      if(fromMyPost){
+      setData(taskName: likePostKey,data: await _repository.likePost(id,isLike),hideLoader: showLoader,onSuccess: (data) => onSuccess?.call(data),);
+      /*if(fromMyPost){
         getMyPost(refresh: false,);
       }else{
         getPost(showMainLoader: false,refresh: false);
-      }
+      }*/
     } catch (e, s) {
       e.printDebug;
       s.printDebug;

@@ -34,7 +34,7 @@ class AuthProvider extends BaseProvider {
     checkUserIsLoggedIn();
   }
    initSocket() async {
-    String? token = await ApiService.getToken();
+    /*String? token = await ApiService.getToken();
     _socket = IO.io(
       ApiConfig.baseUrlSocket,
       IO.OptionBuilder()
@@ -58,7 +58,7 @@ class AuthProvider extends BaseProvider {
       print(' websocket on  Error');
       print(m);
     });
-
+*/
     notifyListeners();
   }
 

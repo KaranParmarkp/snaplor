@@ -46,7 +46,7 @@ class LikedUsersScreen extends StatelessWidget {
                                 children: [
                                   NameVerified(
                                     name: data[index].user?.name,
-                                    verified: data[index].user?.isVerified.isTrue,
+                                    //verified: data[index].user?.isVerified.isTrue,
                                     showAst: data[index].user?.role == "astrologer",
                                   ),
                                   Text(

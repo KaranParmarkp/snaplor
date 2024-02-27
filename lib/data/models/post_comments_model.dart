@@ -71,7 +71,7 @@ class PostCommentModel {
   factory PostCommentModel.fromJson(Map<String, dynamic> json) => PostCommentModel(
     id: json["_id"],
     postId: json["post_id"],
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
+    user: json["user_id"] == null ? User() : User.fromJson(json["user_id"]),
     comment: json["comment"],
     isHidden: json["is_hidden"],
     isPinned: json["is_pinned"],

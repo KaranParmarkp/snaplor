@@ -22,9 +22,9 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
   }
 
   @override
-  Future<List<SocialPostModel>> getPosts() {
+  Future<List<SocialPostModel>> getPosts(int skip) {
     return serviceHandler(
-      serviceFunction: () => service.getPosts(),
+      serviceFunction: () => service.getPosts(skip),
       successFunction: (response) async {
         List<SocialPostModel> list = [];
         list = List<SocialPostModel>.from(response.data!.map((x) => SocialPostModel.fromJson(x))).toList();
@@ -45,11 +45,11 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
   }
 
   @override
-  Future<GenericResponse> likePost(String id,bool isLike) {
+  Future<SocialPostModel> likePost(String id,bool isLike) {
     return serviceHandler(
       serviceFunction: () => service.likePost(id,isLike),
       successFunction: (response) async {
-        return response;
+        return SocialPostModel.fromJson(response.data);
       },
     );
   }

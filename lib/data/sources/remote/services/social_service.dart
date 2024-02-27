@@ -15,13 +15,17 @@ class SocialService extends ApiService {
   }
 
   Future<Response<GenericResponse>> addPost(String message, File? file) async {
-    return postData(ApiConfig.addPost, data: {"content": message});
-    //return postData(ApiConfig.addPost, data: {"content": message});
+    String? signedUrl;
+    if(file!=null){
+      signedUrl = await getSignedUrl(isProfile: false, image: file);
+    }
+    return postData(ApiConfig.addPost, data: {"content": message,if(signedUrl!=null)"image_url":signedUrl});
   }
 
-  Future<Response<GenericResponse>> getPosts() async {
+  Future<Response<GenericResponse>> getPosts(int skip) async {
     return getData(
       ApiConfig.addPost,
+      queryParameters: {"skip" : skip,"limit":10}
     );
   }
 
@@ -37,23 +41,21 @@ class SocialService extends ApiService {
   }
 
   Future<Response<GenericResponse>> likePost(String id, bool isLike) async {
-    return isLike
-        ? putData(ApiConfig.addPost + "/" + id + "/like")
-        : putData(ApiConfig.addPost + "/" + id + "/unlike");
+    return  putData(ApiConfig.addPost + "/action/" + id + (isLike ? "/like":"/unlike"));
   }
 
   Future<Response<GenericResponse>> likedPostUsers(String id,) async {
-    return getData(ApiConfig.addPost + "/" + id + "/likes");
+    return getData(ApiConfig.addPost + "/likes/" + id);
   }
 
   Future<Response<GenericResponse>> commentPost(String id, String message) async {
-    return putData(ApiConfig.addPost + "/" + id + "/comments",
+    return postData(ApiConfig.addPost + "/" + id + "/comments",
         data: {"comment": message});
   }
 
   Future<Response<GenericResponse>> commentPostReply(
       String id, String message, String commentID) async {
-    return putData(ApiConfig.addPost + "/" + id + "/comments/"+commentID+"/replies",
+    return postData(ApiConfig.addPost + "/" + id + "/comments/"+commentID+"/replies",
         data: {"reply": message});
   }
 

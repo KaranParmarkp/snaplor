@@ -12,22 +12,22 @@ List<SocialPostModel> socialPostModelFromJson(String str) => List<SocialPostMode
 String socialPostModelToJson(List<SocialPostModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class SocialPostModel {
-  final String? id;
-  final User? user;
-  final String? content;
-  final bool? isHidden;
-  final bool? isPinned;
-  final int? totalComment;
-  final int? totalLikes;
-  final int? totalShare;
-  final bool? isDeleted;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
-  final String? imageUrl;
-  final String? videoUrl;
-  final PostType? type;
-  final bool? isLiked;
+   String? id;
+   User? user;
+   String? content;
+   bool? isHidden;
+   bool? isPinned;
+   int? totalComment;
+   int? totalLikes;
+   int? totalShare;
+   bool? isDeleted;
+   DateTime? createdAt;
+   DateTime? updatedAt;
+   int? v;
+   String? imageUrl;
+   String? videoUrl;
+   PostType? type;
+   bool? isLiked;
 
   SocialPostModel({
     this.id,
@@ -101,7 +101,7 @@ class SocialPostModel {
     v: json["__v"],
     imageUrl: json["image_url"],
     videoUrl: json["video_url"],
-    isLiked: json["isLike"],
+    isLiked: json["isLiked"],
     type: json["video_url"]!=null ? PostType.video : json["image_url"] !=null ? PostType.image : PostType.text,
   );
 

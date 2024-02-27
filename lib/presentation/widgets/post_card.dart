@@ -186,7 +186,7 @@ class _PostCardState extends State<PostCard> {
 }
 
 class LikeCommentShare extends StatelessWidget {
-  const LikeCommentShare({
+   LikeCommentShare({
     super.key,
     required this.showSave,
     required this.model,
@@ -195,7 +195,7 @@ class LikeCommentShare extends StatelessWidget {
 
   final bool showSave;
   final bool fromMyPost;
-  final SocialPostModel model;
+  SocialPostModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -212,10 +212,17 @@ class LikeCommentShare extends StatelessWidget {
           await _showCommentSheet(context, model.id!, provider),
         ),
         IconTitle(
-          icon: model.isLiked.isTrue ? AppSvg.like : AppSvg.unLike,
+          icon: model.isLiked==true ? AppSvg.like : AppSvg.unLike,
           title: "${model.totalLikes ?? 0}",
           iconTap: () async {
-            await provider.likePost(id: model.id.toString(), isLike: model.isLiked.isFalse,fromMyPost: fromMyPost);
+            await provider.likePost(id: model.id.toString(), isLike: model.isLiked==null || model.isLiked.isFalse,fromMyPost: fromMyPost,onSuccess: (data) {
+              if(data!=null){
+                model.isLiked = data.isLiked;
+                model.totalLikes = data.totalLikes;
+                model.totalComment = data.totalComment;
+                model.totalShare = data.totalShare;
+              }
+            },);
           },
           titleTap: () async =>
           await _showLikedUsersSheet(context, model.id!, provider),
@@ -255,7 +262,7 @@ class LikeCommentShare extends StatelessWidget {
             id: id,
           );
         }));
-    provider.getPost(refresh: true);
+    //provider.getPost(refresh: true);
   }
   _showLikedUsersSheet(BuildContext context, String id, SocialProvider provider) async {
     await AppHelper.showBottomSheet(
@@ -268,7 +275,7 @@ class LikeCommentShare extends StatelessWidget {
             id: id,
           );
         }));
-    provider.getPost(refresh: true);
+    //provider.getPost(refresh: true);
   }
 }
 
@@ -292,16 +299,23 @@ class IconTitle extends StatelessWidget {
         children: [
           InkWell(
               onTap: iconTap,
-              child: SvgImage(
-                image: icon,
-                size: 24, color: iconColor,
+              child: Container(
+                //color: Colors.green,
+                child: SvgImage(
+                  image: icon,
+                  size: 24, color: iconColor,
+                ),
               )),
-          10.width,
+
           InkWell(
             onTap: titleTap,
-            child: Text(
-              title,
-              style: AppStyle.greyHint14w500,
+            child: Container(
+              //color: Colors.yellow,
+              padding: EdgeInsets.only(left: 10,right: 10),
+              child: Text(
+                title,
+                style: AppStyle.greyHint14w500,
+              ),
             ),
           )
         ],

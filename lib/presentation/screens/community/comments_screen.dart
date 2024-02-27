@@ -31,80 +31,88 @@ class _CommentScreenState extends State<CommentScreen> {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Column(
-              children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Text(
-                        AppStrings.comments,
-                        style: AppStyle.black14,
-                      ),
-                    ),
-                    AppDivider(color: Colors.black),
-                  ],
-                ),
-                AppConsumer<SocialProvider, List<PostCommentModel>>(
-                  taskName: SocialProvider.getCommentsKey,
-                  load: (provider) => provider.getComments(id: widget.id),
-                  successBuilder: (data, provider) => Container(
-                    padding: EdgeInsets.only(right: 0),
-                    margin: EdgeInsets.only(
-                        left: 15, right: 15, bottom: 0, top: 15),
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      itemBuilder: (context, index) => CommentCard(
-                        model: data[index],
-                        onCloseTap: () {
-                          replyModel = null;
-                          if(mounted)setState(() {});
-                        },
-                        onReplyTap: (model) {
-                          replyModel = model;
-                          if(mounted)setState(() {});
-                        },
-                        provider: provider,
-                        replyWidget: AppConsumer<SocialProvider, List<PostCommentModel>>(
-                          taskName: SocialProvider.getCommentsRepliesKey,
-                          load: (provider){},
-                          loaderBuilder: (p0) => SizedBox(
-                            height: 20,
-                            width: 70,
-                            child: CupertinoActivityIndicator(),
-                          ),
-                          successBuilder: (data, provider) => Container(
-                            padding: EdgeInsets.only(right: 0),
-                            margin: EdgeInsets.only(
-                                left: 15, right: 15, bottom: 0, top: 15),
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) => CommentCard(
-                                model: data[index],
-                                onCloseTap: () {
-                                  replyModel = null;
-                                  if(mounted)setState(() {});
-                                },
-                                onReplyTap: (model) {
-                                  replyModel = model;
-                                  if(mounted)setState(() {});
-                                },
-                                provider: provider,
-                              ),
-                              itemCount: data.length,
-                              shrinkWrap: true,
-                            ),
-                          ),
+            SizedBox(
+              height: commentFocus.hasFocus
+                  ? context.screenHeight * (0.50)
+                  : context.screenHeight * (0.90),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: Text(
+                          AppStrings.comments,
+                          style: AppStyle.black14,
                         ),
                       ),
-                      itemCount: data.length,
-                      shrinkWrap: true,
+                      AppDivider(color: Colors.black),
+                    ],
+                  ),
+                  Expanded(
+                    child: AppConsumer<SocialProvider, List<PostCommentModel>>(
+                      taskName: SocialProvider.getCommentsKey,
+                      load: (provider) => provider.getComments(id: widget.id),
+                      successBuilder: (data, provider) => Container(
+                        padding: EdgeInsets.only(right: 0),
+                        margin: EdgeInsets.only(left: 15, right: 0, bottom: 0, top: 15),
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          itemBuilder: (context, index) => CommentCard(
+                            model: data[index],
+                            onCloseTap: () {
+                              replyModel = null;
+                              if(mounted)setState(() {});
+                            },
+                            onReplyTap: () {
+                              replyModel = data[index];
+                              if(mounted)setState(() {});
+                            },
+                            provider: provider,
+                            replyWidget: AppConsumer<SocialProvider, List<PostCommentModel>>(
+                              taskName: SocialProvider.getCommentsRepliesKey,
+                              load: (provider){},
+                              loaderBuilder: (p0) => SizedBox(
+                                height: 20,
+                                width: 70,
+                                child: CupertinoActivityIndicator(),
+                              ),
+                              successBuilder: (data, provider) => Container(
+                                padding: EdgeInsets.only(right: 0),
+                                margin: EdgeInsets.only(
+                                    left: 15, right: 0, bottom: 0, top: 15),
+                                child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) => CommentCard(
+                                    isReply: true,
+                                    model: data[index],
+                                    onCloseTap: () {
+                                      //replyModel = null;
+                                      //if(mounted)setState(() {});
+                                    },
+                                    onReplyTap: () {
+                                      replyModel = data[index];
+                                      if(mounted)setState(() {});
+                                    },
+                                    provider: provider,
+                                  ),
+                                  itemCount: data.length,
+                                  shrinkWrap: true,
+                                ),
+                              ),
+                            ),
+                          ),
+                          itemCount: data.length,
+                          //shrinkWrap: true,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Container(
               height: replyModel == null ? 80 : 120,
@@ -193,7 +201,7 @@ class CommentCard extends StatelessWidget {
 
   final PostCommentModel model;
   final VoidCallback? onCloseTap;
-  final Function(PostCommentModel? model)? onReplyTap;
+  final Function()? onReplyTap;
   final SocialProvider provider;
   final bool isReply;
   final Widget? replyWidget;
@@ -205,102 +213,35 @@ class CommentCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          UserDP(radius: 18, image: model.user?.image),
+          UserDP(radius: 16, image: model.user?.image),
           10.width,
           Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                model.user!.name!.toCapitalized(),
-                                style: AppStyle.black12w700,
-                              ),
-                              10.width,
-                              Text(model.createdAt!.formatElapsedTimeString(),
-                                  style: AppStyle.grey10w400),
-                            ],
-                          ),
-                          4.height,
-                          Container(
-                              width: double.infinity,
-                              child: Text(model.comment ?? "",
-                                  style: AppStyle.black12w400,
-                                  textAlign: TextAlign.start)),
-                          6.height,
-                          Row(
-                            children: [
-                              SvgImage(image: AppSvg.unLike),
-                              6.width,
-                              Text(
-                                "${model.totalLikes} likes",
-                                style: AppStyle.grey10w400,
-                              ),
-                              20.width,
-                              InkWell(
-                                onTap: onReplyTap!(model),
-                                child: Text(
-                                  AppStrings.reply,
-                                  style: AppStyle.grey10w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                          6.height,
-                          if (model.totalReplies != 0)InkWell(
-                            onTap: () {
-                              if (provider.getStatus(
-                                  taskName: SocialProvider
-                                      .getCommentsRepliesKey) !=
-                                  Status.Loading)
-                                provider.getCommentsReplies(
-                                    id: model.postId!, commentId: model.id!);
-                            },
-                            child: provider.getStatus(
-                                taskName: SocialProvider
-                                    .getCommentsRepliesKey) ==
-                                Status.Loading
-                                ? SizedBox(
-                              height: 20,
-                              width: 70,
-                              child: CupertinoActivityIndicator(),
-                            )
-                                : Row(
-                              children: [
-                                SizedBox(
-                                    width: 25,
-                                    child: AppDivider(
-                                      thickness: 1,
-                                    )),
-                                6.width,
-                                Text(
-                                  AppStrings.view +
-                                      " ${model.totalReplies} " +
-                                      AppStrings.moreReplies,
-                                  style: AppStyle.grey10w400,
-                                ),
-                              ],
-                            ),
-                          ),
-                          if (model.totalReplies != 0)replyWidget ?? SizedBox()
-
-                        ],
-                      ),
+                    Text(
+                      model.user!.name.toStringOrEmpty.toCapitalized(),
+                      style: AppStyle.black12w700,
                     ),
                     10.width,
+                    Text(model.createdAt!.formatElapsedTimeString(),
+                        style: AppStyle.grey10w400),
+                    Spacer(),
                     PopupMenuButton(
+                      child: Container(
+                        height: 30,
+                        width: 42,
+                        alignment: Alignment.centerRight,
+                        child: Icon(
+                          Icons.more_vert,
+                        ),
+                      ),
+                      iconSize: 10,
                       padding: EdgeInsets.zero,
-                      offset: Offset(20, 40),
+                      offset: Offset(15, 34),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -350,8 +291,61 @@ class CommentCard extends StatelessWidget {
                         ];
                       },
                     ),
+                    10.width
                   ],
                 ),
+                4.height,
+                Container(
+                    width: double.infinity,
+                    child: Text(model.comment ?? "",
+                        style: AppStyle.black12w400,
+                        textAlign: TextAlign.start)),
+                6.height,
+                Row(
+                  children: [
+                    SvgImage(image: AppSvg.unLike),
+                    6.width,
+                    Text(
+                      "${model.totalLikes} likes",
+                      style: AppStyle.grey10w400,
+                    ),
+                    20.width,
+                    InkWell(
+                      onTap: onReplyTap,
+                      child: Text(
+                        AppStrings.reply,
+                        style: AppStyle.grey10w400,
+                      ),
+                    ),
+                  ],
+                ),
+                6.height,
+                if (model.totalReplies != 0 && !isReply)InkWell(
+                  onTap: () {
+                    if (provider.getStatus(
+                        taskName: SocialProvider
+                            .getCommentsRepliesKey) !=
+                        Status.loading)
+                      provider.getCommentsReplies(
+                          id: model.postId!, commentId: model.id!);
+                  },
+                  child:Row(
+                    children: [
+                      SizedBox(
+                          width: 25,
+                          child: AppDivider(
+                            thickness: 1,
+                          )),
+                      6.width,
+                      Text(
+                        AppStrings.view + " ${model.totalReplies} " + AppStrings.moreReplies,
+                        style: AppStyle.grey10w400,
+                      ),
+                    ],
+                  ),
+                ),
+                if (model.totalReplies != 0)replyWidget ?? SizedBox()
+
               ],
             ),
           ),

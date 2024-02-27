@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/providers.dart';
+import 'package:jyotishee/presentation/widgets/paginated_view.dart';
 
 import '../../../app/utils/utils.dart';
 import '../../widgets/widgets.dart';
 import 'add_post_screen.dart';
 
-class CommunityScreen extends StatelessWidget {
+class CommunityScreen extends StatefulWidget {
   const CommunityScreen({super.key, this.showBack=false});
   final bool showBack;
+
+  @override
+  State<CommunityScreen> createState() => _CommunityScreenState();
+}
+
+class _CommunityScreenState extends State<CommunityScreen> {
+  bool showViewMore = true;
+  int skip=0;
+  ScrollController _scrollController = ScrollController();
+  bool isShowMoreApiLoading = false;
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
     backgroundColor: AppColors.white,
-      appBar: CustomAppBar(title: AppStrings.snaplorCommunity, showProfile: true,showBack: showBack,communityScreen: true,showNotification: true,),
+      appBar: CustomAppBar(title: AppStrings.snaplorCommunity, showProfile: true,showBack: widget.showBack,communityScreen: true,showNotification: true,),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: AppColors.colorPrimary, onPressed: () {
@@ -123,12 +139,42 @@ class CommunityScreen extends StatelessWidget {
             Expanded(
               child: AppConsumer<SocialProvider, List<SocialPostModel>>(
                 taskName: SocialProvider.getPostKey,
-                load: (provider) => provider.getPost(),
+                load: (provider) {
+                  skip=0;
+                  showViewMore = true;
+                  provider.getPost(skip: skip,showMainLoader: true,resetData: true);
+                  if(mounted)setState(() {
+
+                  });
+                },
                 successBuilder: (data, provider) => ListView.separated(
-                  separatorBuilder: (context, index) => AppDivider(color: AppColors.hintGrey3),
-                  itemBuilder: (context, index) => PostCard(model: data[index]),
+                  controller: _scrollController..addListener(() {
+                    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent && showViewMore && !isShowMoreApiLoading) {
+                      setState(() {
+                        isShowMoreApiLoading=true;
+                        skip = skip+10;
+                        provider.getPost(
+                          showMainLoader: false,
+                          skip: skip,onSuccess: (data) {
+                            if(data.isEmpty){
+                            showViewMore=false;
+                            }else{
+                            showViewMore=true;
+                          }
+                            isShowMoreApiLoading=false;
+                        },);
+                      });
+                    }
+                  }),
                   itemCount: data.length,
-                  shrinkWrap: true,
+                  separatorBuilder: (context, index) => AppDivider(color: AppColors.hintGrey3),
+                  itemBuilder: (context, index) => PaginatedView(
+                      index: index,
+                      length: data.length,
+                      showViewMore: showViewMore,
+                      child: PostCard(model: data[index])),
+
+                  //shrinkWrap: true,
                 ),
               ),
             ),

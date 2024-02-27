@@ -8,6 +8,7 @@ String userModelToJson(UserModel data) => json.encode(data.toJson());
 class UserModel {
   final String id;
   final String? userName;
+
   final String? accessToken;
   final String? name;
   final String? email;
