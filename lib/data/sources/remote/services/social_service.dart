@@ -53,8 +53,7 @@ class SocialService extends ApiService {
         data: {"comment": message});
   }
 
-  Future<Response<GenericResponse>> commentPostReply(
-      String id, String message, String commentID) async {
+  Future<Response<GenericResponse>> commentPostReply(String id, String message, String commentID,String? replyId) async {
     return postData(ApiConfig.addPost + "/" + id + "/comments/"+commentID+"/replies",
         data: {"reply": message});
   }

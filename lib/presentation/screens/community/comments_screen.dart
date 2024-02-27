@@ -61,6 +61,18 @@ class _CommentScreenState extends State<CommentScreen> {
                         child: ListView.builder(
                           padding: EdgeInsets.zero,
                           itemBuilder: (context, index) => CommentCard(
+                            onShowMoreTap: () {
+                              if (provider.getStatus(taskName: SocialProvider.getCommentsRepliesKey) != Status.loading && !data[index].showReplyMore) {
+                                provider.getCommentsReplies(
+                                    id: data[index].postId!,
+                                    commentId: data[index].id!);
+                              }
+                              data.forEach((element) {
+                                element.showReplyMore = element.id==data[index].id ? !data[index].showReplyMore:false;
+                              });
+                              provider.notify();
+                              print(data[index].showReplyMore);
+                            },
                             model: data[index],
                             onCloseTap: () {
                               replyModel = null;
@@ -197,18 +209,20 @@ class _CommentScreenState extends State<CommentScreen> {
 
 class CommentCard extends StatelessWidget {
   const CommentCard(
-      {super.key, required this.model, this.onCloseTap, this.onReplyTap, required this.provider,this.isReply=false, this.replyWidget});
+      {super.key, required this.model, this.onCloseTap, this.onReplyTap, required this.provider,this.isReply=false, this.replyWidget, this.onShowMoreTap});
 
   final PostCommentModel model;
   final VoidCallback? onCloseTap;
   final Function()? onReplyTap;
+  final Function()? onShowMoreTap;
   final SocialProvider provider;
   final bool isReply;
   final Widget? replyWidget;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: EdgeInsets.only(bottom: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,7 +308,6 @@ class CommentCard extends StatelessWidget {
                     10.width
                   ],
                 ),
-                4.height,
                 Container(
                     width: double.infinity,
                     child: Text(model.comment ?? "",
@@ -321,14 +334,7 @@ class CommentCard extends StatelessWidget {
                 ),
                 6.height,
                 if (model.totalReplies != 0 && !isReply)InkWell(
-                  onTap: () {
-                    if (provider.getStatus(
-                        taskName: SocialProvider
-                            .getCommentsRepliesKey) !=
-                        Status.loading)
-                      provider.getCommentsReplies(
-                          id: model.postId!, commentId: model.id!);
-                  },
+                  onTap: onShowMoreTap,
                   child:Row(
                     children: [
                       SizedBox(
@@ -338,13 +344,13 @@ class CommentCard extends StatelessWidget {
                           )),
                       6.width,
                       Text(
-                        AppStrings.view + " ${model.totalReplies} " + AppStrings.moreReplies,
+                        !model.showReplyMore ? AppStrings.view + " ${model.totalReplies} " + AppStrings.moreReplies : "Hide replies",
                         style: AppStyle.grey10w400,
                       ),
                     ],
                   ),
                 ),
-                if (model.totalReplies != 0)replyWidget ?? SizedBox()
+                if (model.totalReplies != 0 && !isReply && model.showReplyMore)replyWidget ?? SizedBox()
 
               ],
             ),

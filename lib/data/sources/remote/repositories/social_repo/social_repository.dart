@@ -9,7 +9,7 @@ abstract class SocialRepository{
   Future<List<SocialPostModel>> getMyPosts(PostType? type);
   Future<SocialPostModel> likePost(String id,bool isLike);
   Future<List<PostCommentModel>> likedPostUsers(String id);
-  Future<GenericResponse> commentPost(String id,String message,String? commentID);
+  Future<GenericResponse> commentPost(String id,String message,String? commentID,String? replyId);
   Future<List<PostCommentModel>> getComments(String id,);
   Future<List<PostCommentModel>> getCommentsReplies(String id,String commentId);
   Future<GenericResponse> deleteComment(String id);

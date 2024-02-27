@@ -73,10 +73,10 @@ class SocialProvider extends BaseProvider {
 
   // Comments Post api
   static String commentPostKey = 'commentPostKey';
-  addCommentPost({required String id,required String message,String? commentID}) async {
+  addCommentPost({required String id,required String message,String? commentID,String? replyId}) async {
     setLoading(taskName: commentPostKey,showDialogLoader: true);
     try {
-      setData(taskName: commentPostKey,data: await _repository.commentPost(id,message,commentID),hideLoader: true);
+      setData(taskName: commentPostKey,data: await _repository.commentPost(id,message,commentID,replyId),hideLoader: true);
       getComments(id: id,showLoader: false);
     } catch (e, s) {
       e.printDebug;
@@ -88,6 +88,7 @@ class SocialProvider extends BaseProvider {
   // Comments get api
   static String getCommentsKey = 'getCommentsKey';
   getComments({required String id,bool showLoader = false}) async {
+    reset(getCommentsRepliesKey);
     setLoading(taskName: getCommentsKey,showDialogLoader: showLoader);
     try {
       setData(taskName: getCommentsKey,data: await _repository.getComments(id),hideLoader: true);
