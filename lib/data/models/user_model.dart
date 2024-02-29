@@ -8,7 +8,8 @@ String userModelToJson(UserModel data) => json.encode(data.toJson());
 class UserModel {
   final String id;
   final String? userName;
-
+  final String? firstName;
+  final String? lastName;
   final String? accessToken;
   final String? name;
   final String? email;
@@ -57,6 +58,8 @@ class UserModel {
     this.accessToken,
     this.userName,
     this.name,
+    this.firstName,
+    this.lastName,
     this.email,
     this.countryCode,
     this.phone,
@@ -103,6 +106,8 @@ class UserModel {
     String? userName,
     String? accessToken,
     String? name,
+    String? firstName,
+    String? lastName,
     String? email,
     String? countryCode,
     String? phone,
@@ -193,13 +198,15 @@ class UserModel {
       );
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-    id: json["_id"],
-    userName: json["user_name"],
+    id: json.containsKey('user_id') ? json["user_id"]["_id"] :json["_id"] ,
+    userName: json.containsKey('user_id') ? json["user_id"]["user_name"] :"",
     accessToken: json["token"],
-    name: json["name"],
-    email: json["email"],
-    countryCode: json["country_code"],
-    phone: json["phone"],
+    name: json.containsKey('user_id') ? (json["user_id"]["first_name"] ?? "" + " "+json["user_id"]["first_name"] ?? "" ) :json["name"],
+    firstName: json.containsKey('user_id') ? json["user_id"]["first_name"] : "",
+    lastName: json.containsKey('user_id') ? json["user_id"]["last_name"] :"",
+    email: json.containsKey('user_id') ? json["user_id"]["email"] : json["email"],
+    countryCode: json.containsKey('user_id') ? json["user_id"]["country_code"] : "",
+    phone:json.containsKey('user_id') ? json["user_id"]["phone"] : json["phone"],
     dateOfBirth: json["date_of_birth"] == null ? null : DateTime.parse(json["date_of_birth"]),
     status: json["status"],
     role: json["role"],
@@ -235,7 +242,7 @@ class UserModel {
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     v: json["__v"],
-    profileImage: json["profile_image"],
+    profileImage: json.containsKey('user_id') ? json["user_id"]["profile_image"] : "",
     videoUrl: json["video_url"],
   );
 

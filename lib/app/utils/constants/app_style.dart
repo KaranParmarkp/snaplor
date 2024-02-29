@@ -7,6 +7,7 @@ class AppStyle {
   static TextStyle get white12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.white);
   static TextStyle get white12w500 => GoogleFonts.poppins(fontSize: 12,color: AppColors.white,fontWeight: FontWeight.w500);
   static TextStyle get black12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.black,fontWeight: FontWeight.w500);
+  static TextStyle get black10 => GoogleFonts.poppins(fontSize: 10,color: AppColors.black,fontWeight: FontWeight.w500);
   static TextStyle get black12w700 => GoogleFonts.poppins(fontSize: 12,color: AppColors.black,fontWeight: FontWeight.w700);
   static TextStyle get black12w600 => GoogleFonts.poppins(fontSize: 12,color: AppColors.black,fontWeight: FontWeight.w600);
   static TextStyle get hintGray12 => GoogleFonts.poppins(fontSize: 12,color: AppColors.hintGrey2,fontWeight: FontWeight.w500);

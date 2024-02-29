@@ -130,4 +130,27 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
       },
     );
   }
+
+  @override
+  Future<PostCommentModel> likeComment(String id,bool isLike) {
+    return serviceHandler(
+      serviceFunction: () => service.likePost(id,isLike),
+      successFunction: (response) async {
+        return PostCommentModel.fromJson(response.data);
+      },
+    );
+  }
+
+  @override
+  Future<List<PostCommentModel>> likedCommentUsers(String id) {
+    return serviceHandler(
+      serviceFunction: () => service.likedPostUsers(id),
+      successFunction: (response) async {
+        List<PostCommentModel> list = [];
+        list = List<PostCommentModel>.from(response.data!.map((x) => PostCommentModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+
 }

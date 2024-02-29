@@ -9,7 +9,7 @@ class ApiConfig {
   static const String verifyOtp = "astrologers/verify-otp";
   static const String userData = "astrologers/me";
 
-  static const String offersList = "offers/astrologers";
+  static const String offersList = "astrologer-offers/astrologers";
   static const String ordersList = "orders";
   static const String productsList = "products";
   static const String amountRefund = "payments/wallet/refund/";
@@ -32,6 +32,7 @@ class ApiConfig {
   // Social
   static const String addPost = "posts";
   static const String myPost = "posts/astrologers";
+  static const String comment = "posts/comments/";
   static const String deletePost = "posts/deletepost/";
   static const String deleteComment = "posts/deletecomment/";
   //static const String deleteComment = "posts/deletecomment/";

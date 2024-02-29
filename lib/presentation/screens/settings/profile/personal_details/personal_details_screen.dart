@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
@@ -83,8 +85,16 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CircleNetworkImageAvatar(
-                    radius: 40, image: widget.user.profileImage),
+                InkWell(
+                  onTap: () async {
+                    File? image = await AppHelper.pickImage(fromCamera: false);
+                    if(image!=null){
+
+                    }
+                  },
+                  child: CircleNetworkImageAvatar(
+                      radius: 40, image: widget.user.profileImage),
+                ),
                 6.height,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

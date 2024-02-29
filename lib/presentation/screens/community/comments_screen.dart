@@ -333,7 +333,7 @@ class CommentCard extends StatelessWidget {
                   ],
                 ),
                 6.height,
-                if (model.totalReplies != 0 && !isReply)InkWell(
+                if (model.totalReplies != 0 && !isReply /*&& provider.getStatus(taskName: SocialProvider.getCommentsRepliesKey)!= Status.loading*/)InkWell(
                   onTap: onShowMoreTap,
                   child:Row(
                     children: [

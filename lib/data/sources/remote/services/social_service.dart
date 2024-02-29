@@ -78,4 +78,13 @@ class SocialService extends ApiService {
   Future<Response<GenericResponse>> deleteCommentReply(String postId,String commentId,String replyId) async {
     return deleteData(ApiConfig.addPost + "/" + postId + "/comments/"+commentId+"/"+replyId);
   }
+
+  Future<Response<GenericResponse>> likeComment(String id, bool isLike) async {
+    return  putData(ApiConfig.comment + "/action/" + id + (isLike ? "/like":"/unlike"));
+  }
+
+  Future<Response<GenericResponse>> likedCommentUsers(String id,) async {
+    return getData(ApiConfig.comment + "/likes/" + id);
+  }
+
 }

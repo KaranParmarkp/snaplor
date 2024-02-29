@@ -32,7 +32,7 @@ class AuthService extends ApiService {
     );
   }
   Future<Response<GenericResponse>> offerStatus(String id,bool activate) async {
-    return getData(
+    return putData(
       ApiConfig.offersList+"/"+id+"/${activate ? "activate" : "deactivate"}",
     );
   }

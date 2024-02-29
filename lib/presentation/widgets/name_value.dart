@@ -17,8 +17,8 @@ class NameValue extends StatelessWidget {
         children: [
           SizedBox(
               width: 100,
-              child: Text(name+"",style: AppStyle.black12.copyWith(fontWeight: FontWeight.w700,fontSize: fontSize),)),
-          Text(value,style: AppStyle.black12.copyWith(color: valueColor??AppColors.black,fontWeight:bold ? FontWeight.w700: FontWeight.w400,fontSize: fontSize),),
+              child: Text(name+"",style: AppStyle.black10.copyWith(fontWeight: FontWeight.w700,fontSize: fontSize),overflow: TextOverflow.ellipsis)),
+          Text(value,style: AppStyle.black10.copyWith(color: valueColor??AppColors.black,fontWeight:bold ? FontWeight.w700: FontWeight.w400,fontSize: fontSize),overflow: TextOverflow.ellipsis),
         ],
       ),
     );

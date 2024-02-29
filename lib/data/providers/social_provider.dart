@@ -59,11 +59,6 @@ class SocialProvider extends BaseProvider {
     setLoading(taskName: likePostKey,showDialogLoader: showLoader);
     try {
       setData(taskName: likePostKey,data: await _repository.likePost(id,isLike),hideLoader: showLoader,onSuccess: (data) => onSuccess?.call(data),);
-      /*if(fromMyPost){
-        getMyPost(refresh: false,);
-      }else{
-        getPost(showMainLoader: false,refresh: false);
-      }*/
     } catch (e, s) {
       e.printDebug;
       s.printDebug;
@@ -174,4 +169,28 @@ class SocialProvider extends BaseProvider {
     }
   }
 
+  // Comment Liked users api
+  static String getLikedCommentUsersKey = 'getLikedCommentUsersKey';
+  getLikedCommentUsers({required String id,bool showLoader = false}) async {
+    setLoading(taskName: getLikedCommentUsersKey,showDialogLoader: showLoader);
+    try {
+      setData(taskName: getLikedCommentUsersKey,data: await _repository.likedCommentUsers(id),hideLoader: true);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: getLikedCommentUsersKey,errorMessage:  e.toString(),showToast: true);
+    }
+  }
+  //Comment Like Post api
+  static String likeCommentKey = 'likeCommentKey';
+  likeComment({required String id,bool showLoader=false,bool isLike=false,required bool fromMyPost,Function(SocialPostModel? data)? onSuccess}) async {
+    setLoading(taskName: likeCommentKey,showDialogLoader: showLoader);
+    try {
+      setData(taskName: likeCommentKey,data: await _repository.likeComment(id,isLike),hideLoader: showLoader,onSuccess: (data) => onSuccess?.call(data),);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: likeCommentKey,errorMessage:  e.toString(),showToast: showLoader);
+    }
+  }
 }
