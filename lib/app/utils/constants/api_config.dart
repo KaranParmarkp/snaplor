@@ -1,15 +1,16 @@
 class ApiConfig {
 
-  static const String baseUrl = "http://api.snaplor.com/";
-  static const String baseUrlSocket = "http://api.snaplor.com:3000";
+  static const String baseUrl = "https://api.snaplor.com/";
+  static const String baseUrlSocket = "https://api.snaplor.com:3000";
   static const String apiUrl = "${baseUrl}api/";
+  static const String bucket = "${apiUrl}s3/pre-signed-url?key=astrologers/";
 
   // User Management
   static const String login = "astrologers/login";
   static const String verifyOtp = "astrologers/verify-otp";
   static const String userData = "astrologers/me";
 
-  static const String offersList = "offers/astrologers";
+  static const String offersList = "astrologer-offers/astrologers";
   static const String ordersList = "orders";
   static const String productsList = "products";
   static const String amountRefund = "payments/wallet/refund/";

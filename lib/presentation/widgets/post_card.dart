@@ -65,7 +65,7 @@ class _PostCardState extends State<PostCard> {
                       children: [
                         NameVerified(
                           name: model.user?.name,
-                          verified: model.user?.isVerified.isTrue,
+                          verified: model.user?.isVerified==true,
                           showAst: model.user?.role == "astrologer",
                         ),
                         2.height,

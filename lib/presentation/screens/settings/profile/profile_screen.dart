@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jyotishee/data/sources/remote/network_services/api_service.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/bank_details/bank_details_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/personal_details/personal_details_screen.dart';
 
@@ -31,8 +32,17 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CircleNetworkImageAvatar(
-                        radius: 40, image: data.profileImage),
+                    InkWell(
+                        onTap: () async {
+                          var image = await AppHelper.pickImage(fromCamera: false);
+                          if(image!=null){
+                            String url ="https://api.snaplor.com/api/s3/pre-signed-url?key=astrologers/65c853eaf6bf92e27bbba5e3/profile&content_type=image/jpeg";
+                            var res = await ApiService.sendFileToS3(url: url, file: image);
+                            print("response0000");
+                            print(res);
+                          }
+                        },
+                        child: CircleNetworkImageAvatar(radius: 40, image: data.profileImage)),
                     5.height,
                     NameVerified(
                       name: data.name,

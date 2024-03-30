@@ -94,6 +94,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       title: 'Snaplor',
       debugShowCheckedModeBanner: false,
       navigatorKey: MyApp.navKey,
@@ -117,12 +118,13 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate
       ],
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        useMaterial3: false,
+          primarySwatch: Colors.blue,
         textTheme: GoogleFonts.poppinsTextTheme(),
         indicatorColor: AppColors.colorPrimary
         //scaffoldBackgroundColor: Colors.white,
       ),
-      home: const SplashScreen(),
+      home: const BaseScreen(),
     );
   }
 }

@@ -10,6 +10,8 @@ class UserModel {
   final String? userName;
   final String? accessToken;
   final String? name;
+  final String? fName;
+  final String? lName;
   final String? email;
   final String? countryCode;
   final String? phone;
@@ -56,6 +58,8 @@ class UserModel {
     this.accessToken,
     this.userName,
     this.name,
+    this.fName,
+    this.lName,
     this.email,
     this.countryCode,
     this.phone,
@@ -102,6 +106,8 @@ class UserModel {
     String? userName,
     String? accessToken,
     String? name,
+    String? fName,
+    String? lName,
     String? email,
     String? countryCode,
     String? phone,
@@ -149,6 +155,8 @@ class UserModel {
         userName: userName ?? this.userName,
         accessToken: accessToken ?? this.accessToken,
         name: name ?? this.name,
+        fName: fName ?? this.fName,
+        lName: lName ?? this.lName,
         email: email ?? this.email,
         countryCode: countryCode ?? this.countryCode,
         phone: phone ?? this.phone,
@@ -192,16 +200,18 @@ class UserModel {
       );
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-    id: json["_id"],
-    userName: json["user_name"],
+    id: json["user_id"]!=null ? json["user_id"]["_id"] : "",
+    userName: json["user_id"]!=null ?  json["user_id"]["user_name"] : "",
     accessToken: json["token"],
-    name: json["name"],
-    email: json["email"],
-    countryCode: json["country_code"],
-    phone: json["phone"],
+    name: json["user_id"]!=null ?  json["user_id"]["first_name"]!=null ? (json["user_id"]["first_name"] +" "+ (json["user_id"]["last_name"] ?? "")) : "" : "",
+    fName: json["user_id"]!=null ?  json["user_id"]["first_name"]!=null ? (json["user_id"]["first_name"]) : "" : "",
+    lName: json["user_id"]!=null ?  json["user_id"]["last_name"]!=null ? (json["user_id"]["last_name"]) : "" : "",
+    email: json["user_id"]!=null ? json["user_id"]["email"] : "",
+    countryCode:json["user_id"]!=null ?  json["user_id"]["country_code"] : "",
+    phone:json["user_id"]!=null ?  json["user_id"]["phone"] : "",
     dateOfBirth: json["date_of_birth"] == null ? null : DateTime.parse(json["date_of_birth"]),
     status: json["status"],
-    role: json["role"],
+    role:json["user_id"]!=null ?  json["user_id"]["role"] : "",
     isVerified: json["is_verified"],
     gender: json["gender"],
     thumbnailImages: json["thumbnail_images"] == null ? [] : List<String>.from(json["thumbnail_images"]!.map((x) => x)),
@@ -223,8 +233,8 @@ class UserModel {
     totalCallMinutes: json["total_call_minutes"],
     totalChatOrders: json["total_chat_orders"],
     totalCallOrders: json["total_call_orders"] ?? 0,
-    todayChatOrders: json["today_chat_order"],
-    todayCallOrders: json["today_call_order"],
+    todayChatOrders: json["today_chat_order"] ?? 0,
+    todayCallOrders: json["today_call_order"] ?? 0,
     lifeTimeEarnings: json["life_time_earning"],
     todayTotalEarnings: json["today_total_earning"]!=null &&  json["today_total_earning"] is int ?json["today_total_earning"]   : 0,
     balanceAmount: json["balance_amount"],
@@ -281,7 +291,8 @@ class UserModel {
     "video_url": videoUrl,
   };
   Map<String, dynamic> toJsonUpdateProfile() => {
-    "name": name,
+    "first_name": fName,
+    "last_name": lName,
     "experience": experience,
     "specialization": List<dynamic>.from(specialization.map((x) => x)),
     "skills":  List<dynamic>.from(skills.map((x) => x)),

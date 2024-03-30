@@ -159,8 +159,8 @@ class User {
       );
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"],
-    name: json["name"] ?? json["first_name"],
+    id: json["id"] ?? json["_id"],
+    name: json["name"] ?? (json["first_name"] ?? ""+ json["last_name"] ?? ""),
     image: json["image"] ?? "",
     order: json["order"] ?? "",
     experience: json["experience"] ?? "",

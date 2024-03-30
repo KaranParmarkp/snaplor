@@ -88,7 +88,7 @@ class SocialPostModel {
 
   factory SocialPostModel.fromJson(Map<String, dynamic> json) => SocialPostModel(
     id: json["_id"],
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
+    user: json["user_id"] == null ? null : User.fromJson(json["user_id"]),
     content: json["content"],
     isHidden: json["is_hidden"],
     isPinned: json["is_pinned"],
@@ -107,7 +107,7 @@ class SocialPostModel {
 
   Map<String, dynamic> toJson() => {
     "_id": id,
-    "user": user?.toJson(),
+    "user_id": user?.toJson(),
     "content": content,
     "is_hidden": isHidden,
     "is_pinned": isPinned,
