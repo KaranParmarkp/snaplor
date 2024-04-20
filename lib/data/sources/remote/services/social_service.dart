@@ -14,12 +14,17 @@ class SocialService extends ApiService {
         "${MyApp.appContext.read<AuthProvider>().userModel!.id}/${file?.path}");
   }
 
-  Future<Response<GenericResponse>> addPost(String message, File? file) async {
+  Future<Response<GenericResponse>> addPost(String message, File? file,String? postId) async {
     String? signedUrl;
     if(file!=null){
       signedUrl = await getSignedUrl(isProfile: false, image: file);
     }
-    return postData(ApiConfig.addPost, data: {"content": message,if(signedUrl!=null)"image_url":signedUrl});
+    return postId!=null ? putData(ApiConfig.addPost+"/$postId", data: {"content": message,if(signedUrl!=null)"image_url":signedUrl})
+    :postData(ApiConfig.addPost, data: {"content": message,if(signedUrl!=null)"image_url":signedUrl});
+  }
+  Future<Response<GenericResponse>> repost(String? message,String postId,bool isEdit) async {
+    return isEdit ? putData(ApiConfig.addPost+"/$postId", data: {"content": message,})
+        :postData(ApiConfig.addPost, data: {"content": message ?? "","original_post" : postId});
   }
 
   Future<Response<GenericResponse>> getPosts(int skip) async {

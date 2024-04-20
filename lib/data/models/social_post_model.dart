@@ -28,7 +28,7 @@ class SocialPostModel {
    String? videoUrl;
    PostType? type;
    bool? isLiked;
-
+   SocialPostModel? originalPost;
   SocialPostModel({
     this.id,
     this.user,
@@ -45,7 +45,8 @@ class SocialPostModel {
     this.imageUrl,
     this.videoUrl,
     this.type,
-    this.isLiked
+    this.isLiked,
+    this.originalPost
   });
 
   SocialPostModel copyWith({
@@ -64,7 +65,8 @@ class SocialPostModel {
     String? imageUrl,
     String? videoUrl,
     PostType? type,
-    bool? isLiked
+    bool? isLiked,
+    SocialPostModel? originalPost
   }) =>
       SocialPostModel(
         id: id ?? this.id,
@@ -82,8 +84,8 @@ class SocialPostModel {
         imageUrl: imageUrl ?? this.imageUrl,
         videoUrl: videoUrl ?? this.videoUrl,
         type: type ?? this.type,
-        isLiked: isLiked?? this.isLiked
-
+        isLiked: isLiked?? this.isLiked,
+      originalPost: originalPost ?? this.originalPost
       );
 
   factory SocialPostModel.fromJson(Map<String, dynamic> json) => SocialPostModel(
@@ -102,7 +104,8 @@ class SocialPostModel {
     imageUrl: json["image_url"],
     videoUrl: json["video_url"],
     isLiked: json["isLiked"],
-    type: json["video_url"]!=null ? PostType.video : json["image_url"] !=null ? PostType.image : PostType.text,
+    originalPost: json["original_post"]!=null && json["original_post"] is Map ? SocialPostModel.fromJson(json["original_post"]):null,
+    type: json["video_url"]!=null && json["video_url"]!="" ? PostType.video : json["image_url"] !=null && json["image_url"]!=""? PostType.image : PostType.text,
   );
 
   Map<String, dynamic> toJson() => {

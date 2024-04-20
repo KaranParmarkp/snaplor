@@ -123,6 +123,7 @@ class AstrologerResponse {
 class User {
   final String? id;
   final String? name;
+  final String? userName;
   final String? image;
   final bool? isVerified;
   final dynamic order;
@@ -132,6 +133,7 @@ class User {
   User({
     this.id,
     this.name,
+    this.userName,
     this.image,
     this.isVerified,
     this.order,
@@ -142,6 +144,7 @@ class User {
   User copyWith({
     String? id,
     String? name,
+    String? userName,
     String? image,
     bool? isVerified,
     dynamic order,
@@ -151,6 +154,7 @@ class User {
       User(
         id: id ?? this.id,
         name: name ?? this.name,
+        userName: userName ?? this.userName,
         image: image ?? this.image,
         isVerified: isVerified ?? this.isVerified,
         order: order ?? this.order,
@@ -166,6 +170,7 @@ class User {
     experience: json["experience"] ?? "",
     isVerified: json["is_verified"],
     role: json["role"],
+    userName: json["user_name"],
   );
 
   Map<String, dynamic> toJson() => {

@@ -4,7 +4,8 @@ import '../../../../../app/utils/utils.dart';
 import '../../../../models/models.dart';
 
 abstract class SocialRepository{
-  Future<GenericResponse> addPost(String message,File? file);
+  Future<GenericResponse> addPost(String message,File? file,String? postId);
+  Future<GenericResponse> rePost(String message,String postId,bool isEdit);
   Future<List<SocialPostModel>> getPosts(int skip);
   Future<List<SocialPostModel>> getMyPosts(PostType? type);
   Future<SocialPostModel> likePost(String id,bool isLike);

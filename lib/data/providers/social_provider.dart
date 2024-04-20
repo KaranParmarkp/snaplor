@@ -13,10 +13,10 @@ class SocialProvider extends BaseProvider {
 
   // Add Post api
   static String addPostKey = 'addPostKey';
-  addPost({required String message,File? file,UploadFileType? type,required bool fromMyPost}) async {
+  addPost({required String message,File? file,UploadFileType? type,required bool fromMyPost,String? postId}) async {
     setLoading(taskName: addPostKey,showDialogLoader: true);
     try {
-      setData(taskName: addPostKey,data: await _repository.addPost(message,file),hideLoader: true);
+      setData(taskName: addPostKey,data: await _repository.addPost(message,file,postId),hideLoader: true);
       if(fromMyPost){
         getMyPost(refresh: false,);
       }else{
@@ -26,6 +26,24 @@ class SocialProvider extends BaseProvider {
       e.printDebug;
       s.printDebug;
       setError(taskName: addPostKey,errorMessage:  e.toString(),showToast: true);
+    }
+  }
+
+  // RePost api
+  static String rePostKey = 'rePostKey';
+  rePost({required String message,File? file,UploadFileType? type,required bool fromMyPost,required String postId,bool isEdit=false}) async {
+    setLoading(taskName: rePostKey,showDialogLoader: true);
+    try {
+      setData(taskName: rePostKey,data: await _repository.rePost(message,postId,isEdit),hideLoader: true);
+      if(fromMyPost){
+        getMyPost(refresh: false,);
+      }else{
+        getPost(showMainLoader: false,refresh: false);
+      }
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: rePostKey,errorMessage:  e.toString(),showToast: true);
     }
   }
 

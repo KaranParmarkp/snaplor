@@ -4,6 +4,7 @@ import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/community/liked_users_screen.dart';
 
 import '../../app/utils/utils.dart';
+import '../screens/community/add_post_screen.dart';
 import '../screens/community/comments_screen.dart';
 import 'widgets.dart';
 
@@ -64,7 +65,7 @@ class _PostCardState extends State<PostCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         NameVerified(
-                          name: model.user?.name,
+                          name: model.user?.userName ?? "Anonymous",
                           verified: model.user?.isVerified==true,
                           showAst: model.user?.role == "astrologer",
                         ),
@@ -94,6 +95,13 @@ class _PostCardState extends State<PostCard> {
                   itemBuilder: (context) {
                     return [
                       PopupMenuItem(
+                        onTap: () {
+                          AppHelper.showBottomSheet(context: context, isScrollControlled: true,padding: EdgeInsets.zero,
+                              innerPadding: EdgeInsets.zero,
+                              child: AddPostScreen(fromMyPost: false,model: model,));
+
+
+                        },
                         child: Row(children: [SvgImage(image: AppSvg.edit),10.width,Text(AppStrings.editPost,style: AppStyle.black12,)],),
                       ),
                       PopupMenuItem(
@@ -125,26 +133,62 @@ class _PostCardState extends State<PostCard> {
                     width: double.infinity,
                     image: model.imageUrl,
                   ),
-                /*if(model.type==PostType.video) Container(
-                    height: 150,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: AppColors.shimmerColor
-                    ),
-                    child: _controller?.value.isInitialized==true ? ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: AspectRatio(
-                        aspectRatio: _controller!.value.aspectRatio,
-                        child: VideoPlayer(_controller!),
-                      ),
-                    ) : Container(),
-                  ),
-                  if (model.type == PostType.video) InkWell(
-                      onTap: () => !_controller!.value.isPlaying ? _controller!.play() : _controller!.pause(),
-                      child: PlayButton(playing: _controller!.value.isPlaying,))*/
               ],
             ),
+          ),
+          if(model.originalPost!=null)Container(
+            width: double.infinity,
+            decoration: AppDecoration.roundedBorder,
+            margin: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 0,vertical: 10),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 08),
+                  child: Row(
+                    children: [
+                      UserDP(image: model.originalPost!.user?.image,),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 14),
+                          child: NameVerified(
+                            name: model.originalPost!.user?.userName ?? "Anonymous",
+                            verified: model.originalPost!.user?.isVerified==true,
+                            showAst: model.originalPost!.user?.role == "astrologer",
+                          ),
+                        ),
+                      ),
+                      ],
+                  ),
+                ),
+                if (model.originalPost!.type != PostType.text)Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    fit: StackFit.passthrough,
+                    clipBehavior: Clip.none,
+                    children: [
+                      if (model.originalPost!.type == PostType.image)
+                        SquareNetworkImageAvatar(
+                          radius: 0,
+                          height: 390,
+                          width: double.infinity,
+                          image: model.originalPost!.imageUrl,
+                        ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                  child: TextHashtag(
+                      name: model.originalPost!.type != PostType.text
+                          ? model.originalPost!.user?.name ?? "Madhusudan"
+                          : null,
+                      text: model.originalPost!.content ?? ""),
+                ),
+
+              ],
+            )
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
@@ -230,8 +274,8 @@ class LikeCommentShare extends StatelessWidget {
         IconTitle(
           icon: AppSvg.repost,
           title: "${model.totalShare ?? 0}",
-          //iconTap: () async => await _showCommentSheet(context, model.id!, provider),
-          //titleTap: () async => await _showCommentSheet(context, model.id!, provider),
+          iconTap: () async => await _showRepostSheet(context, model.id!, provider),
+          titleTap: () async => await _showRepostSheet(context, model.id!, provider),
         ),
         IconTitle(
           icon: AppSvg.eyeOpen,
@@ -264,7 +308,68 @@ class LikeCommentShare extends StatelessWidget {
         }));
     //provider.getPost(refresh: true);
   }
-  _showLikedUsersSheet(BuildContext context, String id, SocialProvider provider) async {
+   _showRepostSheet(BuildContext context, String id,
+       SocialProvider provider) async {
+     await AppHelper.showBottomSheet(
+         context: context,
+         isScrollControlled: true,
+         padding: EdgeInsets.zero,
+         innerPadding: EdgeInsets.zero,
+         child: StatefulBuilder(builder: (context, setState) {
+           return Padding(
+             padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+             child: Column(
+               mainAxisSize: MainAxisSize.min,
+               children: [
+                 InkWell(
+                   onTap: () {
+                     context.pop();
+
+                   },
+                   child: Padding(
+                     padding: const EdgeInsets.only(bottom: 10,top: 10),
+                     child: Row(
+                       children: [
+                         SvgImage(image: AppSvg.repost),
+                         10.width,
+                         Text(
+                           AppStrings.repost,
+                           style: AppStyle.black14,
+                         )
+                       ],
+                     ),
+                   ),
+                 ),
+                 InkWell(
+                   onTap: () {
+                     context.pop();
+                     AppHelper.showBottomSheet(context: context, isScrollControlled: true,padding: EdgeInsets.zero,
+                         innerPadding: EdgeInsets.zero,
+                         child: AddPostScreen(fromMyPost: fromMyPost,model: model,isRepost: true,));
+
+                     },
+                   child: Padding(
+                     padding: const EdgeInsets.only(bottom: 10,top: 10),
+                     child: Row(
+                       children: [
+                         SvgImage(image: AppSvg.edit),
+                         10.width,
+                         Text(
+                           AppStrings.repostWith,
+                           style: AppStyle.black14,
+                         )
+                       ],
+                     ),
+                   ),
+                 ),
+               ],
+             ),
+           );
+         }));
+     //provider.getPost(refresh: true);
+   }
+
+   _showLikedUsersSheet(BuildContext context, String id, SocialProvider provider) async {
     await AppHelper.showBottomSheet(
         context: context,
         isScrollControlled: true,

@@ -12,9 +12,18 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
   final SocialService service = SocialService();
 
   @override
-  Future<GenericResponse> addPost(String message,File? file) {
+  Future<GenericResponse> addPost(String message,File? file,String? postId) {
     return serviceHandler(
-      serviceFunction: () => service.addPost(message,file),
+      serviceFunction: () => service.addPost(message,file,postId),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+  @override
+  Future<GenericResponse> rePost(String message,String postId,bool isEdit) {
+    return serviceHandler(
+      serviceFunction: () => service.repost(message,postId,isEdit),
       successFunction: (response) async {
         return response;
       },
