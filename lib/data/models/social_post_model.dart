@@ -20,6 +20,7 @@ class SocialPostModel {
    int? totalComment;
    int? totalLikes;
    int? totalShare;
+   int? totalRepost;
    bool? isDeleted;
    DateTime? createdAt;
    DateTime? updatedAt;
@@ -38,6 +39,7 @@ class SocialPostModel {
     this.totalComment,
     this.totalLikes,
     this.totalShare,
+    this.totalRepost,
     this.isDeleted,
     this.createdAt,
     this.updatedAt,
@@ -97,6 +99,7 @@ class SocialPostModel {
     totalComment: json["total_comment"],
     totalLikes: json["total_likes"],
     totalShare: json["total_share"],
+    totalRepost: json["total_repost"],
     isDeleted: json["is_deleted"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),

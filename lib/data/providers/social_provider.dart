@@ -18,8 +18,10 @@ class SocialProvider extends BaseProvider {
     try {
       setData(taskName: addPostKey,data: await _repository.addPost(message,file,postId),hideLoader: true);
       if(fromMyPost){
+        reset(getMyPostKey);
         getMyPost(refresh: false,);
       }else{
+        reset(getPostKey);
       getPost(showMainLoader: false,refresh: false);
       }
     } catch (e, s) {
@@ -36,8 +38,10 @@ class SocialProvider extends BaseProvider {
     try {
       setData(taskName: rePostKey,data: await _repository.rePost(message,postId,isEdit),hideLoader: true);
       if(fromMyPost){
+        reset(getMyPostKey);
         getMyPost(refresh: false,);
       }else{
+        reset(getPostKey);
         getPost(showMainLoader: false,refresh: false);
       }
     } catch (e, s) {

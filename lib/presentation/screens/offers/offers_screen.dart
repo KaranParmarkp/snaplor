@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
@@ -83,26 +84,26 @@ class OfferCard extends StatelessWidget {
               )
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               NameValue(
                 name: AppStrings.myShare,
                 value: "${AppStrings.rupee}${model.myShare}",
                 valueColor: AppColors.colorPrimary,
-                fontSize: 10,
+                fontSize: 12,
               ),
               NameValue(
                 name: AppStrings.jyotisheeShare,
                 value: "${AppStrings.rupee}${model.jyotisheeShare}",
                 valueColor: AppColors.colorPrimary,
-                fontSize: 10,
+                fontSize: 12,
               ),
               NameValue(
                 name: AppStrings.customerPay,
                 value: "${AppStrings.rupee}${model.customerShare}",
                 valueColor: AppColors.colorPrimary,
-                fontSize: 10,
+                fontSize: 12,
               ),
             ],
           ),

@@ -34,6 +34,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: CustomAppBar(
         title: AppStrings.settings,
         showProfile: false,
+        onBackTap: () {
+
+        },
         showNotification: false,
       ),
       body:

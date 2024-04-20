@@ -273,7 +273,7 @@ class LikeCommentShare extends StatelessWidget {
         ),
         IconTitle(
           icon: AppSvg.repost,
-          title: "${model.totalShare ?? 0}",
+          title: "${model.totalRepost ?? 0}",
           iconTap: () async => await _showRepostSheet(context, model.id!, provider),
           titleTap: () async => await _showRepostSheet(context, model.id!, provider),
         ),
@@ -324,7 +324,7 @@ class LikeCommentShare extends StatelessWidget {
                  InkWell(
                    onTap: () {
                      context.pop();
-
+                    provider.rePost(message: "", fromMyPost: fromMyPost, postId: model.id!);
                    },
                    child: Padding(
                      padding: const EdgeInsets.only(bottom: 10,top: 10),

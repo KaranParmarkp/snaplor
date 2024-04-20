@@ -28,7 +28,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.model.isNotNull) {
+    if (widget.model.isNotNull && !widget.isRepost) {
       commentController.text = widget.model!.content.toStringOrEmpty;
     }
   }
@@ -55,7 +55,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               hint: AppStrings.shareThought,
               focusNode: commentFocus,
               controller: commentController,
-              borderRadius: 30,
+              borderRadius: 15,
               bottomPadding: 0,
               maxLines: 5,
             ),
@@ -124,12 +124,66 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       ),
               ),
             ),
+          if (widget.model != null && widget.isRepost)Container(
+              width: double.infinity,
+              decoration: AppDecoration.roundedBorder,
+              margin: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 0,vertical: 10),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 08),
+                    child: Row(
+                      children: [
+                        UserDP(image: widget.model!.user?.image,),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 14),
+                            child: NameVerified(
+                              name: widget.model!.user?.userName ?? "Anonymous",
+                              verified: widget.model!.user?.isVerified==true,
+                              showAst: widget.model!.user?.role == "astrologer",
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (widget.model!.type != PostType.text)Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      fit: StackFit.passthrough,
+                      clipBehavior: Clip.none,
+                      children: [
+                        if (widget.model!.type == PostType.image)
+                          SquareNetworkImageAvatar(
+                            radius: 0,
+                            height: 390,
+                            width: double.infinity,
+                            image: widget.model!.imageUrl,
+                          ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                    child: TextHashtag(
+                        name: widget.model!.type != PostType.text
+                            ? widget.model!.user?.name ?? "Madhusudan"
+                            : null,
+                        text: widget.model!.content ?? ""),
+                  ),
+
+                ],
+              )
+          ),
           Padding(
             padding:
                 const EdgeInsets.only(top: 15, right: 15, left: 15, bottom: 20),
             child: AppButton(
               title: widget.model != null
-                  ? AppStrings.editPost
+                   ? widget.isRepost ? "Repost": AppStrings.editPost
                   : AppStrings.createPost,
               borderRadius: BorderRadius.circular(30),
               onTap: () {
