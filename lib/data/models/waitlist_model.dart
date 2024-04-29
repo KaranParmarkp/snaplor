@@ -37,7 +37,7 @@ class WaitListModel {
   });
 
   factory WaitListModel.fromJson(Map<String, dynamic> json) => WaitListModel(
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
+    user: json["user_id"] == null ? null : User.fromJson(json["user_id"]),
     astrologer: json["astrologer"] == null ? null : User.fromJson(json["astrologer"]),
     intakeForm: json["intake_form"] == null ? null : IntakeFormWaitlist.fromJson(json["intake_form"]),
     id: json["_id"],
@@ -52,7 +52,7 @@ class WaitListModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "user": user?.toJson(),
+    "user_id": user?.toJson(),
     "astrologer": astrologer?.toJson(),
     "intake_form": intakeForm?.toJson(),
     "_id": id,

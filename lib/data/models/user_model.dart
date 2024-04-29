@@ -289,13 +289,13 @@ class UserModel {
     "video_url": videoUrl,
   };
   Map<String, dynamic> toJsonUpdateProfile() => {
-    "name": name,
-    "experience": experience,
-    "specialization": List<dynamic>.from(specialization.map((x) => x)),
-    "skills":  List<dynamic>.from(skills.map((x) => x)),
-    "languages": List<dynamic>.from(languages.map((x) => x)),
-    "address": address?.toJson(),
-    "description": description,
+    //"name": name,
+    //"experience": experience,
+    //"specialization": List<dynamic>.from(specialization.map((x) => x)),
+    //"skills":  List<dynamic>.from(skills.map((x) => x)),
+    //"languages": List<dynamic>.from(languages.map((x) => x)),
+    //"address": address?.toJson(),
+    //"description": description,
     //"bank_info": bankInfo?.toJson(),
     //"kyc": kyc?.toJson(),
     "is_available_for_chat": isAvailableForChat,
@@ -303,7 +303,7 @@ class UserModel {
     "chat_price": chatPrice,
     "call_price": callPrice,
     //"is_active": isActive,
-    "profile_image": profileImage,
+    //"profile_image": profileImage,
     //"video_url": videoUrl,
   };
 }

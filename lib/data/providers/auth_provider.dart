@@ -34,9 +34,11 @@ class AuthProvider extends BaseProvider {
     checkUserIsLoggedIn();
   }
    initSocket() async {
-    /*String? token = await ApiService.getToken();
+    String? token = await ApiService.getToken();
+    print("socket token ${token}");
     _socket = IO.io(
       ApiConfig.baseUrlSocket,
+      //"https://api.snaplor.com:3000",
       IO.OptionBuilder()
           .setTransports(['websocket'])
           .setExtraHeaders({'Authorization': 'Bearer $token'})
@@ -58,7 +60,6 @@ class AuthProvider extends BaseProvider {
       print(' websocket on  Error');
       print(m);
     });
-*/
     notifyListeners();
   }
 
@@ -328,7 +329,7 @@ class AuthProvider extends BaseProvider {
     try {
       setData(taskName: getMessagesKey,data: await _authRepo.getMessages(id));
       _socket?.on(ApiConfig.privateMessage, (message) {
-        debugPrint("privateMessage");
+        debugPrint("privateMessage socket");
         print(message);
         if(message!=null)data[getMessagesKey].add(MessageModel.fromJson(message  as Map<String, dynamic>));
         notify();
