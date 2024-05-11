@@ -4,22 +4,21 @@
 
 import 'dart:convert';
 
+import 'generic_user_model.dart';
+
 List<ReviewModel> reviewModelFromJson(String str) => List<ReviewModel>.from(json.decode(str).map((x) => ReviewModel.fromJson(x)));
 
 String reviewModelToJson(List<ReviewModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ReviewModel {
   final String? id;
-  final String? astrologerId;
-  final User? user;
-  final String? orderId;
+  final GenericUserModel? astrologerId;
+  final GenericUserModel? user;
+  final OrderId? orderId;
   final int? rating;
   final String? message;
   final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
   final AstrologerResponse? astrologerResponse;
-
   ReviewModel({
     this.id,
     this.astrologerId,
@@ -28,22 +27,18 @@ class ReviewModel {
     this.rating,
     this.message,
     this.createdAt,
-    this.updatedAt,
-    this.v,
-    this.astrologerResponse,
+    this.astrologerResponse
   });
 
   ReviewModel copyWith({
     String? id,
-    String? astrologerId,
-    User? user,
-    String? orderId,
+    GenericUserModel? astrologerId,
+    GenericUserModel? user,
+    OrderId? orderId,
     int? rating,
     String? message,
     DateTime? createdAt,
-    DateTime? updatedAt,
-    int? v,
-    AstrologerResponse? astrologerResponse,
+    AstrologerResponse? astrologerResponse
   }) =>
       ReviewModel(
         id: id ?? this.id,
@@ -53,22 +48,18 @@ class ReviewModel {
         rating: rating ?? this.rating,
         message: message ?? this.message,
         createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        v: v ?? this.v,
-        astrologerResponse: astrologerResponse ?? this.astrologerResponse,
+        astrologerResponse: astrologerResponse??this.astrologerResponse
       );
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) => ReviewModel(
     id: json["_id"],
-    astrologerId: json["astrologer_id"],
-    user: json["user"] == null ? User(name: "",id: "") : User.fromJson(json["user"]),
-    orderId: json["order_id"],
+    astrologerId: json["astrologer_id"] == null ? GenericUserModel(name: "",id: "") : GenericUserModel.fromJson(json["astrologer_id"]),
+    user: json["user_id"] == null ? GenericUserModel(name: "",id: "") : GenericUserModel.fromJson(json["user_id"]),
+    orderId: OrderId.fromJson(json["order_id"]),
     rating: json["rating"],
     message: json["message"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    v: json["__v"],
-    astrologerResponse: json["astrologer_response"] == null ? null : AstrologerResponse.fromJson(json["astrologer_response"]),
+    astrologerResponse: json["response"] == null ? null : AstrologerResponse.fromJson(json["response"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -79,9 +70,6 @@ class ReviewModel {
     "rating": rating,
     "message": message,
     "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-    "__v": v,
-    "astrologer_response": astrologerResponse?.toJson(),
   };
 }
 
@@ -120,62 +108,23 @@ class AstrologerResponse {
   };
 }
 
-class User {
-  final String? id;
-  final String? name;
-  final String? userName;
-  final String? image;
-  final bool? isVerified;
-  final dynamic order;
-  final dynamic experience;
-  final dynamic role;
 
-  User({
-    this.id,
-    this.name,
-    this.userName,
-    this.image,
-    this.isVerified,
-    this.order,
-    this.experience,
-    this.role
+class OrderId {
+  String id;
+  String orderSource;
+
+  OrderId({
+    required this.id,
+    required this.orderSource,
   });
 
-  User copyWith({
-    String? id,
-    String? name,
-    String? userName,
-    String? image,
-    bool? isVerified,
-    dynamic order,
-    dynamic experience,
-    dynamic role
-  }) =>
-      User(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        userName: userName ?? this.userName,
-        image: image ?? this.image,
-        isVerified: isVerified ?? this.isVerified,
-        order: order ?? this.order,
-        experience: experience ?? this.experience,
-        role: role ?? this.role,
-      );
-
-  factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"] ?? json["_id"],
-    name: json["first_name"] !=null ?  (json["first_name"] ?? ""+json["last_name"] ?? "") : "",
-    image: json["image"] ?? json["profile_image"],
-    order: json["order"] ?? "",
-    experience: json["experience"] ?? "",
-    isVerified: json["is_verified"],
-    role: json["role"],
-    userName: json["user_name"],
+  factory OrderId.fromJson(Map<String, dynamic> json) => OrderId(
+    id: json["_id"],
+    orderSource: json["order_source"],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "image": image,
+    "_id": id,
+    "order_source": orderSource,
   };
 }

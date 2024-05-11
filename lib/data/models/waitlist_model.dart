@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'generic_user_model.dart';
 import 'models.dart';
 
 List<WaitListModel> waitlistModelFromJson(String str) => List<WaitListModel>.from(json.decode(str).map((x) => WaitListModel.fromJson(x)));
@@ -11,8 +12,8 @@ List<WaitListModel> waitlistModelFromJson(String str) => List<WaitListModel>.fro
 String waitlistModelToJson(List<WaitListModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class WaitListModel {
-  final User? user;
-  final User? astrologer;
+  final GenericUserModel? user;
+  final GenericUserModel? astrologer;
   final IntakeFormWaitlist? intakeForm;
   final String? id;
   final String? status;
@@ -37,8 +38,8 @@ class WaitListModel {
   });
 
   factory WaitListModel.fromJson(Map<String, dynamic> json) => WaitListModel(
-    user: json["user_id"] == null ? null : User.fromJson(json["user_id"]),
-    astrologer: json["astrologer"] == null ? null : User.fromJson(json["astrologer"]),
+    user: json["user_id"] == null ? null : GenericUserModel.fromJson(json["user_id"]),
+    astrologer: json["astrologer"] == null ? null : GenericUserModel.fromJson(json["astrologer"]),
     intakeForm: json["intake_form"] == null ? null : IntakeFormWaitlist.fromJson(json["intake_form"]),
     id: json["_id"],
     status: json["status"],

@@ -154,7 +154,7 @@ class AppStrings {
   static String settings="Settings";
   static String askForReview="Ask for review";
   static String community="Community";
-  static String snaplorCommunity="Snaplor Community";
+  static String snaplorCommunity="Nepptor Community";
   static String communityProfile="Community Profile";
   static String sessions="Sessions";
   static String sessionsPrice="Session Price";

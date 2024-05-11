@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import '../../app/utils/utils.dart';
+import 'generic_user_model.dart';
 import 'models.dart';
 
 List<SocialPostModel> socialPostModelFromJson(String str) => List<SocialPostModel>.from(json.decode(str).map((x) => SocialPostModel.fromJson(x)));
@@ -13,7 +14,7 @@ String socialPostModelToJson(List<SocialPostModel> data) => json.encode(List<dyn
 
 class SocialPostModel {
    String? id;
-   User? user;
+   GenericUserModel? user;
    String? content;
    bool? isHidden;
    bool? isPinned;
@@ -53,7 +54,7 @@ class SocialPostModel {
 
   SocialPostModel copyWith({
     String? id,
-    User? user,
+    GenericUserModel? user,
     String? content,
     bool? isHidden,
     bool? isPinned,
@@ -92,7 +93,7 @@ class SocialPostModel {
 
   factory SocialPostModel.fromJson(Map<String, dynamic> json) => SocialPostModel(
     id: json["_id"],
-    user: json["user_id"] == null ? null : User.fromJson(json["user_id"]),
+    user: json["user_id"] == null ? null : GenericUserModel.fromJson(json["user_id"]),
     content: json["content"],
     isHidden: json["is_hidden"],
     isPinned: json["is_pinned"],

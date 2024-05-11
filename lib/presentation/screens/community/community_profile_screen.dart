@@ -63,7 +63,7 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                                 Column(
                                   children: [
                                     Text(
-                                      "45",
+                                      provider.userModel!.totalPost.toString(),
                                       style: AppStyle.black14,
                                     ),
                                     5.height,
@@ -73,7 +73,7 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                                 Column(
                                   children: [
                                     Text(
-                                      "45",
+                                      provider.userModel!.totalFollowers.toString(),
                                       style: AppStyle.black14,
                                     ),
                                     5.height,
@@ -83,7 +83,7 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                                 Column(
                                   children: [
                                     Text(
-                                      "45",
+                                      provider.userModel!.totalFollowing.toString(),
                                       style: AppStyle.black14,
                                     ),
                                     5.height,

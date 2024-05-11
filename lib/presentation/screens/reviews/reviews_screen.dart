@@ -64,7 +64,7 @@ class ReviewCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    "Order Id: #${model.orderId}",
+                    "Order Id: #${model.orderId!.id.toStringOrEmpty}",
                     style: AppStyle.grey12
                         .copyWith(color: AppColors.greyDark, fontSize: 10),
                   ),
@@ -134,14 +134,14 @@ class ReviewCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 10, top: 0),
+                    padding: const EdgeInsets.only(bottom: 20, top: 0),
                     child: Text(
                       "Replied : " + (model.astrologerResponse?.message ?? ""),
                       style: AppStyle.black12,
                       textAlign: TextAlign.start,
                     ),
                   ),
-                  Row(
+                  /*Row(
                     children: [
                       Expanded(
                         child: AppRoundedButton(
@@ -158,6 +158,10 @@ class ReviewCard extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),*/
+                  AppRoundedButton(
+                    text: AppStrings.reply,
+                    color: AppColors.colorPrimary,
                   ),
                 ],
               ),

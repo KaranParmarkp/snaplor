@@ -92,10 +92,8 @@ class _AppConsumerState<T extends BaseProvider, K>
                           : ErrorScreen(
                               error: "No Data Available",
                             )
-                      : Scrollbar(
-                          child: widget.successBuilder(
-                              _provider.data[widget.taskName] as K, _provider),
-                        ));
+                      : widget.successBuilder(
+                          _provider.data[widget.taskName] as K, _provider));
         default:
           return SizedBox();
       }

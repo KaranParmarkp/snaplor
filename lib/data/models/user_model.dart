@@ -52,7 +52,9 @@ class UserModel {
   final int? v;
   final String? profileImage;
   final String? videoUrl;
-
+  final int? totalFollowers;
+  final int? totalFollowing;
+  final int? totalPost;
   UserModel({
     required this.id,
     this.accessToken,
@@ -100,6 +102,9 @@ class UserModel {
     this.v,
     this.profileImage,
     this.videoUrl,
+    this.totalFollowers,
+    this.totalFollowing,
+    this.totalPost
   });
   UserModel copyWith({
     String? id,
@@ -149,6 +154,9 @@ class UserModel {
     int? v,
     String? profileImage,
     String? videoUrl,
+    int? totalFollowers,
+    int? totalFollowing,
+    int? totalPost
   }) =>
       UserModel(
         id: id ?? this.id,
@@ -195,6 +203,9 @@ class UserModel {
         v: v ?? this.v,
         profileImage: profileImage ?? this.profileImage,
         videoUrl: videoUrl ?? this.videoUrl,
+        totalFollowers: totalFollowers ?? this.totalFollowers,
+        totalFollowing: totalFollowing ?? this.totalFollowing,
+        totalPost: totalPost ?? this.totalPost,
       );
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -244,6 +255,9 @@ class UserModel {
     v: json["__v"],
     profileImage: json.containsKey('user_id') ? json["user_id"]["profile_image"] : "",
     videoUrl: json["video_url"],
+    totalFollowers: json["total_followers"] ?? 0,
+    totalFollowing: json["total_following"] ?? 0,
+    totalPost: json["total_posts"] ?? 0,
   );
 
   Map<String, dynamic> toJson() => {
@@ -287,6 +301,9 @@ class UserModel {
     "__v": v,
     "profile_image": profileImage,
     "video_url": videoUrl,
+    "total_posts" : totalPost,
+    "total_following":totalFollowing,
+    "total_followers":totalFollowers
   };
   Map<String, dynamic> toJsonUpdateProfile() => {
     //"name": name,

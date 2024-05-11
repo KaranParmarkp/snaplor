@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:jyotishee/data/models/generic_user_model.dart';
+
 import 'models.dart';
 
 List<PostCommentModel> postCommenstModelFromJson(String str) => List<PostCommentModel>.from(json.decode(str).map((x) => PostCommentModel.fromJson(x)));
@@ -13,7 +15,7 @@ String postCommenstModelToJson(List<PostCommentModel> data) => json.encode(List<
 class PostCommentModel {
   final String? id;
   final String? postId;
-  final User? user;
+  final GenericUserModel? user;
   final String? comment;
   final bool? isHidden;
   final bool? isPinned;
@@ -43,7 +45,7 @@ class PostCommentModel {
   PostCommentModel copyWith({
     String? id,
     String? postId,
-    User? user,
+    GenericUserModel? user,
     String? comment,
     bool? isHidden,
     bool? isPinned,
@@ -75,7 +77,7 @@ class PostCommentModel {
   factory PostCommentModel.fromJson(Map<String, dynamic> json) => PostCommentModel(
     id: json["_id"],
     postId: json["post_id"],
-    user: json["user_id"] == null ? User() : User.fromJson(json["user_id"]),
+    user: json["user_id"] == null ? GenericUserModel() : GenericUserModel.fromJson(json["user_id"]),
     comment: json["comment"] ?? json["reply"],
     isHidden: json["is_hidden"],
     isPinned: json["is_pinned"],

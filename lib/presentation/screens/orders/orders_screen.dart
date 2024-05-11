@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
+import '../../../data/models/generic_user_model.dart';
 import '../../../data/models/models.dart';
 import '../../../data/providers/providers.dart';
 import 'package:just_audio/just_audio.dart';
@@ -266,7 +267,7 @@ class _OrderCardState extends State<OrderCard> {
               readOnly: true,
               model: WaitListModel(
                   id: widget.model.chatRequestId,
-                  user: User(
+                  user: GenericUserModel(
                     name: widget.model.user?.name,
                     id: widget.model.user?.id,
                     image: widget.model.user?.image,

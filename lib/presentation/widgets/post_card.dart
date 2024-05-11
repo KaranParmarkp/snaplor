@@ -69,15 +69,15 @@ class _PostCardState extends State<PostCard> {
                           verified: model.user?.isVerified==true,
                           showAst: model.user?.role == "astrologer",
                         ),
-                        2.height,
+                        if(model.user?.role == "astrologer")...[2.height,
                         Text(
                           "Exp : ${model.user?.experience} years | ${model.user
-                              ?.order} Orders",
+                              ?.order} Sessions",
                           style: AppStyle.grey12.copyWith(
                               color: AppColors.hintGrey2,
                               fontWeight: FontWeight.w500,
                               fontSize: 10),
-                        ),
+                        ),]
                       ],
                     ),
                   ),
@@ -277,13 +277,13 @@ class LikeCommentShare extends StatelessWidget {
           iconTap: () async => await _showRepostSheet(context, model.id!, provider),
           titleTap: () async => await _showRepostSheet(context, model.id!, provider),
         ),
-        IconTitle(
+        /*IconTitle(
           icon: AppSvg.eyeOpen,
           iconColor: AppColors.hintGrey1,
           title: "${model.totalShare ?? 0}",
           //iconTap: () async => await _showCommentSheet(context, model.id!, provider),
           //titleTap: () async => await _showCommentSheet(context, model.id!, provider),
-        ),
+        ),*/
         IconTitle(
           icon: AppSvg.share,
           title: "${model.totalShare ?? 0}",

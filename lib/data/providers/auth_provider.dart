@@ -406,7 +406,7 @@ class AuthProvider extends BaseProvider {
   int _callChatCount = 0;
   int get callChatCount =>_callChatCount;
   static String callChatCountKey = 'callChatCountChatKey';
-  getCallChatCount({required String id}) async {
+  getCallChatCount() async {
     _callChatCount = 0;
     notifyListeners();
     try {
