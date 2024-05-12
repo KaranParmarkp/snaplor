@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../app/utils/utils.dart';
@@ -61,6 +62,7 @@ class _CommentScreenState extends State<CommentScreen> {
                         child: ListView.builder(
                           padding: EdgeInsets.zero,
                           itemBuilder: (context, index) => CommentCard(
+                            showLine: index!=data.length-1,
                             onShowMoreTap: () {
                               if (provider.getStatus(taskName: SocialProvider.getCommentsRepliesKey) != Status.loading && !data[index].showReplyMore) {
                                 provider.getCommentsReplies(
@@ -100,6 +102,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                   physics: NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) => CommentCard(
                                     isReply: true,
+                                    showLine: index!=data.length-1,
                                     model: data[index],
                                     onCloseTap: () {
                                       //replyModel = null;
@@ -112,7 +115,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                     provider: provider,
                                   ),
                                   itemCount: data.length,
-                                  shrinkWrap: true,
+                                  //shrinkWrap: true,
                                 ),
                               ),
                             ),
@@ -209,7 +212,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
 class CommentCard extends StatelessWidget {
   const CommentCard(
-      {super.key, required this.model, this.onCloseTap, this.onReplyTap, required this.provider,this.isReply=false, this.replyWidget, this.onShowMoreTap});
+      {super.key, required this.model, this.onCloseTap, this.onReplyTap, required this.provider,this.isReply=false, this.replyWidget, this.onShowMoreTap,this.showLine=false});
 
   final PostCommentModel model;
   final VoidCallback? onCloseTap;
@@ -218,21 +221,29 @@ class CommentCard extends StatelessWidget {
   final SocialProvider provider;
   final bool isReply;
   final Widget? replyWidget;
-
+  final bool showLine;
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          UserDP(radius: 16, image: model.user?.image),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              UserDP(radius: 16, image: model.user?.image),
+              if(showLine)SizedBox(
+                  height: 60,
+                  child: VerticalDivider(color: AppColors.hintGrey2,width: 1,thickness: 1,))
+            ],
+          ),
           10.width,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   children: [

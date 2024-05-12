@@ -118,6 +118,14 @@ class _PostCardState extends State<PostCard> {
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+            child: TextHashtag(
+                name: model.type != PostType.text
+                    ? model.user?.name ?? "Madhusudan"
+                    : null,
+                text: model.content ?? (model.originalPost!=null ? "reposted this":"")),
+          ),
           if (model.type != PostType.text)Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Stack(
@@ -188,14 +196,6 @@ class _PostCardState extends State<PostCard> {
 
               ],
             )
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
-            child: TextHashtag(
-                name: model.type != PostType.text
-                    ? model.user?.name ?? "Madhusudan"
-                    : null,
-                text: model.content ?? ""),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -286,8 +286,7 @@ class LikeCommentShare extends StatelessWidget {
         IconTitle(
           icon: AppSvg.share,
           title: "",
-          iconTap: () => AppHelper.launchWebUrl("https://snaplor.com/post/${model.id}"),
-          titleTap: () => AppHelper.launchWebUrl("https://snaplor.com/post/${model.id}"),
+          iconTap: () => AppHelper.sharePost(model.id.toString()),
         ),
       ],
     );

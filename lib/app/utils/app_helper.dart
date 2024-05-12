@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/widgets/ftoast.dart' as ft;
 import 'package:path/path.dart' as p;
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../main.dart';
@@ -529,5 +530,8 @@ class AppHelper {
         ),
             ),
       ),);
+  }
+  static sharePost(String id){
+    Share.share('https://snaplor.com/post/$id');
   }
 }
