@@ -266,7 +266,7 @@ class _OrderCardState extends State<OrderCard> {
             context.push(ChatScreen(
               readOnly: true,
               model: WaitListModel(
-                  id: widget.model.chatRequestId,
+                  id: widget.model.chatRequestId?.id,
                   user: GenericUserModel(
                     name: widget.model.user?.name,
                     id: widget.model.user?.id,

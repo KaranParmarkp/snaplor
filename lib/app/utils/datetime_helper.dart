@@ -62,4 +62,14 @@ class DateTimeHelper {
 
     return formattedTime;
   }
+  static String convertTimeTo12HourFormat(String timeString) {
+    // Parse the input time string into a DateTime object
+    DateTime time = DateTime.parse(timeString);
+
+    // Create a DateFormat instance for 12-hour time format
+    final format = DateFormat('h:mm a');
+
+    // Format the DateTime object into the desired time format
+    return format.format(time);
+  }
 }

@@ -113,7 +113,24 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
               Text("${authProvider.userModel?.email}", style: AppStyle.grey12),
             ],
           ),*/
-          title: Text("${AppStrings.hi} ${authProvider.userModel?.name}!", style: AppStyle.black14.copyWith(fontWeight: FontWeight.bold)),
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+
+                children: [
+                  Text("${AppStrings.hi} ${authProvider.userModel?.name.toString().toCapitalized()}!", style: AppStyle.black14.copyWith(fontWeight: FontWeight.w800)),
+                  5.width,
+                  SvgImage(image: AppSvg.verified),
+
+                ],
+              ),
+              Text("+91 ${authProvider.userModel?.phone}", style: AppStyle.black14.copyWith(fontSize: 12)),
+            ],
+          ),
           centerTitle: false,
           backgroundColor: AppColors.white,
           automaticallyImplyLeading: false,

@@ -14,7 +14,7 @@ class SquareBoxAvatar extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 14,vertical: 12),
         margin: EdgeInsets.symmetric(horizontal: 6,vertical: 4),
         decoration: AppDecoration.whiteShadowRounded,
         child: Column(

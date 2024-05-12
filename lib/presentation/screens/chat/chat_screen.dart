@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jyotishee/data/models/message_model.dart';
 import 'package:jyotishee/data/models/waitlist_model.dart';
@@ -31,7 +32,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return DismissKeyBoard(
       child: Scaffold(
         appBar: CustomAppBar(
-          title: widget.model?.user?.name ?? "",
+          title: widget.model?.user?.name.toCapitalized() ?? "",
           trailingIcon: !widget.readOnly ?  Row(
             children: [
               Padding(
@@ -62,7 +63,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   load: (provider) => provider.getMessages(id: widget.model!.id.toString()),
                   successBuilder: (data, provider) => ListView.builder(
                     //reverse: true,
-                    itemBuilder: (context, index) => MessageText(text: data[index].message ?? "", messageType: data[index].senderId!=provider.userModel?.id ? MessageType.sender  : MessageType.receiver),
+                    itemBuilder: (context, index) => MessageText(
+                        time: DateTimeHelper.convertTimeTo12HourFormat(data[index].createdAt!.toLocal().toString()),
+                        text: data[index].message ?? "", messageType: data[index].senderId!=provider.userModel?.id ? MessageType.sender  : MessageType.receiver),
                     itemCount: data.length,
 
                   ),
@@ -119,11 +122,11 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class MessageText extends StatelessWidget {
-  const MessageText({super.key, required this.text, required this.messageType});
+  const MessageText({super.key, required this.text, required this.messageType, required this.time});
 
   final String text;
   final MessageType messageType;
-
+  final String time;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -140,10 +143,23 @@ class MessageText extends StatelessWidget {
             color: messageType == MessageType.sender
                 ? AppColors.colorPrimary
                 : AppColors.purpleLight1),
-        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-        child: Text(
-          text,
-          style: messageType == MessageType.sender ? AppStyle.white12w500 : AppStyle.black12,
+        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              text,
+              style: messageType == MessageType.sender ? AppStyle.white14W400 : AppStyle.black14,
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Text(
+                time,
+                style: messageType == MessageType.sender ? AppStyle.white10: AppStyle.black10,
+              ),
+            ),
+          ],
         ),
       ),
     );

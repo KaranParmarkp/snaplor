@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/providers.dart';
@@ -44,12 +45,12 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
             child: Column(
               children: [
                 //header
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      10.height,
-                      Row(
+                Column(
+                  children: [
+                    10.height,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
                         children: [
                           CircleNetworkImageAvatar(
                               radius: 40,
@@ -96,18 +97,25 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                           ),
                         ],
                       ),
-                      10.height,
-                      NameVerified(name: provider.userModel?.name,verified: provider.userModel?.isVerified),
-                      4.height,
-                      Text(
-                        provider.userModel!.description ?? provider.userModel!.specialization.join(", ").toCapitalized(),
-                        style: AppStyle.greyHint12,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                      ),
-                      8.height,
-                    ],
-                  ),
+                    ),
+                    10.height,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: NameVerified(name: provider.userModel?.name,verified: provider.userModel?.isVerified),
+                    ),
+                    //4.height,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Html(data: provider.userModel!.description ?? provider.userModel!.specialization.join(", ").toCapitalized()),
+                    ),
+                    /*Text(
+                      provider.userModel!.description ?? provider.userModel!.specialization.join(", ").toCapitalized(),
+                      style: AppStyle.greyHint12,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                    ),*/
+                    8.height,
+                  ],
                 ),
                 Expanded(
                   child: Column(

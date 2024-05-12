@@ -141,7 +141,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             padding: const EdgeInsets.only(left: 14),
                             child: NameVerified(
                               name: widget.model!.user?.userName ?? "Anonymous",
-                              verified: widget.model!.user?.isVerified==true,
+                              verified: /*widget.model!.user?.isVerified==*/true,
                               showAst: widget.model!.user?.role == "astrologer",
                             ),
                           ),

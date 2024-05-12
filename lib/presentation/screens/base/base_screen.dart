@@ -3,6 +3,7 @@ import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/profile_screen.dart';
+import 'package:jyotishee/presentation/screens/waitlist/waitlist_screen.dart';
 import 'package:jyotishee/presentation/screens/wallet/wallet_screen.dart';
 import '../../widgets/widgets.dart';
 import '../community/community_screen.dart';
@@ -36,8 +37,8 @@ class _BaseScreenState extends State<BaseScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     context.read<AuthProvider>().disposeSocket();
+    super.dispose();
   }
 
   @override
@@ -53,68 +54,10 @@ class _BaseScreenState extends State<BaseScreen> {
             children: [
               screens[selectedIndex],
               if (provider.currentChat.isNotNull)
-                Container(
-                  padding: EdgeInsets.all(15),
-                  margin: EdgeInsets.all(15),
-                  decoration: AppDecoration.whiteShadowRounded,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                child: CircleAvatar(
-                                  radius: 22,
-                                  backgroundColor: AppColors.colorPrimary,
-                                  child: CircleNetworkImageAvatar(
-                                      radius: 20,
-                                      image: provider.currentChat?.user?.image),
-                                ),
-                              ),
-                            ],
-                          ),
-                          20.width,
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "",
-                                  style: AppStyle.grey12
-                                      .copyWith(color: AppColors.greyDark),
-                                ),
-                                Text(provider.currentChat?.user?.name ?? "",
-                                    style: AppStyle.black14),
-                              ],
-                            ),
-                          ),
-                          /*InkWell(
-                      onTap: () => provider.endChat(),
-                      child: Container(
-                          padding: EdgeInsets.all(6),
-                          child: Icon(Icons.close,size: 20,color: AppColors.greyDark,)),
-                    ),*/
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: AppRoundedButton(
-                          text: AppStrings.chat,
-                          color: AppColors.colorPrimary,
-                          onTap: () => context.push(ChatScreen(
-                            model: provider.currentChat,
-                          )),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                ...[Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: WaitListCard(model: provider.currentChat!, type: ComType.chat),
+                )]
             ],
           ),
           bottomNavigationBar: Container(
@@ -136,6 +79,7 @@ class _BaseScreenState extends State<BaseScreen> {
               elevation: 12,
               currentIndex: selectedIndex,
               onTap: (value) {
+                provider.onGoingChat();
                 if(value!=0){
                   selectedIndex = value;
                   setState(() {});

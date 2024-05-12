@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -99,12 +100,12 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: MyApp.navKey,
       builder: EasyLoading.init(),
       scrollBehavior: MaterialScrollBehavior().copyWith(
-        /*dragDevices: {
+        dragDevices: {
           PointerDeviceKind.mouse,
           PointerDeviceKind.touch,
           PointerDeviceKind.stylus,
           PointerDeviceKind.unknown
-        },*/
+        },
         physics: BouncingScrollPhysics(),
         scrollbars: true,
       ),

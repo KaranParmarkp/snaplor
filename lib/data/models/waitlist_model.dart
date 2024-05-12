@@ -24,6 +24,8 @@ class WaitListModel {
   final int? v;
   final int? pricePerMinute;
   final bool? isAcceptedByAstrologer;
+  final bool? isAcceptedByMember;
+   bool? fromInitiated;
   WaitListModel({
     this.user,
     this.astrologer,
@@ -34,7 +36,7 @@ class WaitListModel {
     this.statusHistory,
     this.createdAt,
     this.updatedAt,
-    this.v,this.pricePerMinute,this.isAcceptedByAstrologer
+    this.v,this.pricePerMinute,this.isAcceptedByAstrologer,this.isAcceptedByMember,this.fromInitiated
   });
 
   factory WaitListModel.fromJson(Map<String, dynamic> json) => WaitListModel(
@@ -45,6 +47,7 @@ class WaitListModel {
     status: json["status"],
     isFree: json["is_free"],
     isAcceptedByAstrologer: json["is_accepted_by_astrologer"],
+    isAcceptedByMember: json["is_accepted_by_member"],
     statusHistory: json["status_history"] == null ? [] : List<dynamic>.from(json["status_history"]!.map((x) => x)),
     createdAt: json["createdAt"] == null ? json["created_at"] == null ? null : DateTime.parse(json["created_at"]): DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),

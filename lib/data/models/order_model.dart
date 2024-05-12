@@ -20,8 +20,8 @@ class OrderModel {
   final int? totalShipping;
   final int? totalShippingDiscount;
   final int? totalDiscount;
-  final String? callRequestId;
-  final String? chatRequestId;
+  final ChatRequestId? callRequestId;
+  final ChatRequestId? chatRequestId;
   final dynamic astrologerAmount;
   final dynamic adminAmount;
   final String? paymentStatus;
@@ -75,8 +75,8 @@ class OrderModel {
     int? totalShipping,
     int? totalShippingDiscount,
     int? totalDiscount,
-    String? callRequestId,
-    String? chatRequestId,
+    ChatRequestId? callRequestId,
+    ChatRequestId? chatRequestId,
     int? astrologerAmount,
     int? adminAmount,
     String? paymentStatus,
@@ -133,8 +133,8 @@ class OrderModel {
     totalShipping: json["total_shipping"],
     totalShippingDiscount: json["total_shipping_discount"],
     totalDiscount: json["total_discount"],
-    callRequestId: json["call_request_id"],
-    chatRequestId: json["chat_request_id"],
+    chatRequestId:json["chat_request_id"]!=null ?  ChatRequestId.fromJson(json["chat_request_id"]) : null,
+    callRequestId:json["call_request_id"]!=null ?  ChatRequestId.fromJson(json["call_request_id"]) : null,
     astrologerAmount: json["astrologer_amount"],
     adminAmount: json["admin_amount"],
     paymentStatus: json["payment_status"],
@@ -146,7 +146,7 @@ class OrderModel {
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     v: json["__v"],
-    intakeForm: json["intake_form"] == null ? null : IntakeForm.fromJson(json["intake_form"]),
+    intakeForm: json["chat_request_id"] != null ? IntakeForm.fromJson(json["chat_request_id"]["intake_form"]) : IntakeForm.fromJson(json["call_request_id"]["intake_form"]),
     reviewOrder: json["review"] == null ? null : ReviewOrder.fromJson(json["review"]),
     voiceCallUrl: json["uri"],
 
@@ -215,6 +215,16 @@ class Astrologer {
     "id": id,
     "name": name,
   };
+}
+class ChatRequestId{
+  final String? id;
+  final IntakeForm? intakeForm;
+  ChatRequestId({this.id,this.intakeForm});
+  factory ChatRequestId.fromJson(Map<String, dynamic> json) => ChatRequestId(
+    id: json["_id"],
+    intakeForm: IntakeForm.fromJson(json["intake_form"]),
+  );
+
 }
 class IntakeForm {
   final String? name;

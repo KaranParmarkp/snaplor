@@ -48,9 +48,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               Row(
                 children: [
-                  Expanded(child: SettingImageCard(image: AppSvg.document,text: AppStrings.instruction,desc: AppStrings.understandableInstruction,onTap: () {},)),
+                  Expanded(child: SettingImageCard(image: AppSvg.document,text: AppStrings.instruction,desc: AppStrings.understandableInstruction,onTap: () {context.push(ChatSupportScreen());},)),
                   10.width,
-                  Expanded(child: SettingImageCard(image: AppSvg.callHelp,text: AppStrings.youNeedHelp,desc: AppStrings.contactSupport,onTap:() => context.push(ChatSupportScreen()),)),
+                  Expanded(child: SettingImageCard(image: AppSvg.callHelp,text: AppStrings.youNeedHelp,desc: AppStrings.contactSupport,onTap:() => AppHelper.showHelpDialog(context),)),
                 ],
               ),
               //TitleDropdown(text: AppStrings.profile, leadingIcon: SvgImage(image: AppSvg.user),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(ProfileScreen()),),

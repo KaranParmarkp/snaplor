@@ -100,7 +100,7 @@ class AppHelper {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
-        backgroundColor: Colors.black.withOpacity(0.5),
+        backgroundColor: AppColors.colorPrimary,
         textColor: textColor ?? Colors.white,
         fontSize: 14);
   }
@@ -482,4 +482,52 @@ class AppHelper {
     }
   }
 
+  static showHelpDialog(BuildContext context){
+    return showDialog(context: context,
+      builder: (context) => Dialog(
+        backgroundColor: AppColors.transparent,
+
+        child: Container(
+        padding: EdgeInsets.all(15),
+        height: 100,
+        decoration: AppDecoration.whiteShadowRounded,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 60,width: 60,
+              padding: EdgeInsets.all(20),
+              margin: EdgeInsets.only(right: 20),
+              decoration: AppDecoration.purpleLightRounded.copyWith(
+                borderRadius: BorderRadius.circular(8)
+              ),
+              child: SvgImage(image: AppSvg.callHelp),
+            ),
+            Expanded(child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text("You need help?",style: AppStyle.black14w600,),
+                5.height,
+                Row(
+                  children: [
+                    Text("Call Us on:  ",style: AppStyle.hintGray12,),
+                    InkWell(
+                        onTap: () => AppHelper.launchCall("9818484869"),
+                        child: Text("+91 9818484869",style: AppStyle.black12w600,)),
+                  ],
+                ),
+              ],
+            )),
+            Align(
+                alignment: Alignment.topRight,
+                child: IconButton(onPressed: () => context.pop(), icon: Icon(Icons.close)))
+          ],
+        ),
+            ),
+      ),);
+  }
 }

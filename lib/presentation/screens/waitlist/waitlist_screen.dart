@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
@@ -112,12 +115,43 @@ class _WaitListScreenState extends State<WaitListScreen>
   }
 }
 
-class WaitListCard extends StatelessWidget {
-  const WaitListCard({super.key, required this.model, required this.type});
+class WaitListCard extends StatefulWidget {
+  const WaitListCard({super.key, required this.model, required this.type,this.fromInitiated=false});
 
   final WaitListModel model;
   final ComType type;
+  final bool fromInitiated;
 
+  @override
+  State<WaitListCard> createState() => _WaitListCardState();
+}
+
+class _WaitListCardState extends State<WaitListCard> {
+   Timer? _timer;
+  int _timerValue = 60; // Initial timer value
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.model.fromInitiated.isTrue)_startTimer();
+  }
+   void _startTimer() {
+     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+       setState(() {
+         _timerValue--;
+       });
+       if (_timerValue == 0) {
+         context.read<AuthProvider>().updateCurrentChatModel(null);
+         _timer?.cancel();
+       }
+     });
+   }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -125,77 +159,94 @@ class WaitListCard extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 20),
       decoration: AppDecoration.whiteShadowRounded,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              UserDP(radius: 22, image: model.user?.image),
+              UserDP(radius: 22, image: widget.model.user?.image),
               20.width,
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          model.createdAt!.formatElapsedTimeString(),
-                          style: AppStyle.grey12
-                              .copyWith(color: AppColors.greyDark),
-                        ),
-                        Text(model.user?.name ?? model.intakeForm?.name ?? "",
-                            style: AppStyle.black14),
-                        Text(
-                          AppStrings.rupee + "${model.pricePerMinute}/Min",
-                          style: AppStyle.grey12
-                              .copyWith(color: AppColors.greyDark),
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.model.createdAt!.formatElapsedTimeString(),
+                            style: AppStyle.grey12
+                                .copyWith(color: AppColors.greyDark),
+                          ),
+                          Text(widget.model.user?.name.toCapitalized() ?? widget.model.intakeForm?.name.toCapitalized() ?? "",
+                              style: AppStyle.black14),
+                          Text(
+                            widget.model.fromInitiated.isTrue ? "Wait Time - 1 minute":AppStrings.rupee + "${widget.model.pricePerMinute}/Min",
+                            style: AppStyle.grey12
+                                .copyWith(color: AppColors.greyDark),
+                          ),
+                        ],
+                      ),
                     ),
-                    Spacer(),
-                    if (model.isAcceptedByAstrologer.isFalse) ...[
-                      InkWell(
-                        onTap: () async {
-                          await context
-                              .read<AuthProvider>()
-                              .acceptRequest(type: type, model: model);
-                          context.read<AuthProvider>().waitList(type);
-                        },
-                        child: CircleAvatar(
-                          radius: 16,
-                          child: Icon(Icons.done, color: AppColors.white),
-                          backgroundColor: AppColors.lightGreen,
-                        ),
+                    if(widget.model.fromInitiated.isTrue)SizedBox(
+                      height: 40,width: 40,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            color: AppColors.colorPrimary,
+                            value: _timerValue/60,
+                            strokeWidth: 4,
+                          ),
+                          Center(child: Text(_timerValue.toInt().toString(),style: AppStyle.black12,))
+                        ],
                       ),
-                      10.width,
-                      InkWell(
-                        onTap: () => context
-                            .read<AuthProvider>()
-                            .cancelRequest(type: type, id: model.id!),
-                        child: CircleAvatar(
-                          radius: 16,
-                          child: Icon(Icons.delete_forever,
-                              color: AppColors.white),
-                          backgroundColor: AppColors.red,
-                        ),
-                      ),
-                    ],
-                    if (model.isAcceptedByAstrologer.isTrue &&
-                        type == ComType.chat)
-                      InkWell(
-                          onTap: () => context.push(ChatScreen(model: model)),
-                          child: Text(
-                            type.name.toUpperCase(),
-                            style: AppStyle.purple12
-                                .copyWith(fontWeight: FontWeight.w700),
-                          ))
+                    )
                   ],
                 ),
               ),
+              if (widget.model.isAcceptedByAstrologer.isTrue && widget.model.isAcceptedByMember.isTrue && widget.type == ComType.chat)
+                InkWell(
+                    onTap: () => context.push(ChatScreen(model: widget.model)),
+                    child: Text(
+                      widget.type.name.toUpperCase(),
+                      style: AppStyle.purple12
+                          .copyWith(fontWeight: FontWeight.w700),
+                    )),
+              if (widget.model.isAcceptedByAstrologer.isTrue && widget.model.isAcceptedByMember.isFalse && widget.type == ComType.chat)
+                Text(
+                  "WAITING",
+                  style: AppStyle.purple12.copyWith(fontWeight: FontWeight.w700),
+                )
             ],
           ),
+          if (widget.model.isAcceptedByAstrologer.isFalse && widget.model.isAcceptedByMember.isFalse) ...[
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: AppRoundedButton(text: AppStrings.rejects,color: AppColors.red,onTap: () {
+                      context
+                          .read<AuthProvider>()
+                          .cancelRequest(type: widget.type, id: widget.model.id!);
+                    },),
+                  ),
+                  20.width,
+                  Expanded(
+                    child: AppRoundedButton(text: AppStrings.accept,color: AppColors.colorPrimary,onTap: () async {
+                      await context.read<AuthProvider>().acceptRequest(type: widget.type, model: widget.model);
+                      context.read<AuthProvider>().waitList(widget.type);
+                    },),
+                  ),
+                ],
+              ),
+            ),
+          ],
+
         ],
       ),
     );

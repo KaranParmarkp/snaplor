@@ -66,13 +66,12 @@ class _PostCardState extends State<PostCard> {
                       children: [
                         NameVerified(
                           name: model.user?.userName ?? "Anonymous",
-                          verified: model.user?.isVerified==true,
+                          verified: /*model.user?.isVerified==*/true,
                           showAst: model.user?.role == "astrologer",
                         ),
                         if(model.user?.role == "astrologer")...[2.height,
                         Text(
-                          "Exp : ${model.user?.experience} years | ${model.user
-                              ?.order} Sessions",
+                          "Exp : ${model.astrologer?.experience??0} years | ${model.astrologer?.order ?? 0} Sessions",
                           style: AppStyle.grey12.copyWith(
                               color: AppColors.hintGrey2,
                               fontWeight: FontWeight.w500,
@@ -153,7 +152,7 @@ class _PostCardState extends State<PostCard> {
                           padding: const EdgeInsets.only(left: 14),
                           child: NameVerified(
                             name: model.originalPost!.user?.userName ?? "Anonymous",
-                            verified: model.originalPost!.user?.isVerified==true,
+                            verified: /*model.originalPost!.user?.isVerified==*/true,
                             showAst: model.originalPost!.user?.role == "astrologer",
                           ),
                         ),
@@ -179,7 +178,7 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
                   child: TextHashtag(
                       name: model.originalPost!.type != PostType.text
                           ? model.originalPost!.user?.name ?? "Madhusudan"
@@ -191,7 +190,7 @@ class _PostCardState extends State<PostCard> {
             )
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
             child: TextHashtag(
                 name: model.type != PostType.text
                     ? model.user?.name ?? "Madhusudan"
@@ -286,9 +285,9 @@ class LikeCommentShare extends StatelessWidget {
         ),*/
         IconTitle(
           icon: AppSvg.share,
-          title: "${model.totalShare ?? 0}",
-          //iconTap: () async => await _showCommentSheet(context, model.id!, provider),
-          //titleTap: () async => await _showCommentSheet(context, model.id!, provider),
+          title: "",
+          iconTap: () => AppHelper.launchWebUrl("https://snaplor.com/post/${model.id}"),
+          titleTap: () => AppHelper.launchWebUrl("https://snaplor.com/post/${model.id}"),
         ),
       ],
     );

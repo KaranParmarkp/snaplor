@@ -38,7 +38,7 @@ class AuthService extends ApiService {
   }
 
   Future<Response<GenericResponse>> orderList(ComType type) async {
-    String url = '''?filter={"astrologer.id": "${MyApp.appContext.read<AuthProvider>().userModel!.id}", "order_source": "${type.name}"}&limit=10&skip=0''';
+    String url = '''?filter={"order_source": "${type.name}"}&limit=10&skip=0''';
     return getData(
       ApiConfig.ordersList + url,
     );
@@ -62,8 +62,8 @@ class AuthService extends ApiService {
     return putData(ApiConfig.reviewList+"response/" + id, data: {"message": message});
   }
 
-  Future<Response<GenericResponse>> deleteReview(String id) async {
-    return deleteData(ApiConfig.reviewList + id);
+  Future<Response<GenericResponse>> hideReview(String id) async {
+    return putData(ApiConfig.reviewList + id+"/status/hide");
   }
 
   Future<Response<GenericResponse>> waitList(ComType type) async {
@@ -100,7 +100,7 @@ class AuthService extends ApiService {
   }
 
   Future<Response<GenericResponse>> onGoingChat() async {
-    return putData(ApiConfig.onGoingChat);
+    return getData(ApiConfig.onGoingChat);
   }
   Future<Response<GenericResponse>> endChat(String id) async {
     return putData(ApiConfig.endChat+id);

@@ -15,6 +15,7 @@ String socialPostModelToJson(List<SocialPostModel> data) => json.encode(List<dyn
 class SocialPostModel {
    String? id;
    GenericUserModel? user;
+   GenericUserModel? astrologer;
    String? content;
    bool? isHidden;
    bool? isPinned;
@@ -49,12 +50,13 @@ class SocialPostModel {
     this.videoUrl,
     this.type,
     this.isLiked,
-    this.originalPost
+    this.originalPost, this.astrologer
   });
 
   SocialPostModel copyWith({
     String? id,
     GenericUserModel? user,
+    GenericUserModel? astrologer,
     String? content,
     bool? isHidden,
     bool? isPinned,
@@ -88,12 +90,15 @@ class SocialPostModel {
         videoUrl: videoUrl ?? this.videoUrl,
         type: type ?? this.type,
         isLiked: isLiked?? this.isLiked,
-      originalPost: originalPost ?? this.originalPost
+      originalPost: originalPost ?? this.originalPost,
+        totalRepost: totalRepost??this.totalRepost,
+          astrologer : astrologer ?? this.astrologer
       );
 
   factory SocialPostModel.fromJson(Map<String, dynamic> json) => SocialPostModel(
     id: json["_id"],
     user: json["user_id"] == null ? null : GenericUserModel.fromJson(json["user_id"]),
+    astrologer: json["astrologer_id"] == null ? null : GenericUserModel.fromJson(json["astrologer_id"]),
     content: json["content"],
     isHidden: json["is_hidden"],
     isPinned: json["is_pinned"],
@@ -114,7 +119,8 @@ class SocialPostModel {
 
   Map<String, dynamic> toJson() => {
     "_id": id,
-    "user": user?.toJson(),
+    "user_id": user?.toJson(),
+    "astrologer_id": user?.toJson(),
     "content": content,
     "is_hidden": isHidden,
     "is_pinned": isPinned,
