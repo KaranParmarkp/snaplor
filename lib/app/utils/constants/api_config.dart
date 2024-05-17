@@ -28,6 +28,7 @@ class ApiConfig {
   static const String upload = "s3/pre-signed-url?key=astrologers/";
   static const String callCount = "call/count";
   static const String chatCount = "chat/count";
+  static const String askReview = "astrologer-reviews/";
 
   // Social
   static const String addPost = "posts";
@@ -35,7 +36,8 @@ class ApiConfig {
   static const String comment = "posts/comments/";
   static const String deletePost = "posts/deletepost/";
   static const String deleteComment = "posts/deletecomment/";
-  //static const String deleteComment = "posts/deletecomment/";
+  static const String whoToFollow = "astrologers/follow";
+  static const String followUnFollow = "followers";
 
   // Socket
   static const String privateMessage = "privateMessage";

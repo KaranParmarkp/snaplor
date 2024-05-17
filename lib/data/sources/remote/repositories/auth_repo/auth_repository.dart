@@ -12,6 +12,7 @@ abstract class AuthRepository{
   Future<List<ReviewModel>> reviewList();
   Future<GenericResponse> addReview(String id,String message);
   Future<GenericResponse> deleteReview(String id);
+  Future<GenericResponse> askReview(String id);
   Future<List<WaitListModel>> waitList(ComType type);
   Future<WaitListModel?> onGoingChat();
   Future<List<WalletModel>> wallet();

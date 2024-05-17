@@ -66,16 +66,40 @@ class _AddPostScreenState extends State<AddPostScreen> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 20, right: 15, left: 15),
                 child: imageFile != null
-                    ? fileType == 1
+                    ? fileType == UploadFileType.image
                         ? SizedBox(
-                            height: 90,
-                            width: 90,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: Image.file(
-                                  imageFile!,
-                                  fit: BoxFit.fill,
-                                )))
+                            height: 300,
+                            child: Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.file(
+                                        imageFile!,
+                                        fit: BoxFit.cover,
+                                      )),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    imageFile=null;
+                                    setState(() {
+
+                                    });
+                                  },
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(bottom: 10.0,right: 0),
+                                      child: CircleAvatar(
+                                          radius: 20,
+                                          backgroundColor: AppColors.colorPrimary,
+                                          child: SvgImage(image: AppSvg.deleteRed,color: AppColors.white,)),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ))
                         : Container(
                             padding: EdgeInsets.all(15),
                             decoration: AppDecoration.skyBlueLightRounded
@@ -159,7 +183,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         if (widget.model!.type == PostType.image)
                           SquareNetworkImageAvatar(
                             radius: 0,
-                            height: 390,
+                            height: 300,
                             width: double.infinity,
                             image: widget.model!.imageUrl,
                           ),
@@ -186,25 +210,26 @@ class _AddPostScreenState extends State<AddPostScreen> {
                    ? widget.isRepost ? "Repost": AppStrings.editPost
                   : AppStrings.createPost,
               borderRadius: BorderRadius.circular(30),
-              onTap: () {
+              onTap: () async {
                 if (commentController.isEmpty()) {
                   AppHelper.showToast(message: "Please enter text");
                 } else {
                   if (widget.isRepost) {
-                    context.read<SocialProvider>().rePost(
+                    await context.read<SocialProvider>().rePost(
                         message: commentController.text,
                         file: imageFile,
                         type: fileType,
                         fromMyPost: widget.fromMyPost,
                         postId: widget.model!.id!);
                   } else {
-                    context.read<SocialProvider>().addPost(
+                    await context.read<SocialProvider>().addPost(
                         message: commentController.text,
                         file: imageFile,
                         type: fileType,
                         fromMyPost: widget.fromMyPost,
                         postId: widget.model?.id);
                   }
+                  context.read<AuthProvider>().userData();
                   context.pop();
                 }
               },

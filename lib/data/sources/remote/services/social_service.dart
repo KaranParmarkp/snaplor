@@ -92,4 +92,14 @@ class SocialService extends ApiService {
     return getData(ApiConfig.comment + "/likes/" + id);
   }
 
+  Future<Response<GenericResponse>> whoToFollow() async {
+    return getData(ApiConfig.whoToFollow);
+  }
+  Future<Response<GenericResponse>> follow(String id, bool isFollow) async {
+    return  postData(ApiConfig.followUnFollow,data: {
+      "following_id": id, //user_id
+      "action" : isFollow ? "follow" : "unfollow"
+    });
+  }
+
 }

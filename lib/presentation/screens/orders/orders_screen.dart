@@ -289,7 +289,7 @@ class _OrderCardState extends State<OrderCard> {
                     ),
                   ),
                   Text(
-                    "${DateTimeHelper.dateMonthWithTime(widget.model.createdAt)}",
+                    "${DateTimeHelper.dateMonthWithTime(widget.model.createdAt?.toLocal())}",
                     style: AppStyle.grey12
                         .copyWith(color: AppColors.greyDark, fontSize: 10),
                   ),
@@ -407,10 +407,13 @@ class _OrderCardState extends State<OrderCard> {
                         print(rating);
                       },
                     ),
-                  if (widget.model.reviewOrder == null)
+                  if (widget.model.askedReview==true)
                     AppRoundedButton(
                       text: AppStrings.askForReview,
                       color: AppColors.colorPrimary,
+                      onTap: () {
+                        context.read<AuthProvider>().askReview(id: widget.model.id!,type: widget.type);
+                      },
                     ),
                 ],
               ),

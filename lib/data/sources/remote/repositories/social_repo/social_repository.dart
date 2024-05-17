@@ -18,4 +18,6 @@ abstract class SocialRepository{
   Future<GenericResponse> deleteCommentReply(String postId,String commentId,String replyId);
   Future<PostCommentModel> likeComment(String id,bool isLike);
   Future<List<PostCommentModel>> likedCommentUsers(String id);
+  Future<List<UserModel>> whoToFollow();
+  Future<GenericResponse> followUnFollow(String id,bool isFollow);
 }

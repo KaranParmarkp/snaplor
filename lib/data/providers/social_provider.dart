@@ -215,4 +215,30 @@ class SocialProvider extends BaseProvider {
       setError(taskName: likeCommentKey,errorMessage:  e.toString(),showToast: showLoader);
     }
   }
+
+  //Who to follow  api
+  static String whoToFollowKey = 'whoToFollowKey';
+  whoToFollow({Function(SocialPostModel? data)? onSuccess}) async {
+    setLoading(taskName: whoToFollowKey);
+    try {
+      setData(taskName: whoToFollowKey,data: await _repository.whoToFollow(),onSuccess: (data) => onSuccess?.call(data),);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: whoToFollowKey,errorMessage:  e.toString(),);
+    }
+  }
+
+  //Who to follow  api
+  static String followUnFollowKey = 'followUnFollowKey';
+  followUnFollow({required String id,bool isFollow=true}) async {
+    setLoading(taskName: followUnFollowKey,showDialogLoader: true);
+    try {
+      setData(taskName: followUnFollowKey,data: await _repository.followUnFollow(id,isFollow),onSuccess: (data) => whoToFollow(),hideLoader: true);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: followUnFollowKey,errorMessage:  e.toString(),);
+    }
+  }
 }

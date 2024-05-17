@@ -114,6 +114,16 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
   }
 
   @override
+  Future<GenericResponse> askReview(String id) {
+    return serviceHandler(
+      serviceFunction: () => service.askReview(id,),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+
+  @override
   Future<List<WaitListModel>> waitList(ComType type) {
     return serviceHandler(
       serviceFunction: () => service.waitList(type),

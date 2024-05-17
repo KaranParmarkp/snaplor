@@ -65,6 +65,9 @@ class AuthService extends ApiService {
   Future<Response<GenericResponse>> hideReview(String id) async {
     return putData(ApiConfig.reviewList + id+"/status/hide");
   }
+  Future<Response<GenericResponse>> askReview(String id) async {
+    return putData(ApiConfig.askReview+id+"/ask");
+  }
 
   Future<Response<GenericResponse>> waitList(ComType type) async {
     return getData(type == ComType.chat

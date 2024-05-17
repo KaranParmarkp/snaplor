@@ -70,7 +70,7 @@ class ReviewCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "${DateTimeHelper.dateMonthWithTime(model.createdAt)}",
+                  "${DateTimeHelper.dateMonthWithTime(model.createdAt?.toLocal())}",
                   style: AppStyle.grey12
                       .copyWith(color: AppColors.greyDark, fontSize: 10),
                 ),

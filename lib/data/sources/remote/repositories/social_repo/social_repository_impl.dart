@@ -162,4 +162,25 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
     );
   }
 
+  @override
+  Future<List<UserModel>> whoToFollow() {
+    return serviceHandler(
+      serviceFunction: () => service.whoToFollow(),
+      successFunction: (response) async {
+        List<UserModel> list = [];
+        list = List<UserModel>.from(response.data!.map((x) => UserModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+  @override
+  Future<GenericResponse> followUnFollow(String id,bool isFollow) {
+    return serviceHandler(
+      serviceFunction: () => service.follow(id, isFollow),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+
 }

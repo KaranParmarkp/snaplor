@@ -263,7 +263,6 @@ class AuthProvider extends BaseProvider {
 
   // Delete Review api
   static String deleteReviewKey = 'deleteReviewKey';
-
   deleteReview({required String id}) async {
     setLoading(taskName: deleteReviewKey, showDialogLoader: true);
     try {
@@ -277,6 +276,28 @@ class AuthProvider extends BaseProvider {
       s.printDebug;
       setError(
           taskName: deleteReviewKey,
+          errorMessage: e.toString(),
+          showToast: true);
+    }
+  }
+
+  // Ask Review api
+  static String askReviewKey = 'askReviewKey';
+  askReview({required String id,required ComType type}) async {
+    setLoading(taskName: askReviewKey, showDialogLoader: true);
+    try {
+      setData(
+          taskName: askReviewKey,
+          data: await _authRepo.askReview(id),
+          hideLoader: true,onSuccess: (data) {
+            orderList(type);
+          },);
+      reviewList();
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(
+          taskName: askReviewKey,
           errorMessage: e.toString(),
           showToast: true);
     }
@@ -452,18 +473,25 @@ class AuthProvider extends BaseProvider {
         notifyListeners();
       }
       if (message != null && message['status'] == "initiated") {
-        WaitListModel model = WaitListModel.fromJson(message['chat_request'] as Map<String, dynamic>);
-        if (_currentChat == null) {
-          _currentChat = model;
-          _currentChat?.fromInitiated=true;
-          notifyListeners();
+        if(message.containsKey("chat_request")){
+          WaitListModel model = WaitListModel.fromJson(message['chat_request'] as Map<String, dynamic>);
+          if (_currentChat == null) {
+            _currentChat = model;
+            _currentChat?.fromInitiated=true;
+            notifyListeners();
+          }
+          waitList(ComType.chat);
         }
+
       }
       if (message != null && message['status'] == "accepted_by_customer") {
-        WaitListModel model = WaitListModel.fromJson(message['chat_request'] as Map<String, dynamic>);
-        _currentChat = model;
-        _currentChat?.fromInitiated=false;
-        notifyListeners();
+        if(message.containsKey("chat_request")){
+          WaitListModel model = WaitListModel.fromJson(message['chat_request'] as Map<String, dynamic>);
+          _currentChat = model;
+          _currentChat?.fromInitiated=false;
+          notifyListeners();
+        }
+
       }
     });
     notifyListeners();
