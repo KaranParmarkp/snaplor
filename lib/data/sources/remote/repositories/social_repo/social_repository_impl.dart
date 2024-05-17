@@ -131,9 +131,9 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
   }
 
   @override
-  Future<GenericResponse> deleteCommentReply(String postId,String commentId,String replyId) {
+  Future<GenericResponse> deleteCommentReply(String commentId) {
     return serviceHandler(
-      serviceFunction: () => service.deleteCommentReply(postId, commentId, replyId),
+      serviceFunction: () => service.deleteCommentReply(commentId, ),
       successFunction: (response) async {
         return response;
       },
@@ -143,7 +143,17 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
   @override
   Future<PostCommentModel> likeComment(String id,bool isLike) {
     return serviceHandler(
-      serviceFunction: () => service.likePost(id,isLike),
+      serviceFunction: () => service.likeComment(id,isLike),
+      successFunction: (response) async {
+        return PostCommentModel.fromJson(response.data);
+      },
+    );
+  }
+
+  @override
+  Future<PostCommentModel> likeCommentReplay(String id,bool isLike) {
+    return serviceHandler(
+      serviceFunction: () => service.likeCommentReplay(id,isLike),
       successFunction: (response) async {
         return PostCommentModel.fromJson(response.data);
       },

@@ -75,6 +75,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
             children: [
               SizedBox(
                 height: 200,
+                width: double.infinity,
                 child: AppConsumer<SocialProvider, List<UserModel>>(
                   taskName: SocialProvider.whoToFollowKey,
                   load: (provider) {

@@ -99,6 +99,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                     left: 15, right: 0, bottom: 0, top: 15),
                                 child: ListView.builder(
                                   padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) => CommentCard(
                                     isReply: true,
@@ -224,150 +225,165 @@ class CommentCard extends StatelessWidget {
   final bool showLine;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            UserDP(radius: 16, image: model.user?.image),
+            if(showLine)SizedBox(
+              height: 60,
+                child: VerticalDivider(color: AppColors.hintGrey2.withOpacity(0.50),width: 1,thickness: 1,))
+          ],
+        ),
+        10.width,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              UserDP(radius: 16, image: model.user?.image),
-              if(showLine)SizedBox(
-                  height: 60,
-                  child: VerticalDivider(color: AppColors.hintGrey2,width: 1,thickness: 1,))
-            ],
-          ),
-          10.width,
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      model.user!.name.toStringOrEmpty.toCapitalized(),
-                      style: AppStyle.black12w700,
+              Row(
+                children: [
+                  Text(
+                    model.user!.name.toStringOrEmpty.toCapitalized(),
+                    style: AppStyle.black12w700,
+                  ),
+                  10.width,
+                  Text(model.createdAt!.formatElapsedTimeString(),
+                      style: AppStyle.grey10w400),
+                  Spacer(),
+                  PopupMenuButton(
+                    child: Container(
+                      height: 30,
+                      width: 42,
+                      alignment: Alignment.centerRight,
+                      child: Icon(
+                        Icons.more_vert,
+                      ),
                     ),
-                    10.width,
-                    Text(model.createdAt!.formatElapsedTimeString(),
-                        style: AppStyle.grey10w400),
-                    Spacer(),
-                    PopupMenuButton(
-                      child: Container(
-                        height: 30,
-                        width: 42,
-                        alignment: Alignment.centerRight,
-                        child: Icon(
-                          Icons.more_vert,
+                    iconSize: 10,
+                    padding: EdgeInsets.zero,
+                    offset: Offset(15, 34),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    itemBuilder: (context) {
+                      return [
+                        /*PopupMenuItem(
+                          child: Row(
+                            children: [
+                              SvgImage(image: AppSvg.pin),
+                              10.width,
+                              Text(
+                                AppStrings.pinToTop,
+                                style: AppStyle.black12,
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      iconSize: 10,
-                      padding: EdgeInsets.zero,
-                      offset: Offset(15, 34),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      itemBuilder: (context) {
-                        return [
-                          PopupMenuItem(
-                            child: Row(
-                              children: [
-                                SvgImage(image: AppSvg.pin),
-                                10.width,
-                                Text(
-                                  AppStrings.pinToTop,
-                                  style: AppStyle.black12,
-                                )
-                              ],
-                            ),
+                        PopupMenuItem(
+                          child: Row(
+                            children: [
+                              SvgImage(image: AppSvg.eye),
+                              10.width,
+                              Text(
+                                AppStrings.hide,
+                                style: AppStyle.black12,
+                              )
+                            ],
                           ),
-                          PopupMenuItem(
-                            child: Row(
-                              children: [
-                                SvgImage(image: AppSvg.eye),
-                                10.width,
-                                Text(
-                                  AppStrings.hide,
-                                  style: AppStyle.black12,
-                                )
-                              ],
-                            ),
-                          ),
-                          PopupMenuItem(
-                            onTap: () {
+                        ),
+                        */PopupMenuItem(
+                          onTap: () {
+                            if(!isReply){
                               provider.deleteComment(
                                   id: model.id.toStringOrEmpty,
                                   postId: model.postId.toStringOrEmpty);
-                            },
-                            child: Row(
-                              children: [
-                                SvgImage(image: AppSvg.deleteRed),
-                                10.width,
-                                Text(
-                                  AppStrings.delete,
-                                  style: AppStyle.red12,
-                                )
-                              ],
-                            ),
+                            }else{
+                              provider.deleteCommentReply(
+                                  showLoader: true,
+                                  commentId: model.id.toStringOrEmpty,
+                                  postId: model.postId.toStringOrEmpty);
+                            }
+
+                          },
+                          child: Row(
+                            children: [
+                              SvgImage(image: AppSvg.deleteRed),
+                              10.width,
+                              Text(
+                                AppStrings.delete,
+                                style: AppStyle.red12,
+                              )
+                            ],
                           ),
-                        ];
-                      },
-                    ),
-                    10.width
-                  ],
-                ),
-                Container(
-                    width: double.infinity,
-                    child: Text(model.comment ?? "",
-                        style: AppStyle.black12w400,
-                        textAlign: TextAlign.start)),
-                6.height,
-                Row(
-                  children: [
-                    SvgImage(image: AppSvg.unLike),
-                    6.width,
-                    Text(
-                      "${model.totalLikes} likes",
+                        ),
+                      ];
+                    },
+                  ),
+                  10.width
+                ],
+              ),
+              Container(
+                  width: double.infinity,
+                  child: Text(model.comment ?? "",
+                      style: AppStyle.black12w400,
+                      textAlign: TextAlign.start)),
+              6.height,
+              Row(
+                children: [
+                  SvgImage(image: model.isLiked==true ? AppSvg.like: AppSvg.unLike,onTap: () {
+                    if(!isReply){
+                      provider.likeComment(id: model.id!, fromMyPost: false,postId: model.postId!,isLike: model.isLiked==false);
+                    }else{
+                      provider.likeCommentReply(postId: model.postId,commentId: model.id!,showLoader: true,isLike: model.isLiked==false);
+                    }
+
+                  },),
+                  6.width,
+                  Text(
+                    "${model.totalLikes} likes",
+                    style: AppStyle.grey10w400,
+                  ),
+                  if(!isReply)...[
+
+                  20.width,
+                  InkWell(
+                    onTap: onReplyTap,
+                    child: Text(
+                      AppStrings.reply,
                       style: AppStyle.grey10w400,
                     ),
-                    20.width,
-                    InkWell(
-                      onTap: onReplyTap,
-                      child: Text(
-                        AppStrings.reply,
-                        style: AppStyle.grey10w400,
-                      ),
+                  ),]
+                ],
+              ),
+              6.height,
+              if (model.totalReplies != 0 && !isReply /*&& provider.getStatus(taskName: SocialProvider.getCommentsRepliesKey)!= Status.loading*/)InkWell(
+                onTap: onShowMoreTap,
+                child:Row(
+                  children: [
+                    SizedBox(
+                        width: 25,
+                        child: AppDivider(
+                          thickness: 1,
+                        )),
+                    6.width,
+                    Text(
+                      !model.showReplyMore ? AppStrings.view + " ${model.totalReplies} " + AppStrings.moreReplies : "Hide replies",
+                      style: AppStyle.grey10w400,
                     ),
                   ],
                 ),
-                6.height,
-                if (model.totalReplies != 0 && !isReply /*&& provider.getStatus(taskName: SocialProvider.getCommentsRepliesKey)!= Status.loading*/)InkWell(
-                  onTap: onShowMoreTap,
-                  child:Row(
-                    children: [
-                      SizedBox(
-                          width: 25,
-                          child: AppDivider(
-                            thickness: 1,
-                          )),
-                      6.width,
-                      Text(
-                        !model.showReplyMore ? AppStrings.view + " ${model.totalReplies} " + AppStrings.moreReplies : "Hide replies",
-                        style: AppStyle.grey10w400,
-                      ),
-                    ],
-                  ),
-                ),
-                if (model.totalReplies != 0 && !isReply && model.showReplyMore)replyWidget ?? SizedBox()
+              ),
+              if (model.totalReplies != 0 && !isReply && model.showReplyMore)replyWidget ?? SizedBox()
 
-              ],
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

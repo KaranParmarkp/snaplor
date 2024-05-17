@@ -244,7 +244,7 @@ class LikeCommentShare extends StatelessWidget {
   Widget build(BuildContext context) {
     var provider = context.read<SocialProvider>();
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconTitle(
           icon: AppSvg.msg,
@@ -397,32 +397,30 @@ class IconTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        children: [
-          InkWell(
-              onTap: iconTap,
-              child: Container(
-                //color: Colors.green,
-                child: SvgImage(
-                  image: icon,
-                  size: 24, color: iconColor,
-                ),
-              )),
-
-          InkWell(
-            onTap: titleTap,
+    return Row(
+      children: [
+        InkWell(
+            onTap: iconTap,
             child: Container(
-              //color: Colors.yellow,
-              padding: EdgeInsets.only(left: 10,right: 10),
-              child: Text(
-                title,
-                style: AppStyle.greyHint14w500,
+              //color: Colors.green,
+              child: SvgImage(
+                image: icon,
+                size: 24, color: iconColor,
               ),
+            )),
+
+        InkWell(
+          onTap: titleTap,
+          child: Container(
+            //color: Colors.yellow,
+            padding: EdgeInsets.only(left: 10,right: 10),
+            child: Text(
+              title,
+              style: AppStyle.greyHint14w500,
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }

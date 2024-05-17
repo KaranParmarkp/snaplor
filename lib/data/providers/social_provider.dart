@@ -165,15 +165,29 @@ class SocialProvider extends BaseProvider {
 
   // Delete comment reply Post api
   static String deleteCommentReplyKey = 'deleteCommentReplyKey';
-  deleteCommentReply({required String id,bool showLoader=false,required String postId,required String commentId,required String replyId}) async {
+  deleteCommentReply({bool showLoader=false,required String postId,required String commentId}) async {
     setLoading(taskName: deleteCommentReplyKey,showDialogLoader: showLoader);
     try {
-      setData(taskName: deleteCommentReplyKey,data: await _repository.deleteCommentReply(postId, commentId, replyId),hideLoader: showLoader);
+      setData(taskName: deleteCommentReplyKey,data: await _repository.deleteCommentReply( commentId),hideLoader: showLoader);
       getComments(id: postId,showLoader: false);
     } catch (e, s) {
       e.printDebug;
       s.printDebug;
       setError(taskName: deleteCommentReplyKey,errorMessage:  e.toString(),showToast: showLoader);
+    }
+  }
+
+  // Like comment reply Post api
+  static String likeCommentReplyKey = 'likeCommentReplyKey';
+  likeCommentReply({bool showLoader=false,required String commentId,required bool isLike,required postId}) async {
+    setLoading(taskName: likeCommentReplyKey,showDialogLoader: showLoader);
+    try {
+      setData(taskName: likeCommentReplyKey,data: await _repository.likeCommentReplay(commentId,isLike),hideLoader: showLoader);
+      getComments(id: postId,showLoader: false);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: likeCommentReplyKey,errorMessage:  e.toString(),showToast: showLoader);
     }
   }
 
@@ -205,10 +219,11 @@ class SocialProvider extends BaseProvider {
   }
   //Comment Like Post api
   static String likeCommentKey = 'likeCommentKey';
-  likeComment({required String id,bool showLoader=false,bool isLike=false,required bool fromMyPost,Function(SocialPostModel? data)? onSuccess}) async {
+  likeComment({required String id,bool showLoader=false,bool isLike=false,required bool fromMyPost,Function(SocialPostModel? data)? onSuccess,required String postId}) async {
     setLoading(taskName: likeCommentKey,showDialogLoader: showLoader);
     try {
       setData(taskName: likeCommentKey,data: await _repository.likeComment(id,isLike),hideLoader: showLoader,onSuccess: (data) => onSuccess?.call(data),);
+      getComments(id: postId,showLoader: false);
     } catch (e, s) {
       e.printDebug;
       s.printDebug;

@@ -26,6 +26,7 @@ class PostCommentModel {
   final DateTime? updatedAt;
   final int? v;
   bool showReplyMore;
+  bool? isLiked;
   PostCommentModel({
     this.id,
     this.postId,
@@ -39,7 +40,8 @@ class PostCommentModel {
     this.createdAt,
     this.updatedAt,
     this.v,
-    this.showReplyMore=false
+    this.showReplyMore=false,
+    this.isLiked
   });
 
   PostCommentModel copyWith({
@@ -55,7 +57,8 @@ class PostCommentModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? v,
-    bool? showReplyMore
+    bool? showReplyMore,
+    bool? isLiked
 
   }) =>
       PostCommentModel(
@@ -72,6 +75,7 @@ class PostCommentModel {
         updatedAt: updatedAt ?? this.updatedAt,
         v: v ?? this.v,
         showReplyMore: showReplyMore ?? this.showReplyMore,
+        isLiked: isLiked ?? this.isLiked
       );
 
   factory PostCommentModel.fromJson(Map<String, dynamic> json) => PostCommentModel(
@@ -87,6 +91,7 @@ class PostCommentModel {
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     v: json["__v"],
+    isLiked: json["isLiked"],
     showReplyMore: false
   );
 

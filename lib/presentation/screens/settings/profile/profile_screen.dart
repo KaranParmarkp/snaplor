@@ -185,12 +185,14 @@ class ProfileScreen extends StatelessWidget {
                   bool? response = await context.read<AuthProvider>().userData(
                       refresh: true,
                       updateModel: user.copyWith(
-                        callPrice: isCallRate
+                        /*callPrice: isCallRate
                             ? controller.text.toInt()
                             : user.callPrice,
                         chatPrice: !isCallRate
                             ? controller.text.toInt()
-                            : user.chatPrice,
+                            : user.chatPrice,*/
+                        callPrice: controller.text.toInt(),
+                        chatPrice: controller.text.toInt()
                       ));
                   if (response.isTrue) context.pop();
                 }

@@ -42,6 +42,7 @@ class AuthProvider extends BaseProvider {
   initSocket() async {
     String? token = await ApiService.getToken();
     print("socket token ${token}");
+
     _socket = IO.io(
       ApiConfig.baseUrlSocket,
       //"https://api.snaplor.com:3000",
