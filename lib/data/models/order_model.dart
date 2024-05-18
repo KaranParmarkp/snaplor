@@ -4,13 +4,15 @@
 
 import 'dart:convert';
 
+import 'package:jyotishee/data/models/generic_user_model.dart';
+
 List<OrderModel> orderModelFromJson(String str) => List<OrderModel>.from(json.decode(str).map((x) => OrderModel.fromJson(x)));
 
 String orderModelToJson(List<OrderModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class OrderModel {
   final String? id;
-  final Astrologer? user;
+  final GenericUserModel? user;
   final Astrologer? astrologer;
   final String? status;
   final String? orderSource;
@@ -66,7 +68,7 @@ class OrderModel {
 
   OrderModel copyWith({
     String? id,
-    Astrologer? user,
+    GenericUserModel? user,
     Astrologer? astrologer,
     String? status,
     String? orderSource,
@@ -125,7 +127,7 @@ class OrderModel {
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
     id: json["_id"],
-    user: json["user"] == null ? null : Astrologer.fromJson(json["user"]),
+    user: json["user_id"] == null ? null : GenericUserModel.fromJson(json["user_id"]),
     astrologer: json["astrologer"] == null ? null : Astrologer.fromJson(json["astrologer"]),
     status: json["status"],
     orderSource: json["order_source"],

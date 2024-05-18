@@ -8,6 +8,7 @@ class ApiConfig {
   static const String login = "astrologers/login";
   static const String verifyOtp = "astrologers/verify-otp";
   static const String userData = "astrologers/me";
+  static const String fcmSave = "fcm-notifications";
 
   static const String offersList = "astrologer-offers/astrologers";
   static const String ordersList = "astrologer-orders";
@@ -40,8 +41,15 @@ class ApiConfig {
   static const String followUnFollow = "followers";
 
   // Socket
+  static const String chatStatus = "chatStatus";
   static const String privateMessage = "privateMessage";
-
+  static const String typingMessage = "typingMessage";
+  static const String seenMessage = "seenMessage";
+  static const String receivedMessage = "receivedMessage";
+  static const String messageStatus = "messageStatus";
+  static const String chatInitiated = "initiated";
+  static const String chatAcceptedByCustomer = "accepted_by_customer";
+  static const String chatCompleted = "completed";
 
 
 }

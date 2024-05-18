@@ -80,34 +80,38 @@ class _WaitListScreenState extends State<WaitListScreen>
             ),
             Expanded(
                 child: TabBarView(
-              clipBehavior: Clip.none,
-              physics: NeverScrollableScrollPhysics(),
-              controller: _tabController,
-              children: [
-                AppConsumer<AuthProvider, List<WaitListModel>>(
-                  taskName: AuthProvider.waitListKey,
-                  load: (provider) => provider.waitList(ComType.chat),
-                  successBuilder: (data, provider) => ListView.builder(
-                    clipBehavior: Clip.none,
-                    itemBuilder: (context, index) =>
-                        WaitListCard(model: data[index], type: ComType.chat),
-                    itemCount: data.length,
-                    shrinkWrap: true,
-                  ),
-                ),
-                AppConsumer<AuthProvider, List<WaitListModel>>(
-                  taskName: AuthProvider.waitListKey,
-                  load: (provider) => provider.waitList(ComType.call),
-                  successBuilder: (data, provider) => ListView.builder(
-                    clipBehavior: Clip.none,
-                    itemBuilder: (context, index) =>
-                        WaitListCard(model: data[index], type: ComType.call),
-                    itemCount: data.length,
-                    shrinkWrap: true,
-                  ),
-                ),
-              ],
-            ))
+                  clipBehavior: Clip.none,
+                  physics: NeverScrollableScrollPhysics(),
+                  controller: _tabController,
+                  children: [
+                    AppConsumer<AuthProvider, List<WaitListModel>>(
+                      taskName: AuthProvider.waitListKey,
+                      load: (provider) => provider.waitList(ComType.chat),
+                      successBuilder: (data, provider) =>
+                          ListView.builder(
+                            clipBehavior: Clip.none,
+                            itemBuilder: (context, index) =>
+                                WaitListCard(
+                                    model: data[index], type: ComType.chat),
+                            itemCount: data.length,
+                            shrinkWrap: true,
+                          ),
+                    ),
+                    AppConsumer<AuthProvider, List<WaitListModel>>(
+                      taskName: AuthProvider.waitListKey,
+                      load: (provider) => provider.waitList(ComType.call),
+                      successBuilder: (data, provider) =>
+                          ListView.builder(
+                            clipBehavior: Clip.none,
+                            itemBuilder: (context, index) =>
+                                WaitListCard(
+                                    model: data[index], type: ComType.call),
+                            itemCount: data.length,
+                            shrinkWrap: true,
+                          ),
+                    ),
+                  ],
+                ))
           ],
         ),
       ),
@@ -116,7 +120,8 @@ class _WaitListScreenState extends State<WaitListScreen>
 }
 
 class WaitListCard extends StatefulWidget {
-  const WaitListCard({super.key, required this.model, required this.type,this.fromInitiated=false});
+  const WaitListCard(
+      {super.key, required this.model, required this.type, this.fromInitiated = false});
 
   final WaitListModel model;
   final ComType type;
@@ -127,37 +132,43 @@ class WaitListCard extends StatefulWidget {
 }
 
 class _WaitListCardState extends State<WaitListCard> {
-   Timer? _timer;
-  int _timerValue = 60; // Initial timer value
+  Timer? _timer;
+  int _timerValue = 60 * 5; // Initial timer value
 
   @override
   void initState() {
     super.initState();
-    if(widget.model.fromInitiated.isTrue)_startTimer();
+    if (widget.model.fromInitiated.isTrue) _startTimer();
   }
-   void _startTimer() {
-     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-       setState(() {
-         _timerValue--;
-       });
-       if (_timerValue == 0) {
-         context.read<AuthProvider>().updateCurrentChatModel(null);
-         _timer?.cancel();
-       }
-     });
-   }
+
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _timerValue--;
+      });
+      if (_timerValue == 0) {
+        context.read<AuthProvider>().updateCurrentChatModel(null);
+        _timer?.cancel();
+      }
+    });
+  }
 
   @override
   void dispose() {
     _timer?.cancel();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(15),
       margin: EdgeInsets.only(bottom: 20),
-      decoration: AppDecoration.whiteShadowRounded,
+      decoration: AppDecoration.whiteShadowRounded.copyWith(
+        border: Border.all(
+          color: widget.model.fromInitiated.isTrue ? AppColors.colorPrimary : AppColors.transparent
+        )
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -181,66 +192,103 @@ class _WaitListCardState extends State<WaitListCard> {
                             style: AppStyle.grey12
                                 .copyWith(color: AppColors.greyDark),
                           ),
-                          Text(widget.model.user?.name.toCapitalized() ?? widget.model.intakeForm?.name.toCapitalized() ?? "",
+                          Text(widget.model.user?.name.toCapitalized() ?? widget
+                              .model.intakeForm?.name.toCapitalized() ?? "",
                               style: AppStyle.black14),
                           Text(
-                            widget.model.fromInitiated.isTrue ? "Wait Time - 1 minute":AppStrings.rupee + "${widget.model.pricePerMinute}/Min",
+                            widget.model.fromInitiated.isTrue
+                                ? "Wait Time - 5 minutes"
+                                : AppStrings.rupee + "${widget.model
+                                .pricePerMinute}/Min",
                             style: AppStyle.grey12
                                 .copyWith(color: AppColors.greyDark),
                           ),
                         ],
                       ),
                     ),
-                    if(widget.model.fromInitiated.isTrue)SizedBox(
-                      height: 40,width: 40,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          CircularProgressIndicator(
-                            color: AppColors.colorPrimary,
-                            value: _timerValue/60,
-                            strokeWidth: 4,
+                    if(widget.model.fromInitiated.isTrue)Column(
+                      //mainAxisAlignment: MainAxisAlignment.end,
+                      //crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            context.read<AuthProvider>().updateCurrentChatModel(
+                                null);
+                          },
+                          child: Icon(Icons.close, size: 20,),),
+                        5.height,
+                        SizedBox(
+                          height: 40, width: 40,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              CircularProgressIndicator(
+                                color: AppColors.colorPrimary,
+                                value: _timerValue / 60,
+                                strokeWidth: 2,
+                              ),
+                              Center(child: Text(
+                                '${(_timerValue ~/ 60).toString().padLeft(
+                                    2, '0')}:${(_timerValue % 60)
+                                    .toString()
+                                    .padLeft(2, '0')}' ,style: AppStyle.
+                                black12.copyWith(fontSize:10),))
+                            ],
                           ),
-                          Center(child: Text(_timerValue.toInt().toString(),style: AppStyle.black12,))
-                        ],
-                      ),
+                        ),
+                      ],
                     )
                   ],
                 ),
               ),
-              if (widget.model.isAcceptedByAstrologer.isTrue && widget.model.isAcceptedByMember.isTrue && widget.type == ComType.chat)
+              if (widget.model.isAcceptedByAstrologer.isTrue &&
+                  widget.model.isAcceptedByMember.isTrue &&
+                  widget.type == ComType.chat)
                 InkWell(
-                    onTap: () => context.push(ChatScreen(model: widget.model)),
+                    onTap: () async {
+                      await context.push(ChatScreen(model: widget.model));
+                      context.read<AuthProvider>().onGoingChat();
+                    },
                     child: Text(
                       widget.type.name.toUpperCase(),
                       style: AppStyle.purple12
                           .copyWith(fontWeight: FontWeight.w700),
                     )),
-              if (widget.model.isAcceptedByAstrologer.isTrue && widget.model.isAcceptedByMember.isFalse && widget.type == ComType.chat)
+              if (widget.model.isAcceptedByAstrologer.isTrue &&
+                  widget.model.isAcceptedByMember.isFalse &&
+                  widget.type == ComType.chat)
                 Text(
                   "WAITING",
-                  style: AppStyle.purple12.copyWith(fontWeight: FontWeight.w700),
+                  style: AppStyle.purple12.copyWith(
+                      fontWeight: FontWeight.w700),
                 )
             ],
           ),
-          if (widget.model.isAcceptedByAstrologer.isFalse && widget.model.isAcceptedByMember.isFalse) ...[
+          if (widget.model.isAcceptedByAstrologer.isFalse &&
+              widget.model.isAcceptedByMember.isFalse) ...[
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Row(
                 children: [
                   Expanded(
-                    child: AppRoundedButton(text: AppStrings.rejects,color: AppColors.red,onTap: () {
-                      context
-                          .read<AuthProvider>()
-                          .cancelRequest(type: widget.type, id: widget.model.id!);
-                    },),
+                    child: AppRoundedButton(text: AppStrings.rejects,
+                      color: AppColors.red,
+                      onTap: () {
+                        context
+                            .read<AuthProvider>()
+                            .cancelRequest(type: widget.type, id: widget.model
+                            .id!);
+                      },),
                   ),
                   20.width,
                   Expanded(
-                    child: AppRoundedButton(text: AppStrings.accept,color: AppColors.colorPrimary,onTap: () async {
-                      await context.read<AuthProvider>().acceptRequest(type: widget.type, model: widget.model);
-                      context.read<AuthProvider>().waitList(widget.type);
-                    },),
+                    child: AppRoundedButton(text: AppStrings.accept,
+                      color: AppColors.colorPrimary,
+                      onTap: () async {
+                        await context.read<AuthProvider>().acceptRequest(
+                            type: widget.type, model: widget.model);
+                        context.read<AuthProvider>().waitList(widget.type);
+                      },),
                   ),
                 ],
               ),

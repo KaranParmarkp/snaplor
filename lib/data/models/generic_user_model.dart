@@ -42,7 +42,7 @@ class GenericUserModel {
 
   factory GenericUserModel.fromJson(Map<String, dynamic> json) => GenericUserModel(
     id: json["id"] ?? json["_id"],
-    name: json["first_name"] !=null ?  (json["first_name"] ?? ""+json["last_name"] ?? "") : "",
+    name: json["first_name"] !=null ?  ((json["first_name"] ?? "")+" "+(json["last_name"] ?? "")) : "",
     image: json["image"] ?? json["profile_image"],
     order: json["order"] ??json["total_orders"]?? "",
     experience: json["experience"] ?? "",

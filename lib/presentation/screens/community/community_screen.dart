@@ -74,96 +74,104 @@ class _CommunityScreenState extends State<CommunityScreen> {
           child: Column(
             children: [
               SizedBox(
-                height: 200,
-                width: double.infinity,
                 child: AppConsumer<SocialProvider, List<UserModel>>(
                   taskName: SocialProvider.whoToFollowKey,
                   load: (provider) {
                     provider.whoToFollow();
                   },
-                  successBuilder: (data1, provider) => ListView.builder(
-                    itemCount: data1.length,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => Container(
-                      width: 150,
-                      margin: EdgeInsets.only(left: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Stack(
-                            children: [
-                              SquareNetworkImageAvatar(
-                                radius: 12,
-                                height: 90,
-                                width: 150,
-                                image: data1[index].profileImage,
+                  emptyBuilder: (p0) {
+                    return SizedBox();
+                  },
+                  errorBuilder: (p0) {
+                    return SizedBox();
+                  },
+                  successBuilder: (data1, provider) => SizedBox(
+                    height: 200,
+                    width: double.infinity,
+                    child: ListView.builder(
+                      itemCount: data1.length,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) => Container(
+                        width: 150,
+                        margin: EdgeInsets.only(left: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
+                              children: [
+                                SquareNetworkImageAvatar(
+                                  radius: 12,
+                                  height: 90,
+                                  width: 150,
+                                  image: data1[index].profileImage,
 
-                              ),
-                              Positioned(
-                                top: 6,
-                                right: 10,
-                                child: Container(
-                                  width: 50,
-                                  decoration: AppDecoration.purpleLightRounded.copyWith(
-                                      color: AppColors.lightGreen,
-                                      borderRadius: BorderRadius.circular(8)
-                                  ),
-                                  padding: EdgeInsets.symmetric(vertical: 4),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SvgImage(image: AppSvg.star,color: AppColors.white,size: 15,),
-                                      4.width,
-                                      Text(data1[index].avgRating.toString(),style: AppStyle.white12w500,)
-                                    ],
-                                  ),
                                 ),
-                              )
-                            ],
-                          ),
-                          10.height,
-                          Container(
-                              decoration: AppDecoration.skyBlueRounded.copyWith(color: AppColors.hintGrey3),
-                              padding: EdgeInsets.symmetric(horizontal: 6,vertical: 4),
-                              child: Text(AppStrings.astrologer,style: AppStyle.black8w400,)),
-                          5.height,
-                          Row(
-                            children: [
-                              SvgImage(image: AppSvg.verified),
-                              3.width,
-                              Expanded(
-                                child: Text(
-                                  data1[index].name.toStringOrEmpty.toTitleCase(),
-                                  style: AppStyle.black16w500,
-                                  //maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-
-
-
-                            ],
-                          ),
-                          10.height,
-                          InkWell(
-                            onTap: () {
-                              provider.followUnFollow(id: data1[index].id);
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              decoration: AppDecoration.purpleLightRounded.copyWith(
-                                  color: AppColors.lightGreen,
-                                  borderRadius: BorderRadius.circular(8)
-                              ),
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Center(child: Text("Follow",style: AppStyle.white12w500,)),
+                                Positioned(
+                                  top: 6,
+                                  right: 10,
+                                  child: Container(
+                                    width: 50,
+                                    decoration: AppDecoration.purpleLightRounded.copyWith(
+                                        color: AppColors.lightGreen,
+                                        borderRadius: BorderRadius.circular(8)
+                                    ),
+                                    padding: EdgeInsets.symmetric(vertical: 4),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        SvgImage(image: AppSvg.star,color: AppColors.white,size: 15,),
+                                        4.width,
+                                        Text(data1[index].avgRating.toString(),style: AppStyle.white12w500,)
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),),
+                            10.height,
+                            Container(
+                                decoration: AppDecoration.skyBlueRounded.copyWith(color: AppColors.hintGrey3),
+                                padding: EdgeInsets.symmetric(horizontal: 6,vertical: 4),
+                                child: Text(AppStrings.astrologer,style: AppStyle.black8w400,)),
+                            5.height,
+                            Row(
+                              children: [
+                                SvgImage(image: AppSvg.verified),
+                                3.width,
+                                Expanded(
+                                  child: Text(
+                                    data1[index].name.toStringOrEmpty.toTitleCase(),
+                                    style: AppStyle.black16w500,
+                                    //maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+
+
+
+                              ],
+                            ),
+                            10.height,
+                            InkWell(
+                              onTap: () {
+                                provider.followUnFollow(id: data1[index].id);
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                decoration: AppDecoration.purpleLightRounded.copyWith(
+                                    color: AppColors.lightGreen,
+                                    borderRadius: BorderRadius.circular(8)
+                                ),
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                child: Center(child: Text("Follow",style: AppStyle.white12w500,)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),),
+                  ),
                 ),
               ),
               AppDivider(gray: true),

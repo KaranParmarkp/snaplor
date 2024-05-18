@@ -54,6 +54,7 @@ class AuthProvider extends BaseProvider {
       'connected to websocket'.printDebug;
       getChatStatus();
       onGoingChat();
+
       /// call in home bottom nav tap onGoingChat();
     });
     _socket?.onConnectError((m) {
@@ -101,6 +102,7 @@ class AuthProvider extends BaseProvider {
   }
 
   logout() async {
+    fcmSave(logout: true);
     _authStatus = AuthStatus.unAuthenticated;
     preference.clearPref();
     notifyListeners();
@@ -264,6 +266,7 @@ class AuthProvider extends BaseProvider {
 
   // Delete Review api
   static String deleteReviewKey = 'deleteReviewKey';
+
   deleteReview({required String id}) async {
     setLoading(taskName: deleteReviewKey, showDialogLoader: true);
     try {
@@ -284,23 +287,24 @@ class AuthProvider extends BaseProvider {
 
   // Ask Review api
   static String askReviewKey = 'askReviewKey';
-  askReview({required String id,required ComType type}) async {
+
+  askReview({required String id, required ComType type}) async {
     setLoading(taskName: askReviewKey, showDialogLoader: true);
     try {
       setData(
-          taskName: askReviewKey,
-          data: await _authRepo.askReview(id),
-          hideLoader: true,onSuccess: (data) {
-            orderList(type);
-          },);
+        taskName: askReviewKey,
+        data: await _authRepo.askReview(id),
+        hideLoader: true,
+        onSuccess: (data) {
+          orderList(type);
+        },
+      );
       reviewList();
     } catch (e, s) {
       e.printDebug;
       s.printDebug;
       setError(
-          taskName: askReviewKey,
-          errorMessage: e.toString(),
-          showToast: true);
+          taskName: askReviewKey, errorMessage: e.toString(), showToast: true);
     }
   }
 
@@ -389,12 +393,15 @@ class AuthProvider extends BaseProvider {
     setLoading(taskName: acceptRequestKey, showDialogLoader: true);
     try {
       setData(
-          taskName: acceptRequestKey,
-          data: await _authRepo.acceptRequest(type, model.id!),onSuccess: (data) {
-        WaitListModel model = WaitListModel.fromJson(data.data as Map<String,dynamic>);
-        _currentChat = model;
-        notifyListeners();
-      },);
+        taskName: acceptRequestKey,
+        data: await _authRepo.acceptRequest(type, model.id!),
+        onSuccess: (data) {
+          WaitListModel model =
+              WaitListModel.fromJson(data.data as Map<String, dynamic>);
+          _currentChat = model;
+          notifyListeners();
+        },
+      );
 
       /*MyApp.appContext.push(ChatScreen(
         model: model,
@@ -419,8 +426,8 @@ class AuthProvider extends BaseProvider {
       setData(
           taskName: cancelRequestKey,
           data: await _authRepo.cancelRequest(type, id));
-      if(_currentChat?.id==id){
-        _currentChat=null;
+      if (_currentChat?.id == id) {
+        _currentChat = null;
         notifyListeners();
       }
       waitList(type);
@@ -437,17 +444,34 @@ class AuthProvider extends BaseProvider {
   // Get Messages api
   static String getMessagesKey = 'getMessagesChatKey';
 
+  List<MessageModel> get currentChatMessageList => data[getMessagesKey] ?? [];
+
   getMessages({required String id}) async {
     setLoading(taskName: getMessagesKey, showDialogLoader: true);
     try {
       setData(taskName: getMessagesKey, data: await _authRepo.getMessages(id));
       _socket?.on(ApiConfig.privateMessage, (message) {
-        debugPrint("privateMessage socket");
+        debugPrint("privateMessage socket 123");
         print(message);
-        if (message != null)
-          data[getMessagesKey]
-              .add(MessageModel.fromJson(message as Map<String, dynamic>));
+        if (message != null && currentChatMessageList.any((element) => element.id != message["_id"])) {
+          data[getMessagesKey].add(MessageModel.fromJson(message as Map<String, dynamic>));
+          notify();
+        }
+        if(_currentChat.isNotNull) {
+          _currentChat!.controller.animateTo(
+            _currentChat!.controller.position.maxScrollExtent + 100,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeOut,
+          );
+          Map request = {
+            "message_id": currentChatMessageList.last.id
+          };
+          _socket?.emitWithAck(ApiConfig.seenMessage, request, ack: (response) {
+            print(response);
+          });
+        }
         notify();
+
       });
     } catch (e, s) {
       e.printDebug;
@@ -464,39 +488,61 @@ class AuthProvider extends BaseProvider {
     notifyListeners();
   }
 
+
   getChatStatus() {
-    _socket?.on('chatStatus', (message) {
+    _socket?.on(ApiConfig.chatStatus, (message) {
       "ChatStatus".printDebug;
-      print(message);
-      if (message != null && message['status'] == "completed") {
+      message.toString().printDebug;
+      if(_currentChat.isNull)onGoingChat();
+      if (message != null && message['status'] == ApiConfig.chatCompleted) {
         _currentChat = null;
         MyApp.appContext.pushRemoveUntil(BaseScreen());
         notifyListeners();
       }
-      if (message != null && message['status'] == "initiated") {
-        if(message.containsKey("chat_request")){
-          WaitListModel model = WaitListModel.fromJson(message['chat_request'] as Map<String, dynamic>);
+      if (message != null && message['status'] == ApiConfig.chatInitiated) {
+        if (message.containsKey("chat_request")) {
+          WaitListModel model = WaitListModel.fromJson(
+              message['chat_request'] as Map<String, dynamic>);
           if (_currentChat == null) {
             _currentChat = model;
-            _currentChat?.fromInitiated=true;
+            _currentChat?.fromInitiated = true;
             notifyListeners();
+            userData();
           }
-          waitList(ComType.chat);
         }
-
       }
-      if (message != null && message['status'] == "accepted_by_customer") {
-        if(message.containsKey("chat_request")){
-          WaitListModel model = WaitListModel.fromJson(message['chat_request'] as Map<String, dynamic>);
+      if (message != null && message['status'] == ApiConfig.chatAcceptedByCustomer) {
+        if (message.containsKey("chat_request")) {
+          WaitListModel model = WaitListModel.fromJson(
+              message['chat_request'] as Map<String, dynamic>);
           _currentChat = model;
-          _currentChat?.fromInitiated=false;
+          _currentChat?.fromInitiated = false;
           notifyListeners();
+          MyApp.navKey.currentState!.context.push(ChatScreen(model: _currentChat,));
         }
-
+      }
+    });
+    _socket?.on(ApiConfig.typingMessage, (message) {
+      "TypingMessage".printDebug;
+      message.toString().printDebug;
+      if(_currentChat.isNotNull){
+        _currentChat!.isTyping=true;
+        notifyListeners();
+        Future.delayed(Duration(seconds: 2,),() {
+          _currentChat!.isTyping=false;
+          notifyListeners();
+        },);
+      }
+    });
+    _socket?.on(ApiConfig.messageStatus, (message) {
+      "MessageStatus".printDebug;
+      message.toString().printDebug;
+      if(_currentChat.isNotNull){
       }
     });
     notifyListeners();
   }
+
 
   sendMessage(
       {required String chatId,
@@ -510,13 +556,21 @@ class AuthProvider extends BaseProvider {
     _socket?.emitWithAck(ApiConfig.privateMessage, request, ack: (response) {
       print(response);
       print(response is Map);
-      //var data = json.decode(response);
       if (response != null && response["data"] != null) {
         print("----------");
         data[getMessagesKey].add(
             MessageModel.fromJson(response["data"] as Map<String, dynamic>));
         notify();
       }
+    });
+  }
+
+  typingMessage({required String recipientId,}) {
+    Map request = {
+      "recipient_id": recipientId,
+    };
+    _socket?.emitWithAck(ApiConfig.typingMessage, request, ack: (response) {
+      "response from typingMessage ${response}".printDebug;
     });
   }
 
@@ -581,6 +635,21 @@ class AuthProvider extends BaseProvider {
           taskName: callChatCountKey,
           errorMessage: e.toString(),
           showToast: false);
+    }
+  }
+
+  // FCM api
+  fcmSave({bool logout = false}) async {
+    try {
+      if(logout){
+        await _authRepo.logout();
+
+      }else {
+        await _authRepo.fcmSave();
+      }
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
     }
   }
 }

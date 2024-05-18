@@ -18,6 +18,7 @@ class MessageModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
+  final bool? isSeen;
 
   MessageModel({
     this.id,
@@ -29,6 +30,7 @@ class MessageModel {
     this.createdAt,
     this.updatedAt,
     this.v,
+    this.isSeen
   });
 
   MessageModel copyWith({
@@ -41,6 +43,7 @@ class MessageModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? v,
+    bool? isSeen
   }) =>
       MessageModel(
         id: id ?? this.id,
@@ -52,6 +55,7 @@ class MessageModel {
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         v: v ?? this.v,
+        isSeen: isSeen ?? this.isSeen
       );
 
   factory MessageModel.fromJson(Map<String, dynamic> json) => MessageModel(
@@ -64,6 +68,7 @@ class MessageModel {
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     v: json["__v"],
+    isSeen: json["is_seen"],
   );
 
   Map<String, dynamic> toJson() => {

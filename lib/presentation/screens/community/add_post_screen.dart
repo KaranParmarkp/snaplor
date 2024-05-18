@@ -68,7 +68,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 child: imageFile != null
                     ? fileType == UploadFileType.image
                         ? SizedBox(
-                            height: 300,
+                            height: 150,
+                            width: double.infinity,
                             child: Stack(
                               children: [
                                 Padding(
@@ -77,20 +78,21 @@ class _AddPostScreenState extends State<AddPostScreen> {
                                       borderRadius: BorderRadius.circular(12),
                                       child: Image.file(
                                         imageFile!,
+                                        width: double.infinity,
                                         fit: BoxFit.cover,
                                       )),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    imageFile=null;
-                                    setState(() {
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 10.0,right: 0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        imageFile=null;
+                                        setState(() {
 
-                                    });
-                                  },
-                                  child: Align(
-                                    alignment: Alignment.topRight,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(bottom: 10.0,right: 0),
+                                        });
+                                      },
                                       child: CircleAvatar(
                                           radius: 20,
                                           backgroundColor: AppColors.colorPrimary,

@@ -267,11 +267,7 @@ class _OrderCardState extends State<OrderCard> {
               readOnly: true,
               model: WaitListModel(
                   id: widget.model.chatRequestId?.id,
-                  user: GenericUserModel(
-                    name: widget.model.user?.name,
-                    id: widget.model.user?.id,
-                    image: widget.model.user?.image,
-                  )),
+                  user: widget.model.user),
             ));
         },
         child: Column(

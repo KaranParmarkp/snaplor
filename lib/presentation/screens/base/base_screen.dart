@@ -32,6 +32,7 @@ class _BaseScreenState extends State<BaseScreen> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() => context.read<AuthProvider>().fcmSave());
     Future.microtask(() => context.read<AuthProvider>().initSocket());
   }
 

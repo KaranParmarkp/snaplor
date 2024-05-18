@@ -76,7 +76,7 @@ class OfferCard extends StatelessWidget {
                 ),
               ),
               CupertinoSwitch(
-                value: true,
+                value: model.isActive!,
                 onChanged: (value) {
                   context.read<AuthProvider>().offerStatusChange(id: model.id!, activate: model.isActive.isTrue?false:true);
                 },

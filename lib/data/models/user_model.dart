@@ -56,6 +56,7 @@ class UserModel {
   final int? totalFollowing;
   final int? totalPost;
   final dynamic avgRating;
+  final dynamic totalChatRequests;
   UserModel({
     required this.id,
     this.accessToken,
@@ -106,7 +107,8 @@ class UserModel {
     this.totalFollowers,
     this.totalFollowing,
     this.totalPost,
-    this.avgRating
+    this.avgRating,
+    this.totalChatRequests
   });
   UserModel copyWith({
     String? id,
@@ -160,6 +162,7 @@ class UserModel {
     int? totalFollowing,
     int? totalPost,
     int? avgRating,
+    dynamic totalChatRequests
   }) =>
       UserModel(
         id: id ?? this.id,
@@ -210,6 +213,7 @@ class UserModel {
         totalFollowing: totalFollowing ?? this.totalFollowing,
         totalPost: totalPost ?? this.totalPost,
         avgRating: avgRating ?? this.avgRating,
+        totalChatRequests: totalChatRequests??this.totalChatRequests
       );
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -263,6 +267,7 @@ class UserModel {
     totalFollowing: json["total_following"] ?? 0,
     totalPost: json["total_posts"] ?? 0,
     avgRating: json["average_rating"] ?? 0.0,
+    totalChatRequests: json["total_chat_requests"] ?? 0,
   );
 
   Map<String, dynamic> toJson() => {

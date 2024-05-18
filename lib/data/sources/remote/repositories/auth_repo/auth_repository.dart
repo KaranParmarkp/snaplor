@@ -23,5 +23,6 @@ abstract class AuthRepository{
   Future<GenericResponse> endChat(String id);
   Future<GenericResponse> callCount();
   Future<GenericResponse> chatCount();
-
+  Future<GenericResponse> fcmSave();
+  Future<GenericResponse> logout();
 }

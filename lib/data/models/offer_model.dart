@@ -83,7 +83,7 @@ class OfferModel {
     offerType: json["offer_type"],
     discountPercentage: json["discount_percentage"],
     isDeleted: json["is_deleted"],
-    isActive: json["is_active"],
+    isActive: json["is_activate"],
     v: json["__v"],
     customerShare: (json["my_share"] ?? 0) + (json["jyotishee_share"] ?? 0),
     myShare: json["my_share"],

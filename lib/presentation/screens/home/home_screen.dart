@@ -447,8 +447,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             image: AppSvg.bill,
                             text: AppStrings.waitList,
                             onTap: () => context.push(WaitListScreen()),
-                            badgeCount:
-                                context.read<AuthProvider>().callChatCount,
+                            badgeCount: context.read<AuthProvider>().userModel?.totalChatRequests ?? 0,
                           )),
                           Expanded(
                               child: SquareBoxAvatar(

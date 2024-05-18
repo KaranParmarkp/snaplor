@@ -228,5 +228,23 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
     );
   }
 
+  @override
+  Future<GenericResponse> fcmSave() {
+    return serviceHandler(
+      serviceFunction: () => service.fcmSave(),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+  Future<GenericResponse> logout() {
+    return serviceHandler(
+      serviceFunction: () => service.logout(),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+
 
 }

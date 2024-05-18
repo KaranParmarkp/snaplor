@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/main.dart';
@@ -17,6 +19,17 @@ class AuthService extends ApiService {
       String mobile, String code) async {
     return postData(ApiConfig.verifyOtp, data: {"phone": mobile, "code": code});
   }
+
+  Future<Response<GenericResponse>> fcmSave() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    log(token.toString(), name: "FCM Token");
+    return postData(ApiConfig.fcmSave, data: {"token": token, "type": Platform.isAndroid ? "android" : "ios"});
+  }
+
+  Future<Response<GenericResponse>> logout() async {
+    return deleteData(ApiConfig.fcmSave,);
+  }
+
 
   Future<Response<GenericResponse>> userData(UserModel? model) async {
     return model != null
