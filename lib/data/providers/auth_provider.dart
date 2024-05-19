@@ -455,14 +455,16 @@ class AuthProvider extends BaseProvider {
         print(message);
         if (message != null && currentChatMessageList.any((element) => element.id != message["_id"])) {
           data[getMessagesKey].add(MessageModel.fromJson(message as Map<String, dynamic>));
+          currentChatMessageList.forEach((element) {element.isSeen=true;notifyListeners();});
           notify();
         }
         if(_currentChat.isNotNull) {
           _currentChat!.controller.animateTo(
-            _currentChat!.controller.position.maxScrollExtent + 100,
+            _currentChat!.controller.position.maxScrollExtent + 50,
             duration: Duration(milliseconds: 500),
             curve: Curves.easeOut,
           );
+          //currentChatMessageList.forEach((element) {element.isSeen=true;notifyListeners();});
           Map request = {
             "message_id": currentChatMessageList.last.id
           };
@@ -540,6 +542,12 @@ class AuthProvider extends BaseProvider {
       if(_currentChat.isNotNull){
       }
     });
+    _socket?.on(ApiConfig.seenMessage, (message) {
+      "SeenMessageStatus".printDebug;
+      message.toString().printDebug;
+      if(_currentChat.isNotNull){
+      }
+    });
     notifyListeners();
   }
 
@@ -554,13 +562,17 @@ class AuthProvider extends BaseProvider {
       "message": message
     };
     _socket?.emitWithAck(ApiConfig.privateMessage, request, ack: (response) {
-      print(response);
-      print(response is Map);
+      response.toString().printDebug;
       if (response != null && response["data"] != null) {
-        print("----------");
         data[getMessagesKey].add(
             MessageModel.fromJson(response["data"] as Map<String, dynamic>));
         notify();
+        _currentChat!.controller.animateTo(
+          _currentChat!.controller.position.maxScrollExtent + 50,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeOut,
+        );
+        //currentChatMessageList.forEach((element) {element.isSeen=true;notifyListeners();});
       }
     });
   }

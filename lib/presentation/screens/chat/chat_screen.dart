@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:jyotishee/data/models/message_model.dart';
 import 'package:jyotishee/data/models/waitlist_model.dart';
 
@@ -66,24 +67,42 @@ class _ChatScreenState extends State<ChatScreen> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        if(authProvider.currentChat.isNotNull)Text(
-                          "Chat in progress",
-                          style: AppStyle.lightGreen12,
-                        ),
-                        if(!widget.readOnly && authProvider.currentChat.isNotNull && authProvider.currentChat!.isTyping.isTrue)Text(
-                          "Typing...",
-                          style: AppStyle.grayDark10,
-                        ),
+                        if (authProvider.currentChat.isNotNull)
+                          Text(
+                            "Chat in progress",
+                            style: AppStyle.lightGreen12,
+                          ),
+                        if (!widget.readOnly &&
+                            authProvider.currentChat.isNotNull &&
+                            authProvider.currentChat!.isTyping.isTrue)
+                          Text(
+                            "Typing...",
+                            style: AppStyle.grayDark10,
+                          ),
                       ],
                     ),
                   ),
-                  if(!widget.readOnly)Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Text(
-                      "11:11",
-                      style: AppStyle.purple12,
+                  if (!widget.readOnly && authProvider.currentChat.isNotNull)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: StreamBuilder<int>(
+                        stream: Stream.periodic(Duration(seconds: 1), (i) => i),
+                        builder: (context, snapshot) {
+                          DateTime currentTime = DateTime.now();
+                          Duration difference = currentTime.difference(authProvider.currentChat!.createdAt!);
+                          int minutes = difference.inMinutes;
+                          int seconds = difference.inSeconds.remainder(60);
+
+                          String formattedTime = DateFormat('mm:ss').format(DateTime(0, 0, 0, 0, minutes, seconds));
+
+                          return Text(
+                            '$formattedTime',
+                            style: AppStyle.purple12,
+                          );
+                        },
+                      ),
                     ),
-                  )
+
                 ],
               ),
 
@@ -113,7 +132,11 @@ class _ChatScreenState extends State<ChatScreen> {
                       successBuilder: (data, provider) => ListView.builder(
                         //reverse: true,
                         physics: AlwaysScrollableScrollPhysics(),
-                        controller: widget.readOnly ?  controller : authProvider.currentChat.isNotNull  ? authProvider.currentChat!.controller : controller,
+                        controller: widget.readOnly
+                            ? controller
+                            : authProvider.currentChat.isNotNull
+                                ? authProvider.currentChat!.controller
+                                : controller,
                         itemBuilder: (context, index) => MessageText(
                             model: data[index],
                             time: DateTimeHelper.convertTimeTo12HourFormat(

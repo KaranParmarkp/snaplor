@@ -18,7 +18,7 @@ class MessageModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
-  final bool? isSeen;
+   bool? isSeen;
 
   MessageModel({
     this.id,

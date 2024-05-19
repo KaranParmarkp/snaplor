@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:jyotishee/data/sources/remote/network_services/api_service.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/bank_details/bank_details_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/personal_details/personal_details_screen.dart';
@@ -41,6 +42,11 @@ class ProfileScreen extends StatelessWidget {
                       center: true,
                     ),
                     5.height,
+                    if (data.skills.isNotEmpty)
+                      Text(
+                        data.skills.join(", ").toCapitalized(),
+                        style: AppStyle.greyHint12,
+                      ),
                     if (data.specialization.isNotEmpty)
                       Text(
                         data.specialization.join(", ").toCapitalized(),
@@ -51,6 +57,7 @@ class ProfileScreen extends StatelessWidget {
                         data.languages.join("| ").toCapitalized(),
                         style: AppStyle.greyHint12,
                       ),
+                    //Html(data: data.description),
                     15.height,
                     Container(
                       decoration: AppDecoration.purpleLightRounded.copyWith(
