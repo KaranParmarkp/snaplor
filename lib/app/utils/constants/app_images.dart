@@ -69,6 +69,7 @@ class AppSvg{
   static const String ruppe = "assets/icons/ruppe.svg";
   static const String star = "assets/icons/Star.svg";
   static const String seen = "assets/icons/seen.svg";
+  static const String single = "assets/icons/single.svg";
 
 
 

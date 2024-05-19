@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:jyotishee/app/utils/utils.dart';
-import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
 
 import '../../../data/models/models.dart';
@@ -128,42 +127,14 @@ class ReviewCard extends StatelessWidget {
           ),
           if (model.astrologerResponse.isNotNull)
             Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20, top: 0),
-                    child: Text(
-                      "Replied : " + (model.astrologerResponse?.message ?? ""),
-                      style: AppStyle.black12,
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                  /*Row(
-                    children: [
-                      Expanded(
-                        child: AppRoundedButton(
-                          text: AppStrings.viewChat,
-                          color: AppColors.colorPrimary,
-                          onTap: () => context.push(ChatScreen(model: WaitListModel(id: model.id,user: model.user),readOnly: true,)),
-                        ),
-                      ),
-                      20.width,
-                      Expanded(
-                        child: AppRoundedButton(
-                          text: AppStrings.reply,
-                          color: AppColors.colorPrimary,
-                        ),
-                      ),
-                    ],
-                  ),*/
-                  AppRoundedButton(
-                    text: AppStrings.reply,
-                    color: AppColors.colorPrimary,
-                  ),
-                ],
+              padding: const EdgeInsets.only(top: 0, bottom: 10),
+              child: Container(
+                width: double.infinity,
+                child: Text(
+                  "Replied : " + (model.astrologerResponse?.message ?? ""),
+                  style: AppStyle.black12,
+                  textAlign: TextAlign.start,
+                ),
               ),
             ),
           if (model.astrologerResponse.isNull)

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/profile_screen.dart';
 import 'package:jyotishee/presentation/screens/waitlist/waitlist_screen.dart';
 import 'package:jyotishee/presentation/screens/wallet/wallet_screen.dart';
 import '../../widgets/widgets.dart';
-import '../community/community_screen.dart';
 import '../home/home_screen.dart';
 import '../settings/settings_screen.dart';
 
@@ -38,7 +36,7 @@ class _BaseScreenState extends State<BaseScreen> {
 
   @override
   void dispose() {
-    context.read<AuthProvider>().disposeSocket();
+    //context.read<AuthProvider>().disposeSocket();
     super.dispose();
   }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:jyotishee/presentation/screens/community/community_screen.dart';
 import 'package:jyotishee/presentation/screens/notification/notification_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/profile_screen.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
@@ -165,7 +164,9 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
           shadowColor: AppColors.shadowAppBar,
           actions: [
             InkWell(
-              onTap: () => context.push(NotificationScreen()),
+              onTap: (){
+                AppHelper.hideKeyboard();
+                context.push(NotificationScreen());},
               child: Padding(
                 padding:
                     EdgeInsets.only(left: 10, right: showProfile ? 20 : 10),

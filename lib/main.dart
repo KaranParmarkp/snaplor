@@ -12,7 +12,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jyotishee/app/utils/preferences/preferences.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:jyotishee/presentation/screens/base/base_screen.dart';
 import 'package:jyotishee/presentation/screens/splash/splash_screen.dart';
 
 import 'app/utils/utils.dart';
@@ -66,7 +65,6 @@ class _MyAppState extends State<MyApp> {
         sound: true,
       );
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        print("not received");
         requestNotification(message);
       });
 
@@ -82,13 +80,17 @@ class _MyAppState extends State<MyApp> {
 
   requestNotification(RemoteMessage message) {
     print("notification received");
-    print(message.notification);
+    print(message.notification?.toMap().toString());
     RemoteNotification? notification = message.notification;
-    AndroidNotification? android = message.notification?.android;
-    if (notification != null /*&& android != null*/) {
-      localNotification.showSimpleNotification(
+    //print(notification!.body?.contains("messaged you"));
+    if (notification != null && notification.body!.contains("messaged you")!=true) {
+      print("showing notification");
+      /*localNotification.showSimpleNotification(
           title: notification.title.toString(),
-          body: notification.body.toString());
+          body: notification.body.toString());*/
+    }
+    else{
+      print("not showing notification");
     }
   }
 

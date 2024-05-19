@@ -42,7 +42,7 @@ class AuthProvider extends BaseProvider {
   initSocket() async {
     String? token = await ApiService.getToken();
     print("socket token ${token}");
-
+    disposeSocket();
     _socket = IO.io(
       ApiConfig.baseUrlSocket,
       //"https://api.snaplor.com:3000",
@@ -103,6 +103,7 @@ class AuthProvider extends BaseProvider {
 
   logout() async {
     fcmSave(logout: true);
+    disposeSocket();
     _authStatus = AuthStatus.unAuthenticated;
     preference.clearPref();
     notifyListeners();
@@ -450,31 +451,6 @@ class AuthProvider extends BaseProvider {
     setLoading(taskName: getMessagesKey, showDialogLoader: true);
     try {
       setData(taskName: getMessagesKey, data: await _authRepo.getMessages(id));
-      _socket?.on(ApiConfig.privateMessage, (message) {
-        debugPrint("privateMessage socket 123");
-        print(message);
-        if (message != null && currentChatMessageList.any((element) => element.id != message["_id"])) {
-          data[getMessagesKey].add(MessageModel.fromJson(message as Map<String, dynamic>));
-          currentChatMessageList.forEach((element) {element.isSeen=true;notifyListeners();});
-          notify();
-        }
-        if(_currentChat.isNotNull) {
-          _currentChat!.controller.animateTo(
-            _currentChat!.controller.position.maxScrollExtent + 50,
-            duration: Duration(milliseconds: 500),
-            curve: Curves.easeOut,
-          );
-          //currentChatMessageList.forEach((element) {element.isSeen=true;notifyListeners();});
-          Map request = {
-            "message_id": currentChatMessageList.last.id
-          };
-          _socket?.emitWithAck(ApiConfig.seenMessage, request, ack: (response) {
-            print(response);
-          });
-        }
-        notify();
-
-      });
     } catch (e, s) {
       e.printDebug;
       s.printDebug;
@@ -487,9 +463,19 @@ class AuthProvider extends BaseProvider {
 
   updateCurrentChatModel(WaitListModel? model) {
     _currentChat = model;
+    if(model.isNotNull){
+      scrollCurrentChat();
+    }
     notifyListeners();
   }
 
+  scrollCurrentChat(){
+    _currentChat!.controller.animateTo(
+      _currentChat!.controller.position.maxScrollExtent + 50,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeOut,
+    );
+  }
 
   getChatStatus() {
     _socket?.on(ApiConfig.chatStatus, (message) {
@@ -515,8 +501,7 @@ class AuthProvider extends BaseProvider {
       }
       if (message != null && message['status'] == ApiConfig.chatAcceptedByCustomer) {
         if (message.containsKey("chat_request")) {
-          WaitListModel model = WaitListModel.fromJson(
-              message['chat_request'] as Map<String, dynamic>);
+          WaitListModel model = WaitListModel.fromJson(message['chat_request'] as Map<String, dynamic>);
           _currentChat = model;
           _currentChat?.fromInitiated = false;
           notifyListeners();
@@ -525,8 +510,7 @@ class AuthProvider extends BaseProvider {
       }
     });
     _socket?.on(ApiConfig.typingMessage, (message) {
-      "TypingMessage".printDebug;
-      message.toString().printDebug;
+      //"UserTypingMessage ${message.toString()}".printDebug;
       if(_currentChat.isNotNull){
         _currentChat!.isTyping=true;
         notifyListeners();
@@ -536,17 +520,56 @@ class AuthProvider extends BaseProvider {
         },);
       }
     });
-    _socket?.on(ApiConfig.messageStatus, (message) {
-      "MessageStatus".printDebug;
-      message.toString().printDebug;
-      if(_currentChat.isNotNull){
+    _socket?.on(ApiConfig.messageStatus, (message) async {
+      "\nMessageStatus response---> ${message.toString()}".printDebug;
+      if(_currentChat.isNotNull && message != null && message.containsKey("chat_message")){
+        MessageModel model = MessageModel.fromJson(message["chat_message"] as Map<String, dynamic>);
+        var index = await currentChatMessageList.indexWhere((element) => element.id==model.id);
+        if(index!=-1){
+          print("updating response ${index} and ${currentChatMessageList.length}");
+          currentChatMessageList[index] = model;
+          if(index==currentChatMessageList.length-1 && model.isSeen.isTrue){
+            print("updating all element");
+            currentChatMessageList.forEach((element) {element.isDelivered=true;element.isSeen=true;notifyListeners();});
+          }
+          notifyListeners();
+        }
       }
     });
     _socket?.on(ApiConfig.seenMessage, (message) {
-      "SeenMessageStatus".printDebug;
-      message.toString().printDebug;
+      "\nSeenMessageStatus response--->${message.toString()}".printDebug;
       if(_currentChat.isNotNull){
       }
+    });
+    _socket?.on(ApiConfig.privateMessage, (message) {
+      "Private Message---> ${message.toString()}".printDebug;
+      if (message != null && currentChatMessageList.any((element) => element.id != message["_id"])) {
+        data[getMessagesKey].add(MessageModel.fromJson(message as Map<String, dynamic>));
+        currentChatMessageList.forEach((element) {element.isSeen=true;notifyListeners();});
+        ///sending message to backend that i received this message
+        _socket?.emitWithAck(ApiConfig.receivedMessage, {
+          "message_id" : message["_id"]
+        }, ack: (response) {
+          print("-----------${response}");
+        });
+        notify();
+      }
+      if(_currentChat.isNotNull) {
+        _currentChat!.controller.animateTo(
+          _currentChat!.controller.position.maxScrollExtent + 50,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeOut,
+        );
+        //currentChatMessageList.forEach((element) {element.isSeen=true;notifyListeners();});
+        Map request = {
+          "message_id": currentChatMessageList.last.id
+        };
+        _socket?.emitWithAck(ApiConfig.seenMessage, request, ack: (response) {
+          print(response);
+        });
+      }
+      notify();
+
     });
     notifyListeners();
   }
@@ -562,17 +585,11 @@ class AuthProvider extends BaseProvider {
       "message": message
     };
     _socket?.emitWithAck(ApiConfig.privateMessage, request, ack: (response) {
-      response.toString().printDebug;
+      "\nsend message response--->${response.toString()}".printDebug;
       if (response != null && response["data"] != null) {
-        data[getMessagesKey].add(
-            MessageModel.fromJson(response["data"] as Map<String, dynamic>));
+        data[getMessagesKey].add(MessageModel.fromJson(response["data"] as Map<String, dynamic>));
         notify();
-        _currentChat!.controller.animateTo(
-          _currentChat!.controller.position.maxScrollExtent + 50,
-          duration: Duration(milliseconds: 500),
-          curve: Curves.easeOut,
-        );
-        //currentChatMessageList.forEach((element) {element.isSeen=true;notifyListeners();});
+        scrollCurrentChat();
       }
     });
   }
@@ -582,7 +599,7 @@ class AuthProvider extends BaseProvider {
       "recipient_id": recipientId,
     };
     _socket?.emitWithAck(ApiConfig.typingMessage, request, ack: (response) {
-      "response from typingMessage ${response}".printDebug;
+      //"response from typingMessage ${response}".printDebug;
     });
   }
 

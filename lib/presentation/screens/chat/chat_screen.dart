@@ -28,8 +28,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     if (!widget.readOnly)
-      Future.microtask(() =>
-          context.read<AuthProvider>().updateCurrentChatModel(widget.model));
+      Future.microtask(() => context.read<AuthProvider>().updateCurrentChatModel(widget.model));
   }
 
   @override
@@ -277,7 +276,12 @@ class MessageText extends StatelessWidget {
                   ),
                   if (messageType == MessageType.receiver) ...[
                     2.width,
-                    SvgImage(
+                    if(model.isDelivered.isFalse)SvgImage(
+                      image: AppSvg.single,
+                      color: AppColors.hintGrey2,
+                      size: 15,
+                    ),
+                    if(model.isDelivered.isTrue)SvgImage(
                       image: AppSvg.seen,
                       color: model.isSeen.isTrue
                           ? AppColors.colorPrimary
