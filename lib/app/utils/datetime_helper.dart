@@ -26,6 +26,10 @@ class DateTimeHelper {
   static dateWithTime(dynamic date){
     return DateFormat("MM/dd/yyyy h:mm a").format(date is DateTime ? date : DateTime.parse(date));
   }
+  static dateMonth(dynamic date){
+    return DateFormat("d MMM yyyy").format(date is DateTime ? date : DateTime.parse(date));
+  }
+
   static dateMonthWithTime(dynamic date){
     return DateFormat("d MMM yyyy, h:mm a").format(date is DateTime ? date : DateTime.parse(date));
   }

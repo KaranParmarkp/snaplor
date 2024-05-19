@@ -279,7 +279,7 @@ class _OrderCardState extends State<OrderCard> {
                 children: [
                   Expanded(
                     child: Text(
-                      "Order Id: #${widget.model.id}",
+                      "Order Id: #${widget.model.refCode}",
                       style: AppStyle.grey12
                           .copyWith(color: AppColors.greyDark, fontSize: 10),
                     ),
@@ -311,8 +311,7 @@ class _OrderCardState extends State<OrderCard> {
                 value: widget.model.intakeForm?.gender.toCapitalized() ?? ""),
             NameValue(
               name: AppStrings.dob,
-              value:
-                  "${DateTimeHelper.dateMonthWithTime(widget.model.intakeForm?.dateOfBirth)}",
+              value: "${DateTimeHelper.dateMonth(widget.model.intakeForm?.dateOfBirth?.toLocal())}, ${widget.model.intakeForm!.timeOfBirth}",
             ),
             NameValue(
                 name: AppStrings.pob,

@@ -39,6 +39,7 @@ class OrderModel {
   final ReviewOrder? reviewOrder;
   final bool? askedReview;
   final String? voiceCallUrl;
+  final String? refCode;
 
   OrderModel({
     this.id,
@@ -63,7 +64,7 @@ class OrderModel {
     this.products,
     this.createdAt,
     this.updatedAt,
-    this.v,this.pricePerMinute,this.intakeForm,this.reviewOrder,this.voiceCallUrl,this.askedReview
+    this.v,this.pricePerMinute,this.intakeForm,this.reviewOrder,this.voiceCallUrl,this.askedReview,this.refCode
   });
 
   OrderModel copyWith({
@@ -93,7 +94,8 @@ class OrderModel {
     IntakeForm? intakeForm,
    ReviewOrder? reviewOrder,
    String? voiceCallUrl,
-    bool? askedReview
+    bool? askedReview,
+    String? refCode
   }) =>
       OrderModel(
         id: id ?? this.id,
@@ -122,7 +124,8 @@ class OrderModel {
           intakeForm : intakeForm ?? this.intakeForm,
           reviewOrder : reviewOrder ?? this.reviewOrder,
           voiceCallUrl : voiceCallUrl ?? this.voiceCallUrl,
-        askedReview: askedReview??this.askedReview
+        askedReview: askedReview??this.askedReview,
+          refCode : refCode ?? this.refCode
       );
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
@@ -154,6 +157,7 @@ class OrderModel {
     reviewOrder: json["review"] == null ? null : ReviewOrder.fromJson(json["review"]),
     voiceCallUrl: json["uri"],
     askedReview: json["asked_review"],
+    refCode: json["reference_code"],
 
   );
 
