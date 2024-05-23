@@ -94,9 +94,27 @@ class _ChatScreenState extends State<ChatScreen> {
 
                           String formattedTime = DateFormat('mm:ss').format(DateTime(0, 0, 0, 0, minutes, seconds));
 
-                          return Text(
-                            '$formattedTime',
-                            style: AppStyle.purple12,
+                          return Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  authProvider.endChat(id: widget.model!.id!);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 6),
+                                  margin: EdgeInsets.only(bottom: 5),
+                                  decoration: AppDecoration.rounded12.copyWith(
+                                    color: AppColors.red,
+                                    borderRadius: BorderRadius.circular(8)
+                                  ),
+                                  child: Text("End",style: AppStyle.white12,),
+                                ),
+                              ),
+                              Text(
+                                '$formattedTime',
+                                style: AppStyle.purple12,
+                              ),
+                            ],
                           );
                         },
                       ),

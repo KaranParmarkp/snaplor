@@ -191,7 +191,7 @@ class _OrderCardState extends State<OrderCard> {
   }
 
   initSetup() async {
-    setAudio(widget.model.voiceCallUrl??"http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3");
+    if(widget.model.voiceCallUrl.isNotNull)setAudio(widget.model.voiceCallUrl!);
     //setAudio("http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3");
     //final duration = await player.setUrl("http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3");
   }
@@ -306,9 +306,21 @@ class _OrderCardState extends State<OrderCard> {
                 )
               ],
             ),
-            NameValue(
-                name: AppStrings.gender,
-                value: widget.model.intakeForm?.gender.toCapitalized() ?? ""),
+            Row(
+              children: [
+                Expanded(
+                  child: NameValue(
+                      name: AppStrings.gender,
+                      value: widget.model.intakeForm?.gender.toCapitalized() ?? ""),
+                ),
+                Text(
+                  widget.model.status.isNotNull
+                      ? widget.model.status!.toCapitalized()
+                      : "",
+                  style: AppStyle.lightGreen12,
+                )
+              ],
+            ),
             NameValue(
               name: AppStrings.dob,
               value: "${DateTimeHelper.dateMonth(widget.model.intakeForm?.dateOfBirth?.toLocal())}, ${widget.model.intakeForm!.timeOfBirth}",
@@ -333,7 +345,7 @@ class _OrderCardState extends State<OrderCard> {
                         value: AppStrings.rupee +
                             "${widget.model.pricePerMinute}/Min")),
                 Text(
-                  AppStrings.rs + "${widget.model.totalPaid}",
+                  AppStrings.rs + "${widget.model.astrologerAmount}",
                   style: AppStyle.purple14w600,
                 )
               ],

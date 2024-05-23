@@ -1,7 +1,7 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:jyotishee/main.dart';
 class AppStrings {
-  static String appName = "Jyotishee";
+  static String appName = "Snaplor";
   static String yes = AppLocalizations.of(MyApp.appContext)!.yes;
   static String no = AppLocalizations.of(MyApp.appContext)!.no;
 
@@ -96,7 +96,7 @@ class AppStrings {
   static String displayName=AppLocalizations.of(MyApp.appContext)!.displayName;
   static String userType=AppLocalizations.of(MyApp.appContext)!.userType;
   static String myShare=AppLocalizations.of(MyApp.appContext)!.myShare;
-  static String jyotisheeShare=AppLocalizations.of(MyApp.appContext)!.jyotisheeShare;
+  static String jyotisheeShare="Snaplor Share";
   static String customerPay=AppLocalizations.of(MyApp.appContext)!.customerPay;
   static String viewChat=AppLocalizations.of(MyApp.appContext)!.viewChat;
   static String messageHere=AppLocalizations.of(MyApp.appContext)!.messageHere;

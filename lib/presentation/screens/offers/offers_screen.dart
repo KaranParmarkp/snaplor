@@ -77,6 +77,7 @@ class OfferCard extends StatelessWidget {
               ),
               CupertinoSwitch(
                 value: model.isActive!,
+                trackColor: AppColors.red,
                 onChanged: (value) {
                   context.read<AuthProvider>().offerStatusChange(id: model.id!, activate: model.isActive.isTrue?false:true);
                 },
@@ -84,26 +85,30 @@ class OfferCard extends StatelessWidget {
               )
             ],
           ),
-          Column(
-            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          5.height,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               NameValue(
                 name: AppStrings.myShare,
-                value: "${AppStrings.rupee}${model.myShare}",
+                value: " ${AppStrings.rupee}${model.myShare}",
                 valueColor: AppColors.colorPrimary,
-                fontSize: 12,
+                fontSize: 10,
+                width: null,
               ),
               NameValue(
                 name: AppStrings.jyotisheeShare,
-                value: "${AppStrings.rupee}${model.jyotisheeShare}",
+                value: " ${AppStrings.rupee}${model.jyotisheeShare}",
                 valueColor: AppColors.colorPrimary,
-                fontSize: 12,
+                fontSize: 10,
+                width: null,
               ),
               NameValue(
                 name: AppStrings.customerPay,
-                value: "${AppStrings.rupee}${model.customerShare}",
+                value: " ${AppStrings.rupee}${model.customerShare}",
                 valueColor: AppColors.colorPrimary,
-                fontSize: 12,
+                fontSize: 10,
+                width: null,
               ),
             ],
           ),
