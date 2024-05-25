@@ -166,7 +166,7 @@ class HeaderTextField extends StatelessWidget {
       this.onTap,
       this.headerColor = Colors.black,
       this.borderRadius = 15,this.bottomPadding=15,
-      this.icon, this.suffixIcon, this.onChanged});
+      this.icon, this.suffixIcon, this.onChanged,this.contentPadding,this.style,this.suffixIconConstraints,this.isDense});
 
   final String hint;
   final String? header;
@@ -191,6 +191,10 @@ class HeaderTextField extends StatelessWidget {
   final double bottomPadding;
   final Widget? suffixIcon;
   final void Function(String)? onChanged;
+  final EdgeInsetsGeometry? contentPadding;
+  final TextStyle? style;
+  final BoxConstraints? suffixIconConstraints;
+  final bool? isDense;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -237,16 +241,17 @@ class HeaderTextField extends StatelessWidget {
                   maxLength: maxLength,
                   obscureText: obscureText ?? false,
                   obscuringCharacter: '●',
-                  style: AppStyle.black14,onChanged: onChanged,
+                  style:style?? AppStyle.black14,onChanged: onChanged,
+
                   maxLines: maxLines ?? 1,
                   decoration: InputDecoration(
                       counterText: counterText ?? "",
-                      contentPadding: EdgeInsets.only(
-                          top: 11, bottom: 11, left: 10, right: 15),
+                      contentPadding: contentPadding?? EdgeInsets.only(top: 11, bottom: 11, left: 10, right: 15),
                       border: InputBorder.none,
                       hintText: hint,
                       fillColor: AppColors.white,
                       filled: true,
+                      isDense: isDense,
                       hintStyle: AppStyle.grey14.copyWith(color: AppColors.hintGrey1,fontSize: 12,fontWeight: FontWeight.w500),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(borderRadius),
@@ -270,13 +275,13 @@ class HeaderTextField extends StatelessWidget {
                         color:
                             showArrow ? AppColors.hintGrey : Colors.transparent,
                       ),
+                      suffixIconConstraints: suffixIconConstraints,
                       prefixIcon: icon.isNotNull
                           ? SvgImage(
                               image: icon!,
                             )
                           : SizedBox.shrink(),
-                      prefixIconConstraints:
-                          BoxConstraints(maxHeight: 40, maxWidth: 35,minWidth: 25)),
+                      prefixIconConstraints: BoxConstraints(maxHeight: 40, maxWidth: 35,minWidth: 25)),
                 ),
               ),
             ),

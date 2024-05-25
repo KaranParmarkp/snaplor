@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:jyotishee/app/utils/utils.dart';
@@ -466,6 +467,7 @@ class AuthProvider extends BaseProvider {
     if(model.isNotNull){
       scrollCurrentChat();
     }
+    else waitList(ComType.chat);
     notifyListeners();
   }
 
@@ -478,8 +480,9 @@ class AuthProvider extends BaseProvider {
   }
 
   getChatStatus() {
-    _socket?.on(ApiConfig.chatStatus, (message) {
+    _socket?.on(ApiConfig.chatStatus, (response) {
       "ChatStatus".printDebug;
+      Map<dynamic,dynamic> message = response.first;
       message.toString().printDebug;
       if(_currentChat.isNull)onGoingChat();
       if (message != null && message['status'] == ApiConfig.chatCompleted) {
@@ -578,11 +581,19 @@ class AuthProvider extends BaseProvider {
   sendMessage(
       {required String chatId,
       required String recipientId,
-      required String message}) {
+      required String message,File? file}) async {
+    var signedUrl;
+    if(file.isNotNull){
+
+      AppHelper.showLoading();
+       signedUrl = await getSignedUrl(isProfile: false, image: file!);
+      AppHelper.hideLoading();
+    }
     Map request = {
       "chat_id": chatId,
       "recipient_id": recipientId,
-      "message": message
+      "message": message,
+      if(file.isNotNull)"attachments":[{"type":"image","url":signedUrl}]
     };
     _socket?.emitWithAck(ApiConfig.privateMessage, request, ack: (response) {
       "\nsend message response--->${response.toString()}".printDebug;

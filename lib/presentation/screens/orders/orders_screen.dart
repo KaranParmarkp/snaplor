@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
+import 'package:jyotishee/presentation/screens/reviews/reviews_screen.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
 import '../../../data/models/generic_user_model.dart';
 import '../../../data/models/models.dart';
@@ -299,9 +300,9 @@ class _OrderCardState extends State<OrderCard> {
                         name: AppStrings.name,
                         value: widget.model.intakeForm!.name.toCapitalized())),
                 Text(
-                  widget.model.status.isNotNull
+                  /*widget.model.status.isNotNull
                       ? widget.model.status!.toCapitalized()
-                      : "",
+                      : */"Completed",
                   style: AppStyle.lightGreen12,
                 )
               ],
@@ -314,10 +315,10 @@ class _OrderCardState extends State<OrderCard> {
                       value: widget.model.intakeForm?.gender.toCapitalized() ?? ""),
                 ),
                 Text(
-                  widget.model.status.isNotNull
-                      ? widget.model.status!.toCapitalized()
+                  widget.model.astrologerOffer.isNotNull
+                      ? "Offer Applied"
                       : "",
-                  style: AppStyle.lightGreen12,
+                  style: AppStyle.purple12,
                 )
               ],
             ),
@@ -345,12 +346,21 @@ class _OrderCardState extends State<OrderCard> {
                         value: AppStrings.rupee +
                             "${widget.model.pricePerMinute}/Min")),
                 Text(
-                  AppStrings.rs + "${widget.model.astrologerAmount}",
+                  AppStrings.rs + "${widget.model.totalPaid}",
                   style: AppStyle.purple14w600,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5),
+                  child: Text(
+                    AppStrings.rs + "${widget.model.subtotalAmount}",
+                    style: AppStyle.purple14w600.copyWith(
+                      color: AppColors.hintGrey1,decoration: TextDecoration.lineThrough
+                    ),
+                  ),
                 )
               ],
             ),
-            if (widget.type == ComType.call)
+            if (widget.type == ComType.call && widget.model.voiceCallUrl.isNotNull)
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -395,7 +405,7 @@ class _OrderCardState extends State<OrderCard> {
               padding: const EdgeInsets.only(top: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
+                children: [/*
                   if (widget.model.reviewOrder != null)
                     RatingBar.builder(
                       initialRating:
@@ -413,13 +423,14 @@ class _OrderCardState extends State<OrderCard> {
                       onRatingUpdate: (rating) {
                         print(rating);
                       },
-                    ),
-                  if (widget.model.askedReview==true)
+                    ),*/
+
                     AppRoundedButton(
-                      text: AppStrings.askForReview,
+                      text: widget.model.askedReview==true ? AppStrings.askForReview : "View review",
                       color: AppColors.colorPrimary,
                       onTap: () {
-                        context.read<AuthProvider>().askReview(id: widget.model.id!,type: widget.type);
+                        if(widget.model.askedReview==true)context.read<AuthProvider>().askReview(id: widget.model.id!,type: widget.type);
+                        else context.push(ReviewsScreen(id: widget.model.reviewOrder?.id,));
                       },
                     ),
                 ],

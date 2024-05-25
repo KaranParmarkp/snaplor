@@ -54,7 +54,7 @@ class _BaseScreenState extends State<BaseScreen> {
               screens[selectedIndex],
               if (provider.currentChat.isNotNull)
                 ...[Padding(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
                   child: WaitListCard(model: provider.currentChat!, type: ComType.chat),
                 )]
             ],

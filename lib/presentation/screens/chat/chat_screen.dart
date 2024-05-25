@@ -167,19 +167,22 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                   ),
-                  if (!widget.readOnly)
+                  //if (!widget.readOnly)
                     Container(
                       height: 80,
                       decoration: AppDecoration.whiteShadow,
                       padding: EdgeInsets.only(
                           left: 15, right: 15, bottom: 15, top: 15),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           10.width,
                           Expanded(
                             child: HeaderTextField(
+                              isDense: true,
                               hint: AppStrings.messageHere,
+                              style: AppStyle.black12,
                               focusNode: messageFocus,
                               controller: messageController,
                               borderRadius: 30,
@@ -189,14 +192,15 @@ class _ChatScreenState extends State<ChatScreen> {
                                       recipientId: widget.model!.user!.id!,
                                     );
                               },
+                              suffixIconConstraints: BoxConstraints(maxHeight: 40),
                               suffixIcon: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   SvgImage(
                                       image: AppSvg.attach,
-                                      color: AppColors.hintGrey),
+                                      color: AppColors.hintGrey,size: 18,),
                                   10.width,
-                                  SvgImage(image: AppSvg.camera),
+                                  SvgImage(image: AppSvg.camera,size: 18,),
                                   10.width,
                                 ],
                               ),
@@ -216,12 +220,15 @@ class _ChatScreenState extends State<ChatScreen> {
                                 messageController.clear();
                               }
                             },
-                            child: CircleAvatar(
-                                radius: 20,
-                                backgroundColor: AppColors.colorPrimary,
-                                child: SvgImage(
-                                  image: AppSvg.send,
-                                )),
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 4.0),
+                              child: CircleAvatar(
+                                  radius: 16,
+                                  backgroundColor: AppColors.colorPrimary,
+                                  child: SvgImage(
+                                    image: AppSvg.send,size: 20,
+                                  )),
+                            ),
                           )
                         ],
                       ),

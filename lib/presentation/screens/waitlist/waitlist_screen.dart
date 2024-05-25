@@ -86,12 +86,13 @@ class _WaitListScreenState extends State<WaitListScreen>
                   children: [
                     AppConsumer<AuthProvider, List<WaitListModel>>(
                       taskName: AuthProvider.waitListKey,
-                      load: (provider) => provider.waitList(ComType.chat),
+                        load: (provider) => provider.waitList(ComType.chat),
                       successBuilder: (data, provider) =>
                           ListView.builder(
                             clipBehavior: Clip.none,
                             itemBuilder: (context, index) =>
                                 WaitListCard(
+                                fromScreen: true,
                                     model: data[index], type: ComType.chat),
                             itemCount: data.length,
                             shrinkWrap: true,
@@ -105,7 +106,8 @@ class _WaitListScreenState extends State<WaitListScreen>
                             clipBehavior: Clip.none,
                             itemBuilder: (context, index) =>
                                 WaitListCard(
-                                    model: data[index], type: ComType.call),
+                                  fromScreen: true,
+                                  model: data[index], type: ComType.call,),
                             itemCount: data.length,
                             shrinkWrap: true,
                           ),
@@ -121,12 +123,12 @@ class _WaitListScreenState extends State<WaitListScreen>
 
 class WaitListCard extends StatefulWidget {
   const WaitListCard(
-      {super.key, required this.model, required this.type, this.fromInitiated = false});
+      {super.key, required this.model, required this.type, this.fromInitiated = false,this.fromScreen=false});
 
   final WaitListModel model;
   final ComType type;
   final bool fromInitiated;
-
+  final bool fromScreen;
   @override
   State<WaitListCard> createState() => _WaitListCardState();
 }
@@ -163,10 +165,10 @@ class _WaitListCardState extends State<WaitListCard> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(15),
-      margin: EdgeInsets.only(bottom: 20),
+      margin: EdgeInsets.only(bottom: 15),
       decoration: AppDecoration.whiteShadowRounded.copyWith(
         border: Border.all(
-          color: widget.model.fromInitiated.isTrue ? AppColors.colorPrimary : AppColors.transparent
+          color: widget.fromScreen.isFalse ? AppColors.colorPrimary : AppColors.transparent
         )
       ),
       child: Column(
@@ -206,7 +208,9 @@ class _WaitListCardState extends State<WaitListCard> {
                         ],
                       ),
                     ),
-                    if(widget.model.fromInitiated.isTrue)Column(
+                    if(_timerValue>=0 && widget.model.isAcceptedByAstrologer.isFalse &&
+                        widget.model.isAcceptedByMember.isFalse &&
+                        widget.type == ComType.chat)Column(
                       //mainAxisAlignment: MainAxisAlignment.end,
                       //crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -264,8 +268,7 @@ class _WaitListCardState extends State<WaitListCard> {
                 )
             ],
           ),
-          if (widget.model.isAcceptedByAstrologer.isFalse &&
-              widget.model.isAcceptedByMember.isFalse) ...[
+          if (!widget.fromScreen &&widget.model.isAcceptedByAstrologer.isFalse && widget.model.isAcceptedByMember.isFalse) ...[
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Row(

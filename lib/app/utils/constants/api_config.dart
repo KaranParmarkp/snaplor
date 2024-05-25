@@ -47,8 +47,8 @@ class ApiConfig {
   static const String seenMessage = "seenMessage";
   static const String receivedMessage = "receivedMessage";
   static const String messageStatus = "messageStatus";
-  static const String chatInitiated = "initiated";
-  static const String chatAcceptedByCustomer = "accepted_by_customer";
+  static const String chatInitiated = /*"requested";*/"initiated";
+  static const String chatAcceptedByCustomer = /*"in-progress"*/"accepted_by_customer";
   static const String chatCompleted = "completed";
 
 

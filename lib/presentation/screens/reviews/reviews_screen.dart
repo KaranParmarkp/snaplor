@@ -7,13 +7,17 @@ import '../../../data/models/models.dart';
 import '../../../data/providers/providers.dart';
 
 class ReviewsScreen extends StatefulWidget {
-  const ReviewsScreen({super.key});
-
+  const ReviewsScreen({super.key, this.id});
+  final String? id;
   @override
   State<ReviewsScreen> createState() => _ReviewsScreenState();
 }
 
 class _ReviewsScreenState extends State<ReviewsScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,12 +34,14 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         child: AppConsumer<AuthProvider, List<ReviewModel>>(
           taskName: AuthProvider.reviewListKey,
           load: (provider) => provider.reviewList(),
-          successBuilder: (data, provider) => ListView.builder(
-            clipBehavior: Clip.none,
-            itemBuilder: (context, index) => ReviewCard(model: data[index]),
-            itemCount: data.length,
-            shrinkWrap: true,
-          ),
+          successBuilder: (data, provider) {
+            return ListView.builder(
+              clipBehavior: Clip.none,
+              itemBuilder: (context, index) => ReviewCard(model:widget.id.isNotNull ? data.where((element) => element.id==widget.id).first : data[index]),
+              itemCount: widget.id.isNotNull ?1 :data.length,
+              shrinkWrap: true,
+            );
+          },
         ),
       ),
     );

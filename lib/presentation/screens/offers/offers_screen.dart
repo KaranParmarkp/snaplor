@@ -72,6 +72,11 @@ class OfferCard extends StatelessWidget {
                       value: "${model.userType?.toUpperCase()}",
                       valueColor: AppColors.colorPrimary,
                     ),
+                    NameValue(
+                      name: AppStrings.userType,
+                      value: "",
+                      valueColor: AppColors.colorPrimary,
+                    ),
                   ],
                 ),
               ),
