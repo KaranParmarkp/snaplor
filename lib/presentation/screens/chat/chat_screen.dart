@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:jyotishee/data/models/generic_user_model.dart';
 import 'package:jyotishee/data/models/message_model.dart';
 import 'package:jyotishee/data/models/waitlist_model.dart';
 
@@ -23,7 +26,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final messageController = TextEditingController();
   final messageFocus = FocusNode();
   ScrollController controller = ScrollController();
-
+  MessageModel? replyMessageModel;
   @override
   void initState() {
     super.initState();
@@ -43,7 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
         builder: (context, authProvider, child) {
           return Scaffold(
             appBar: CustomAppBar(
-              title: widget.model?.user?.name.toCapitalized() ?? "",
+              title: widget.model!.user!.name.toStringOrEmpty.toTitleCase(),
               subtitle: Row(
                 children: [
                   Padding(
@@ -155,6 +158,13 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ? authProvider.currentChat!.controller
                                 : controller,
                         itemBuilder: (context, index) => MessageText(
+                          user: widget.model?.user,
+                          onReplyAnimationEnd: () {
+                            replyMessageModel = data[index];
+                            setState(() {
+
+                            });
+                          },
                             model: data[index],
                             time: DateTimeHelper.convertTimeTo12HourFormat(
                                 data[index].createdAt!.toLocal().toString()),
@@ -167,69 +177,123 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                   ),
-                  //if (!widget.readOnly)
-                    Container(
-                      height: 80,
+                  if (!widget.readOnly)
+                  Container(
                       decoration: AppDecoration.whiteShadow,
-                      padding: EdgeInsets.only(
-                          left: 15, right: 15, bottom: 15, top: 15),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: Column(
                         children: [
-                          10.width,
-                          Expanded(
-                            child: HeaderTextField(
-                              isDense: true,
-                              hint: AppStrings.messageHere,
-                              style: AppStyle.black12,
-                              focusNode: messageFocus,
-                              controller: messageController,
-                              borderRadius: 30,
-                              bottomPadding: 0,
-                              onChanged: (p0) {
-                                context.read<AuthProvider>().typingMessage(
-                                      recipientId: widget.model!.user!.id!,
-                                    );
-                              },
-                              suffixIconConstraints: BoxConstraints(maxHeight: 40),
-                              suffixIcon: Row(
-                                mainAxisSize: MainAxisSize.min,
+                          if(replyMessageModel.isNotNull)Container(
+                            padding: const EdgeInsets.only(left:0,right: 15),
+                            child: IntrinsicHeight(
+                              child: Row(
                                 children: [
-                                  SvgImage(
-                                      image: AppSvg.attach,
-                                      color: AppColors.hintGrey,size: 18,),
+                                  VerticalDivider(color: AppColors.colorPrimary,thickness: 5,width: 4),
                                   10.width,
-                                  SvgImage(image: AppSvg.camera,size: 18,),
-                                  10.width,
+                                  Expanded(child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      5.height,
+                                      Text(replyMessageModel!.senderId != context.read<AuthProvider>().userModel?.id ?widget.model!.user!.name.toStringOrEmpty.toTitleCase():"You",style: AppStyle.purple14w600,),
+                                      Text(replyMessageModel!.message.toStringOrEmpty,style: AppStyle.black12w400,maxLines: 1,overflow: TextOverflow.ellipsis,),
+                                      5.height,
+                                    ],
+                                  )),
+                                  5.width,
+                                  InkWell(onTap: () {
+                                    replyMessageModel = null;
+                                    setState(() {
+
+                                    });
+                                  }, child: Icon(Icons.close))
                                 ],
                               ),
                             ),
                           ),
-                          10.width,
-                          InkWell(
-                            onTap: () {
-                              if (messageController.isEmpty()) {
-                                AppHelper.showToast(
-                                    message: "Please enter message");
-                              } else {
-                                context.read<AuthProvider>().sendMessage(
-                                    chatId: widget.model!.id!,
-                                    recipientId: widget.model!.user!.id!,
-                                    message: messageController.text);
-                                messageController.clear();
-                              }
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: CircleAvatar(
-                                  radius: 16,
-                                  backgroundColor: AppColors.colorPrimary,
-                                  child: SvgImage(
-                                    image: AppSvg.send,size: 20,
-                                  )),
+                          Padding(
+                            padding:  EdgeInsets.only(left: 15, right: 15, bottom: 25, top: replyMessageModel.isNotNull ? 5 : 15),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                10.width,
+                                Expanded(
+                                  child: HeaderTextField(
+                                    isDense: true,
+                                    hint: AppStrings.messageHere,
+                                    style: AppStyle.black12,
+                                    focusNode: messageFocus,
+                                    controller: messageController,
+                                    borderRadius: 30,
+                                    bottomPadding: 0,
+                                    onChanged: (p0) {
+                                      context.read<AuthProvider>().typingMessage(
+                                            recipientId: widget.model!.user!.id!,
+                                          );
+                                    },
+                                    suffixIconConstraints: BoxConstraints(maxHeight: 40),
+                                    suffixIcon: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SvgImage(
+                                            image: AppSvg.attach,
+                                            color: AppColors.hintGrey,size: 18,),
+                                        10.width,
+                                        SvgImage(image: AppSvg.camera,size: 18,onTap: () async {
+                                          File? image = await showSelectImageSheet();
+                                          print(image);
+                                          if(image.isNotNull){
+                                            context.read<AuthProvider>().sendMessage(
+                                                chatId: widget.model!.id!,
+                                                recipientId: widget.model!.user!.id!,
+                                                messageId: replyMessageModel?.id,
+                                              file: image
+                                            );
+                                            messageController.clear();
+                                            replyMessageModel = null;
+                                            setState(() {
+
+                                            });
+                                          }
+                                        },),
+                                        10.width,
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                10.width,
+                                InkWell(
+                                  onTap: () {
+                                    if (messageController.isEmpty()) {
+                                      AppHelper.showToast(
+                                          message: "Please enter message");
+                                    } else {
+                                      context.read<AuthProvider>().sendMessage(
+                                          chatId: widget.model!.id!,
+                                          recipientId: widget.model!.user!.id!,
+                                          message: messageController.text,
+                                      messageId: replyMessageModel?.id
+                                      );
+                                      messageController.clear();
+                                      replyMessageModel = null;
+                                      setState(() {
+
+                                      });
+                                    }
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 4.0),
+                                    child: CircleAvatar(
+                                        radius: 16,
+                                        backgroundColor: AppColors.colorPrimary,
+                                        child: SvgImage(
+                                          image: AppSvg.send,size: 20,
+                                        )),
+                                  ),
+                                )
+                              ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     )
@@ -241,82 +305,194 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
+
+  showSelectImageSheet() async {
+    File? file;
+    return await AppHelper.showBottomSheet(
+        context: context,
+        isDismissible: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt_rounded),
+              title: const Text('Camera'),
+              onTap: () async {
+                 file = await AppHelper.pickImage(fromCamera: true);
+                Navigator.pop(context,file);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo),
+              title: const Text('Gallery'),
+              onTap: () async {
+                file =await AppHelper.pickImage(fromCamera: false);
+                Navigator.pop(context,file);
+              },
+            ),
+          ],
+        ));
+  }
 }
 
-class MessageText extends StatelessWidget {
+class MessageText extends StatefulWidget {
   const MessageText(
       {super.key,
       required this.text,
       required this.messageType,
       required this.time,
-      required this.model});
+      required this.model,this.onReplyAnimationEnd, this.user});
 
   final String text;
   final MessageType messageType;
   final String time;
   final MessageModel model;
+  final GenericUserModel? user;
+  final Function()? onReplyAnimationEnd;
+  @override
+  State<MessageText> createState() => _MessageTextState();
+}
+
+class _MessageTextState extends State<MessageText> with SingleTickerProviderStateMixin  {
+  late AnimationController _controller;
+  late Animation<Offset> animation;
 
   @override
+  initState() {
+  super.initState();
+  _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 200),
+  );
+  animation = Tween(
+    begin: const Offset(0.0, 0.0),
+    end: const Offset(0.3, 0.0),
+  ).animate(
+    CurvedAnimation(
+      curve: Curves.decelerate,
+      parent: _controller,
+    ),
+  );
+}
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Container(
-        margin: EdgeInsets.only(
-            bottom: 10,
-            right: messageType == MessageType.sender ? 80 : 0,
-            left: messageType != MessageType.sender ? 80 : 0),
-        decoration: AppDecoration.purpleLightRounded.copyWith(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(15),
-              bottomRight: Radius.circular(15),
-              topLeft:
-                  Radius.circular(messageType == MessageType.sender ? 3 : 15),
-              topRight:
-                  Radius.circular(messageType != MessageType.sender ? 3 : 15),
-            ),
-            color: messageType == MessageType.sender
-                ? AppColors.colorPrimary
-                : AppColors.purpleLight1),
-        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              convertNewLine(text),
-              style: messageType == MessageType.sender
-                  ? AppStyle.white14W400
-                  : AppStyle.black14,
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    time,
-                    style: messageType == MessageType.sender
-                        ? AppStyle.white10
-                        : AppStyle.black10,
-                  ),
-                  if (messageType == MessageType.receiver) ...[
-                    2.width,
-                    if(model.isDelivered.isFalse)SvgImage(
-                      image: AppSvg.single,
-                      color: AppColors.hintGrey2,
-                      size: 15,
+    return Align(
+      alignment: widget.messageType==MessageType.sender ? Alignment.centerLeft:Alignment.centerRight,
+      child: GestureDetector(
+        onHorizontalDragUpdate: (details) {
+          if (details.delta.dx > 1) {
+            _controller.forward().whenComplete(() {
+              _controller.reverse();
+              widget.onReplyAnimationEnd?.call();
+            });
+          }
+        },
+        child: SlideTransition(
+          position: animation,
+          child: Container(
+            margin: EdgeInsets.only(bottom: 10,left: widget.model.originalMessageId.isNotNull ? 80 : 0),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: IntrinsicWidth(
+              child: Container(
+                margin: EdgeInsets.only(
+                    bottom: 10,
+                //    right: widget.messageType == MessageType.sender ? 80 : 0,
+                //    left: widget.messageType != MessageType.sender ? 80 : 0
+                ),
+                decoration: AppDecoration.purpleLightRounded.copyWith(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15),
+                      topLeft:
+                          Radius.circular(widget.messageType == MessageType.sender ? 3 : 15),
+                      topRight:
+                          Radius.circular(widget.messageType != MessageType.sender ? 3 : 15),
                     ),
-                    if(model.isDelivered.isTrue)SvgImage(
-                      image: AppSvg.seen,
-                      color: model.isSeen.isTrue
-                          ? AppColors.colorPrimary
-                          : AppColors.hintGrey2,
-                    )
-                  ]
-                ],
+                    color: widget.messageType == MessageType.sender
+                        ? AppColors.colorPrimary
+                        : AppColors.purpleLight1),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if(widget.model.originalMessageId.isNotNull)ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Container(
+                        padding: const EdgeInsets.only(left:0,right: 15),
+                        color: AppColors.black.withOpacity(0.10),
+                        child: IntrinsicHeight(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              VerticalDivider(color: AppColors.colorPrimary,thickness: 5,width: 4),
+                              10.width,
+                              Expanded(child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  5.height,
+                                  Text(widget.model.originalMessageId!.senderId != context.read<AuthProvider>().userModel?.id ?widget.user!.name.toStringOrEmpty.toTitleCase():"You",style: AppStyle.purple14w600,),
+                                  Text(widget.model.originalMessageId!.message.toStringOrEmpty,style: AppStyle.black12w400,maxLines: 3,overflow: TextOverflow.ellipsis,),
+                                  5.height,
+                                ],
+                              )),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if(widget.model.attachments.isNotNull && widget.model.attachments!.isNotEmpty)SquareNetworkImageAvatar(
+                            height: 300,
+                            width: 300,
+                            image: widget.model.attachments!.where((element) => element.type=="image").first.url,
+                          ),
+                          Text(
+                            convertNewLine(widget.text),
+                            style: widget.messageType == MessageType.sender
+                                ? AppStyle.white14W400
+                                : AppStyle.black14,
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  widget.time,
+                                  style: widget.messageType == MessageType.sender
+                                      ? AppStyle.white10
+                                      : AppStyle.black10,
+                                ),
+                                if (widget.messageType == MessageType.receiver) ...[
+                                  2.width,
+                                  if(widget.model.isDelivered.isFalse)SvgImage(
+                                    image: AppSvg.single,
+                                    color: AppColors.hintGrey2,
+                                    size: 15,
+                                  ),
+                                  if(widget.model.isDelivered.isTrue)SvgImage(
+                                    image: AppSvg.seen,
+                                    color: widget.model.isSeen.isTrue
+                                        ? AppColors.colorPrimary
+                                        : AppColors.hintGrey2,
+                                  )
+                                ]
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

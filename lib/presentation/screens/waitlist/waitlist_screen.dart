@@ -209,18 +209,18 @@ class _WaitListCardState extends State<WaitListCard> {
                       ),
                     ),
                     if(_timerValue>=0 && widget.model.isAcceptedByAstrologer.isFalse &&
-                        widget.model.isAcceptedByMember.isFalse &&
+                        widget.model.isAcceptedByMember.isFalse && !widget.fromScreen &&
                         widget.type == ComType.chat)Column(
                       //mainAxisAlignment: MainAxisAlignment.end,
                       //crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        InkWell(
+                        /*InkWell(
                           onTap: () {
                             context.read<AuthProvider>().updateCurrentChatModel(
                                 null);
                           },
                           child: Icon(Icons.close, size: 20,),),
-                        5.height,
+                        5.height,*/
                         SizedBox(
                           height: 40, width: 40,
                           child: Stack(
@@ -263,6 +263,13 @@ class _WaitListCardState extends State<WaitListCard> {
                   widget.type == ComType.chat)
                 Text(
                   "WAITING",
+                  style: AppStyle.purple12.copyWith(
+                      fontWeight: FontWeight.w700),
+                ),
+              if (widget.model.status=="in-progress"&& widget.model.type == ComType.call)
+                Text(
+                  "CALL\nIN-PROGRESS",
+                  textAlign: TextAlign.center,
                   style: AppStyle.purple12.copyWith(
                       fontWeight: FontWeight.w700),
                 )

@@ -9,6 +9,7 @@ class ApiConfig {
   static const String verifyOtp = "astrologers/verify-otp";
   static const String userData = "astrologers/me";
   static const String fcmSave = "fcm-notifications";
+  static const String logout = "astrologers/logout";
 
   static const String offersList = "astrologer-offers/astrologers";
   static const String ordersList = "astrologer-orders";
@@ -26,6 +27,7 @@ class ApiConfig {
   static const String getMessages = "chats/";
   static const String endChat = "chats/complete-customer-astrologer/";
   static const String onGoingChat = "chats/on-going";
+  static const String onGoingCall = "call/on-going";
   static const String upload = "s3/pre-signed-url?key=astrologers/";
   static const String callCount = "call/count";
   static const String chatCount = "chat/count";
@@ -42,13 +44,14 @@ class ApiConfig {
 
   // Socket
   static const String chatStatus = "chatStatus";
+  static const String callStatus = "callStatus";
   static const String privateMessage = "privateMessage";
   static const String typingMessage = "typingMessage";
   static const String seenMessage = "seenMessage";
   static const String receivedMessage = "receivedMessage";
   static const String messageStatus = "messageStatus";
-  static const String chatInitiated = /*"requested";*/"initiated";
-  static const String chatAcceptedByCustomer = /*"in-progress"*/"accepted_by_customer";
+  static const String chatInitiated = "requested";
+  static const String chatAcceptedByCustomer = "in-progress";
   static const String chatCompleted = "completed";
 
 

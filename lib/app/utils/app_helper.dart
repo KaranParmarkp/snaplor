@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -531,7 +532,41 @@ class AppHelper {
             ),
       ),);
   }
+
   static sharePost(String id){
     Share.share('https://snaplor.com/post/$id');
   }
+
+  static showCustomDialog({required BuildContext context,required title,String? positiveText,String? negativeText,Function()? onPositiveTap,Function()? onNegativeTap,String? subText}){
+    return showDialog(context: context,
+      barrierDismissible: true,
+      builder: (context) => Dialog(
+        backgroundColor: AppColors.transparent,
+        child: Container(
+          padding: EdgeInsets.all(20),
+          //width: double.infinity,
+          decoration: AppDecoration.whiteShadowRounded,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Center(child: Text(title,style: AppStyle.black14w600,)),
+              if(subText.isNotNull)...[10.height,
+              Center(child: Text(subText!,style: AppStyle.black14,textAlign: TextAlign.center,)),],
+              30.height,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(child: AppRoundedButton(text: positiveText ?? "Yes",onTap: onPositiveTap,color: AppColors.colorPrimary,)),
+                  10.width,
+                  Expanded(child: AppRoundedButton(text: positiveText ?? "No",onTap: onNegativeTap,color: AppColors.colorPrimary,))
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),);
+  }
+
 }

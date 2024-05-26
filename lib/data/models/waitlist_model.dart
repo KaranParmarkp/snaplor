@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:jyotishee/app/utils/enums.dart';
 
 import 'generic_user_model.dart';
 import 'models.dart';
@@ -30,6 +31,7 @@ class WaitListModel {
   final int? pricePerMinute;
   final bool? isAcceptedByAstrologer;
   final bool? isAcceptedByMember;
+  ComType? type;
   bool? fromInitiated;
   bool? isTyping;
   ScrollController controller = ScrollController();
@@ -49,7 +51,7 @@ class WaitListModel {
       this.isAcceptedByAstrologer,
       this.isAcceptedByMember,
       this.fromInitiated,
-      this.isTyping});
+      this.isTyping,this.type});
 
   factory WaitListModel.fromJson(Map<String, dynamic> json) => WaitListModel(
         user: json["user_id"] == null

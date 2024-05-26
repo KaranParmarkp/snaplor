@@ -126,7 +126,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: false
         //scaffoldBackgroundColor: Colors.white,
       ),
-      home: const SplashScreen(),
+      home:  SplashScreen(),
     );
   }
 }
@@ -140,3 +140,38 @@ buildProviders() {
 }
 
 
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("hey"),
+      ),
+      body: Container(
+        child: ListView.builder(
+          itemCount: 4,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return Align(
+
+              child: Container(
+                color: Colors.red, // Background color
+                margin: EdgeInsets.only(bottom: 10),
+                child: Text(
+                  "itemText",
+                  style: TextStyle(color: Colors.white), // Text color
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}

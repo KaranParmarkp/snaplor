@@ -27,6 +27,7 @@ class AuthService extends ApiService {
   }
 
   Future<Response<GenericResponse>> logout() async {
+    await putData(ApiConfig.logout);
     return deleteData(ApiConfig.fcmSave,);
   }
 
@@ -112,12 +113,16 @@ class AuthService extends ApiService {
   }
 
   Future<Response<GenericResponse>> getMessages(String id) async {
-    return getData(ApiConfig.getMessages+id);
+    return getData(ApiConfig.getMessages+id,queryParameters: {"limit":4000});
   }
 
   Future<Response<GenericResponse>> onGoingChat() async {
     return getData(ApiConfig.onGoingChat);
   }
+  Future<Response<GenericResponse>> onGoingCall() async {
+    return getData(ApiConfig.onGoingCall);
+  }
+
   Future<Response<GenericResponse>> endChat(String id) async {
     return putData(ApiConfig.endChat+id);
   }

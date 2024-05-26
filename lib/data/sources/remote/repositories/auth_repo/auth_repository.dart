@@ -15,6 +15,7 @@ abstract class AuthRepository{
   Future<GenericResponse> askReview(String id);
   Future<List<WaitListModel>> waitList(ComType type);
   Future<WaitListModel?> onGoingChat();
+  Future<WaitListModel?> onGoingCall();
   Future<List<WalletModel>> wallet();
   Future<List<ProductModel>> searchProduct(FilterModel filterModel);
   Future<GenericResponse> acceptRequest(ComType type,String id);

@@ -263,13 +263,14 @@ class _OrderCardState extends State<OrderCard> {
       decoration: AppDecoration.whiteShadowRounded,
       child: InkWell(
         onTap: () {
-          if (widget.type == ComType.chat)
+          if (widget.type == ComType.chat) {
+            print(widget.model.chatRequestId?.id);
             context.push(ChatScreen(
               readOnly: true,
               model: WaitListModel(
-                  id: widget.model.chatRequestId?.id,
-                  user: widget.model.user),
+                  id: widget.model.chatRequestId?.id, user: widget.model.user),
             ));
+          }
         },
         child: Column(
           children: [

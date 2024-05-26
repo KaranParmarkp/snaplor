@@ -157,6 +157,7 @@ class AuthProvider extends BaseProvider {
   static String userDataKey = 'userDataDetailsKey';
 
   Future<bool?> userData({bool refresh = false, UserModel? updateModel}) async {
+    onGoingChat();
     setLoading(taskName: userDataKey, showDialogLoader: refresh);
     try {
       UserModel model = await _authRepo.userData(updateModel);
@@ -341,10 +342,23 @@ class AuthProvider extends BaseProvider {
 
   // On Going Chat api
   static String onGoingChatKey = 'onGoingChatKey';
-
   onGoingChat() async {
     try {
       _currentChat = await _authRepo.onGoingChat();
+      notifyListeners();
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      onGoingCall();
+    }
+  }
+
+  // On Going Call api
+  static String onGoingCallKey = 'onGoingCallKey';
+  onGoingCall() async {
+    try {
+      _currentChat = await _authRepo.onGoingCall();
+      _currentChat?.type=ComType.call;
       notifyListeners();
     } catch (e, s) {
       e.printDebug;
@@ -480,9 +494,15 @@ class AuthProvider extends BaseProvider {
   }
 
   getChatStatus() {
+    _socket?.on(ApiConfig.callStatus, (response) {
+      "CallStatus".printDebug;
+      response.toString().printDebug;
+      onGoingCall();
+
+    });
     _socket?.on(ApiConfig.chatStatus, (response) {
       "ChatStatus".printDebug;
-      Map<dynamic,dynamic> message = response.first;
+      Map<dynamic,dynamic> message = response is List ? response.first : response;
       message.toString().printDebug;
       if(_currentChat.isNull)onGoingChat();
       if (message != null && message['status'] == ApiConfig.chatCompleted) {
@@ -523,7 +543,8 @@ class AuthProvider extends BaseProvider {
         },);
       }
     });
-    _socket?.on(ApiConfig.messageStatus, (message) async {
+    _socket?.on(ApiConfig.messageStatus, (response) async {
+      Map<String,dynamic> message = response.first;
       "\nMessageStatus response---> ${message.toString()}".printDebug;
       if(_currentChat.isNotNull && message != null && message.containsKey("chat_message")){
         MessageModel model = MessageModel.fromJson(message["chat_message"] as Map<String, dynamic>);
@@ -544,7 +565,8 @@ class AuthProvider extends BaseProvider {
       if(_currentChat.isNotNull){
       }
     });
-    _socket?.on(ApiConfig.privateMessage, (message) {
+    _socket?.on(ApiConfig.privateMessage, (response) {
+      Map<String,dynamic> message = response is List ? response.first : response;
       "Private Message---> ${message.toString()}".printDebug;
       if (message != null && currentChatMessageList.any((element) => element.id != message["_id"])) {
         data[getMessagesKey].add(MessageModel.fromJson(message as Map<String, dynamic>));
@@ -581,10 +603,9 @@ class AuthProvider extends BaseProvider {
   sendMessage(
       {required String chatId,
       required String recipientId,
-      required String message,File? file}) async {
+        String? message,File? file,String? messageId}) async {
     var signedUrl;
     if(file.isNotNull){
-
       AppHelper.showLoading();
        signedUrl = await getSignedUrl(isProfile: false, image: file!);
       AppHelper.hideLoading();
@@ -592,8 +613,9 @@ class AuthProvider extends BaseProvider {
     Map request = {
       "chat_id": chatId,
       "recipient_id": recipientId,
-      "message": message,
-      if(file.isNotNull)"attachments":[{"type":"image","url":signedUrl}]
+      if(message.isNotNull)"message": message,
+      if(file.isNotNull)"attachments":[{"type":"image","url":signedUrl}],
+      if(messageId.isNotNull)"original_message":messageId
     };
     _socket?.emitWithAck(ApiConfig.privateMessage, request, ack: (response) {
       "\nsend message response--->${response.toString()}".printDebug;

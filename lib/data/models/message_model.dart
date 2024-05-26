@@ -20,6 +20,8 @@ class MessageModel {
   final int? v;
    bool? isSeen;
    bool? isDelivered;
+  MessageModel? originalMessageId;
+  List<Attachments>? attachments;
 
   MessageModel({
     this.id,
@@ -32,35 +34,9 @@ class MessageModel {
     this.updatedAt,
     this.v,
     this.isSeen,
-    this.isDelivered
+    this.isDelivered,
+    this.originalMessageId,this.attachments
   });
-
-  MessageModel copyWith({
-    String? id,
-    String? chatId,
-    String? recipientId,
-    String? senderId,
-    String? message,
-    bool? isDeleted,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    int? v,
-    bool? isSeen,
-    bool? isDelivered,
-  }) =>
-      MessageModel(
-        id: id ?? this.id,
-        chatId: chatId ?? this.chatId,
-        recipientId: recipientId ?? this.recipientId,
-        senderId: senderId ?? this.senderId,
-        message: message ?? this.message,
-        isDeleted: isDeleted ?? this.isDeleted,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        v: v ?? this.v,
-        isSeen: isSeen ?? this.isSeen,
-        isDelivered: isDelivered ?? this.isDelivered
-      );
 
   factory MessageModel.fromJson(Map<String, dynamic> json) => MessageModel(
     id: json["_id"],
@@ -74,6 +50,8 @@ class MessageModel {
     v: json["__v"],
     isSeen: json["is_seen"],
     isDelivered: json["is_delivered"],
+    originalMessageId: json["original_message"]!=null ? MessageModel.fromJson(json["original_message"]) : null,
+    attachments: json["attachments"]!=null ? List<Attachments>.from(json["attachments"]!.map((x) => Attachments.fromJson(x))).toList() : []
   );
 
   Map<String, dynamic> toJson() => {
@@ -87,4 +65,16 @@ class MessageModel {
     "updated_at": updatedAt?.toIso8601String(),
     "__v": v,
   };
+}
+class Attachments {
+  String? url;
+  String? type;
+  String? id;
+
+  Attachments({this.url, this.type, this.id});
+  factory Attachments.fromJson(Map<String, dynamic> json) => Attachments(
+      id: json["_id"],
+      type: json["type"],
+      url: json["url"],
+  );
 }

@@ -144,6 +144,15 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
       },
     );
   }
+  @override
+  Future<WaitListModel?> onGoingCall() {
+    return serviceHandler(
+      serviceFunction: () => service.onGoingCall(),
+      successFunction: (response) async {
+        return WaitListModel.fromJson(response.data);
+      },
+    );
+  }
 
 
   @override
