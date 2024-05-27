@@ -350,7 +350,7 @@ class _OrderCardState extends State<OrderCard> {
                   AppStrings.rs + "${widget.model.totalPaid}",
                   style: AppStyle.purple14w600,
                 ),
-                Padding(
+                if(widget.model.astrologerOffer.isNotNull)Padding(
                   padding: const EdgeInsets.only(left: 5),
                   child: Text(
                     AppStrings.rs + "${widget.model.subtotalAmount}",
@@ -427,10 +427,10 @@ class _OrderCardState extends State<OrderCard> {
                     ),*/
 
                     AppRoundedButton(
-                      text: widget.model.askedReview==true ? AppStrings.askForReview : "View review",
+                      text: widget.model.askedReview==false && widget.model.reviewOrder.isNull ? AppStrings.askForReview : "View review",
                       color: AppColors.colorPrimary,
                       onTap: () {
-                        if(widget.model.askedReview==true)context.read<AuthProvider>().askReview(id: widget.model.id!,type: widget.type);
+                        if(widget.model.askedReview==false&& widget.model.reviewOrder.isNull)context.read<AuthProvider>().askReview(id: widget.model.id!,type: widget.type);
                         else context.push(ReviewsScreen(id: widget.model.reviewOrder?.id,));
                       },
                     ),
