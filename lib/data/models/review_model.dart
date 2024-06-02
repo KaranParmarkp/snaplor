@@ -19,6 +19,8 @@ class ReviewModel {
   final String? message;
   final DateTime? createdAt;
   final AstrologerResponse? astrologerResponse;
+  bool? isFieldOpen;
+  final String? refCode;
   ReviewModel({
     this.id,
     this.astrologerId,
@@ -27,7 +29,9 @@ class ReviewModel {
     this.rating,
     this.message,
     this.createdAt,
-    this.astrologerResponse
+    this.astrologerResponse,
+    this.isFieldOpen=false,
+    this.refCode
   });
 
   ReviewModel copyWith({
@@ -58,6 +62,7 @@ class ReviewModel {
     orderId: OrderId.fromJson(json["order_id"]),
     rating: json["rating"],
     message: json["message"],
+    refCode: json["reference_code"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     astrologerResponse: json["response"] == null ? null : AstrologerResponse.fromJson(json["response"]),
   );
@@ -112,15 +117,18 @@ class AstrologerResponse {
 class OrderId {
   String id;
   String orderSource;
+  String refCode;
 
   OrderId({
     required this.id,
     required this.orderSource,
+    required this.refCode,
   });
 
   factory OrderId.fromJson(Map<String, dynamic> json) => OrderId(
     id: json["_id"],
     orderSource: json["order_source"],
+    refCode: json["reference_code"],
   );
 
   Map<String, dynamic> toJson() => {

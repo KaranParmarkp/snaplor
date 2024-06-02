@@ -50,7 +50,7 @@ class MessageModel {
     v: json["__v"],
     isSeen: json["is_seen"],
     isDelivered: json["is_delivered"],
-    originalMessageId: json["original_message"]!=null ? MessageModel.fromJson(json["original_message"]) : null,
+    originalMessageId: json["original_message"]!=null && json["original_message"] is  Map ? MessageModel.fromJson(json["original_message"]) : null,
     attachments: json["attachments"]!=null ? List<Attachments>.from(json["attachments"]!.map((x) => Attachments.fromJson(x))).toList() : []
   );
 

@@ -11,8 +11,8 @@ import '../../../data/providers/providers.dart';
 import 'package:just_audio/just_audio.dart';
 
 class OrdersScreen extends StatefulWidget {
-  const OrdersScreen({super.key});
-
+  const OrdersScreen({super.key,this.initialIndex=0});
+  final int initialIndex;
   @override
   State<OrdersScreen> createState() => _OrdersScreenState();
 }
@@ -23,7 +23,7 @@ class _OrdersScreenState extends State<OrdersScreen>
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 2, vsync: this,initialIndex: widget.initialIndex);
     super.initState();
   }
 

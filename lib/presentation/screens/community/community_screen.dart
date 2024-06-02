@@ -31,7 +31,12 @@ class _CommunityScreenState extends State<CommunityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
     backgroundColor: AppColors.white,
-      appBar: CustomAppBar(title: AppStrings.snaplorCommunity, showProfile: true,showBack: widget.showBack,communityScreen: true,showNotification: true,),
+      appBar: CustomAppBar(title: "",subtitle: Padding(
+        padding: const EdgeInsets.only(left: 20),
+        child: Text(
+            AppStrings.snaplorCommunity,
+            style: AppStyle.black14.copyWith(fontWeight: FontWeight.w600,fontSize: 18)),
+      ), showProfile: true,showBack: widget.showBack,communityScreen: true,showNotification: true,),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: AppColors.colorPrimary, onPressed: () {

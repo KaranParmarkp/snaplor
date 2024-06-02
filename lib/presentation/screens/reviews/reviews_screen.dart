@@ -69,7 +69,7 @@ class ReviewCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    "Order Id: #${model.orderId!.id.toStringOrEmpty}",
+                    "Order Id: #${model.orderId!.refCode.toStringOrEmpty}",
                     style: AppStyle.grey12
                         .copyWith(color: AppColors.greyDark, fontSize: 10),
                   ),
@@ -123,7 +123,7 @@ class ReviewCard extends StatelessWidget {
               ),
             ],
           ),
-          Container(
+          if(model.message.isNotNull && model.message!.isNotEmpty)Container(
             width: double.infinity,
             padding: const EdgeInsets.only(bottom: 0, top: 10),
             child: Text(
@@ -133,7 +133,7 @@ class ReviewCard extends StatelessWidget {
           ),
           if (model.astrologerResponse.isNotNull)
             Padding(
-              padding: const EdgeInsets.only(top: 0, bottom: 10),
+              padding:  EdgeInsets.only(top: model.message.isNotNull && model.message!.isNotEmpty ? 0 :10, bottom: 10),
               child: Container(
                 width: double.infinity,
                 child: Text(
@@ -143,8 +143,7 @@ class ReviewCard extends StatelessWidget {
                 ),
               ),
             ),
-          if (model.astrologerResponse.isNull)
-            Container(
+          if (model.astrologerResponse.isNull && model.isFieldOpen==true)Container(
               padding: EdgeInsets.all(15),
               margin: EdgeInsets.only(top: 10),
               decoration: AppDecoration.whiteShadowRounded
@@ -169,6 +168,16 @@ class ReviewCard extends StatelessWidget {
                 ],
               ),
             ),
+          if (model.astrologerResponse.isNull && model.isFieldOpen.isFalse)Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: AppButton(
+              title: AppStrings.reply,
+              onTap: () {
+                model.isFieldOpen=true;
+                context.read<AuthProvider>().updateReviewTextField();
+              },
+            ),
+          ),
         ],
       ),
     );

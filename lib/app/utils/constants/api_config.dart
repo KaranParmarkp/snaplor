@@ -53,6 +53,7 @@ class ApiConfig {
   static const String chatInitiated = "requested";
   static const String chatAcceptedByCustomer = "in-progress";
   static const String chatCompleted = "completed";
+  static const String cancelled = "cancelled";
 
 
 }

@@ -239,13 +239,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: SfCircularChart(
                               series: [
                                 DoughnutSeries<ChartData, String>(
-                                  dataSource: /*[
-                                        ChartData(size: data.totalChatOrders,color: AppColors.colorPrimary),
-                                        ChartData(size: data.totalCallOrders,color: AppColors.primaryAccent),
-                                      ],*/
-                                      chartData,
-                                  pointColorMapper: (ChartData data, _) =>
-                                      data.color,
+                                  //strokeWidth: 10,
+                                  dataSource: chartData,
+                                  //innerRadius: "55",
+                                  //radius: "25",
+                                  pointColorMapper: (ChartData data, _) => data.color,
                                   xValueMapper: (ChartData data, _) => data.x,
                                   yValueMapper: (ChartData data, _) => data.y,
                                 )

@@ -102,8 +102,8 @@ class OfferCard extends StatelessWidget {
                 width: null,
               ),
               NameValue(
-                name: AppStrings.jyotisheeShare,
-                value: " ${AppStrings.rupee}${model.jyotisheeShare}",
+                name: AppStrings.nepptorSocial,
+                value: " ${AppStrings.rupee}${model.adminShare}",
                 valueColor: AppColors.colorPrimary,
                 fontSize: 10,
                 width: null,

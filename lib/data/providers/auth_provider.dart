@@ -8,6 +8,7 @@ import 'package:jyotishee/data/providers/base_provider.dart';
 import 'package:jyotishee/presentation/screens/auth/login/login_screen.dart';
 import 'package:jyotishee/presentation/screens/base/base_screen.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
+import 'package:jyotishee/presentation/screens/orders/orders_screen.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../../app/utils/preferences/preferences.dart';
@@ -231,7 +232,6 @@ class AuthProvider extends BaseProvider {
 
   // Reviews list api
   static String reviewListKey = 'reviewListKey';
-
   reviewList() async {
     setLoading(taskName: reviewListKey);
     try {
@@ -245,7 +245,9 @@ class AuthProvider extends BaseProvider {
       );
     }
   }
-
+  updateReviewTextField(){
+    notify();
+  }
   // Add Review api
   static String addReviewKey = 'addReviewKey';
 
@@ -491,13 +493,19 @@ class AuthProvider extends BaseProvider {
       duration: Duration(milliseconds: 500),
       curve: Curves.easeOut,
     );
+    seenUserMessages();
   }
 
   getChatStatus() {
     _socket?.on(ApiConfig.callStatus, (response) {
       "CallStatus".printDebug;
+      Map<dynamic,dynamic> message = response is List ? response.first : response;
       response.toString().printDebug;
-      onGoingCall();
+      if(message["status"]=="completed"){
+        updateCurrentChatModel(null);
+        MyApp.navKey.currentState!.context.push(OrdersScreen(initialIndex: 1,));
+      }
+      onGoingChat();
 
     });
     _socket?.on(ApiConfig.chatStatus, (response) {
@@ -507,7 +515,7 @@ class AuthProvider extends BaseProvider {
       if(_currentChat.isNull)onGoingChat();
       if (message != null && message['status'] == ApiConfig.chatCompleted) {
         _currentChat = null;
-        MyApp.appContext.pushRemoveUntil(BaseScreen());
+        MyApp.appContext.pushReplace(OrdersScreen());
         notifyListeners();
       }
       if (message != null && message['status'] == ApiConfig.chatInitiated) {
@@ -530,6 +538,9 @@ class AuthProvider extends BaseProvider {
           notifyListeners();
           MyApp.navKey.currentState!.context.push(ChatScreen(model: _currentChat,));
         }
+      }
+      if (message != null && message['status'] == ApiConfig.cancelled) {
+        updateCurrentChatModel(null);
       }
     });
     _socket?.on(ApiConfig.typingMessage, (message) {
@@ -586,24 +597,26 @@ class AuthProvider extends BaseProvider {
           curve: Curves.easeOut,
         );
         //currentChatMessageList.forEach((element) {element.isSeen=true;notifyListeners();});
-        Map request = {
-          "message_id": currentChatMessageList.last.id
-        };
-        _socket?.emitWithAck(ApiConfig.seenMessage, request, ack: (response) {
-          print(response);
-        });
-      }
+              }
       notify();
 
     });
     notifyListeners();
   }
 
+  seenUserMessages(){
+    Map request = {
+      "message_id": currentChatMessageList.last.id
+    };
+    _socket?.emitWithAck(ApiConfig.seenMessage, request, ack: (response) {
+      "sending seen message to backend--->${response}".printDebug;
+    });
 
+  }
   sendMessage(
       {required String chatId,
       required String recipientId,
-        String? message,File? file,String? messageId}) async {
+        String? message,File? file,String? messageId,String? type}) async {
     var signedUrl;
     if(file.isNotNull){
       AppHelper.showLoading();
@@ -614,7 +627,7 @@ class AuthProvider extends BaseProvider {
       "chat_id": chatId,
       "recipient_id": recipientId,
       if(message.isNotNull)"message": message,
-      if(file.isNotNull)"attachments":[{"type":"image","url":signedUrl}],
+      if(file.isNotNull)"attachments":[{"type":type,"url":signedUrl}],
       if(messageId.isNotNull)"original_message":messageId
     };
     _socket?.emitWithAck(ApiConfig.privateMessage, request, ack: (response) {
@@ -644,7 +657,8 @@ class AuthProvider extends BaseProvider {
     try {
       setData(taskName: endChatKey, data: await _authRepo.endChat(id));
       _currentChat = null;
-      MyApp.appContext.pushRemoveUntil(BaseScreen());
+      MyApp.appContext.pushReplace(OrdersScreen());
+      //MyApp.appContext.pushRemoveUntil(BaseScreen());
       notifyListeners();
     } catch (e, s) {
       e.printDebug;

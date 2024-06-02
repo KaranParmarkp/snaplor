@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../app/utils/constants/app_colors.dart';
+
 class SvgImage extends StatelessWidget {
   const SvgImage({super.key, required this.image, this.color, this.height, this.width, this.size, this.onTap});
 
@@ -18,7 +20,7 @@ class SvgImage extends StatelessWidget {
         image,
         //deprecated
         color: color,
-        //colorFilter: ColorFilter.mode(color, BlendMode.srcATop),
+        //colorFilter: ColorFilter.mode(color??AppColors.red, BlendMode.multiply),
         height: size ?? height,
         width: size ?? width
       ),

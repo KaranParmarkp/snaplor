@@ -119,24 +119,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
   const DashboardAppBar(
-      {Key? key, this.title, this.trailingIcon, this.showProfile = false})
+      {Key? key, this.title, this.trailingIcon, this.showProfile = false,this.showNotification=true})
       : super(key: key);
   final String? title;
   final Widget? trailingIcon;
   final bool showProfile;
+  final bool showNotification;
 
   @override
   Widget build(BuildContext context) {
     return Consumer2<AppProvider, AuthProvider>(
       builder: (context, provider, authProvider, child) {
         return AppBar(
-          /*title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("${AppStrings.hi} ${authProvider.userModel?.name}", style: AppStyle.black14.copyWith(fontWeight: FontWeight.bold)),
-              Text("${authProvider.userModel?.email}", style: AppStyle.grey12),
-            ],
-          ),*/
           title: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,18 +157,18 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
           elevation: 8,
           shadowColor: AppColors.shadowAppBar,
           actions: [
-            InkWell(
+            if (showNotification)InkWell(
               onTap: (){
                 AppHelper.hideKeyboard();
                 context.push(NotificationScreen());},
-              child: Padding(
-                padding:
-                    EdgeInsets.only(left: 10, right: showProfile ? 20 : 10),
+              child: Container(
+                padding: EdgeInsets.only(left: 10, right: showProfile ? 20 : 10),
+
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
                     SvgImage(
-                      image: AppSvg.bell,
+                      image: AppSvg.bell,size: 22,
                     ),
                     Positioned(
                         right: 0,

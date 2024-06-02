@@ -21,7 +21,7 @@ class OfferModel {
   final bool? isActive;
   final int? v;
   final int? myShare;
-  final int? jyotisheeShare;
+  final int? adminShare;
   final int? customerShare;
 
   OfferModel({
@@ -36,7 +36,7 @@ class OfferModel {
     this.isDeleted,
     this.isActive,
     this.v,
-    this.jyotisheeShare,this.myShare,this.customerShare
+    this.adminShare,this.myShare,this.customerShare
   });
 
   OfferModel copyWith({
@@ -68,7 +68,7 @@ class OfferModel {
         isDeleted: isDeleted ?? this.isDeleted,
         isActive: isActive ?? this.isActive,
         v: v ?? this.v,
-        jyotisheeShare: jyotisheeShare ?? this.jyotisheeShare,
+        adminShare: jyotisheeShare ?? this.adminShare,
         customerShare: customerShare ?? this.customerShare,
         myShare: myShare ?? this.myShare,
       );
@@ -87,7 +87,7 @@ class OfferModel {
     v: json["__v"],
     customerShare: (json["my_share"] ?? 0) + (json["jyotishee_share"] ?? 0),
     myShare: json["my_share"],
-    jyotisheeShare: json["jyotishee_share"],
+    adminShare: json["admin_share"],
   );
 
   Map<String, dynamic> toJson() => {

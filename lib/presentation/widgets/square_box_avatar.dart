@@ -14,8 +14,8 @@ class SquareBoxAvatar extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14,vertical: 12),
-        margin: EdgeInsets.symmetric(horizontal: 6,vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 12),
+        margin: EdgeInsets.symmetric(horizontal: 4,vertical: 4),
         decoration: AppDecoration.whiteShadowRounded,
         child: Column(
           children: [
@@ -25,7 +25,7 @@ class SquareBoxAvatar extends StatelessWidget {
                 badgeStyle: badges.BadgeStyle(badgeColor: AppColors.colorPrimary),
                 child: RoundAvatar(image: image)),
             6.height,
-            Text(text,style: AppStyle.black12,)
+            Text(text,style: AppStyle.black12.copyWith(fontSize: 12),)
           ],
         ),
       ),

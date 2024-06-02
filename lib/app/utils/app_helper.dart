@@ -449,9 +449,9 @@ class AppHelper {
     );
   }
 
-  static launchWebUrl(String url) async {
+  static launchWebUrl(String url,{mode=LaunchMode.externalApplication}) async {
     final Uri _url = Uri.parse(url);
-    if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+    if (!await launchUrl(_url, mode: mode)) {
       throw 'Could not launch $url';
     }
   }
@@ -518,7 +518,12 @@ class AppHelper {
                   children: [
                     Text("Call Us on:  ",style: AppStyle.hintGray12,),
                     InkWell(
-                        onTap: () => AppHelper.launchCall("9818484869"),
+                        onTap: () {
+                          var contact = "+919818484869";
+                          var androidUrl = "whatsapp://send?phone=$contact&text=Hi, I need some help";
+                          var iosUrl = "https://wa.me/$contact?text=${Uri.parse('Hi, I need some help')}";
+                          AppHelper.launchWebUrl(Platform.isAndroid?androidUrl : iosUrl);
+                        },
                         child: Text("+91 9818484869",style: AppStyle.black12w600,)),
                   ],
                 ),

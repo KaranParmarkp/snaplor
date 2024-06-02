@@ -34,10 +34,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(
+      /*appBar: CustomAppBar(
         title: AppStrings.settings,
         showProfile: false,
         onBackTap: () {},
+        showNotification: false,
+      ),*/
+      appBar: DashboardAppBar(
+        title: '',
+        showProfile: true,
         showNotification: false,
       ),
       body: SingleChildScrollView(

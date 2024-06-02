@@ -3,7 +3,7 @@
 
 
     <application
-        android:label="Snaplor"
+        android:label="Nepptor"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true">

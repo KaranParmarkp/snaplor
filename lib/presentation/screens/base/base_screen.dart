@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/providers/providers.dart';
+import 'package:jyotishee/presentation/screens/community/community_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/profile_screen.dart';
 import 'package:jyotishee/presentation/screens/waitlist/waitlist_screen.dart';
 import 'package:jyotishee/presentation/screens/wallet/wallet_screen.dart';
@@ -19,13 +21,21 @@ class BaseScreen extends StatefulWidget {
 }
 
 class _BaseScreenState extends State<BaseScreen> {
-  List<Widget> screens = [
+  /*List<Widget> screens = [
     ProfileScreen(),
     WalletScreen(),
     HomeScreen(),
     SettingsScreen(),
   ];
-  int selectedIndex = 2;
+  */
+  List<Widget> screens = [
+    HomeScreen(),
+    CommunityScreen(),
+    WalletScreen(),
+    SettingsScreen(),
+  ];
+
+  int selectedIndex = 0;
 
   @override
   void initState() {
@@ -79,35 +89,37 @@ class _BaseScreenState extends State<BaseScreen> {
               currentIndex: selectedIndex,
               onTap: (value) {
                 provider.onGoingChat();
-                if(value!=0){
                   selectedIndex = value;
                   setState(() {});
-                }else{
-                  context.push(ProfileScreen());
-                }
               },
               items: [
-                BottomNavigationBarItem(
+                /*BottomNavigationBarItem(
                   icon: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    /*child: SvgImage(
-                      image: selectedIndex == 0
-                          ? AppSvg.home
-                          : AppSvg.homeUnFilled,
-                    ),*/
                     child: CircleNetworkImageAvatar(
                         radius: 15,
                         image: context.read<AuthProvider>().userModel?.profileImage),
                   ),
                   label: "",
-                ),
+                ),*/
                 BottomNavigationBarItem(
                     icon: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SvgImage(
+                        image: selectedIndex == 0
+                            ? AppSvg.home
+                            : AppSvg.homeUnFilled,
+                      ),
+                    ),
+                    label: ""),
+                BottomNavigationBarItem(
+                    icon: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SvgImage(
+                       size: 22,
                         image: selectedIndex == 1
-                            ? AppSvg.walledFilled
-                            : AppSvg.wallet,
+                            ? AppSvg.community
+                            : AppSvg.community,color: selectedIndex != 1 ? Colors.black : AppColors.colorPrimary,
                       ),
                     ),
                     label: ""),
@@ -116,8 +128,8 @@ class _BaseScreenState extends State<BaseScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: SvgImage(
                         image: selectedIndex == 2
-                            ? AppSvg.home
-                            : AppSvg.homeUnFilled,
+                            ? AppSvg.walledFilled
+                            : AppSvg.wallet,
                       ),
                     ),
                     label: ""),

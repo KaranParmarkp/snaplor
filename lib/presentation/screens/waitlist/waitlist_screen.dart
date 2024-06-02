@@ -135,7 +135,7 @@ class WaitListCard extends StatefulWidget {
 
 class _WaitListCardState extends State<WaitListCard> {
   Timer? _timer;
-  int _timerValue = 60 * 5; // Initial timer value
+  int _timerValue = 60*5; // Initial timer value
 
   @override
   void initState() {
@@ -144,7 +144,19 @@ class _WaitListCardState extends State<WaitListCard> {
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    /*DateTime newEndTime = widget.model.createdAt!.toLocal().add(Duration(minutes: 5));
+    DateTime nowTime = DateTime.now();
+    print("nowtime ${nowTime}");
+    print("new end time ${newEndTime}");
+    if (newEndTime.isBefore(newEndTime)) {
+      _timerValue = 5*(newEndTime.minute-nowTime.minute);
+    } else {
+      _timerValue = 0;
+    }
+    if(mounted)setState(() {
+
+    });;
+    if(newEndTime.isBefore(nowTime))*/_timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         _timerValue--;
       });
@@ -174,7 +186,20 @@ class _WaitListCardState extends State<WaitListCard> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
+          /*InkWell(
+              onTap: () {
+                var now =DateTime.now(); 
+                var created =widget.model!.createdAt!.toLocal();
+                var createdEnd =widget.model!.createdAt!.toLocal().add(Duration(minutes: 5));
+                print(created);
+                print(now);
+                print(createdEnd);
+                print(createdEnd.isAfter(now));
+                print(createdEnd.minute-now.minute);
+                print(createdEnd.minute-now.minute);
+              },
+              child: Text("asa")),
+          */Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -221,7 +246,7 @@ class _WaitListCardState extends State<WaitListCard> {
                           },
                           child: Icon(Icons.close, size: 20,),),
                         5.height,*/
-                        SizedBox(
+                        if(widget.model.fromInitiated.isTrue)SizedBox(
                           height: 40, width: 40,
                           child: Stack(
                             alignment: Alignment.center,
@@ -266,9 +291,10 @@ class _WaitListCardState extends State<WaitListCard> {
                   style: AppStyle.purple12.copyWith(
                       fontWeight: FontWeight.w700),
                 ),
-              if (widget.model.status=="in-progress"&& widget.model.type == ComType.call)
+              if (/*widget.model.status=="in-progress"&&*/ widget.model.type == ComType.call)
                 Text(
-                  "CALL\nIN-PROGRESS",
+                  //"CALL\nIN-PROGRESS",
+                   "Call "+widget.model.status.toStringOrEmpty.toTitleCase(),
                   textAlign: TextAlign.center,
                   style: AppStyle.purple12.copyWith(
                       fontWeight: FontWeight.w700),
