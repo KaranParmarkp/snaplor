@@ -1,5 +1,6 @@
 import '../../../../../app/utils/utils.dart';
 import '../../../../models/models.dart';
+import '../../../../models/notification_data_model.dart';
 
 abstract class AuthRepository{
   Future<GenericResponse> login(String phone);
@@ -26,4 +27,6 @@ abstract class AuthRepository{
   Future<GenericResponse> chatCount();
   Future<GenericResponse> fcmSave();
   Future<GenericResponse> logout();
+  Future<List<NotificationDataModel>> notificationList();
+  Future<GenericResponse> notificationCount();
 }

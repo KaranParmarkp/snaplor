@@ -1,3 +1,11 @@
+import 'package:jyotishee/data/models/notification_data_model.dart';
+
+import 'package:jyotishee/data/models/notification_data_model.dart';
+
+import 'package:jyotishee/data/models/notification_data_model.dart';
+
+import 'package:jyotishee/data/models/notification_data_model.dart';
+
 import '../../../../../app/utils/utils.dart';
 import '../../../../models/models.dart';
 import '../../network_services/abstract_api.dart';
@@ -255,5 +263,25 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
     );
   }
 
+  @override
+  Future<List<NotificationDataModel>> notificationList() {
+    return serviceHandler(
+      serviceFunction: () => service.notificationList(),
+      successFunction: (response) async {
+        List<NotificationDataModel> list = [];
+        list = List<NotificationDataModel>.from(response.data!.map((x) => NotificationDataModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+  @override
+  Future<GenericResponse> notificationCount() {
+    return serviceHandler(
+      serviceFunction: () => service.notificationCount(),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
 
 }

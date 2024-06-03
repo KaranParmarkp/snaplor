@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/widgets/ftoast.dart' as ft;
@@ -124,12 +125,31 @@ class AppHelper {
     ));
   }
 
-  static Future<File?> pickImage({required bool fromCamera}) async {
+  static Future<File?> pickImage({required bool fromCamera,bool crop=true}) async {
     final ImagePicker imagePicker = ImagePicker();
     final XFile? image = await imagePicker.pickImage(
         source: fromCamera ? ImageSource.camera : ImageSource.gallery,
         imageQuality: 50);
-    return image != null ? File(image.path) : null;
+    if(crop && image!=null){
+      CroppedFile? cropImage = await ImageCropper().cropImage(sourcePath: image.path,
+      compressQuality: 50,
+        compressFormat: ImageCompressFormat.jpg,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: '',
+              toolbarColor: AppColors.colorPrimary,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: '',
+          ),
+        ]
+      );
+      return cropImage!=null ?File(cropImage.path)  :null;
+    }else{
+      return image != null ? File(image.path) : null;
+    }
   }
 
   static Future<List<File>> pickMultipleImage() async {

@@ -728,4 +728,37 @@ class AuthProvider extends BaseProvider {
       s.printDebug;
     }
   }
+
+  // Notification list api
+  static String notificationListKey = 'notificationListKey';
+  notificationList() async {
+    setLoading(taskName: notificationListKey);
+    try {
+      setData(taskName: notificationListKey, data: await _authRepo.notificationList());
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(
+        taskName: notificationListKey,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
+  // Notification Count api
+  static String notificationCountKey = 'notificationCountKey';
+  notificationCount() async {
+    setLoading(taskName: notificationCountKey);
+    try {
+      setData(taskName: notificationCountKey, data: await _authRepo.notificationCount());
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(
+        taskName: notificationCountKey,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
 }

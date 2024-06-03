@@ -93,8 +93,19 @@ class AuthService extends ApiService {
     return getData(ApiConfig.wallet);
   }
 
+  Future<Response<GenericResponse>> notificationCount() async {
+    return getData(ApiConfig.notificationCount);
+  }
   Future<Response<GenericResponse>> notificationList() async {
     return getData(ApiConfig.notificationList);
+  }
+
+  Future<Response<GenericResponse>> notificationRead(String id) async {
+    return putData(ApiConfig.notificationList+"seen/$id");
+  }
+
+  Future<Response<GenericResponse>> notificationReadAll() async {
+    return putData(ApiConfig.notificationList+"seen");
   }
 
   Future<Response<GenericResponse>> searchProduct(FilterModel filterModel) async {

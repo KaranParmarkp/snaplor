@@ -20,6 +20,8 @@ class ApiConfig {
   static const String callWaitingList = "call/requests";
   static const String wallet = "payments/astrologer/wallet/history";
   static const String notificationList = "notifications";
+  static const String notificationCount = "notifications/count";
+  static const String notificationRead = "notifications";
   static const String acceptCallRequest = "call/accept/";
   static const String acceptChatRequest = "chats/accept-astrologer/";
   static const String cancelChatRequest = "chats/cancel-request/";
@@ -54,6 +56,8 @@ class ApiConfig {
   static const String chatAcceptedByCustomer = "in-progress";
   static const String chatCompleted = "completed";
   static const String cancelled = "cancelled";
+
+  //Notification
 
 
 }
