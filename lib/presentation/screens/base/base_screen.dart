@@ -6,6 +6,7 @@ import 'package:jyotishee/presentation/screens/community/community_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/profile_screen.dart';
 import 'package:jyotishee/presentation/screens/waitlist/waitlist_screen.dart';
 import 'package:jyotishee/presentation/screens/wallet/wallet_screen.dart';
+import 'package:jyotishee/presentation/widgets/check_net.dart';
 import '../../widgets/widgets.dart';
 import '../home/home_screen.dart';
 import '../settings/settings_screen.dart';
@@ -54,96 +55,96 @@ class _BaseScreenState extends State<BaseScreen> {
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
       builder: (context, provider, child) {
-        return Scaffold(
-          //key: scaffoldKey,
-          resizeToAvoidBottomInset: false,
-          //drawer: AppDrawer(),
-          body: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              screens[selectedIndex],
-              if (provider.currentChat.isNotNull)
-                ...[Padding(
-                  padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
-                  child: WaitListCard(model: provider.currentChat!, type: ComType.chat),
-                )]
-            ],
-          ),
-          bottomNavigationBar: Container(
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 4,
-              )
-            ]),
-            child: BottomNavigationBar(
-              backgroundColor: Colors.white,
-              type: BottomNavigationBarType.fixed,
-              unselectedLabelStyle: AppStyle.grey12,
-              selectedLabelStyle: AppStyle.blue12,
-              selectedItemColor: AppColors.colorPrimary,
-              unselectedItemColor: AppColors.hintGrey,
-              showUnselectedLabels: true,
-              showSelectedLabels: true,
-              elevation: 12,
-              currentIndex: selectedIndex,
-              onTap: (value) {
-                provider.onGoingChat();
-                  selectedIndex = value;
-                  setState(() {});
-              },
-              items: [
-                /*BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircleNetworkImageAvatar(
-                        radius: 15,
-                        image: context.read<AuthProvider>().userModel?.profileImage),
-                  ),
-                  label: "",
-                ),*/
-                BottomNavigationBarItem(
-                    icon: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgImage(
-                        image: selectedIndex == 0
-                            ? AppSvg.home
-                            : AppSvg.homeUnFilled,
-                      ),
-                    ),
-                    label: ""),
-                BottomNavigationBarItem(
-                    icon: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgImage(
-                        image: selectedIndex == 1
-                            ? AppSvg.comFilled
-                            : AppSvg.comunFilled,
-                        //color: selectedIndex != 1 ? Colors.black : AppColors.colorPrimary,
-                      ),
-                    ),
-                    label: ""),
-                BottomNavigationBarItem(
-                    icon: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgImage(
-                        image: selectedIndex == 2
-                            ? AppSvg.walledFilled
-                            : AppSvg.wallet,
-                      ),
-                    ),
-                    label: ""),
-                BottomNavigationBarItem(
-                    icon: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgImage(
-                        image: selectedIndex == 3
-                            ? AppSvg.settingFilled
-                            : AppSvg.setting,
-                      ),
-                    ),
-                    label: ""),
+        return InternetCheckerWidget(
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                screens[selectedIndex],
+                if (provider.currentChat.isNotNull)
+                  ...[Padding(
+                    padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
+                    child: WaitListCard(model: provider.currentChat!, type: ComType.chat),
+                  )]
               ],
+            ),
+            bottomNavigationBar: Container(
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 4,
+                )
+              ]),
+              child: BottomNavigationBar(
+                backgroundColor: Colors.white,
+                type: BottomNavigationBarType.fixed,
+                unselectedLabelStyle: AppStyle.grey12,
+                selectedLabelStyle: AppStyle.blue12,
+                selectedItemColor: AppColors.colorPrimary,
+                unselectedItemColor: AppColors.hintGrey,
+                showUnselectedLabels: true,
+                showSelectedLabels: true,
+                elevation: 12,
+                currentIndex: selectedIndex,
+                onTap: (value) {
+                  provider.onGoingChat();
+                    selectedIndex = value;
+                    setState(() {});
+                },
+                items: [
+                  /*BottomNavigationBarItem(
+                    icon: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleNetworkImageAvatar(
+                          radius: 15,
+                          image: context.read<AuthProvider>().userModel?.profileImage),
+                    ),
+                    label: "",
+                  ),*/
+                  BottomNavigationBarItem(
+                      icon: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SvgImage(
+                          image: selectedIndex == 0
+                              ? AppSvg.home
+                              : AppSvg.homeUnFilled,
+                        ),
+                      ),
+                      label: ""),
+                  BottomNavigationBarItem(
+                      icon: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SvgImage(
+                          image: selectedIndex == 1
+                              ? AppSvg.comFilled
+                              : AppSvg.comunFilled,
+                          //color: selectedIndex != 1 ? Colors.black : AppColors.colorPrimary,
+                        ),
+                      ),
+                      label: ""),
+                  BottomNavigationBarItem(
+                      icon: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SvgImage(
+                          image: selectedIndex == 2
+                              ? AppSvg.walledFilled
+                              : AppSvg.wallet,
+                        ),
+                      ),
+                      label: ""),
+                  BottomNavigationBarItem(
+                      icon: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SvgImage(
+                          image: selectedIndex == 3
+                              ? AppSvg.settingFilled
+                              : AppSvg.setting,
+                        ),
+                      ),
+                      label: ""),
+                ],
+              ),
             ),
           ),
         );

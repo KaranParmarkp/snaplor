@@ -159,7 +159,6 @@ class _MyHomePageState extends State<MyHomePage> {
           shrinkWrap: true,
           itemBuilder: (context, index) {
             return Align(
-
               child: Container(
                 color: Colors.red, // Background color
                 margin: EdgeInsets.only(bottom: 10),
