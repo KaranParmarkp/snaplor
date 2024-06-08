@@ -60,7 +60,7 @@ class FollowersScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   NameVerified(
-                                    id: data[index].user?.userName,
+                                    //id: data[index].user?.userName,
                                     name: data[index].user?.name.toStringOrEmpty.toTitleCase(),
                                     showAst: data[index].user?.role == "astrologer",
                                   ),

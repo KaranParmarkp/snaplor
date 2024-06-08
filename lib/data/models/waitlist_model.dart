@@ -30,7 +30,7 @@ class WaitListModel {
   final int? v;
   final int? pricePerMinute;
   final bool? isAcceptedByAstrologer;
-  final bool? isAcceptedByMember;
+   bool? isAcceptedByMember;
   ComType? type;
   bool? fromInitiated;
   bool? isTyping;

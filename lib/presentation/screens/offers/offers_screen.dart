@@ -40,7 +40,9 @@ class _OffersScreenState extends State<OffersScreen> {
 
 class OfferCard extends StatelessWidget {
   const OfferCard({super.key, required this.model});
+
   final OfferModel model;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -77,6 +79,46 @@ class OfferCard extends StatelessWidget {
                       value: model.description.toStringOrEmpty,
                       valueColor: AppColors.colorPrimary,
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                              width: 100,
+                              child: Text("New Call Rate",
+                                  style: AppStyle.black10.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12),
+                                  overflow: TextOverflow.ellipsis)),
+                          Text(
+                              (((context
+                                  .read<AuthProvider>()
+                                  .userModel!
+                                  .chatPrice! *
+                                  50) /
+                                  100)
+                                  .toString()),
+                              style: AppStyle.black10.copyWith(
+                                  color: AppColors.colorPrimary,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12),
+                              overflow: TextOverflow.ellipsis),
+                          5.width,
+                          Text(
+                              context
+                                  .read<AuthProvider>()
+                                  .userModel!
+                                  .chatPrice
+                                  .toString(),
+                              style: AppStyle.black10.copyWith(
+                                  color: AppColors.colorPrimary,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,decoration: TextDecoration.lineThrough),
+                              overflow: TextOverflow.ellipsis),
+
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -84,14 +126,16 @@ class OfferCard extends StatelessWidget {
                 value: model.isActive!,
                 trackColor: AppColors.red,
                 onChanged: (value) {
-                  context.read<AuthProvider>().offerStatusChange(id: model.id!, activate: model.isActive.isTrue?false:true);
+                  context.read<AuthProvider>().offerStatusChange(
+                      id: model.id!,
+                      activate: model.isActive.isTrue ? false : true);
                 },
                 activeColor: AppColors.colorPrimary,
               )
             ],
           ),
           5.height,
-          Row(
+          /*Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               NameValue(
@@ -116,7 +160,7 @@ class OfferCard extends StatelessWidget {
                 width: null,
               ),
             ],
-          ),
+          ),*/
         ],
       ),
     );

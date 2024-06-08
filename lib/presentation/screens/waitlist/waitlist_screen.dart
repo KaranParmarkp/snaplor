@@ -140,31 +140,33 @@ class _WaitListCardState extends State<WaitListCard> {
   @override
   void initState() {
     super.initState();
-    if (widget.model.fromInitiated.isTrue) _startTimer();
+    //if (widget.model.fromInitiated.isTrue)
+      _startTimer();
   }
 
   void _startTimer() {
-    /*DateTime newEndTime = widget.model.createdAt!.toLocal().add(Duration(minutes: 5));
-    DateTime nowTime = DateTime.now();
-    print("nowtime ${nowTime}");
-    print("new end time ${newEndTime}");
-    if (newEndTime.isBefore(newEndTime)) {
-      _timerValue = 5*(newEndTime.minute-nowTime.minute);
-    } else {
-      _timerValue = 0;
-    }
-    if(mounted)setState(() {
-
-    });;
-    if(newEndTime.isBefore(nowTime))*/_timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        _timerValue--;
+    print("starting......");
+    /// 12:05 12:07
+    DateTime currentTime = DateTime.now();
+    DateTime newEndTime = widget.model.createdAt!.toLocal().add(Duration(minutes: 5));
+    print(currentTime);
+    print(newEndTime);
+    print(currentTime.isBefore(newEndTime));
+    if(currentTime.isBefore(newEndTime) && widget.model.isAcceptedByAstrologer.isFalse && widget.model.isAcceptedByMember.isFalse){
+      print("sec ${(newEndTime.second-currentTime.second).abs()}");
+      print("min ${(newEndTime.minute-currentTime.minute).abs()}");
+      _timerValue = /*(newEndTime.second-currentTime.second).abs()*/60*(newEndTime.minute-currentTime.minute).abs();
+      _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+        print("tick tick timerval $_timerValue}");
+        setState(() {
+          _timerValue--;
+        });
+        if (_timerValue == 0) {
+          context.read<AuthProvider>().updateCurrentChatModel(null);
+          _timer?.cancel();
+        }
       });
-      if (_timerValue == 0) {
-        context.read<AuthProvider>().updateCurrentChatModel(null);
-        _timer?.cancel();
-      }
-    });
+    }
   }
 
   @override
@@ -215,7 +217,7 @@ class _WaitListCardState extends State<WaitListCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.model.createdAt!.formatElapsedTimeString(),
+                            widget.model.createdAt!.toLocal().formatElapsedTimeString(),
                             style: AppStyle.grey12
                                 .copyWith(color: AppColors.greyDark),
                           ),
@@ -246,7 +248,7 @@ class _WaitListCardState extends State<WaitListCard> {
                           },
                           child: Icon(Icons.close, size: 20,),),
                         5.height,*/
-                        if(widget.model.fromInitiated.isTrue)SizedBox(
+                        if(_timerValue>0)SizedBox(
                           height: 40, width: 40,
                           child: Stack(
                             alignment: Alignment.center,
@@ -310,7 +312,8 @@ class _WaitListCardState extends State<WaitListCard> {
                     child: AppRoundedButton(text: AppStrings.rejects,
                       color: AppColors.red,
                       onTap: () {
-                        context
+                        _timer?.cancel();
+                      context
                             .read<AuthProvider>()
                             .cancelRequest(type: widget.type, id: widget.model
                             .id!);
@@ -321,6 +324,7 @@ class _WaitListCardState extends State<WaitListCard> {
                     child: AppRoundedButton(text: AppStrings.accept,
                       color: AppColors.colorPrimary,
                       onTap: () async {
+                        _timer?.cancel();
                         await context.read<AuthProvider>().acceptRequest(
                             type: widget.type, model: widget.model);
                         context.read<AuthProvider>().waitList(widget.type);

@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:jyotishee/data/models/generic_user_model.dart';
 import 'package:jyotishee/data/models/message_model.dart';
 import 'package:jyotishee/data/models/waitlist_model.dart';
+import 'package:jyotishee/presentation/widgets/image_view_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app/utils/utils.dart';
@@ -246,7 +247,15 @@ class _ChatScreenState extends State<ChatScreen> {
                                           style: AppStyle.purple14w600,
                                         ),
                                         Text(
-                                          replyMessageModel!.attachments!=null ? replyMessageModel!.attachments!.where((element) => element.type!.contains("app")).first.url!.split("/").last.toTitleCase() : replyMessageModel!.message.toStringOrEmpty,
+                                          replyMessageModel!.attachments!.isNotEmpty
+                                              ? replyMessageModel!.attachments!
+                                                  .first
+                                                  .url!
+                                                  .split("/")
+                                                  .last
+                                                  .toTitleCase()
+                                              : replyMessageModel!
+                                                  .message.toStringOrEmpty,
                                           style: AppStyle.black12w400,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
@@ -513,9 +522,9 @@ class _MessageTextState extends State<MessageText>
                         : AppColors.purpleLight1),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: widget.messageType == MessageType.sender ? CrossAxisAlignment.start : CrossAxisAlignment.end,
                   children: [
-                    if (widget.model.originalMessageId.isNotNull)
-                      ClipRRect(
+                    if (widget.model.originalMessageId.isNotNull)ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Container(
                           padding: const EdgeInsets.only(left: 0, right: 15),
@@ -554,18 +563,63 @@ class _MessageTextState extends State<MessageText>
                                               ? Colors.white
                                               : AppColors.black),
                                     ),
-                                    Text(
-                                      widget.model.originalMessageId!.message
-                                          .toStringOrEmpty,
-                                      style: AppStyle.black12w400.copyWith(
-                                          color: widget.messageType ==
-                                                  MessageType.sender
-                                              ? Colors.white
-                                              : AppColors.black),
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
+                                    if(widget.model.originalMessageId!.attachments!.isNotEmpty)...[
+                                      /// original message image
+                                      if(widget.model.isImageOriginalId())Padding(
+                                      padding: const EdgeInsets.only(top: 5,bottom: 10),
+                                      child: SquareNetworkImageAvatar(
+                                        image: widget.model.originalMessageId!.attachments!.first.url,
+                                        radius: 12,
+                                        height: 60,
+                                      ),
                                     ),
-                                    5.height,
+                                      if(widget.model.isFileOriginalId())Padding(
+                                        padding: const EdgeInsets.only(bottom: 5),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                              const EdgeInsets.only(right: 10),
+                                              child: CircleAvatar(
+                                                child: Icon(
+                                                  CupertinoIcons.arrow_down_doc,
+                                                  color: AppColors.black,
+                                                ),
+                                                backgroundColor:
+                                                AppColors.hintGrey3,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                widget.model.originalMessageId!.attachments!.first.url!.split("/").last,
+                                                style: AppStyle.black12w400.copyWith(
+                                                    color: widget.messageType ==
+                                                        MessageType.sender
+                                                        ? Colors.white
+                                                        : AppColors.black),
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+
+                                    /// original message text
+                                    if(widget.model.originalMessageId!.message.isNotNull && widget.model.originalMessageId!.attachments!.isEmpty)Padding(
+                                      padding: const EdgeInsets.only(bottom: 5),
+                                      child: Text(
+                                        widget.model.originalMessageId!.message.toStringOrEmpty,
+                                        style: AppStyle.black12w400.copyWith(
+                                            color: widget.messageType ==
+                                                    MessageType.sender
+                                                ? Colors.white
+                                                : AppColors.black),
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
                                   ],
                                 )),
                               ],
@@ -584,16 +638,25 @@ class _MessageTextState extends State<MessageText>
                               widget.model.attachments!.isNotEmpty &&
                               widget.model.attachments!.any(
                                   (element) => element.type!.contains("image")))
-                            SquareNetworkImageAvatar(
-                              height: 300,
-                              width: 300,
-                              image: widget.model.attachments!
-                                  .where((element) =>
-                                      element.type!.contains("image"))
-                                  .first
-                                  .url,
+                            InkWell(
+                              onTap: () => context.push(ImageViewScreen(
+                                image: widget.model.attachments!
+                                    .where((element) =>
+                                        element.type!.contains("image"))
+                                    .first
+                                    .url,
+                              )),
+                              child: SquareNetworkImageAvatar(
+                                height: 300,
+                                width: 300,
+                                image: widget.model.attachments!
+                                    .where((element) =>
+                                        element.type!.contains("image"))
+                                    .first
+                                    .url,
+                              ),
                             ),
-                          Wrap(
+                          if(widget.model.originalMessageId.isNull)Wrap(
                             crossAxisAlignment: WrapCrossAlignment.end,
                             alignment: WrapAlignment.end,
                             children: [
@@ -603,35 +666,41 @@ class _MessageTextState extends State<MessageText>
                                       element.type!.contains("app")))
                                 InkWell(
                                   onTap: () {
-                                    AppHelper.launchWebUrl(widget.model.attachments!
-                                        .where((element) =>
-                                        element.type!.contains("app"))
-                                        .first
-                                        .url!,mode: LaunchMode.platformDefault);
+                                    AppHelper.launchWebUrl(
+                                        widget.model.attachments!
+                                            .where((element) =>
+                                                element.type!.contains("app"))
+                                            .first
+                                            .url!,
+                                        mode: LaunchMode.platformDefault);
                                   },
                                   child: Container(
                                     width: context.screenWidth * 0.8,
                                     child: Row(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(right: 10),
+                                          padding:
+                                              const EdgeInsets.only(right: 10),
                                           child: CircleAvatar(
                                             child: Icon(
                                               CupertinoIcons.arrow_down_doc,
                                               color: AppColors.black,
                                             ),
-                                            backgroundColor: AppColors.hintGrey3,
+                                            backgroundColor:
+                                                AppColors.hintGrey3,
                                           ),
                                         ),
                                         Expanded(
                                           child: Text(
                                             widget.model.attachments!
-                                                .where((element) =>
-                                                    element.type!.contains("app"))
+                                                .where((element) => element
+                                                    .type!
+                                                    .contains("app"))
                                                 .first
                                                 .url!
                                                 .split("/")
-                                                .last.toTitleCase(),
+                                                .last
+                                                .toTitleCase(),
                                             style: widget.messageType ==
                                                     MessageType.sender
                                                 ? AppStyle.white14W400
@@ -684,6 +753,50 @@ class _MessageTextState extends State<MessageText>
                               ),
                             ],
                           ),
+                            if(widget.model.originalMessageId.isNotNull)Row(children: [
+                              Expanded(
+                                child: Text(
+                                  convertNewLine(widget.text),
+                                  style: widget.messageType == MessageType.sender
+                                      ? AppStyle.white14W400
+                                      : AppStyle.black14,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      widget.time,
+                                      style: widget.messageType ==
+                                          MessageType.sender
+                                          ? AppStyle.white10
+                                          : AppStyle.black10,
+                                    ),
+                                    if (widget.messageType ==
+                                        MessageType.receiver) ...[
+                                      2.width,
+                                      if (widget.model.isDelivered.isFalse)
+                                        SvgImage(
+                                          image: AppSvg.single,
+                                          color: AppColors.hintGrey2,
+                                          size: 15,
+                                        ),
+                                      if (widget.model.isDelivered.isTrue)
+                                        SvgImage(
+                                          image: AppSvg.seen,
+                                          color: widget.model.isSeen.isTrue
+                                              ? AppColors.colorPrimary
+                                              : AppColors.hintGrey2,
+                                        )
+                                    ]
+                                  ],
+                                ),
+                              ),
+                            ],)
                         ],
                       ),
                     ),

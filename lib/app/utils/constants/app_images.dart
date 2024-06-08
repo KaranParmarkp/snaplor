@@ -1,7 +1,7 @@
 class AppImages {
   static const String onBoarding = "assets/images/surfing.jpeg";
   static const String splashBackground = "assets/images/SplashBackground.png";
-  static const String appLogo = "assets/images/app_logo.png";
+  static const String appLogo = "assets/images/app_logo1.jpeg";
   static const String appLogoWhite = "assets/images/app_logo_white.png";
   static const String showPass = "assets/images/img_show_password.png";
   static const String hidePass = "assets/images/img_hide_password.png";
@@ -62,7 +62,8 @@ class AppSvg{
   static const String mail = "assets/icons/mail-03.svg";
   static const String edit = "assets/icons/edit.svg";
   static const String appLogo = "assets/icons/app_logo.svg";
-  static const String appLogoRound = "assets/icons/app_logo_round.svg";
+  static const String appLogoRound = "assets/icons/app_logo_rounded.svg";
+  static const String appLogoWhite = "assets/icons/app_logo_white.svg";
   static const String community = "assets/icons/community.svg";
   static const String eyeOpen = "assets/icons/eye-open.svg";
   static const String repost = "assets/icons/repost.svg";

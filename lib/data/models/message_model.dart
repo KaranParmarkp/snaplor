@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:jyotishee/app/utils/utils.dart';
+
 List<MessageModel> messageModelFromJson(String str) => List<MessageModel>.from(json.decode(str).map((x) => MessageModel.fromJson(x)));
 
 String messageModelToJson(List<MessageModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -23,6 +25,15 @@ class MessageModel {
   MessageModel? originalMessageId;
   List<Attachments>? attachments;
 
+  bool isImage(){
+    return attachments!.isNotEmpty && attachments!.first.type!.contains("image");
+  }
+  bool isImageOriginalId(){
+    return originalMessageId.isNotNull && originalMessageId!.attachments!.isNotEmpty && originalMessageId!. attachments!.first.type!.contains("image");
+  }
+  bool isFileOriginalId(){
+    return originalMessageId.isNotNull && originalMessageId!.attachments!.isNotEmpty && originalMessageId!. attachments!.first.type!.contains("app");
+  }
   MessageModel({
     this.id,
     this.chatId,

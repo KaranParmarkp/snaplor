@@ -489,7 +489,7 @@ class AuthProvider extends BaseProvider {
 
   scrollCurrentChat(){
     _currentChat!.controller.animateTo(
-      _currentChat!.controller.position.maxScrollExtent + 50,
+      _currentChat!.controller.position.maxScrollExtent + 70,
       duration: Duration(milliseconds: 500),
       curve: Curves.easeOut,
     );
@@ -535,6 +535,7 @@ class AuthProvider extends BaseProvider {
           WaitListModel model = WaitListModel.fromJson(message['chat_request'] as Map<String, dynamic>);
           _currentChat = model;
           _currentChat?.fromInitiated = false;
+
           notifyListeners();
           MyApp.navKey.currentState!.context.push(ChatScreen(model: _currentChat,));
         }
@@ -577,9 +578,9 @@ class AuthProvider extends BaseProvider {
       }
     });
     _socket?.on(ApiConfig.privateMessage, (response) {
-      Map<String,dynamic> message = response is List ? response.first : response;
-      "Private Message---> ${message.toString()}".printDebug;
-      if (message != null && currentChatMessageList.any((element) => element.id != message["_id"])) {
+      "Private Message---> ${response.toString()}".printDebug;
+      dynamic message = response is List ? (response.first is Map<String,dynamic> ? response.first:null) : response;
+      if (message != null && message.containsKey("_id")&& currentChatMessageList.any((element) => element.id != message["_id"])) {
         data[getMessagesKey].add(MessageModel.fromJson(message as Map<String, dynamic>));
         currentChatMessageList.forEach((element) {element.isSeen=true;notifyListeners();});
         ///sending message to backend that i received this message

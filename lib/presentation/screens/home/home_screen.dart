@@ -4,6 +4,7 @@ import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_support_screen.dart';
 import 'package:jyotishee/presentation/screens/community/community_screen.dart';
+import 'package:jyotishee/presentation/widgets/app_consumer/status_screens/loader.dart';
 
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -59,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.all(18.0),
                 child: Column(
                   children: [
+                    //Loader(),
                     ImportantNotice(),
 
                     //total earnings

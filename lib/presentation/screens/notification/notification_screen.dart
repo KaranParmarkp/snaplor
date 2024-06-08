@@ -44,7 +44,7 @@ class NotificationCard extends StatelessWidget {
       padding: EdgeInsets.all(15),
       margin: EdgeInsets.only(bottom: 20),
       decoration: AppDecoration.whiteShadowRounded.copyWith(
-        color: model.seen ? null : AppColors.black.withOpacity(0.1)
+        //color: model.seen ? null : AppColors.black.withOpacity(0.1)
       ),
       child: InkWell(
         onTap: () {
@@ -79,7 +79,7 @@ class NotificationCard extends StatelessWidget {
                           style: AppStyle.grayDark12.copyWith(fontSize: 10),
                         ),
                       ),
-                      Icon(
+                      if(model.seen.isFalse)Icon(
                         Icons.close,
                         size: 20,
                         color: AppColors.greyDark,
