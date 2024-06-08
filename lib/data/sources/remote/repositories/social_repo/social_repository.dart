@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:jyotishee/data/models/follower_model.dart';
+
 import '../../../../../app/utils/utils.dart';
 import '../../../../models/models.dart';
 
@@ -21,4 +23,7 @@ abstract class SocialRepository{
   Future<List<PostCommentModel>> likedCommentUsers(String id);
   Future<List<UserModel>> whoToFollow();
   Future<GenericResponse> followUnFollow(String id,bool isFollow);
+  Future<List<FollowerModel>> followList(String id,bool isFollow);
+  Future<List<SocialPostModel>> getUserPosts(String id);
+  Future<UserModel> getUserDetails(String id);
 }

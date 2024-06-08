@@ -29,4 +29,5 @@ abstract class AuthRepository{
   Future<GenericResponse> logout();
   Future<List<NotificationDataModel>> notificationList();
   Future<GenericResponse> notificationCount();
+  Future<GenericResponse> notificationRead(String id);
 }

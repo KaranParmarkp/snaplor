@@ -57,6 +57,7 @@ class UserModel {
   final int? totalPost;
   final dynamic avgRating;
   final dynamic totalChatRequests;
+  final bool? isFollow;
   UserModel({
     required this.id,
     this.accessToken,
@@ -108,7 +109,8 @@ class UserModel {
     this.totalFollowing,
     this.totalPost,
     this.avgRating,
-    this.totalChatRequests
+    this.totalChatRequests,
+    this.isFollow
   });
   UserModel copyWith({
     String? id,
@@ -220,7 +222,7 @@ class UserModel {
     id: json.containsKey('user_id') ? json["user_id"]["_id"] :json["_id"] ,
     userName: json.containsKey('user_id') ? json["user_id"]["user_name"] :"",
     accessToken: json["token"],
-    name: json.containsKey('user_id') ? ((json["user_id"]["first_name"] ?? "") + " "+(json["user_id"]["last_name"] ?? "" )) :json["name"],
+    name: json.containsKey('user_id') ? ((json["user_id"]["first_name"] ?? "") + " "+(json["user_id"]["last_name"] ?? "" )) :json["name"] ?? ((json["first_name"] ?? "") + " "+(json["last_name"] ?? "" )),
     firstName: json.containsKey('user_id') ? json["user_id"]["first_name"] : "",
     lastName: json.containsKey('user_id') ? json["user_id"]["last_name"] :"",
     email: json.containsKey('user_id') ? json["user_id"]["email"] : json["email"],
@@ -261,13 +263,14 @@ class UserModel {
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     v: json["__v"],
-    profileImage: json.containsKey('user_id') ? json["user_id"]["profile_image"] : "",
+    profileImage: json.containsKey('user_id') ? json["user_id"]["profile_image"] : json["profile_image"] ?? "",
     videoUrl: json["video_url"],
     totalFollowers: json["total_followers"] ?? 0,
     totalFollowing: json["total_following"] ?? 0,
     totalPost: json["total_posts"] ?? 0,
     avgRating: json["average_rating"] ?? 0.0,
     totalChatRequests: json["total_chat_requests"] ?? 0,
+    isFollow: json["is_following"],
   );
 
   Map<String, dynamic> toJson() => {

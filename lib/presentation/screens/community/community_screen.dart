@@ -37,13 +37,21 @@ class _CommunityScreenState extends State<CommunityScreen> {
             AppStrings.snaplorCommunity,
             style: AppStyle.black14.copyWith(fontWeight: FontWeight.w600,fontSize: 18)),
       ), showProfile: true,showBack: widget.showBack,communityScreen: true,showNotification: true,),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: AppColors.colorPrimary, onPressed: () {
+      floatingActionButton: InkWell(
+        onTap: () {
           AppHelper.showBottomSheet(context: context, isScrollControlled: true,padding: EdgeInsets.zero,
               innerPadding: EdgeInsets.zero,
               child: AddPostScreen(fromMyPost: false,));
-      },
+        },
+        child: Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: AppColors.colorPrimary
+          ),
+          child: Icon(Icons.add,color: Colors.white,size: 30,),
+        ),
       ),
       body: AppConsumer<SocialProvider, List<SocialPostModel>>(
         taskName: SocialProvider.getPostKey,

@@ -52,7 +52,7 @@ class AuthService extends ApiService {
   }
 
   Future<Response<GenericResponse>> orderList(ComType type) async {
-    String url = '''?filter={"order_source": "${type.name}"}&limit=10&skip=0''';
+    String url = '''?filter={"order_source": "${type.name}"}&limit=10000&skip=0''';
     return getData(
       ApiConfig.ordersList + url,
     );
@@ -69,6 +69,7 @@ class AuthService extends ApiService {
       ApiConfig.reviewList +
           MyApp.appContext.read<AuthProvider>().userModel!.id +
           "/list",
+      queryParameters: {"limit":1000,"skip":0}
     );
   }
 
@@ -101,7 +102,7 @@ class AuthService extends ApiService {
   }
 
   Future<Response<GenericResponse>> notificationRead(String id) async {
-    return putData(ApiConfig.notificationList+"seen/$id");
+    return putData(ApiConfig.notificationList+"/seen/$id");
   }
 
   Future<Response<GenericResponse>> notificationReadAll() async {

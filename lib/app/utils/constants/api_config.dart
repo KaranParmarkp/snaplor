@@ -38,6 +38,7 @@ class ApiConfig {
   // Social
   static const String addPost = "posts";
   static const String myPost = "posts/astrologers";
+  static const String userPost = "posts?user_slug=";
   static const String comment = "posts/comments/";
   static const String deletePost = "posts/deletepost/";
   static const String deleteComment = "posts/deletecomment/";
@@ -57,7 +58,12 @@ class ApiConfig {
   static const String chatCompleted = "completed";
   static const String cancelled = "cancelled";
 
-  //Notification
+  //Follow
+  static const String followers = "followers/follower/";
+  static const String followings = "followers/following/";
 
+  static const String userDetails = "users/slug/";
 
 }
+
+

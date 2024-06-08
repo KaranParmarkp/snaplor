@@ -33,6 +33,11 @@ class SocialService extends ApiService {
       queryParameters: {"skip" : skip,"limit":10}
     );
   }
+  Future<Response<GenericResponse>> getUserPosts(String id) async {
+    return getData(
+        ApiConfig.userPost+id.toLowerCase(),queryParameters: {"limit": 1000,"skip":0}
+    );
+  }
 
   Future<Response<GenericResponse>> getMyPosts(PostType? type) async {
     if (type == PostType.video)
@@ -102,6 +107,12 @@ class SocialService extends ApiService {
       "following_id": id, //user_id
       "action" : isFollow ? "follow" : "unfollow"
     });
+  }
+  Future<Response<GenericResponse>> followList(String id, bool isFollow) async {
+    return  getData((isFollow ? ApiConfig.followers:ApiConfig.followings) + id);
+  }
+  Future<Response<GenericResponse>> getUserDetails(String id, ) async {
+    return  getData(ApiConfig.userDetails + id.toLowerCase());
   }
 
 }

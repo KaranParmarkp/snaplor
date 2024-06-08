@@ -761,4 +761,20 @@ class AuthProvider extends BaseProvider {
     }
   }
 
+  // Notification Read api
+  static String notificationReadKey = 'notificationReadKey';
+  notificationRead({required String id,Function()? onSuccess}) async {
+    setLoading(taskName: notificationReadKey,showDialogLoader: true);
+    try {
+      setData(taskName: notificationReadKey, data: await _authRepo.notificationRead(id),onSuccess: (data) => onSuccess?.call(),hideLoader: true);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(
+        taskName: notificationReadKey,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
 }

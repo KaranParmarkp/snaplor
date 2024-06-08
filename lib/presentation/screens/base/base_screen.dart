@@ -116,10 +116,10 @@ class _BaseScreenState extends State<BaseScreen> {
                     icon: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SvgImage(
-                       size: 22,
                         image: selectedIndex == 1
-                            ? AppSvg.community
-                            : AppSvg.community,color: selectedIndex != 1 ? Colors.black : AppColors.colorPrimary,
+                            ? AppSvg.comFilled
+                            : AppSvg.comunFilled,
+                        //color: selectedIndex != 1 ? Colors.black : AppColors.colorPrimary,
                       ),
                     ),
                     label: ""),

@@ -508,53 +508,56 @@ class AppHelper {
     return showDialog(context: context,
       builder: (context) => Dialog(
         backgroundColor: AppColors.transparent,
-
-        child: Container(
-        padding: EdgeInsets.all(15),
-        height: 100,
-        decoration: AppDecoration.whiteShadowRounded,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: 60,width: 60,
-              padding: EdgeInsets.all(20),
-              margin: EdgeInsets.only(right: 20),
-              decoration: AppDecoration.purpleLightRounded.copyWith(
-                borderRadius: BorderRadius.circular(8)
-              ),
-              child: SvgImage(image: AppSvg.callHelp),
-            ),
-            Expanded(child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text("You need help?",style: AppStyle.black14w600,),
-                5.height,
-                Row(
-                  children: [
-                    Text("Call Us on:  ",style: AppStyle.hintGray12,),
-                    InkWell(
-                        onTap: () {
-                          var contact = "+919818484869";
-                          var androidUrl = "whatsapp://send?phone=$contact&text=Hi, I need some help";
-                          var iosUrl = "https://wa.me/$contact?text=${Uri.parse('Hi, I need some help')}";
-                          AppHelper.launchWebUrl(Platform.isAndroid?androidUrl : iosUrl);
-                        },
-                        child: Text("+91 9818484869",style: AppStyle.black12w600,)),
-                  ],
+        child: InkWell(
+          onTap: () {
+            context.pop();
+            var contact = "+919818484869";
+            var androidUrl = "whatsapp://send?phone=$contact&text=Hi, I need some help";
+            var iosUrl = "https://wa.me/$contact?text=${Uri.parse('Hi, I need some help')}";
+            AppHelper.launchWebUrl(Platform.isAndroid?androidUrl : iosUrl);
+          },
+          child: Container(
+          padding: EdgeInsets.all(15),
+          height: 100,
+          decoration: AppDecoration.whiteShadowRounded,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 60,width: 60,
+                padding: EdgeInsets.all(15),
+                margin: EdgeInsets.only(right: 20),
+                decoration: AppDecoration.purpleLightRounded.copyWith(
+                  borderRadius: BorderRadius.circular(8)
                 ),
-              ],
-            )),
-            Align(
-                alignment: Alignment.topRight,
-                child: IconButton(onPressed: () => context.pop(), icon: Icon(Icons.close)))
-          ],
+                child: SvgImage(image: AppSvg.wp),
+              ),
+              Expanded(child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("You need help?",style: AppStyle.black14w600,),
+                  5.height,
+                  Row(
+                    children: [
+                      Text("Chat with us :  ",style: AppStyle.hintGray12,),
+                      InkWell(
+
+                          child: Text("+91 9818484869",style: AppStyle.black12w600,)),
+                    ],
+                  ),
+                ],
+              )),
+              Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(onPressed: () => context.pop(), icon: Icon(Icons.close)))
+            ],
+          ),
+              ),
         ),
-            ),
       ),);
   }
 

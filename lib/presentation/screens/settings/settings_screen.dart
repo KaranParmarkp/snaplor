@@ -42,7 +42,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),*/
       appBar: DashboardAppBar(
         title: '',
-        showProfile: true,
+        showProfile: false,
         showNotification: false,
       ),
       body: SingleChildScrollView(
@@ -75,12 +75,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
               //TitleDropdown(text: AppStrings.profile, leadingIcon: SvgImage(image: AppSvg.user),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(ProfileScreen()),),
               //TitleDropdown(text: AppStrings.notification, leadingIcon: SvgImage(image: AppSvg.bell),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(NotificationSettingsScreen()),),
               TitleDropdown(
+                text: AppStrings.userDetails,
+                leadingIcon: Icon(Icons.account_circle),
+                icon: Icon(Icons.keyboard_arrow_right_rounded),
+                onTap: () => context.push(ProfileScreen()),
+              ),
+              TitleDropdown(
                 text: AppStrings.language,
                 leadingIcon: SvgImage(image: AppSvg.language),
                 icon: Icon(Icons.keyboard_arrow_right_rounded),
                 onTap: () => context.push(LanguageScreen()),
               ),
-              //TitleDropdown(text: AppStrings.faqs, leadingIcon: SvgImage(image: AppSvg.terms),icon: Icon(Icons.keyboard_arrow_right_rounded),onTap: () => context.push(faqScreen()),),
               TitleDropdown(
                 text: AppStrings.terms,
                 leadingIcon: SvgImage(image: AppSvg.terms),
@@ -99,26 +104,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   data: AppStrings.privacyDesc,
                 )),
               ),
-              TitleDropdown(
+              /*TitleDropdown(
                   text: AppStrings.version,
                   leadingIcon: SvgImage(image: AppSvg.terms),
-                  icon: Text(packageInfo?.version ?? '')),
+                  icon: Text(packageInfo?.version ?? '')),*/
               TitleDropdown(
                 text: AppStrings.logOut,
                 fontColor: AppColors.red,
                 leadingIcon: SvgImage(image: AppSvg.logout),
                 onTap: () => AppHelper.showCustomDialog(
-                    context: context, title: "Are you sure want to logout?",
-                  subText: context.read<AuthProvider>().currentChat!=null ? "Your current chat will end if you logout." : null,
+                  context: context,
+                  title: "Are you sure want to logout?",
+                  subText: context.read<AuthProvider>().currentChat != null
+                      ? "Your current chat will end if you logout."
+                      : null,
                   onNegativeTap: () {
                     context.pop();
                   },
                   onPositiveTap: () {
-                      context.pop();
-                      context.read<AuthProvider>().logout();
-                    },),
+                    context.pop();
+                    context.read<AuthProvider>().logout();
+                  },
+                ),
                 //onTap: () => ,
               ),
+              Text(" "+(packageInfo?.version??""))
             ],
           ),
         ),

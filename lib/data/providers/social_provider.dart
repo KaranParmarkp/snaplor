@@ -244,16 +244,58 @@ class SocialProvider extends BaseProvider {
     }
   }
 
-  //Who to follow  api
   static String followUnFollowKey = 'followUnFollowKey';
-  followUnFollow({required String id,bool isFollow=true}) async {
+  followUnFollow({required String id,bool isFollow=true,Function()? onSuccess}) async {
     setLoading(taskName: followUnFollowKey,showDialogLoader: true);
     try {
-      setData(taskName: followUnFollowKey,data: await _repository.followUnFollow(id,isFollow),onSuccess: (data) => whoToFollow(),hideLoader: true);
+      setData(taskName: followUnFollowKey,data: await _repository.followUnFollow(id,isFollow),onSuccess: (data) {
+        onSuccess?.call();
+        whoToFollow();
+      },hideLoader: true);
     } catch (e, s) {
       e.printDebug;
       s.printDebug;
       setError(taskName: followUnFollowKey,errorMessage:  e.toString(),);
     }
   }
+
+
+  static String followerListKey = 'followerListKey';
+  followerList({required String id,bool isFollow=true}) async {
+    setLoading(taskName: followerListKey,);
+    try {
+      setData(taskName: followerListKey,data: await _repository.followList(id,isFollow),hideLoader: true);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: followerListKey,errorMessage:  e.toString(),);
+    }
+  }
+
+  // Get Posts api
+  static String getUserPostKey = 'getUserPostKey';
+  getUserPost({bool refresh=false,required String id}) async {
+    setLoading(taskName: getUserPostKey,showDialogLoader: refresh);
+    try {
+      setData(taskName: getUserPostKey,data: await _repository.getUserPosts(id));
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: getUserPostKey,errorMessage:  e.toString());
+    }
+  }
+
+  // Get Posts api
+  static String getUserDetailsKey = 'getUserDetailsKey';
+  getUserDetails({required String id}) async {
+    setLoading(taskName: getUserDetailsKey,showDialogLoader: false);
+    try {
+      setData(taskName: getUserDetailsKey,data: await _repository.getUserDetails(id));
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(taskName: getUserDetailsKey,errorMessage:  e.toString());
+    }
+  }
+
 }

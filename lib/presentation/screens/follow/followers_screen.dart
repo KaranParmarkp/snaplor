@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:jyotishee/data/models/follower_model.dart';
 
 import '../../../app/utils/utils.dart';
 import '../../../data/models/models.dart';
 import '../../../data/providers/providers.dart';
 import '../../widgets/widgets.dart';
 
-class LikedUsersScreen extends StatelessWidget {
-  const LikedUsersScreen({super.key, required this.id});
+showFollowerOrFollowList(BuildContext context, String id, bool isFollower) async {
+  await AppHelper.showBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      padding: EdgeInsets.zero,
+      innerPadding: EdgeInsets.zero,
+      child: StatefulBuilder(builder: (context, setState) {
+        return FollowersScreen(
+          id: id,isFollower: isFollower,
+        );
+      }));
+  //provider.getPost(refresh: true);
+}
+class FollowersScreen extends StatelessWidget {
+  const FollowersScreen({super.key, required this.id, required this.isFollower});
   final String id;
+  final bool isFollower;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -19,15 +34,15 @@ class LikedUsersScreen extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15),
-                  child: Text(AppStrings.likes,style: AppStyle.black14,),
+                  child: Text(isFollower ? AppStrings.followers:AppStrings.following,style: AppStyle.black14,),
                 ),
                 AppDivider(color: Colors.black),
               ],
             ),
             Expanded(
-              child: AppConsumer<SocialProvider, List<PostCommentModel>>(
-                taskName: SocialProvider.getLikedUsersKey,
-                load: (provider) => provider.getLikedUsers(id:id),
+              child: AppConsumer<SocialProvider, List<FollowerModel>>(
+                taskName: SocialProvider.followerListKey,
+                load: (provider) => provider.followerList(id:id,isFollow: isFollower),
                 successBuilder: (data, provider) =>  Container(
                   padding: EdgeInsets.only(right: 0),
                   child: ListView.separated(
@@ -45,9 +60,8 @@ class LikedUsersScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   NameVerified(
-                                   id:data[index].user?.userName,
+                                    id: data[index].user?.userName,
                                     name: data[index].user?.name.toStringOrEmpty.toTitleCase(),
-                                    //verified: data[index].user?.isVerified.isTrue,
                                     showAst: data[index].user?.role == "astrologer",
                                   ),
                                   if(data[index].user?.role == "astrologer")Text(

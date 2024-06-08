@@ -193,7 +193,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                    padding: const EdgeInsets.only(bottom: 0,right: 10,left: 10),
                     child: TextHashtag(
                         name: widget.model!.type != PostType.text
                             ? widget.model!.user?.name ?? "Madhusudan"

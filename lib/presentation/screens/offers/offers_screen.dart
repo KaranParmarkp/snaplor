@@ -73,8 +73,8 @@ class OfferCard extends StatelessWidget {
                       valueColor: AppColors.colorPrimary,
                     ),
                     NameValue(
-                      name: AppStrings.userType,
-                      value: "",
+                      name: AppStrings.desc,
+                      value: model.description.toStringOrEmpty,
                       valueColor: AppColors.colorPrimary,
                     ),
                   ],

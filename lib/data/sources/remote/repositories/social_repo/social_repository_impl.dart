@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:jyotishee/app/utils/enums.dart';
 import 'package:jyotishee/app/utils/utils.dart';
+import 'package:jyotishee/data/models/follower_model.dart';
+import 'package:jyotishee/data/models/follower_model.dart';
 
 import '../../../../models/models.dart';
 import '../../network_services/abstract_api.dart';
@@ -189,6 +191,38 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
       serviceFunction: () => service.follow(id, isFollow),
       successFunction: (response) async {
         return response;
+      },
+    );
+  }
+
+  @override
+  Future<List<FollowerModel>> followList(String id,bool isFollow) {
+    return serviceHandler(
+      serviceFunction: () => service.followList(id, isFollow),
+      successFunction: (response) async {
+        List<FollowerModel> list = [];
+        list = List<FollowerModel>.from(response.data!.map((x) => FollowerModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+  @override
+  Future<List<SocialPostModel>> getUserPosts(String id) {
+    return serviceHandler(
+      serviceFunction: () => service.getUserPosts(id),
+      successFunction: (response) async {
+        List<SocialPostModel> list = [];
+        list = List<SocialPostModel>.from(response.data!.map((x) => SocialPostModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+  @override
+  Future<UserModel> getUserDetails(String id) {
+    return serviceHandler(
+      serviceFunction: () => service.getUserDetails(id,),
+      successFunction: (response) async {
+        return UserModel.fromJson(response.data);
       },
     );
   }

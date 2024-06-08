@@ -70,6 +70,9 @@ class AppSvg{
   static const String star = "assets/icons/Star.svg";
   static const String seen = "assets/icons/seen.svg";
   static const String single = "assets/icons/single.svg";
+  static const String comFilled = "assets/icons/community-filled.svg";
+  static const String comunFilled = "assets/icons/community-unfilled.svg";
+  static const String wp = "assets/icons/wp.svg";
 
 
 

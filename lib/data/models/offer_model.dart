@@ -23,6 +23,7 @@ class OfferModel {
   final int? myShare;
   final int? adminShare;
   final int? customerShare;
+  final String? description;
 
   OfferModel({
     this.id,
@@ -36,7 +37,7 @@ class OfferModel {
     this.isDeleted,
     this.isActive,
     this.v,
-    this.adminShare,this.myShare,this.customerShare
+    this.adminShare,this.myShare,this.customerShare,this.description
   });
 
   OfferModel copyWith({
@@ -88,6 +89,7 @@ class OfferModel {
     customerShare: (json["my_share"] ?? 0) + (json["jyotishee_share"] ?? 0),
     myShare: json["my_share"],
     adminShare: json["admin_share"],
+    description: json["description"],
   );
 
   Map<String, dynamic> toJson() => {

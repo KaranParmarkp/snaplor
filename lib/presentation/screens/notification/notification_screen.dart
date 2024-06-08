@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
+import 'package:jyotishee/data/providers/providers.dart';
 
 import '../../../data/models/notification_data_model.dart';
 import '../../../data/models/wallet_model.dart';
@@ -42,45 +43,56 @@ class NotificationCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(15),
       margin: EdgeInsets.only(bottom: 20),
-      decoration: AppDecoration.whiteShadowRounded,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          CircleAvatar(
-            radius: 22,
-            backgroundColor: AppColors.colorPrimary,
-            child: CircleNetworkImageAvatar(
-                radius: 20,
-                image:model.actorId.image),
-          ),
-          10.width,
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        model.createdAt.toLocal().formatElapsedTimeString(),
-                        style: AppStyle.grayDark12.copyWith(fontSize: 10),
-                      ),
-                    ),
-                    Icon(
-                      Icons.close,
-                      size: 20,
-                      color: AppColors.greyDark,
-                    ),
-                  ],
-                ),
-                //Text(model.actorId.name.toStringOrEmpty.toTitleCase(), style: AppStyle.black14),
-                Text(model.title.toStringOrEmpty, style: AppStyle.black12),
-              ],
+      decoration: AppDecoration.whiteShadowRounded.copyWith(
+        color: model.seen ? null : AppColors.black.withOpacity(0.1)
+      ),
+      child: InkWell(
+        onTap: () {
+          if(model.seen.isFalse){
+            context.read<AuthProvider>().notificationRead(id: model.id,onSuccess: () {
+              model.seen=true;
+            },);
+          }
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              radius: 22,
+              backgroundColor: AppColors.colorPrimary,
+              child: CircleNetworkImageAvatar(
+                  radius: 20,
+                  image:model.actorId.image),
             ),
-          ),
-        ],
+            10.width,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          model.createdAt.toLocal().formatElapsedTimeString(),
+                          style: AppStyle.grayDark12.copyWith(fontSize: 10),
+                        ),
+                      ),
+                      Icon(
+                        Icons.close,
+                        size: 20,
+                        color: AppColors.greyDark,
+                      ),
+                    ],
+                  ),
+                  //Text(model.actorId.name.toStringOrEmpty.toTitleCase(), style: AppStyle.black14),
+                  Text(model.title.toStringOrEmpty, style: AppStyle.black12),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

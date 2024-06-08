@@ -37,7 +37,7 @@ class _OrdersScreenState extends State<OrdersScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: AppStrings.orders,
+        title: AppStrings.sessions,
     /*    showNotification: true,
         showProfile: true,
     */  ),

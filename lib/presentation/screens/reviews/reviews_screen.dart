@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:jyotishee/app/utils/utils.dart';
+import 'package:jyotishee/presentation/widgets/app_button.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
 
 import '../../../data/models/models.dart';
@@ -125,7 +126,7 @@ class ReviewCard extends StatelessWidget {
           ),
           if(model.message.isNotNull && model.message!.isNotEmpty)Container(
             width: double.infinity,
-            padding: const EdgeInsets.only(bottom: 0, top: 10),
+            padding: const EdgeInsets.only(bottom: 0, top: 10,left: 5),
             child: Text(
               model.message ?? "",
               style: AppStyle.black12,textAlign: TextAlign.start,
@@ -133,7 +134,7 @@ class ReviewCard extends StatelessWidget {
           ),
           if (model.astrologerResponse.isNotNull)
             Padding(
-              padding:  EdgeInsets.only(top: model.message.isNotNull && model.message!.isNotEmpty ? 0 :10, bottom: 10),
+              padding:  EdgeInsets.only(top: model.message.isNotNull && model.message!.isNotEmpty ? 0 :10, bottom: 10,left: 5),
               child: Container(
                 width: double.infinity,
                 child: Text(
@@ -155,8 +156,9 @@ class ReviewCard extends StatelessWidget {
                     controller: controller,
                     maxLines: 5,
                   ),
-                  AppButton(
-                    title: AppStrings.reply,
+                  AppRoundedButton(
+                    text: AppStrings.reply,
+                    color: AppColors.colorPrimary,
                     onTap: () {
                       if(controller.isEmpty()){
                         AppHelper.showToast(message: "Please enter message");
@@ -170,8 +172,9 @@ class ReviewCard extends StatelessWidget {
             ),
           if (model.astrologerResponse.isNull && model.isFieldOpen.isFalse)Padding(
             padding: const EdgeInsets.only(top: 10),
-            child: AppButton(
-              title: AppStrings.reply,
+            child: AppRoundedButton(
+              text: AppStrings.reply,
+              color: AppColors.colorPrimary,
               onTap: () {
                 model.isFieldOpen=true;
                 context.read<AuthProvider>().updateReviewTextField();
