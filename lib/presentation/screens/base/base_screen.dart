@@ -55,7 +55,7 @@ class _BaseScreenState extends State<BaseScreen> {
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
       builder: (context, provider, child) {
-        return InternetCheckerWidget(
+        return InternetScreen(
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             body: Stack(

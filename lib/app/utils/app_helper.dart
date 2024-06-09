@@ -505,9 +505,11 @@ class AppHelper {
   }
 
   static showHelpDialog(BuildContext context){
-    return showDialog(context: context,
+    return showDialog(
+      context: context,
       builder: (context) => Dialog(
         backgroundColor: AppColors.transparent,
+        insetPadding: EdgeInsets.symmetric(horizontal: 10),
         child: InkWell(
           onTap: () {
             context.pop();

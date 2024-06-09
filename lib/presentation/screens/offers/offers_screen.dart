@@ -74,10 +74,31 @@ class OfferCard extends StatelessWidget {
                       value: "${model.userType?.toUpperCase()}",
                       valueColor: AppColors.colorPrimary,
                     ),
-                    NameValue(
-                      name: AppStrings.desc,
-                      value: model.description.toStringOrEmpty,
-                      valueColor: AppColors.colorPrimary,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                              width: 100,
+                              child: Text(AppStrings.desc,
+                                  style: AppStyle.black10.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12),
+                                  overflow: TextOverflow.ellipsis)),
+                          Expanded(
+                            child: Text(
+                                model.description.toStringOrEmpty,
+                                style: AppStyle.black10.copyWith(
+                                    color: AppColors.colorPrimary,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12),
+                            ),
+                          ),
+
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 4.0),
@@ -91,13 +112,9 @@ class OfferCard extends StatelessWidget {
                                       fontSize: 12),
                                   overflow: TextOverflow.ellipsis)),
                           Text(
-                              (((context
-                                  .read<AuthProvider>()
-                                  .userModel!
-                                  .chatPrice! *
-                                  50) /
-                                  100)
-                                  .toString()),
+                              "Rs "+(
+                                  ( (context.read<AuthProvider>().userModel!.chatPrice! * model.discountPercentage!) / 100).toDouble().round()
+                                  .toString()+"/Min"),
                               style: AppStyle.black10.copyWith(
                                   color: AppColors.colorPrimary,
                                   fontWeight: FontWeight.w400,
@@ -105,13 +122,13 @@ class OfferCard extends StatelessWidget {
                               overflow: TextOverflow.ellipsis),
                           5.width,
                           Text(
-                              context
+                              "Rs "+context
                                   .read<AuthProvider>()
                                   .userModel!
                                   .chatPrice
-                                  .toString(),
+                                  .toString()+"/Min",
                               style: AppStyle.black10.copyWith(
-                                  color: AppColors.colorPrimary,
+                                  color: AppColors.hintGrey,
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,decoration: TextDecoration.lineThrough),
                               overflow: TextOverflow.ellipsis),

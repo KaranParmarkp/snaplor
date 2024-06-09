@@ -5,6 +5,7 @@ import 'package:jyotishee/data/providers/providers.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_support_screen.dart';
 import 'package:jyotishee/presentation/screens/community/community_screen.dart';
 import 'package:jyotishee/presentation/widgets/app_consumer/status_screens/loader.dart';
+import 'package:jyotishee/presentation/widgets/check_net.dart';
 
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -27,16 +28,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    //Future.microtask(() => context.read<AuthProvider>().getCallChatCount());
   }
 
   @override
   Widget build(BuildContext context) {
     List<ChartData> chartData = [];
-    /*final res =  IOWebSocketChannel.connect(Uri.parse(ApiConfig.baseUrlSocket),headers: {
-      'Authorization': 'Bearer ${ApiService.getToken()}',
-    });
-    */
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: DashboardAppBar(

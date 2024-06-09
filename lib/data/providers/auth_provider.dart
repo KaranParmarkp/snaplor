@@ -158,6 +158,7 @@ class AuthProvider extends BaseProvider {
   static String userDataKey = 'userDataDetailsKey';
 
   Future<bool?> userData({bool refresh = false, UserModel? updateModel}) async {
+    updateChatScreenOn(false);
     onGoingChat();
     setLoading(taskName: userDataKey, showDialogLoader: refresh);
     try {
@@ -537,7 +538,7 @@ class AuthProvider extends BaseProvider {
           _currentChat?.fromInitiated = false;
 
           notifyListeners();
-          MyApp.navKey.currentState!.context.push(ChatScreen(model: _currentChat,));
+          if(chatScreenOn.isFalse)MyApp.navKey.currentState!.context.push(ChatScreen(model: _currentChat,));
         }
       }
       if (message != null && message['status'] == ApiConfig.cancelled) {
@@ -776,6 +777,14 @@ class AuthProvider extends BaseProvider {
         errorMessage: e.toString(),
       );
     }
+  }
+
+  bool _chatScreenOn = false;
+  bool get chatScreenOn => _chatScreenOn;
+
+  updateChatScreenOn(bool status){
+    _chatScreenOn =status;
+    notifyListeners();
   }
 
 }

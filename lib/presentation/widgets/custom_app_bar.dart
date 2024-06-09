@@ -91,7 +91,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           leadingWidth: showBack ? 50 : 0,
           leading: showBack
               ? InkWell(
-                  onTap: () => onBackTap ?? context.pop(),
+                  onTap: () => onBackTap!=null ? onBackTap!.call():  context.pop(),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 0),
                     child: Padding(

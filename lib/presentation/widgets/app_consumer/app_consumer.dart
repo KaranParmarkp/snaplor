@@ -57,7 +57,7 @@ class _AppConsumerState<T extends BaseProvider, K>
           return widget.loaderBuilder != null
               ? widget.loaderBuilder!(_provider)
               : Center(
-                  child: Loader(),
+                  //child: Loader(),
                 );
         case Status.error:
           if (widget.showError) {

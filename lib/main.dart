@@ -36,9 +36,11 @@ void main() async {
   await preference.load();
   runApp(buildProviders());
 }
+
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
+
 LocalNotification localNotification = LocalNotification();
 
 class MyApp extends StatefulWidget {
@@ -46,6 +48,7 @@ class MyApp extends StatefulWidget {
 
   // navKey use to access context
   static GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
+
   static BuildContext get appContext => navKey.currentState!.context;
 
   @override
@@ -56,7 +59,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    if(!kIsWeb){
+    if (!kIsWeb) {
       FirebaseMessaging.instance
           .requestPermission(alert: true, announcement: true, sound: true);
       FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -82,14 +85,23 @@ class _MyAppState extends State<MyApp> {
     print("notification received");
     print(message.notification?.toMap().toString());
     RemoteNotification? notification = message.notification;
-    //print(notification!.body?.contains("messaged you"));
-    if (notification != null && notification.body!.contains("messaged you")!=true) {
+    if (notification != null) {
       print("showing notification");
-      /*localNotification.showSimpleNotification(
-          title: notification.title.toString(),
-          body: notification.body.toString());*/
-    }
-    else{
+      if (notification.body!.contains("messaged you") == true) {
+        if (context.read<AuthProvider>().chatScreenOn.isFalse) {
+          "chat screen is not on so showing notification here".printDebug;
+          localNotification.showSimpleNotification(
+              title: notification.title.toString(),
+              body: notification.body.toString());
+        }else{
+          "chat screen is on so not showing notification here".printDebug;
+        }
+      } else {
+        localNotification.showSimpleNotification(
+            title: notification.title.toString(),
+            body: notification.body.toString());
+      }
+    } else {
       print("not showing notification");
     }
   }
@@ -120,13 +132,13 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate
       ],
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        textTheme: GoogleFonts.poppinsTextTheme(),
-        indicatorColor: AppColors.colorPrimary,
-        useMaterial3: false
-        //scaffoldBackgroundColor: Colors.white,
-      ),
-      home:  SplashScreen(),
+          primarySwatch: Colors.blue,
+          textTheme: GoogleFonts.poppinsTextTheme(),
+          indicatorColor: AppColors.colorPrimary,
+          useMaterial3: false
+          //scaffoldBackgroundColor: Colors.white,
+          ),
+      home: SplashScreen(),
     );
   }
 }
@@ -139,14 +151,12 @@ buildProviders() {
   ], child: const MyApp());
 }
 
-
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

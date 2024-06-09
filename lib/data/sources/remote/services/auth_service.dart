@@ -98,7 +98,7 @@ class AuthService extends ApiService {
     return getData(ApiConfig.notificationCount);
   }
   Future<Response<GenericResponse>> notificationList() async {
-    return getData(ApiConfig.notificationList);
+    return getData(ApiConfig.notificationList+'?filter={"seen": false}');
   }
 
   Future<Response<GenericResponse>> notificationRead(String id) async {

@@ -98,6 +98,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   errorBuilder: (p0) {
                     return SizedBox();
                   },
+                  loaderBuilder: (p0) {
+                    return SizedBox();
+                  },
                   successBuilder: (data1, provider) => SizedBox(
                     height: 200,
                     width: double.infinity,
