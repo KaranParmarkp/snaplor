@@ -1,7 +1,9 @@
 class ApiConfig {
 
-  static const String baseUrl = "https://api.snaplor.com/";
-  static const String baseUrlSocket = "https://api.snaplor.com";
+  static const String baseUrl = "https://api.nepptor.com/";
+  //static const String baseUrl = "https://api.snaplor.com/";
+  static const String baseUrlSocket = "https://api.nepptor.com";
+  //static const String baseUrlSocket = "https://api.snaplor.com";
   static const String apiUrl = "${baseUrl}api/";
 
   // User Management

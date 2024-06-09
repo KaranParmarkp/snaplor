@@ -51,370 +51,368 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return InternetScreen(
-      child: DismissKeyBoard(
-        child: Consumer<AuthProvider>(
-          builder: (context, authProvider, child) {
-            return PopScope(
-              canPop: false,
-              onPopInvoked: (didPop) {
-                if (didPop) {
-                  return;
-                }
-                context.read<AuthProvider>().updateChatScreenOn(false);
-                context.pop();
+    return DismissKeyBoard(
+      child: Consumer<AuthProvider>(
+        builder: (context, authProvider, child) {
+          return PopScope(
+            canPop: false,
+            onPopInvoked: (didPop) {
+              if (didPop) {
+                return;
+              }
+              context.read<AuthProvider>().updateChatScreenOn(false);
+              context.pop();
 
-              },
-              child: Scaffold(
-                appBar: CustomAppBar(
-                  title: widget.model!.user!.name.toStringOrEmpty.toTitleCase(),
-                  onBackTap: () {
-                    context.read<AuthProvider>().updateChatScreenOn(false);
-                    context.pop();
-                  },
-                  subtitle: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          right: 10,
-                        ),
-                        child: CircleNetworkImageAvatar(
-                            radius: 20, image: widget.model?.user?.image),
+            },
+            child: Scaffold(
+              appBar: CustomAppBar(
+                title: widget.model!.user!.name.toStringOrEmpty.toTitleCase(),
+                onBackTap: () {
+                  context.read<AuthProvider>().updateChatScreenOn(false);
+                  context.pop();
+                },
+                subtitle: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        right: 10,
                       ),
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                      child: CircleNetworkImageAvatar(
+                          radius: 20, image: widget.model?.user?.image),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.model?.user?.name.toCapitalized() ?? "",
+                            style: AppStyle.black16.copyWith(
+                                fontWeight: FontWeight.w700, fontSize: 14),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          if (authProvider.currentChat.isNotNull)
                             Text(
-                              widget.model?.user?.name.toCapitalized() ?? "",
-                              style: AppStyle.black16.copyWith(
-                                  fontWeight: FontWeight.w700, fontSize: 14),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                              "Chat in progress",
+                              style: AppStyle.lightGreen12,
                             ),
-                            if (authProvider.currentChat.isNotNull)
-                              Text(
-                                "Chat in progress",
-                                style: AppStyle.lightGreen12,
-                              ),
-                            if (!widget.readOnly &&
-                                authProvider.currentChat.isNotNull &&
-                                authProvider.currentChat!.isTyping.isTrue)
-                              Text(
-                                "Typing...",
-                                style: AppStyle.grayDark10,
-                              ),
-                          ],
+                          if (!widget.readOnly &&
+                              authProvider.currentChat.isNotNull &&
+                              authProvider.currentChat!.isTyping.isTrue)
+                            Text(
+                              "Typing...",
+                              style: AppStyle.grayDark10,
+                            ),
+                        ],
+                      ),
+                    ),
+                    if (!widget.readOnly && authProvider.currentChat.isNotNull)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: StreamBuilder<int>(
+                          stream: Stream.periodic(Duration(seconds: 1), (i) => i),
+                          builder: (context, snapshot) {
+                            DateTime currentTime = DateTime.now();
+                            Duration difference = currentTime
+                                .difference(authProvider.currentChat!.createdAt!);
+                            int minutes = difference.inMinutes;
+                            int seconds = difference.inSeconds.remainder(60);
+
+                            String formattedTime = DateFormat('mm:ss')
+                                .format(DateTime(0, 0, 0, 0, minutes, seconds));
+
+                            return Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    AppHelper.showCustomDialog(
+                                      context: context,
+                                      title: "Are you sure want to end chat?",
+                                      subText: context
+                                                  .read<AuthProvider>()
+                                                  .currentChat !=
+                                              null
+                                          ? "Your current chat will end."
+                                          : null,
+                                      onNegativeTap: () {
+                                        context.pop();
+                                      },
+                                      onPositiveTap: () {
+                                        context.pop();
+                                        authProvider.endChat(
+                                            id: widget.model!.id!);
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 6),
+                                    margin: EdgeInsets.only(bottom: 5),
+                                    decoration: AppDecoration.rounded12.copyWith(
+                                        color: AppColors.red,
+                                        borderRadius: BorderRadius.circular(8)),
+                                    child: Text(
+                                      "End",
+                                      style: AppStyle.white12,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '$formattedTime',
+                                  style: AppStyle.purple12,
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ),
-                      if (!widget.readOnly && authProvider.currentChat.isNotNull)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: StreamBuilder<int>(
-                            stream: Stream.periodic(Duration(seconds: 1), (i) => i),
-                            builder: (context, snapshot) {
-                              DateTime currentTime = DateTime.now();
-                              Duration difference = currentTime
-                                  .difference(authProvider.currentChat!.createdAt!);
-                              int minutes = difference.inMinutes;
-                              int seconds = difference.inSeconds.remainder(60);
+                  ],
+                ),
 
-                              String formattedTime = DateFormat('mm:ss')
-                                  .format(DateTime(0, 0, 0, 0, minutes, seconds));
-
-                              return Column(
+                //showProfile: true,
+              ),
+              backgroundColor: AppColors.white,
+              body: Container(
+                color: Colors.white,
+                height: double.infinity,
+                child: Column(
+                  children: [
+                    /*Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        decoration: AppDecoration.purpleLightRounded
+                            .copyWith(color: AppColors.colorPrimary),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        child: Text(
+                          "Chat Id : #${widget.model?.id!}",
+                          style: AppStyle.white10,
+                        )),*/
+                    Expanded(
+                      child: AppConsumer<AuthProvider, List<MessageModel>>(
+                        taskName: AuthProvider.getMessagesKey,
+                        load: (provider) =>
+                            provider.getMessages(id: widget.model!.id.toString()),
+                        successBuilder: (data, provider) => ListView.builder(
+                          //reverse: true,
+                          physics: AlwaysScrollableScrollPhysics(),
+                          controller: widget.readOnly
+                              ? controller
+                              : authProvider.currentChat.isNotNull
+                                  ? authProvider.currentChat!.controller
+                                  : controller,
+                          itemBuilder: (context, index) => MessageText(
+                              user: widget.model?.user,
+                              onReplyAnimationEnd: () {
+                                replyMessageModel = data[index];
+                                setState(() {});
+                              },
+                              model: data[index],
+                              time: DateTimeHelper.convertTimeTo12HourFormat(
+                                  data[index].createdAt!.toLocal().toString()),
+                              text: data[index].message ?? "",
+                              messageType:
+                                  data[index].senderId != provider.userModel?.id
+                                      ? MessageType.sender
+                                      : MessageType.receiver),
+                          itemCount: data.length,
+                        ),
+                      ),
+                    ),
+                    if (!widget.readOnly)
+                      Container(
+                        decoration: AppDecoration.whiteShadow,
+                        child: Column(
+                          children: [
+                            if (replyMessageModel.isNotNull)
+                              Container(
+                                padding:
+                                    const EdgeInsets.only(left: 0, right: 15),
+                                child: IntrinsicHeight(
+                                  child: Row(
+                                    children: [
+                                      VerticalDivider(
+                                          color: AppColors.colorPrimary,
+                                          thickness: 5,
+                                          width: 4),
+                                      10.width,
+                                      Expanded(
+                                          child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          5.height,
+                                          Text(
+                                            replyMessageModel!.senderId !=
+                                                    context
+                                                        .read<AuthProvider>()
+                                                        .userModel
+                                                        ?.id
+                                                ? widget.model!.user!.name
+                                                    .toStringOrEmpty
+                                                    .toTitleCase()
+                                                : "You",
+                                            style: AppStyle.purple14w600,
+                                          ),
+                                          Text(
+                                            replyMessageModel!.attachments!.isNotEmpty
+                                                ? replyMessageModel!.attachments!
+                                                    .first
+                                                    .url!
+                                                    .split("/")
+                                                    .last
+                                                    .toTitleCase()
+                                                : replyMessageModel!
+                                                    .message.toStringOrEmpty,
+                                            style: AppStyle.black12w400,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          5.height,
+                                        ],
+                                      )),
+                                      5.width,
+                                      InkWell(
+                                          onTap: () {
+                                            replyMessageModel = null;
+                                            setState(() {});
+                                          },
+                                          child: Icon(Icons.close))
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 15,
+                                  right: 15,
+                                  bottom: 25,
+                                  top: replyMessageModel.isNotNull ? 5 : 15),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  10.width,
+                                  Expanded(
+                                    child: HeaderTextField(
+                                      isDense: true,
+                                      hint: AppStrings.messageHere,
+                                      style: AppStyle.black12,
+                                      focusNode: messageFocus,
+                                      controller: messageController,
+                                      borderRadius: 30,
+                                      bottomPadding: 0,
+                                      onChanged: (p0) {
+                                        context
+                                            .read<AuthProvider>()
+                                            .typingMessage(
+                                              recipientId:
+                                                  widget.model!.user!.id!,
+                                            );
+                                      },
+                                      suffixIconConstraints:
+                                          BoxConstraints(maxHeight: 40),
+                                      suffixIcon: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [/*
+                                          SvgImage(
+                                            onTap: () async {
+                                              File? file =
+                                                  await AppHelper.pickFile();
+                                              print(file);
+                                              if (file.isNotNull) {
+                                                context
+                                                    .read<AuthProvider>()
+                                                    .sendMessage(
+                                                        chatId: widget.model!.id!,
+                                                        recipientId: widget
+                                                            .model!.user!.id!,
+                                                        messageId:
+                                                            replyMessageModel?.id,
+                                                        file: file,
+                                                        type: "application/pdf");
+                                                messageController.clear();
+                                                replyMessageModel = null;
+                                                setState(() {});
+                                              }
+                                            },
+                                            image: AppSvg.attach,
+                                            color: AppColors.hintGrey,
+                                            size: 18,
+                                          ),
+                                          10.width,*/
+                                          SvgImage(
+                                            image: AppSvg.camera,
+                                            size: 18,
+                                            onTap: () async {
+                                              File? image =
+                                                  await showSelectImageSheet();
+                                              print(image);
+                                              if (image.isNotNull) {
+                                                context
+                                                    .read<AuthProvider>()
+                                                    .sendMessage(
+                                                        chatId: widget.model!.id!,
+                                                        recipientId: widget
+                                                            .model!.user!.id!,
+                                                        messageId:
+                                                            replyMessageModel?.id,
+                                                        file: image,
+                                                        type: "image");
+                                                messageController.clear();
+                                                replyMessageModel = null;
+                                                setState(() {});
+                                              }
+                                            },
+                                          ),
+                                          10.width,
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  10.width,
                                   InkWell(
                                     onTap: () {
-                                      AppHelper.showCustomDialog(
-                                        context: context,
-                                        title: "Are you sure want to end chat?",
-                                        subText: context
-                                                    .read<AuthProvider>()
-                                                    .currentChat !=
-                                                null
-                                            ? "Your current chat will end."
-                                            : null,
-                                        onNegativeTap: () {
-                                          context.pop();
-                                        },
-                                        onPositiveTap: () {
-                                          context.pop();
-                                          authProvider.endChat(
-                                              id: widget.model!.id!);
-                                        },
-                                      );
+                                      if (messageController.isEmpty()) {
+                                        AppHelper.showToast(
+                                            message: "Please enter message");
+                                      } else {
+                                        context.read<AuthProvider>().sendMessage(
+                                            chatId: widget.model!.id!,
+                                            recipientId: widget.model!.user!.id!,
+                                            message: messageController.text,
+                                            messageId: replyMessageModel?.id);
+                                        messageController.clear();
+                                        replyMessageModel = null;
+                                        setState(() {});
+                                      }
                                     },
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 6),
-                                      margin: EdgeInsets.only(bottom: 5),
-                                      decoration: AppDecoration.rounded12.copyWith(
-                                          color: AppColors.red,
-                                          borderRadius: BorderRadius.circular(8)),
-                                      child: Text(
-                                        "End",
-                                        style: AppStyle.white12,
-                                      ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 4.0),
+                                      child: CircleAvatar(
+                                          radius: 16,
+                                          backgroundColor: AppColors.colorPrimary,
+                                          child: SvgImage(
+                                            image: AppSvg.send,
+                                            size: 20,
+                                          )),
                                     ),
-                                  ),
-                                  Text(
-                                    '$formattedTime',
-                                    style: AppStyle.purple12,
-                                  ),
+                                  )
                                 ],
-                              );
-                            },
-                          ),
-                        ),
-                    ],
-                  ),
-
-                  //showProfile: true,
-                ),
-                backgroundColor: AppColors.white,
-                body: Container(
-                  color: Colors.white,
-                  height: double.infinity,
-                  child: Column(
-                    children: [
-                      /*Container(
-                          margin: EdgeInsets.symmetric(vertical: 5),
-                          decoration: AppDecoration.purpleLightRounded
-                              .copyWith(color: AppColors.colorPrimary),
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          child: Text(
-                            "Chat Id : #${widget.model?.id!}",
-                            style: AppStyle.white10,
-                          )),*/
-                      Expanded(
-                        child: AppConsumer<AuthProvider, List<MessageModel>>(
-                          taskName: AuthProvider.getMessagesKey,
-                          load: (provider) =>
-                              provider.getMessages(id: widget.model!.id.toString()),
-                          successBuilder: (data, provider) => ListView.builder(
-                            //reverse: true,
-                            physics: AlwaysScrollableScrollPhysics(),
-                            controller: widget.readOnly
-                                ? controller
-                                : authProvider.currentChat.isNotNull
-                                    ? authProvider.currentChat!.controller
-                                    : controller,
-                            itemBuilder: (context, index) => MessageText(
-                                user: widget.model?.user,
-                                onReplyAnimationEnd: () {
-                                  replyMessageModel = data[index];
-                                  setState(() {});
-                                },
-                                model: data[index],
-                                time: DateTimeHelper.convertTimeTo12HourFormat(
-                                    data[index].createdAt!.toLocal().toString()),
-                                text: data[index].message ?? "",
-                                messageType:
-                                    data[index].senderId != provider.userModel?.id
-                                        ? MessageType.sender
-                                        : MessageType.receiver),
-                            itemCount: data.length,
-                          ),
-                        ),
-                      ),
-                      if (!widget.readOnly)
-                        Container(
-                          decoration: AppDecoration.whiteShadow,
-                          child: Column(
-                            children: [
-                              if (replyMessageModel.isNotNull)
-                                Container(
-                                  padding:
-                                      const EdgeInsets.only(left: 0, right: 15),
-                                  child: IntrinsicHeight(
-                                    child: Row(
-                                      children: [
-                                        VerticalDivider(
-                                            color: AppColors.colorPrimary,
-                                            thickness: 5,
-                                            width: 4),
-                                        10.width,
-                                        Expanded(
-                                            child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            5.height,
-                                            Text(
-                                              replyMessageModel!.senderId !=
-                                                      context
-                                                          .read<AuthProvider>()
-                                                          .userModel
-                                                          ?.id
-                                                  ? widget.model!.user!.name
-                                                      .toStringOrEmpty
-                                                      .toTitleCase()
-                                                  : "You",
-                                              style: AppStyle.purple14w600,
-                                            ),
-                                            Text(
-                                              replyMessageModel!.attachments!.isNotEmpty
-                                                  ? replyMessageModel!.attachments!
-                                                      .first
-                                                      .url!
-                                                      .split("/")
-                                                      .last
-                                                      .toTitleCase()
-                                                  : replyMessageModel!
-                                                      .message.toStringOrEmpty,
-                                              style: AppStyle.black12w400,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            5.height,
-                                          ],
-                                        )),
-                                        5.width,
-                                        InkWell(
-                                            onTap: () {
-                                              replyMessageModel = null;
-                                              setState(() {});
-                                            },
-                                            child: Icon(Icons.close))
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left: 15,
-                                    right: 15,
-                                    bottom: 25,
-                                    top: replyMessageModel.isNotNull ? 5 : 15),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    10.width,
-                                    Expanded(
-                                      child: HeaderTextField(
-                                        isDense: true,
-                                        hint: AppStrings.messageHere,
-                                        style: AppStyle.black12,
-                                        focusNode: messageFocus,
-                                        controller: messageController,
-                                        borderRadius: 30,
-                                        bottomPadding: 0,
-                                        onChanged: (p0) {
-                                          context
-                                              .read<AuthProvider>()
-                                              .typingMessage(
-                                                recipientId:
-                                                    widget.model!.user!.id!,
-                                              );
-                                        },
-                                        suffixIconConstraints:
-                                            BoxConstraints(maxHeight: 40),
-                                        suffixIcon: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            SvgImage(
-                                              onTap: () async {
-                                                File? file =
-                                                    await AppHelper.pickFile();
-                                                print(file);
-                                                if (file.isNotNull) {
-                                                  context
-                                                      .read<AuthProvider>()
-                                                      .sendMessage(
-                                                          chatId: widget.model!.id!,
-                                                          recipientId: widget
-                                                              .model!.user!.id!,
-                                                          messageId:
-                                                              replyMessageModel?.id,
-                                                          file: file,
-                                                          type: "application/pdf");
-                                                  messageController.clear();
-                                                  replyMessageModel = null;
-                                                  setState(() {});
-                                                }
-                                              },
-                                              image: AppSvg.attach,
-                                              color: AppColors.hintGrey,
-                                              size: 18,
-                                            ),
-                                            10.width,
-                                            SvgImage(
-                                              image: AppSvg.camera,
-                                              size: 18,
-                                              onTap: () async {
-                                                File? image =
-                                                    await showSelectImageSheet();
-                                                print(image);
-                                                if (image.isNotNull) {
-                                                  context
-                                                      .read<AuthProvider>()
-                                                      .sendMessage(
-                                                          chatId: widget.model!.id!,
-                                                          recipientId: widget
-                                                              .model!.user!.id!,
-                                                          messageId:
-                                                              replyMessageModel?.id,
-                                                          file: image,
-                                                          type: "image");
-                                                  messageController.clear();
-                                                  replyMessageModel = null;
-                                                  setState(() {});
-                                                }
-                                              },
-                                            ),
-                                            10.width,
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    10.width,
-                                    InkWell(
-                                      onTap: () {
-                                        if (messageController.isEmpty()) {
-                                          AppHelper.showToast(
-                                              message: "Please enter message");
-                                        } else {
-                                          context.read<AuthProvider>().sendMessage(
-                                              chatId: widget.model!.id!,
-                                              recipientId: widget.model!.user!.id!,
-                                              message: messageController.text,
-                                              messageId: replyMessageModel?.id);
-                                          messageController.clear();
-                                          replyMessageModel = null;
-                                          setState(() {});
-                                        }
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 4.0),
-                                        child: CircleAvatar(
-                                            radius: 16,
-                                            backgroundColor: AppColors.colorPrimary,
-                                            child: SvgImage(
-                                              image: AppSvg.send,
-                                              size: 20,
-                                            )),
-                                      ),
-                                    )
-                                  ],
-                                ),
                               ),
-                            ],
-                          ),
-                        )
-                    ],
-                  ),
+                            ),
+                          ],
+                        ),
+                      )
+                  ],
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

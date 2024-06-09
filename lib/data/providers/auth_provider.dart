@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
+import 'package:jyotishee/data/models/notification_data_model.dart';
 import 'package:jyotishee/data/providers/base_provider.dart';
 import 'package:jyotishee/presentation/screens/auth/login/login_screen.dart';
 import 'package:jyotishee/presentation/screens/base/base_screen.dart';
@@ -733,6 +734,7 @@ class AuthProvider extends BaseProvider {
 
   // Notification list api
   static String notificationListKey = 'notificationListKey';
+  List<NotificationDataModel>? get notList => getData(taskName: notificationListKey) ?? [];
   notificationList() async {
     setLoading(taskName: notificationListKey);
     try {
@@ -774,6 +776,22 @@ class AuthProvider extends BaseProvider {
       s.printDebug;
       setError(
         taskName: notificationReadKey,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
+  // Notification Read api
+  static String notificationReadAllKey = 'notificationReadAllKey';
+  notificationReadAll({Function()? onSuccess}) async {
+    setLoading(taskName: notificationReadAllKey,showDialogLoader: true);
+    try {
+      setData(taskName: notificationReadAllKey, data: await _authRepo.notificationSeenAll(),onSuccess: (data) => notificationList(),hideLoader: true);
+    } catch (e, s) {
+      e.printDebug;
+      s.printDebug;
+      setError(
+        taskName: notificationReadAllKey,
         errorMessage: e.toString(),
       );
     }

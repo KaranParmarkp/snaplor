@@ -15,7 +15,15 @@ class NotificationScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: AppStrings.notification,
-        showProfile: false,
+        showProfile: false,trailingIcon: context.watch<AuthProvider>().notList.isNotNull && context.read<AuthProvider>().notList!.isNotEmpty ?InkWell(
+        onTap: () {
+            context.read<AuthProvider>().notificationReadAll();
+        },
+          child: Center(child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("Clear All",style: AppStyle.purple14,),
+          )),
+        ) : SizedBox(),
       ),
       body: Container(
         height: context.screenHeight,
@@ -79,11 +87,7 @@ class NotificationCard extends StatelessWidget {
                           style: AppStyle.grayDark12.copyWith(fontSize: 10),
                         ),
                       ),
-                      if(model.seen.isFalse)Icon(
-                        Icons.close,
-                        size: 20,
-                        color: AppColors.greyDark,
-                      ),
+                      SizedBox()
                     ],
                   ),
                   //Text(model.actorId.name.toStringOrEmpty.toTitleCase(), style: AppStyle.black14),

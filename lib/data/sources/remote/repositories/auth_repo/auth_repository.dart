@@ -30,4 +30,5 @@ abstract class AuthRepository{
   Future<List<NotificationDataModel>> notificationList();
   Future<GenericResponse> notificationCount();
   Future<GenericResponse> notificationRead(String id);
+  Future<GenericResponse> notificationSeenAll();
 }

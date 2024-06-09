@@ -106,7 +106,7 @@ class AuthService extends ApiService {
   }
 
   Future<Response<GenericResponse>> notificationReadAll() async {
-    return putData(ApiConfig.notificationList+"seen");
+    return putData(ApiConfig.notificationList+"/seen");
   }
 
   Future<Response<GenericResponse>> searchProduct(FilterModel filterModel) async {

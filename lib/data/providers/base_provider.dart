@@ -11,6 +11,10 @@ class BaseProvider with ChangeNotifier {
     this.status[taskName] = status;
     notifyListeners();
   }
+  getData({required String taskName}){
+    return data[taskName];
+  }
+
   getStatus({required String taskName}){
     return status[taskName];
   }

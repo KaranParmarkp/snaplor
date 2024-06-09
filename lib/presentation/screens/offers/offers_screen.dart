@@ -89,14 +89,13 @@ class OfferCard extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis)),
                           Expanded(
                             child: Text(
-                                model.description.toStringOrEmpty,
-                                style: AppStyle.black10.copyWith(
-                                    color: AppColors.colorPrimary,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12),
+                              model.description.toStringOrEmpty,
+                              style: AppStyle.black10.copyWith(
+                                  color: AppColors.colorPrimary,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12),
                             ),
                           ),
-
                         ],
                       ),
                     ),
@@ -111,28 +110,34 @@ class OfferCard extends StatelessWidget {
                                       fontWeight: FontWeight.w700,
                                       fontSize: 12),
                                   overflow: TextOverflow.ellipsis)),
-                          Text(
-                              "Rs "+(
-                                  ( (context.read<AuthProvider>().userModel!.chatPrice! * model.discountPercentage!) / 100).toDouble().round()
-                                  .toString()+"/Min"),
-                              style: AppStyle.black10.copyWith(
-                                  color: AppColors.colorPrimary,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12),
-                              overflow: TextOverflow.ellipsis),
-                          5.width,
-                          Text(
-                              "Rs "+context
-                                  .read<AuthProvider>()
-                                  .userModel!
-                                  .chatPrice
-                                  .toString()+"/Min",
-                              style: AppStyle.black10.copyWith(
-                                  color: AppColors.hintGrey,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,decoration: TextDecoration.lineThrough),
-                              overflow: TextOverflow.ellipsis),
-
+                          if (model.discountPercentage != 100) ...[
+                            Text(
+                                "Rs " +
+                                    (((context
+                                                        .read<AuthProvider>()
+                                                        .userModel!
+                                                        .chatPrice! *
+                                                    model.discountPercentage!) /
+                                                100)
+                                            .toDouble()
+                                            .round()
+                                            .toString() +
+                                        "/Min"),
+                                style: AppStyle.black10.copyWith(
+                                    color: AppColors.colorPrimary,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12),
+                                overflow: TextOverflow.ellipsis),
+                          ],
+                          if (model.discountPercentage == 100) ...[
+                            Text(
+                                "FREE",
+                                style: AppStyle.black10.copyWith(
+                                    color: AppColors.colorPrimary,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12),
+                                overflow: TextOverflow.ellipsis),
+                          ]
                         ],
                       ),
                     ),

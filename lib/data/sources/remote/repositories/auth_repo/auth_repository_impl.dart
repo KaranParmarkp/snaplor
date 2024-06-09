@@ -293,5 +293,13 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
       },
     );
   }
+  Future<GenericResponse> notificationSeenAll() {
+    return serviceHandler(
+      serviceFunction: () => service.notificationReadAll(),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
 
 }
