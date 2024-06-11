@@ -155,7 +155,7 @@ class WalletTransactionCard extends StatelessWidget {
                 Text(model.user?.name ?? "",
                     style: AppStyle.black14),
                 Text(
-                  "${DateTimeHelper.dateMonthWithTime(model.createdAt)}",
+                  "${DateTimeHelper.dateMonthWithTime(model.createdAt?.toLocal())}",
                   style: AppStyle.grayDark12
                 ),
               ],

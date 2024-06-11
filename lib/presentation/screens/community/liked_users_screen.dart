@@ -45,11 +45,12 @@ class LikedUsersScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   NameVerified(
-                                    name: data[index].user?.name,
-                                    verified: data[index].user?.isVerified.isTrue,
+                                   id:data[index].user?.userName,
+                                    name: data[index].user?.name.toStringOrEmpty.toTitleCase(),
+                                    //verified: data[index].user?.isVerified.isTrue,
                                     showAst: data[index].user?.role == "astrologer",
                                   ),
-                                  Text(
+                                  if(data[index].user?.role == "astrologer")Text(
                                     "Exp : ${data[index].user?.experience} years | ${data[index].user
                                         ?.order} Orders",
                                     style: AppStyle.grey12.copyWith(

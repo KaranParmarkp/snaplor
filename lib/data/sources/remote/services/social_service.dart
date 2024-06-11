@@ -14,14 +14,28 @@ class SocialService extends ApiService {
         "${MyApp.appContext.read<AuthProvider>().userModel!.id}/${file?.path}");
   }
 
-  Future<Response<GenericResponse>> addPost(String message, File? file) async {
-    return postData(ApiConfig.addPost, data: {"content": message});
-    //return postData(ApiConfig.addPost, data: {"content": message});
+  Future<Response<GenericResponse>> addPost(String message, File? file,String? postId) async {
+    String? signedUrl;
+    if(file!=null){
+      signedUrl = await getSignedUrl(isProfile: false, image: file);
+    }
+    return postId!=null ? putData(ApiConfig.addPost+"/$postId", data: {"content": message,if(signedUrl!=null)"image_url":signedUrl})
+    :postData(ApiConfig.addPost, data: {"content": message,if(signedUrl!=null)"image_url":signedUrl});
+  }
+  Future<Response<GenericResponse>> repost(String? message,String postId,bool isEdit) async {
+    return isEdit ? putData(ApiConfig.addPost+"/$postId", data: {"content": message,})
+        :postData(ApiConfig.addPost, data: {"content": message ?? "","original_post" : postId});
   }
 
-  Future<Response<GenericResponse>> getPosts() async {
+  Future<Response<GenericResponse>> getPosts(int skip) async {
     return getData(
       ApiConfig.addPost,
+      queryParameters: {"skip" : skip,"limit":10}
+    );
+  }
+  Future<Response<GenericResponse>> getUserPosts(String id) async {
+    return getData(
+        ApiConfig.userPost+id.toLowerCase(),queryParameters: {"limit": 1000,"skip":0}
     );
   }
 
@@ -37,23 +51,20 @@ class SocialService extends ApiService {
   }
 
   Future<Response<GenericResponse>> likePost(String id, bool isLike) async {
-    return isLike
-        ? putData(ApiConfig.addPost + "/" + id + "/like")
-        : putData(ApiConfig.addPost + "/" + id + "/unlike");
+    return  putData(ApiConfig.addPost + "/action/" + id + (isLike ? "/like":"/unlike"));
   }
 
   Future<Response<GenericResponse>> likedPostUsers(String id,) async {
-    return getData(ApiConfig.addPost + "/" + id + "/likes");
+    return getData(ApiConfig.addPost + "/likes/" + id);
   }
 
   Future<Response<GenericResponse>> commentPost(String id, String message) async {
-    return putData(ApiConfig.addPost + "/" + id + "/comments",
+    return postData(ApiConfig.addPost + "/" + id + "/comments",
         data: {"comment": message});
   }
 
-  Future<Response<GenericResponse>> commentPostReply(
-      String id, String message, String commentID) async {
-    return putData(ApiConfig.addPost + "/" + id + "/comments/"+commentID+"/replies",
+  Future<Response<GenericResponse>> commentPostReply(String id, String message, String commentID,String? replyId) async {
+    return postData(ApiConfig.addPost + "/" + id + "/comments/"+commentID+"/replies",
         data: {"reply": message});
   }
 
@@ -71,10 +82,37 @@ class SocialService extends ApiService {
   }
 
   Future<Response<GenericResponse>> deleteComment(String id) async {
-    return putData(ApiConfig.deleteComment+id);
+    return deleteData(ApiConfig.comment+"/"+id);
   }
 
-  Future<Response<GenericResponse>> deleteCommentReply(String postId,String commentId,String replyId) async {
-    return deleteData(ApiConfig.addPost + "/" + postId + "/comments/"+commentId+"/"+replyId);
+  Future<Response<GenericResponse>> deleteCommentReply(String commentId,) async {
+    return deleteData(ApiConfig.comment + "replies/" + commentId);
   }
+  Future<Response<GenericResponse>> likeCommentReplay(String id, bool isLike) async {
+    return  putData(ApiConfig.comment + "replies/action/" + id + (isLike ? "/like":"/unlike"));
+  }
+  Future<Response<GenericResponse>> likeComment(String id, bool isLike) async {
+    return  putData(ApiConfig.comment + "/action/" + id + (isLike ? "/like":"/unlike"));
+  }
+
+  Future<Response<GenericResponse>> likedCommentUsers(String id,) async {
+    return getData(ApiConfig.comment + "/likes/" + id);
+  }
+
+  Future<Response<GenericResponse>> whoToFollow() async {
+    return getData(ApiConfig.whoToFollow);
+  }
+  Future<Response<GenericResponse>> follow(String id, bool isFollow) async {
+    return  postData(ApiConfig.followUnFollow,data: {
+      "following_id": id, //user_id
+      "action" : isFollow ? "follow" : "unfollow"
+    });
+  }
+  Future<Response<GenericResponse>> followList(String id, bool isFollow) async {
+    return  getData((isFollow ? ApiConfig.followers:ApiConfig.followings) + id);
+  }
+  Future<Response<GenericResponse>> getUserDetails(String id, ) async {
+    return  getData(ApiConfig.userDetails + id.toLowerCase());
+  }
+
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import '../../app/utils/utils.dart';
 
@@ -21,7 +22,10 @@ class _TextHashtagState extends State<TextHashtag> {
         alignment: WrapAlignment.start,
         crossAxisAlignment: WrapCrossAlignment.start,
         children: [
-          buildHighlightedText(widget.name,widget.text,showFullText),
+          //buildHighlightedText(widget.name,widget.text,showFullText),
+          SizedBox(
+              height: showFullText ? null : 40,
+              child: Html(data: widget.text,)),
           if(widget.text.length>=50)InkWell(
               onTap: () {
                 showFullText = !showFullText;

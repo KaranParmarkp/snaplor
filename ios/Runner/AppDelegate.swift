@@ -24,4 +24,8 @@ import Firebase
         extHelper.exportDeliveryMetricsToBigQuery(withMessageInfo: response.notification.request.content.userInfo)
     }
 
+    func application(application: UIApplication,
+                    didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+       Messaging.messaging().apnsToken = deviceToken
+   }
 }

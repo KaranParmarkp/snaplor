@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:jyotishee/app/utils/enums.dart';
 
+import 'generic_user_model.dart';
 import 'models.dart';
 
 List<WalletModel> walletModelFromJson(String str) => List<WalletModel>.from(json.decode(str).map((x) => WalletModel.fromJson(x)));
@@ -25,7 +26,7 @@ class WalletModel {
   final DateTime? updatedAt;
   final int? v;
   final String? payoutId;
-  final User? user;
+  final GenericUserModel? user;
 
   WalletModel({
     this.id,
@@ -56,7 +57,7 @@ class WalletModel {
     DateTime? updatedAt,
     int? v,
     String? payoutId,
-    User? user
+    GenericUserModel? user
   }) =>
       WalletModel(
         id: id ?? this.id,
@@ -87,7 +88,7 @@ class WalletModel {
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     v: json["__v"],
     payoutId: json["payout_id"],
-    user: User.fromJson( json["user"]),
+    user: GenericUserModel.fromJson( json["user_id"]),
   );
 
   Map<String, dynamic> toJson() => {

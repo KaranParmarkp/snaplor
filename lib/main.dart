@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -11,7 +12,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jyotishee/app/utils/preferences/preferences.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:jyotishee/presentation/screens/base/base_screen.dart';
 import 'package:jyotishee/presentation/screens/splash/splash_screen.dart';
 
 import 'app/utils/utils.dart';
@@ -36,9 +36,11 @@ void main() async {
   await preference.load();
   runApp(buildProviders());
 }
+
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
+
 LocalNotification localNotification = LocalNotification();
 
 class MyApp extends StatefulWidget {
@@ -46,6 +48,7 @@ class MyApp extends StatefulWidget {
 
   // navKey use to access context
   static GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
+
   static BuildContext get appContext => navKey.currentState!.context;
 
   @override
@@ -56,7 +59,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    if(!kIsWeb){
+    if (!kIsWeb) {
       FirebaseMessaging.instance
           .requestPermission(alert: true, announcement: true, sound: true);
       FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -65,7 +68,6 @@ class _MyAppState extends State<MyApp> {
         sound: true,
       );
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        print("not received");
         requestNotification(message);
       });
 
@@ -81,30 +83,43 @@ class _MyAppState extends State<MyApp> {
 
   requestNotification(RemoteMessage message) {
     print("notification received");
-    print(message.notification);
+    print(message.notification?.toMap().toString());
     RemoteNotification? notification = message.notification;
-    AndroidNotification? android = message.notification?.android;
-    if (notification != null /*&& android != null*/) {
-      localNotification.showSimpleNotification(
-          title: notification.title.toString(),
-          body: notification.body.toString());
+    if (notification != null) {
+      print("showing notification");
+      if (notification.body!.contains("messaged you") == true) {
+        if (context.read<AuthProvider>().chatScreenOn.isFalse) {
+          "chat screen is not on so showing notification here".printDebug;
+          localNotification.showSimpleNotification(
+              title: notification.title.toString(),
+              body: notification.body.toString());
+        }else{
+          "chat screen is on so not showing notification here".printDebug;
+        }
+      } else {
+        localNotification.showSimpleNotification(
+            title: notification.title.toString(),
+            body: notification.body.toString());
+      }
+    } else {
+      print("not showing notification");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Snaplor',
+      title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
       navigatorKey: MyApp.navKey,
       builder: EasyLoading.init(),
       scrollBehavior: MaterialScrollBehavior().copyWith(
-        /*dragDevices: {
+        dragDevices: {
           PointerDeviceKind.mouse,
           PointerDeviceKind.touch,
           PointerDeviceKind.stylus,
           PointerDeviceKind.unknown
-        },*/
+        },
         physics: BouncingScrollPhysics(),
         scrollbars: true,
       ),
@@ -117,12 +132,13 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate
       ],
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        textTheme: GoogleFonts.poppinsTextTheme(),
-        indicatorColor: AppColors.colorPrimary
-        //scaffoldBackgroundColor: Colors.white,
-      ),
-      home: const SplashScreen(),
+          primarySwatch: Colors.blue,
+          textTheme: GoogleFonts.poppinsTextTheme(),
+          indicatorColor: AppColors.colorPrimary,
+          useMaterial3: false
+          //scaffoldBackgroundColor: Colors.white,
+          ),
+      home: SplashScreen(),
     );
   }
 }
@@ -135,4 +151,36 @@ buildProviders() {
   ], child: const MyApp());
 }
 
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
 
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("hey"),
+      ),
+      body: Container(
+        child: ListView.builder(
+          itemCount: 4,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return Align(
+              child: Container(
+                color: Colors.red, // Background color
+                margin: EdgeInsets.only(bottom: 10),
+                child: Text(
+                  "itemText",
+                  style: TextStyle(color: Colors.white), // Text color
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}

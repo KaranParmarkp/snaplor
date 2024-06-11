@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/data/providers/providers.dart';
@@ -83,8 +86,16 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CircleNetworkImageAvatar(
-                    radius: 40, image: widget.user.profileImage),
+                InkWell(
+                  onTap: () async {
+                    File? image = await AppHelper.pickImage(fromCamera: false);
+                    if(image!=null){
+
+                    }
+                  },
+                  child: CircleNetworkImageAvatar(
+                      radius: 40, image: widget.user.profileImage),
+                ),
                 6.height,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -181,13 +192,33 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
                   controller: specializationController,
                   focusNode: specializationFocus,
                 ),
-                HeaderTextField(
+                /*HeaderTextField(
                   enable: false,
                     hint: "",
                     header: AppStrings.desc,
                     controller: descController,
                     focusNode: descFocus,
-                    maxLines: 5),
+                    maxLines: 5),*/
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8, top: 0,left: 10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppStrings.desc,
+                            style: AppStyle.black14.copyWith(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                        decoration: AppDecoration.roundedBorder,
+                        child: Html(data: widget.user.description)),
+                  ],
+                ),
+                20.height
                 //AppButton(title: AppStrings.saveChanges,onTap: () => _onSaveChangesTap(),)
               ],
             ),

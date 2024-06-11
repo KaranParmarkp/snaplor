@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:jyotishee/app/utils/enums.dart';
 import 'package:jyotishee/app/utils/utils.dart';
+import 'package:jyotishee/data/models/follower_model.dart';
+import 'package:jyotishee/data/models/follower_model.dart';
 
 import '../../../../models/models.dart';
 import '../../network_services/abstract_api.dart';
@@ -12,9 +14,18 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
   final SocialService service = SocialService();
 
   @override
-  Future<GenericResponse> addPost(String message,File? file) {
+  Future<GenericResponse> addPost(String message,File? file,String? postId) {
     return serviceHandler(
-      serviceFunction: () => service.addPost(message,file),
+      serviceFunction: () => service.addPost(message,file,postId),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+  @override
+  Future<GenericResponse> rePost(String message,String postId,bool isEdit) {
+    return serviceHandler(
+      serviceFunction: () => service.repost(message,postId,isEdit),
       successFunction: (response) async {
         return response;
       },
@@ -22,9 +33,9 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
   }
 
   @override
-  Future<List<SocialPostModel>> getPosts() {
+  Future<List<SocialPostModel>> getPosts(int skip) {
     return serviceHandler(
-      serviceFunction: () => service.getPosts(),
+      serviceFunction: () => service.getPosts(skip),
       successFunction: (response) async {
         List<SocialPostModel> list = [];
         list = List<SocialPostModel>.from(response.data!.map((x) => SocialPostModel.fromJson(x))).toList();
@@ -45,11 +56,11 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
   }
 
   @override
-  Future<GenericResponse> likePost(String id,bool isLike) {
+  Future<SocialPostModel> likePost(String id,bool isLike) {
     return serviceHandler(
       serviceFunction: () => service.likePost(id,isLike),
       successFunction: (response) async {
-        return response;
+        return SocialPostModel.fromJson(response.data);
       },
     );
   }
@@ -68,9 +79,9 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
 
 
   @override
-  Future<GenericResponse> commentPost(String id,String message,String? commentID) {
+  Future<GenericResponse> commentPost(String id,String message,String? commentID,String? replyId) {
     return serviceHandler(
-      serviceFunction: () => commentID.isNotNull ? service.commentPostReply(id,message,commentID!): service.commentPost(id,message),
+      serviceFunction: () => commentID.isNotNull ? service.commentPostReply(id,message,commentID!,replyId): service.commentPost(id,message),
       successFunction: (response) async {
         return response;
       },
@@ -122,12 +133,98 @@ class SocialRepositoryImpl extends AbstractApi implements SocialRepository {
   }
 
   @override
-  Future<GenericResponse> deleteCommentReply(String postId,String commentId,String replyId) {
+  Future<GenericResponse> deleteCommentReply(String commentId) {
     return serviceHandler(
-      serviceFunction: () => service.deleteCommentReply(postId, commentId, replyId),
+      serviceFunction: () => service.deleteCommentReply(commentId, ),
       successFunction: (response) async {
         return response;
       },
     );
   }
+
+  @override
+  Future<PostCommentModel> likeComment(String id,bool isLike) {
+    return serviceHandler(
+      serviceFunction: () => service.likeComment(id,isLike),
+      successFunction: (response) async {
+        return PostCommentModel.fromJson(response.data);
+      },
+    );
+  }
+
+  @override
+  Future<PostCommentModel> likeCommentReplay(String id,bool isLike) {
+    return serviceHandler(
+      serviceFunction: () => service.likeCommentReplay(id,isLike),
+      successFunction: (response) async {
+        return PostCommentModel.fromJson(response.data);
+      },
+    );
+  }
+
+  @override
+  Future<List<PostCommentModel>> likedCommentUsers(String id) {
+    return serviceHandler(
+      serviceFunction: () => service.likedPostUsers(id),
+      successFunction: (response) async {
+        List<PostCommentModel> list = [];
+        list = List<PostCommentModel>.from(response.data!.map((x) => PostCommentModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+
+  @override
+  Future<List<UserModel>> whoToFollow() {
+    return serviceHandler(
+      serviceFunction: () => service.whoToFollow(),
+      successFunction: (response) async {
+        List<UserModel> list = [];
+        list = List<UserModel>.from(response.data!.map((x) => UserModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+  @override
+  Future<GenericResponse> followUnFollow(String id,bool isFollow) {
+    return serviceHandler(
+      serviceFunction: () => service.follow(id, isFollow),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+
+  @override
+  Future<List<FollowerModel>> followList(String id,bool isFollow) {
+    return serviceHandler(
+      serviceFunction: () => service.followList(id, isFollow),
+      successFunction: (response) async {
+        List<FollowerModel> list = [];
+        list = List<FollowerModel>.from(response.data!.map((x) => FollowerModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+  @override
+  Future<List<SocialPostModel>> getUserPosts(String id) {
+    return serviceHandler(
+      serviceFunction: () => service.getUserPosts(id),
+      successFunction: (response) async {
+        List<SocialPostModel> list = [];
+        list = List<SocialPostModel>.from(response.data!.map((x) => SocialPostModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+  @override
+  Future<UserModel> getUserDetails(String id) {
+    return serviceHandler(
+      serviceFunction: () => service.getUserDetails(id,),
+      successFunction: (response) async {
+        return UserModel.fromJson(response.data);
+      },
+    );
+  }
+
 }

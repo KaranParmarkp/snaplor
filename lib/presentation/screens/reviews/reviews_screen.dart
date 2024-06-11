@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:jyotishee/app/utils/utils.dart';
-import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
+import 'package:jyotishee/presentation/widgets/app_button.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
 
 import '../../../data/models/models.dart';
 import '../../../data/providers/providers.dart';
 
 class ReviewsScreen extends StatefulWidget {
-  const ReviewsScreen({super.key});
-
+  const ReviewsScreen({super.key, this.id});
+  final String? id;
   @override
   State<ReviewsScreen> createState() => _ReviewsScreenState();
 }
 
 class _ReviewsScreenState extends State<ReviewsScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,12 +35,14 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         child: AppConsumer<AuthProvider, List<ReviewModel>>(
           taskName: AuthProvider.reviewListKey,
           load: (provider) => provider.reviewList(),
-          successBuilder: (data, provider) => ListView.builder(
-            clipBehavior: Clip.none,
-            itemBuilder: (context, index) => ReviewCard(model: data[index]),
-            itemCount: data.length,
-            shrinkWrap: true,
-          ),
+          successBuilder: (data, provider) {
+            return ListView.builder(
+              clipBehavior: Clip.none,
+              itemBuilder: (context, index) => ReviewCard(model:widget.id.isNotNull ? data.where((element) => element.id==widget.id).first : data[index]),
+              itemCount: widget.id.isNotNull ?1 :data.length,
+              shrinkWrap: true,
+            );
+          },
         ),
       ),
     );
@@ -64,13 +70,13 @@ class ReviewCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    "Order Id: #${model.orderId}",
+                    "Order Id: #${model.orderId!.refCode.toStringOrEmpty}",
                     style: AppStyle.grey12
                         .copyWith(color: AppColors.greyDark, fontSize: 10),
                   ),
                 ),
                 Text(
-                  "${DateTimeHelper.dateMonthWithTime(model.createdAt)}",
+                  "${DateTimeHelper.dateMonthWithTime(model.createdAt?.toLocal())}",
                   style: AppStyle.grey12
                       .copyWith(color: AppColors.greyDark, fontSize: 10),
                 ),
@@ -118,9 +124,9 @@ class ReviewCard extends StatelessWidget {
               ),
             ],
           ),
-          Container(
+          if(model.message.isNotNull && model.message!.isNotEmpty)Container(
             width: double.infinity,
-            padding: const EdgeInsets.only(bottom: 0, top: 10),
+            padding: const EdgeInsets.only(bottom: 0, top: 10,left: 5),
             child: Text(
               model.message ?? "",
               style: AppStyle.black12,textAlign: TextAlign.start,
@@ -128,42 +134,17 @@ class ReviewCard extends StatelessWidget {
           ),
           if (model.astrologerResponse.isNotNull)
             Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10, top: 0),
-                    child: Text(
-                      "Replied : " + (model.astrologerResponse?.message ?? ""),
-                      style: AppStyle.black12,
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: AppRoundedButton(
-                          text: AppStrings.viewChat,
-                          color: AppColors.colorPrimary,
-                          onTap: () => context.push(ChatScreen(model: WaitListModel(id: model.id,user: model.user),readOnly: true,)),
-                        ),
-                      ),
-                      20.width,
-                      Expanded(
-                        child: AppRoundedButton(
-                          text: AppStrings.reply,
-                          color: AppColors.colorPrimary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              padding:  EdgeInsets.only(top: model.message.isNotNull && model.message!.isNotEmpty ? 0 :10, bottom: 10,left: 5),
+              child: Container(
+                width: double.infinity,
+                child: Text(
+                  "Replied : " + (model.astrologerResponse?.message ?? ""),
+                  style: AppStyle.black12,
+                  textAlign: TextAlign.start,
+                ),
               ),
             ),
-          if (model.astrologerResponse.isNull)
-            Container(
+          if (model.astrologerResponse.isNull && model.isFieldOpen==true)Container(
               padding: EdgeInsets.all(15),
               margin: EdgeInsets.only(top: 10),
               decoration: AppDecoration.whiteShadowRounded
@@ -175,8 +156,9 @@ class ReviewCard extends StatelessWidget {
                     controller: controller,
                     maxLines: 5,
                   ),
-                  AppButton(
-                    title: AppStrings.reply,
+                  AppRoundedButton(
+                    text: AppStrings.reply,
+                    color: AppColors.colorPrimary,
                     onTap: () {
                       if(controller.isEmpty()){
                         AppHelper.showToast(message: "Please enter message");
@@ -188,6 +170,17 @@ class ReviewCard extends StatelessWidget {
                 ],
               ),
             ),
+          if (model.astrologerResponse.isNull && model.isFieldOpen.isFalse)Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: AppRoundedButton(
+              text: AppStrings.reply,
+              color: AppColors.colorPrimary,
+              onTap: () {
+                model.isFieldOpen=true;
+                context.read<AuthProvider>().updateReviewTextField();
+              },
+            ),
+          ),
         ],
       ),
     );

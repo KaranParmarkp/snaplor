@@ -15,7 +15,7 @@ class AppConsumer<T extends BaseProvider, K> extends StatefulWidget {
   final String taskName;
   final bool showError;
   final bool refresh;
-
+  final bool isPaginated;
   const AppConsumer({
     Key? key,
     required this.taskName,
@@ -26,6 +26,7 @@ class AppConsumer<T extends BaseProvider, K> extends StatefulWidget {
     this.loaderBuilder,
     this.refresh = true,
     this.emptyBuilder,
+    this.isPaginated=false
   }) : super(key: key);
 
   @override
@@ -52,13 +53,13 @@ class _AppConsumerState<T extends BaseProvider, K>
   Widget build(BuildContext context) {
     return Consumer<T>(builder: (context, _provider, __) {
       switch (_provider.status[widget.taskName]) {
-        case Status.Loading:
+        case Status.loading:
           return widget.loaderBuilder != null
               ? widget.loaderBuilder!(_provider)
               : Center(
-                  child: Loader(),
+                  //child: Loader(),
                 );
-        case Status.Error:
+        case Status.error:
           if (widget.showError) {
             AppHelper.showToast(
                 message: _provider.error[widget.taskName].toString());
@@ -74,7 +75,7 @@ class _AppConsumerState<T extends BaseProvider, K>
                     onTap: () async => await widget.load(_provider),
                   );
           }
-        case Status.Success:
+        case Status.done:
           return RefreshIndicator(
               onRefresh: () async {
                 if (widget.refresh) await widget.load(_provider);
@@ -91,10 +92,8 @@ class _AppConsumerState<T extends BaseProvider, K>
                           : ErrorScreen(
                               error: "No Data Available",
                             )
-                      : Scrollbar(
-                          child: widget.successBuilder(
-                              _provider.data[widget.taskName] as K, _provider),
-                        ));
+                      : widget.successBuilder(
+                          _provider.data[widget.taskName] as K, _provider));
         default:
           return SizedBox();
       }

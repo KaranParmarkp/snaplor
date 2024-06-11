@@ -4,12 +4,15 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/widgets/ftoast.dart' as ft;
 import 'package:path/path.dart' as p;
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../main.dart';
@@ -100,7 +103,7 @@ class AppHelper {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
-        backgroundColor: Colors.black.withOpacity(0.5),
+        backgroundColor: AppColors.colorPrimary,
         textColor: textColor ?? Colors.white,
         fontSize: 14);
   }
@@ -122,12 +125,31 @@ class AppHelper {
     ));
   }
 
-  static Future<File?> pickImage({required bool fromCamera}) async {
+  static Future<File?> pickImage({required bool fromCamera,bool crop=true}) async {
     final ImagePicker imagePicker = ImagePicker();
     final XFile? image = await imagePicker.pickImage(
         source: fromCamera ? ImageSource.camera : ImageSource.gallery,
         imageQuality: 50);
-    return image != null ? File(image.path) : null;
+    if(crop && image!=null){
+      CroppedFile? cropImage = await ImageCropper().cropImage(sourcePath: image.path,
+      compressQuality: 50,
+        compressFormat: ImageCompressFormat.jpg,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: '',
+              toolbarColor: AppColors.colorPrimary,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: '',
+          ),
+        ]
+      );
+      return cropImage!=null ?File(cropImage.path)  :null;
+    }else{
+      return image != null ? File(image.path) : null;
+    }
   }
 
   static Future<List<File>> pickMultipleImage() async {
@@ -447,9 +469,9 @@ class AppHelper {
     );
   }
 
-  static launchWebUrl(String url) async {
+  static launchWebUrl(String url,{mode=LaunchMode.externalApplication}) async {
     final Uri _url = Uri.parse(url);
-    if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+    if (!await launchUrl(_url, mode: mode)) {
       throw 'Could not launch $url';
     }
   }
@@ -480,6 +502,101 @@ class AppHelper {
     if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
       throw 'Could not launch $_url';
     }
+  }
+
+  static showHelpDialog(BuildContext context){
+    return showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: AppColors.transparent,
+        insetPadding: EdgeInsets.symmetric(horizontal: 10),
+        child: InkWell(
+          onTap: () {
+            context.pop();
+            var contact = "+919818484869";
+            var androidUrl = "whatsapp://send?phone=$contact&text=Hi, I need some help";
+            var iosUrl = "https://wa.me/$contact?text=${Uri.parse('Hi, I need some help')}";
+            AppHelper.launchWebUrl(Platform.isAndroid?androidUrl : iosUrl);
+          },
+          child: Container(
+          padding: EdgeInsets.all(15),
+          height: 100,
+          decoration: AppDecoration.whiteShadowRounded,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 60,width: 60,
+                padding: EdgeInsets.all(15),
+                margin: EdgeInsets.only(right: 20),
+                decoration: AppDecoration.purpleLightRounded.copyWith(
+                  borderRadius: BorderRadius.circular(8)
+                ),
+                child: SvgImage(image: AppSvg.wp),
+              ),
+              Expanded(child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("You need help?",style: AppStyle.black14w600,),
+                  5.height,
+                  Row(
+                    children: [
+                      Text("Chat with us :  ",style: AppStyle.hintGray12,),
+                      InkWell(
+
+                          child: Text("+91 9818484869",style: AppStyle.black12w600,)),
+                    ],
+                  ),
+                ],
+              )),
+              Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(onPressed: () => context.pop(), icon: Icon(Icons.close)))
+            ],
+          ),
+              ),
+        ),
+      ),);
+  }
+
+  static sharePost(String id){
+    Share.share('https://snaplor.com/post/$id');
+  }
+
+  static showCustomDialog({required BuildContext context,required title,String? positiveText,String? negativeText,Function()? onPositiveTap,Function()? onNegativeTap,String? subText}){
+    return showDialog(context: context,
+      barrierDismissible: true,
+      builder: (context) => Dialog(
+        backgroundColor: AppColors.transparent,
+        child: Container(
+          padding: EdgeInsets.all(20),
+          //width: double.infinity,
+          decoration: AppDecoration.whiteShadowRounded,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Center(child: Text(title,style: AppStyle.black14w600,)),
+              if(subText.isNotNull)...[10.height,
+              Center(child: Text(subText!,style: AppStyle.black14,textAlign: TextAlign.center,)),],
+              30.height,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(child: AppRoundedButton(text: positiveText ?? "Yes",onTap: onPositiveTap,color: AppColors.colorPrimary,)),
+                  10.width,
+                  Expanded(child: AppRoundedButton(text: positiveText ?? "No",onTap: onNegativeTap,color: AppColors.colorPrimary,))
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),);
   }
 
 }

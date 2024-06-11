@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
+import 'package:jyotishee/presentation/screens/reviews/reviews_screen.dart';
 import 'package:jyotishee/presentation/widgets/widgets.dart';
+import '../../../data/models/generic_user_model.dart';
 import '../../../data/models/models.dart';
 import '../../../data/providers/providers.dart';
 import 'package:just_audio/just_audio.dart';
 
 class OrdersScreen extends StatefulWidget {
-  const OrdersScreen({super.key});
-
+  const OrdersScreen({super.key,this.initialIndex=0});
+  final int initialIndex;
   @override
   State<OrdersScreen> createState() => _OrdersScreenState();
 }
@@ -21,7 +23,7 @@ class _OrdersScreenState extends State<OrdersScreen>
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 2, vsync: this,initialIndex: widget.initialIndex);
     super.initState();
   }
 
@@ -35,7 +37,7 @@ class _OrdersScreenState extends State<OrdersScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: AppStrings.orders,
+        title: AppStrings.sessions,
     /*    showNotification: true,
         showProfile: true,
     */  ),
@@ -190,7 +192,7 @@ class _OrderCardState extends State<OrderCard> {
   }
 
   initSetup() async {
-    setAudio(widget.model.voiceCallUrl??"http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3");
+    if(widget.model.voiceCallUrl.isNotNull)setAudio(widget.model.voiceCallUrl!);
     //setAudio("http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3");
     //final duration = await player.setUrl("http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3");
   }
@@ -261,17 +263,14 @@ class _OrderCardState extends State<OrderCard> {
       decoration: AppDecoration.whiteShadowRounded,
       child: InkWell(
         onTap: () {
-          if (widget.type == ComType.chat)
+          if (widget.type == ComType.chat) {
+            print(widget.model.chatRequestId?.id);
             context.push(ChatScreen(
               readOnly: true,
               model: WaitListModel(
-                  id: widget.model.chatRequestId,
-                  user: User(
-                    name: widget.model.user?.name,
-                    id: widget.model.user?.id,
-                    image: widget.model.user?.image,
-                  )),
+                  id: widget.model.chatRequestId?.id, user: widget.model.user),
             ));
+          }
         },
         child: Column(
           children: [
@@ -282,13 +281,13 @@ class _OrderCardState extends State<OrderCard> {
                 children: [
                   Expanded(
                     child: Text(
-                      "Order Id: #${widget.model.id}",
+                      "Order Id: #${widget.model.refCode}",
                       style: AppStyle.grey12
                           .copyWith(color: AppColors.greyDark, fontSize: 10),
                     ),
                   ),
                   Text(
-                    "${DateTimeHelper.dateMonthWithTime(widget.model.createdAt)}",
+                    "${DateTimeHelper.dateMonthWithTime(widget.model.createdAt?.toLocal())}",
                     style: AppStyle.grey12
                         .copyWith(color: AppColors.greyDark, fontSize: 10),
                   ),
@@ -302,20 +301,31 @@ class _OrderCardState extends State<OrderCard> {
                         name: AppStrings.name,
                         value: widget.model.intakeForm!.name.toCapitalized())),
                 Text(
-                  widget.model.status.isNotNull
+                  /*widget.model.status.isNotNull
                       ? widget.model.status!.toCapitalized()
-                      : "",
+                      : */"Completed",
                   style: AppStyle.lightGreen12,
                 )
               ],
             ),
-            NameValue(
-                name: AppStrings.gender,
-                value: widget.model.intakeForm?.gender.toCapitalized() ?? ""),
+            Row(
+              children: [
+                Expanded(
+                  child: NameValue(
+                      name: AppStrings.gender,
+                      value: widget.model.intakeForm?.gender.toCapitalized() ?? ""),
+                ),
+                Text(
+                  widget.model.astrologerOffer.isNotNull
+                      ? "Offer Applied"
+                      : "",
+                  style: AppStyle.purple12,
+                )
+              ],
+            ),
             NameValue(
               name: AppStrings.dob,
-              value:
-                  "${DateTimeHelper.dateMonthWithTime(widget.model.intakeForm?.dateOfBirth)}",
+              value: "${DateTimeHelper.dateMonth(widget.model.intakeForm?.dateOfBirth?.toLocal())}, ${widget.model.intakeForm!.timeOfBirth}",
             ),
             NameValue(
                 name: AppStrings.pob,
@@ -339,10 +349,19 @@ class _OrderCardState extends State<OrderCard> {
                 Text(
                   AppStrings.rs + "${widget.model.totalPaid}",
                   style: AppStyle.purple14w600,
+                ),
+                if(widget.model.astrologerOffer.isNotNull)Padding(
+                  padding: const EdgeInsets.only(left: 5),
+                  child: Text(
+                    AppStrings.rs + "${widget.model.subtotalAmount}",
+                    style: AppStyle.purple14w600.copyWith(
+                      color: AppColors.hintGrey1,decoration: TextDecoration.lineThrough
+                    ),
+                  ),
                 )
               ],
             ),
-            if (widget.type == ComType.call)
+            if (widget.type == ComType.call && widget.model.voiceCallUrl.isNotNull)
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -387,7 +406,7 @@ class _OrderCardState extends State<OrderCard> {
               padding: const EdgeInsets.only(top: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
+                children: [/*
                   if (widget.model.reviewOrder != null)
                     RatingBar.builder(
                       initialRating:
@@ -405,11 +424,15 @@ class _OrderCardState extends State<OrderCard> {
                       onRatingUpdate: (rating) {
                         print(rating);
                       },
-                    ),
-                  if (widget.model.reviewOrder == null)
+                    ),*/
+
                     AppRoundedButton(
-                      text: AppStrings.askForReview,
+                      text: widget.model.askedReview==false && widget.model.reviewOrder.isNull ? AppStrings.askForReview : "View review",
                       color: AppColors.colorPrimary,
+                      onTap: () {
+                        if(widget.model.askedReview==false&& widget.model.reviewOrder.isNull)context.read<AuthProvider>().askReview(id: widget.model.id!,type: widget.type);
+                        else context.push(ReviewsScreen(id: widget.model.reviewOrder?.id,));
+                      },
                     ),
                 ],
               ),

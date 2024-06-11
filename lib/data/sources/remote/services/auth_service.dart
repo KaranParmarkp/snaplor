@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/models/models.dart';
 import 'package:jyotishee/main.dart';
@@ -18,6 +20,18 @@ class AuthService extends ApiService {
     return postData(ApiConfig.verifyOtp, data: {"phone": mobile, "code": code});
   }
 
+  Future<Response<GenericResponse>> fcmSave() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    log(token.toString(), name: "FCM Token");
+    return postData(ApiConfig.fcmSave, data: {"token": token, "type": Platform.isAndroid ? "android" : "ios"});
+  }
+
+  Future<Response<GenericResponse>> logout() async {
+    await putData(ApiConfig.logout);
+    return deleteData(ApiConfig.fcmSave,);
+  }
+
+
   Future<Response<GenericResponse>> userData(UserModel? model) async {
     return model != null
         ? putData(ApiConfig.userData, data: model.toJsonUpdateProfile())
@@ -32,14 +46,13 @@ class AuthService extends ApiService {
     );
   }
   Future<Response<GenericResponse>> offerStatus(String id,bool activate) async {
-    return getData(
+    return putData(
       ApiConfig.offersList+"/"+id+"/${activate ? "activate" : "deactivate"}",
     );
   }
 
   Future<Response<GenericResponse>> orderList(ComType type) async {
-    String url =
-        '''?filter={"astrologer.id": "${MyApp.appContext.read<AuthProvider>().userModel!.id}", "order_source": "${type.name}"}&limit=10&skip=0''';
+    String url = '''?filter={"order_source": "${type.name}"}&limit=10000&skip=0''';
     return getData(
       ApiConfig.ordersList + url,
     );
@@ -56,15 +69,19 @@ class AuthService extends ApiService {
       ApiConfig.reviewList +
           MyApp.appContext.read<AuthProvider>().userModel!.id +
           "/list",
+      queryParameters: {"limit":1000,"skip":0}
     );
   }
 
   Future<Response<GenericResponse>> addReview(String id, String message) async {
-    return putData(ApiConfig.reviewList + id, data: {"message": message});
+    return putData(ApiConfig.reviewList+"response/" + id, data: {"message": message});
   }
 
-  Future<Response<GenericResponse>> deleteReview(String id) async {
-    return deleteData(ApiConfig.reviewList + id);
+  Future<Response<GenericResponse>> hideReview(String id) async {
+    return putData(ApiConfig.reviewList + id+"/status/hide");
+  }
+  Future<Response<GenericResponse>> askReview(String id) async {
+    return putData(ApiConfig.askReview+id+"/ask");
   }
 
   Future<Response<GenericResponse>> waitList(ComType type) async {
@@ -77,8 +94,19 @@ class AuthService extends ApiService {
     return getData(ApiConfig.wallet);
   }
 
+  Future<Response<GenericResponse>> notificationCount() async {
+    return getData(ApiConfig.notificationCount);
+  }
   Future<Response<GenericResponse>> notificationList() async {
-    return getData(ApiConfig.notificationList);
+    return getData(ApiConfig.notificationList+'?filter={"seen": false}');
+  }
+
+  Future<Response<GenericResponse>> notificationRead(String id) async {
+    return putData(ApiConfig.notificationList+"/seen/$id");
+  }
+
+  Future<Response<GenericResponse>> notificationReadAll() async {
+    return putData(ApiConfig.notificationList+"/seen");
   }
 
   Future<Response<GenericResponse>> searchProduct(FilterModel filterModel) async {
@@ -97,12 +125,16 @@ class AuthService extends ApiService {
   }
 
   Future<Response<GenericResponse>> getMessages(String id) async {
-    return getData(ApiConfig.getMessages+id);
+    return getData(ApiConfig.getMessages+id,queryParameters: {"limit":4000});
   }
 
   Future<Response<GenericResponse>> onGoingChat() async {
-    return putData(ApiConfig.onGoingChat);
+    return getData(ApiConfig.onGoingChat);
   }
+  Future<Response<GenericResponse>> onGoingCall() async {
+    return getData(ApiConfig.onGoingCall);
+  }
+
   Future<Response<GenericResponse>> endChat(String id) async {
     return putData(ApiConfig.endChat+id);
   }

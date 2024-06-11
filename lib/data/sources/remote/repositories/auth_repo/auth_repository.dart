@@ -1,5 +1,6 @@
 import '../../../../../app/utils/utils.dart';
 import '../../../../models/models.dart';
+import '../../../../models/notification_data_model.dart';
 
 abstract class AuthRepository{
   Future<GenericResponse> login(String phone);
@@ -12,8 +13,10 @@ abstract class AuthRepository{
   Future<List<ReviewModel>> reviewList();
   Future<GenericResponse> addReview(String id,String message);
   Future<GenericResponse> deleteReview(String id);
+  Future<GenericResponse> askReview(String id);
   Future<List<WaitListModel>> waitList(ComType type);
   Future<WaitListModel?> onGoingChat();
+  Future<WaitListModel?> onGoingCall();
   Future<List<WalletModel>> wallet();
   Future<List<ProductModel>> searchProduct(FilterModel filterModel);
   Future<GenericResponse> acceptRequest(ComType type,String id);
@@ -22,5 +25,10 @@ abstract class AuthRepository{
   Future<GenericResponse> endChat(String id);
   Future<GenericResponse> callCount();
   Future<GenericResponse> chatCount();
-
+  Future<GenericResponse> fcmSave();
+  Future<GenericResponse> logout();
+  Future<List<NotificationDataModel>> notificationList();
+  Future<GenericResponse> notificationCount();
+  Future<GenericResponse> notificationRead(String id);
+  Future<GenericResponse> notificationSeenAll();
 }

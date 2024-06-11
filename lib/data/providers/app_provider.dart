@@ -9,7 +9,7 @@ class AppProvider extends ChangeNotifier{
 
   List<Locale> localeList = [
     const Locale('en'), //english
-    const Locale('hi'), //hindi
+    //const Locale('hi'), //hindi
   ];
 
   updateLanguage({required Locale locale}){

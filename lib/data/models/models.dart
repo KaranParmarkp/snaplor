@@ -12,4 +12,5 @@ export 'social_post_model.dart';
 export 'user_model.dart';
 export 'waitlist_model.dart';
 export 'wallet_model.dart';
+export 'generic_response_model.dart';
 

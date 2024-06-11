@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:jyotishee/data/models/generic_user_model.dart';
+
 import 'models.dart';
 
 List<PostCommentModel> postCommenstModelFromJson(String str) => List<PostCommentModel>.from(json.decode(str).map((x) => PostCommentModel.fromJson(x)));
@@ -13,7 +15,7 @@ String postCommenstModelToJson(List<PostCommentModel> data) => json.encode(List<
 class PostCommentModel {
   final String? id;
   final String? postId;
-  final User? user;
+  final GenericUserModel? user;
   final String? comment;
   final bool? isHidden;
   final bool? isPinned;
@@ -23,7 +25,8 @@ class PostCommentModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
-
+  bool showReplyMore;
+  bool? isLiked;
   PostCommentModel({
     this.id,
     this.postId,
@@ -37,12 +40,14 @@ class PostCommentModel {
     this.createdAt,
     this.updatedAt,
     this.v,
+    this.showReplyMore=false,
+    this.isLiked
   });
 
   PostCommentModel copyWith({
     String? id,
     String? postId,
-    User? user,
+    GenericUserModel? user,
     String? comment,
     bool? isHidden,
     bool? isPinned,
@@ -52,6 +57,9 @@ class PostCommentModel {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? v,
+    bool? showReplyMore,
+    bool? isLiked
+
   }) =>
       PostCommentModel(
         id: id ?? this.id,
@@ -66,13 +74,15 @@ class PostCommentModel {
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         v: v ?? this.v,
+        showReplyMore: showReplyMore ?? this.showReplyMore,
+        isLiked: isLiked ?? this.isLiked
       );
 
   factory PostCommentModel.fromJson(Map<String, dynamic> json) => PostCommentModel(
     id: json["_id"],
     postId: json["post_id"],
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
-    comment: json["comment"],
+    user: json["user_id"] == null ? GenericUserModel() : GenericUserModel.fromJson(json["user_id"]),
+    comment: json["comment"] ?? json["reply"],
     isHidden: json["is_hidden"],
     isPinned: json["is_pinned"],
     totalLikes: json["total_likes"],
@@ -81,6 +91,8 @@ class PostCommentModel {
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     v: json["__v"],
+    isLiked: json["isLiked"],
+    showReplyMore: false
   );
 
   Map<String, dynamic> toJson() => {

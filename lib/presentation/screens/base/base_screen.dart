@@ -1,11 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
 import 'package:jyotishee/data/providers/providers.dart';
-import 'package:jyotishee/presentation/screens/chat/chat_screen.dart';
+import 'package:jyotishee/presentation/screens/community/community_screen.dart';
 import 'package:jyotishee/presentation/screens/settings/profile/profile_screen.dart';
+import 'package:jyotishee/presentation/screens/waitlist/waitlist_screen.dart';
 import 'package:jyotishee/presentation/screens/wallet/wallet_screen.dart';
+import 'package:jyotishee/presentation/widgets/check_net.dart';
 import '../../widgets/widgets.dart';
-import '../community/community_screen.dart';
 import '../home/home_screen.dart';
 import '../settings/settings_screen.dart';
 
@@ -20,24 +22,33 @@ class BaseScreen extends StatefulWidget {
 }
 
 class _BaseScreenState extends State<BaseScreen> {
-  List<Widget> screens = [
+  /*List<Widget> screens = [
     ProfileScreen(),
     WalletScreen(),
     HomeScreen(),
     SettingsScreen(),
   ];
-  int selectedIndex = 2;
+  */
+  List<Widget> screens = [
+    HomeScreen(),
+    CommunityScreen(),
+    WalletScreen(),
+    SettingsScreen(),
+  ];
+
+  int selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    Future.microtask(() => context.read<AuthProvider>().fcmSave());
     Future.microtask(() => context.read<AuthProvider>().initSocket());
   }
 
   @override
   void dispose() {
+    //context.read<AuthProvider>().disposeSocket();
     super.dispose();
-    context.read<AuthProvider>().disposeSocket();
   }
 
   @override
@@ -45,76 +56,16 @@ class _BaseScreenState extends State<BaseScreen> {
     return Consumer<AuthProvider>(
       builder: (context, provider, child) {
         return Scaffold(
-          //key: scaffoldKey,
           resizeToAvoidBottomInset: false,
-          //drawer: AppDrawer(),
           body: Stack(
             alignment: Alignment.bottomCenter,
             children: [
               screens[selectedIndex],
               if (provider.currentChat.isNotNull)
-                Container(
-                  padding: EdgeInsets.all(15),
-                  margin: EdgeInsets.all(15),
-                  decoration: AppDecoration.whiteShadowRounded,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                child: CircleAvatar(
-                                  radius: 22,
-                                  backgroundColor: AppColors.colorPrimary,
-                                  child: CircleNetworkImageAvatar(
-                                      radius: 20,
-                                      image: provider.currentChat?.user?.image),
-                                ),
-                              ),
-                            ],
-                          ),
-                          20.width,
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "",
-                                  style: AppStyle.grey12
-                                      .copyWith(color: AppColors.greyDark),
-                                ),
-                                Text(provider.currentChat?.user?.name ?? "",
-                                    style: AppStyle.black14),
-                              ],
-                            ),
-                          ),
-                          /*InkWell(
-                      onTap: () => provider.endChat(),
-                      child: Container(
-                          padding: EdgeInsets.all(6),
-                          child: Icon(Icons.close,size: 20,color: AppColors.greyDark,)),
-                    ),*/
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: AppRoundedButton(
-                          text: AppStrings.chat,
-                          color: AppColors.colorPrimary,
-                          onTap: () => context.push(ChatScreen(
-                            model: provider.currentChat,
-                          )),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                ...[Padding(
+                  padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
+                  child: WaitListCard(model: provider.currentChat!, type: ComType.chat),
+                )]
             ],
           ),
           bottomNavigationBar: Container(
@@ -136,35 +87,38 @@ class _BaseScreenState extends State<BaseScreen> {
               elevation: 12,
               currentIndex: selectedIndex,
               onTap: (value) {
-                if(value!=0){
+                provider.onGoingChat();
                   selectedIndex = value;
                   setState(() {});
-                }else{
-                  context.push(ProfileScreen());
-                }
               },
               items: [
-                BottomNavigationBarItem(
+                /*BottomNavigationBarItem(
                   icon: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    /*child: SvgImage(
-                      image: selectedIndex == 0
-                          ? AppSvg.home
-                          : AppSvg.homeUnFilled,
-                    ),*/
                     child: CircleNetworkImageAvatar(
                         radius: 15,
                         image: context.read<AuthProvider>().userModel?.profileImage),
                   ),
                   label: "",
-                ),
+                ),*/
+                BottomNavigationBarItem(
+                    icon: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SvgImage(
+                        image: selectedIndex == 0
+                            ? AppSvg.home
+                            : AppSvg.homeUnFilled,
+                      ),
+                    ),
+                    label: ""),
                 BottomNavigationBarItem(
                     icon: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SvgImage(
                         image: selectedIndex == 1
-                            ? AppSvg.walledFilled
-                            : AppSvg.wallet,
+                            ? AppSvg.comFilled
+                            : AppSvg.comunFilled,
+                        //color: selectedIndex != 1 ? Colors.black : AppColors.colorPrimary,
                       ),
                     ),
                     label: ""),
@@ -173,8 +127,8 @@ class _BaseScreenState extends State<BaseScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: SvgImage(
                         image: selectedIndex == 2
-                            ? AppSvg.home
-                            : AppSvg.homeUnFilled,
+                            ? AppSvg.walledFilled
+                            : AppSvg.wallet,
                       ),
                     ),
                     label: ""),

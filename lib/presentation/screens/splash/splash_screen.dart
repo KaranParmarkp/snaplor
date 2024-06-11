@@ -26,11 +26,11 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        color: AppColors.white,
+        color: AppColors.colorPrimary,
         child: Container(
           constraints: BoxConstraints(maxWidth: 300),
           padding:  EdgeInsets.symmetric(horizontal: 65),
-          child: SvgImage(image: AppSvg.appLogoRound),
+          child: Image.asset(AppImages.appLogo),
         ),
       )
 

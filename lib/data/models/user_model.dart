@@ -8,6 +8,8 @@ String userModelToJson(UserModel data) => json.encode(data.toJson());
 class UserModel {
   final String id;
   final String? userName;
+  final String? firstName;
+  final String? lastName;
   final String? accessToken;
   final String? name;
   final String? email;
@@ -50,12 +52,19 @@ class UserModel {
   final int? v;
   final String? profileImage;
   final String? videoUrl;
-
+  final int? totalFollowers;
+  final int? totalFollowing;
+  final int? totalPost;
+  final dynamic avgRating;
+  final dynamic totalChatRequests;
+  final bool? isFollow;
   UserModel({
     required this.id,
     this.accessToken,
     this.userName,
     this.name,
+    this.firstName,
+    this.lastName,
     this.email,
     this.countryCode,
     this.phone,
@@ -96,12 +105,20 @@ class UserModel {
     this.v,
     this.profileImage,
     this.videoUrl,
+    this.totalFollowers,
+    this.totalFollowing,
+    this.totalPost,
+    this.avgRating,
+    this.totalChatRequests,
+    this.isFollow
   });
   UserModel copyWith({
     String? id,
     String? userName,
     String? accessToken,
     String? name,
+    String? firstName,
+    String? lastName,
     String? email,
     String? countryCode,
     String? phone,
@@ -143,6 +160,11 @@ class UserModel {
     int? v,
     String? profileImage,
     String? videoUrl,
+    int? totalFollowers,
+    int? totalFollowing,
+    int? totalPost,
+    int? avgRating,
+    dynamic totalChatRequests
   }) =>
       UserModel(
         id: id ?? this.id,
@@ -189,16 +211,23 @@ class UserModel {
         v: v ?? this.v,
         profileImage: profileImage ?? this.profileImage,
         videoUrl: videoUrl ?? this.videoUrl,
+        totalFollowers: totalFollowers ?? this.totalFollowers,
+        totalFollowing: totalFollowing ?? this.totalFollowing,
+        totalPost: totalPost ?? this.totalPost,
+        avgRating: avgRating ?? this.avgRating,
+        totalChatRequests: totalChatRequests??this.totalChatRequests
       );
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-    id: json["_id"],
-    userName: json["user_name"],
+    id: json.containsKey('user_id') ? json["user_id"]["_id"] :json["_id"] ,
+    userName: json.containsKey('user_id') ? json["user_id"]["user_name"] :"",
     accessToken: json["token"],
-    name: json["name"],
-    email: json["email"],
-    countryCode: json["country_code"],
-    phone: json["phone"],
+    name: json.containsKey('user_id') ? ((json["user_id"]["first_name"] ?? "") + " "+(json["user_id"]["last_name"] ?? "" )) :json["name"] ?? ((json["first_name"] ?? "") + " "+(json["last_name"] ?? "" )),
+    firstName: json.containsKey('user_id') ? json["user_id"]["first_name"] : "",
+    lastName: json.containsKey('user_id') ? json["user_id"]["last_name"] :"",
+    email: json.containsKey('user_id') ? json["user_id"]["email"] : json["email"],
+    countryCode: json.containsKey('user_id') ? json["user_id"]["country_code"] : "",
+    phone:json.containsKey('user_id') ? json["user_id"]["phone"] : json["phone"],
     dateOfBirth: json["date_of_birth"] == null ? null : DateTime.parse(json["date_of_birth"]),
     status: json["status"],
     role: json["role"],
@@ -219,12 +248,12 @@ class UserModel {
     chatPrice: json["chat_price"],
     callPrice: json["call_price"],
     isActive: json["is_active"],
-    totalChatMinutes: json["total_chat_minutes"],
-    totalCallMinutes: json["total_call_minutes"],
-    totalChatOrders: json["total_chat_orders"],
+    totalChatMinutes: json["total_chat_minutes"] ?? 0,
+    totalCallMinutes: json["total_call_minutes"] ?? 0,
+    totalChatOrders: json["total_chat_orders"] ?? 0,
     totalCallOrders: json["total_call_orders"] ?? 0,
-    todayChatOrders: json["today_chat_order"],
-    todayCallOrders: json["today_call_order"],
+    todayChatOrders: json["today_chat_order"] ?? 0,
+    todayCallOrders: json["today_call_order"] ?? 0,
     lifeTimeEarnings: json["life_time_earning"],
     todayTotalEarnings: json["today_total_earning"]!=null &&  json["today_total_earning"] is int ?json["today_total_earning"]   : 0,
     balanceAmount: json["balance_amount"],
@@ -234,8 +263,14 @@ class UserModel {
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     v: json["__v"],
-    profileImage: json["profile_image"],
+    profileImage: json.containsKey('user_id') ? json["user_id"]["profile_image"] : json["profile_image"] ?? "",
     videoUrl: json["video_url"],
+    totalFollowers: json["total_followers"] ?? 0,
+    totalFollowing: json["total_following"] ?? 0,
+    totalPost: json["total_posts"] ?? 0,
+    avgRating: json["average_rating"] ?? 0.0,
+    totalChatRequests: json["total_chat_requests"] ?? 0,
+    isFollow: json["is_following"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -244,6 +279,8 @@ class UserModel {
     "user_name": userName,
     "name": name,
     "email": email,
+    "first_name":firstName,
+    "last_name":lastName,
     "country_code": countryCode,
     "phone": phone,
     "date_of_birth": dateOfBirth?.toIso8601String(),
@@ -279,15 +316,18 @@ class UserModel {
     "__v": v,
     "profile_image": profileImage,
     "video_url": videoUrl,
+    "total_posts" : totalPost,
+    "total_following":totalFollowing,
+    "total_followers":totalFollowers
   };
   Map<String, dynamic> toJsonUpdateProfile() => {
-    "name": name,
-    "experience": experience,
-    "specialization": List<dynamic>.from(specialization.map((x) => x)),
-    "skills":  List<dynamic>.from(skills.map((x) => x)),
-    "languages": List<dynamic>.from(languages.map((x) => x)),
-    "address": address?.toJson(),
-    "description": description,
+    //"name": name,
+    //"experience": experience,
+    //"specialization": List<dynamic>.from(specialization.map((x) => x)),
+    //"skills":  List<dynamic>.from(skills.map((x) => x)),
+    //"languages": List<dynamic>.from(languages.map((x) => x)),
+    //"address": address?.toJson(),
+    //"description": description,
     //"bank_info": bankInfo?.toJson(),
     //"kyc": kyc?.toJson(),
     "is_available_for_chat": isAvailableForChat,
@@ -295,7 +335,7 @@ class UserModel {
     "chat_price": chatPrice,
     "call_price": callPrice,
     //"is_active": isActive,
-    "profile_image": profileImage,
+    //"profile_image": profileImage,
     //"video_url": videoUrl,
   };
 }

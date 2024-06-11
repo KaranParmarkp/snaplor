@@ -26,6 +26,10 @@ class DateTimeHelper {
   static dateWithTime(dynamic date){
     return DateFormat("MM/dd/yyyy h:mm a").format(date is DateTime ? date : DateTime.parse(date));
   }
+  static dateMonth(dynamic date){
+    return DateFormat("d MMM yyyy").format(date is DateTime ? date : DateTime.parse(date));
+  }
+
   static dateMonthWithTime(dynamic date){
     return DateFormat("d MMM yyyy, h:mm a").format(date is DateTime ? date : DateTime.parse(date));
   }
@@ -61,5 +65,15 @@ class DateTimeHelper {
     final formattedTime = outputFormat.format(parsedTime);
 
     return formattedTime;
+  }
+  static String convertTimeTo12HourFormat(String timeString) {
+    // Parse the input time string into a DateTime object
+    DateTime time = DateTime.parse(timeString);
+
+    // Create a DateFormat instance for 12-hour time format
+    final format = DateFormat('h:mm a');
+
+    // Format the DateTime object into the desired time format
+    return format.format(time);
   }
 }

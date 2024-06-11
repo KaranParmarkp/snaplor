@@ -1,3 +1,11 @@
+import 'package:jyotishee/data/models/notification_data_model.dart';
+
+import 'package:jyotishee/data/models/notification_data_model.dart';
+
+import 'package:jyotishee/data/models/notification_data_model.dart';
+
+import 'package:jyotishee/data/models/notification_data_model.dart';
+
 import '../../../../../app/utils/utils.dart';
 import '../../../../models/models.dart';
 import '../../network_services/abstract_api.dart';
@@ -106,7 +114,17 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
   @override
   Future<GenericResponse> deleteReview(String id) {
     return serviceHandler(
-      serviceFunction: () => service.deleteReview(id,),
+      serviceFunction: () => service.hideReview(id,),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+
+  @override
+  Future<GenericResponse> askReview(String id) {
+    return serviceHandler(
+      serviceFunction: () => service.askReview(id,),
       successFunction: (response) async {
         return response;
       },
@@ -129,6 +147,15 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
   Future<WaitListModel?> onGoingChat() {
     return serviceHandler(
       serviceFunction: () => service.onGoingChat(),
+      successFunction: (response) async {
+        return WaitListModel.fromJson(response.data);
+      },
+    );
+  }
+  @override
+  Future<WaitListModel?> onGoingCall() {
+    return serviceHandler(
+      serviceFunction: () => service.onGoingCall(),
       successFunction: (response) async {
         return WaitListModel.fromJson(response.data);
       },
@@ -218,5 +245,61 @@ class AuthRepositoryImpl extends AbstractApi implements AuthRepository {
     );
   }
 
+  @override
+  Future<GenericResponse> fcmSave() {
+    return serviceHandler(
+      serviceFunction: () => service.fcmSave(),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+  Future<GenericResponse> logout() {
+    return serviceHandler(
+      serviceFunction: () => service.logout(),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+
+  @override
+  Future<List<NotificationDataModel>> notificationList() {
+    return serviceHandler(
+      serviceFunction: () => service.notificationList(),
+      successFunction: (response) async {
+        List<NotificationDataModel> list = [];
+        list = List<NotificationDataModel>.from(response.data!.map((x) => NotificationDataModel.fromJson(x))).toList();
+        return list;
+      },
+    );
+  }
+  @override
+  Future<GenericResponse> notificationCount() {
+    return serviceHandler(
+      serviceFunction: () => service.notificationCount(),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+
+  @override
+  Future<GenericResponse> notificationRead(String id) {
+    return serviceHandler(
+      serviceFunction: () => service.notificationRead(id),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
+  Future<GenericResponse> notificationSeenAll() {
+    return serviceHandler(
+      serviceFunction: () => service.notificationReadAll(),
+      successFunction: (response) async {
+        return response;
+      },
+    );
+  }
 
 }

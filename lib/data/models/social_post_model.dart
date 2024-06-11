@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import '../../app/utils/utils.dart';
+import 'generic_user_model.dart';
 import 'models.dart';
 
 List<SocialPostModel> socialPostModelFromJson(String str) => List<SocialPostModel>.from(json.decode(str).map((x) => SocialPostModel.fromJson(x)));
@@ -12,23 +13,25 @@ List<SocialPostModel> socialPostModelFromJson(String str) => List<SocialPostMode
 String socialPostModelToJson(List<SocialPostModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class SocialPostModel {
-  final String? id;
-  final User? user;
-  final String? content;
-  final bool? isHidden;
-  final bool? isPinned;
-  final int? totalComment;
-  final int? totalLikes;
-  final int? totalShare;
-  final bool? isDeleted;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
-  final String? imageUrl;
-  final String? videoUrl;
-  final PostType? type;
-  final bool? isLiked;
-
+   String? id;
+   GenericUserModel? user;
+   GenericUserModel? astrologer;
+   String? content;
+   bool? isHidden;
+   bool? isPinned;
+   int? totalComment;
+   int? totalLikes;
+   int? totalShare;
+   int? totalRepost;
+   bool? isDeleted;
+   DateTime? createdAt;
+   DateTime? updatedAt;
+   int? v;
+   String? imageUrl;
+   String? videoUrl;
+   PostType? type;
+   bool? isLiked;
+   SocialPostModel? originalPost;
   SocialPostModel({
     this.id,
     this.user,
@@ -38,6 +41,7 @@ class SocialPostModel {
     this.totalComment,
     this.totalLikes,
     this.totalShare,
+    this.totalRepost,
     this.isDeleted,
     this.createdAt,
     this.updatedAt,
@@ -45,12 +49,14 @@ class SocialPostModel {
     this.imageUrl,
     this.videoUrl,
     this.type,
-    this.isLiked
+    this.isLiked,
+    this.originalPost, this.astrologer
   });
 
   SocialPostModel copyWith({
     String? id,
-    User? user,
+    GenericUserModel? user,
+    GenericUserModel? astrologer,
     String? content,
     bool? isHidden,
     bool? isPinned,
@@ -64,7 +70,8 @@ class SocialPostModel {
     String? imageUrl,
     String? videoUrl,
     PostType? type,
-    bool? isLiked
+    bool? isLiked,
+    SocialPostModel? originalPost
   }) =>
       SocialPostModel(
         id: id ?? this.id,
@@ -82,32 +89,38 @@ class SocialPostModel {
         imageUrl: imageUrl ?? this.imageUrl,
         videoUrl: videoUrl ?? this.videoUrl,
         type: type ?? this.type,
-        isLiked: isLiked?? this.isLiked
-
+        isLiked: isLiked?? this.isLiked,
+      originalPost: originalPost ?? this.originalPost,
+        totalRepost: totalRepost??this.totalRepost,
+          astrologer : astrologer ?? this.astrologer
       );
 
   factory SocialPostModel.fromJson(Map<String, dynamic> json) => SocialPostModel(
     id: json["_id"],
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
+    user: json["user_id"] == null ? null : GenericUserModel.fromJson(json["user_id"]),
+    astrologer: json["astrologer_id"] == null ? null : GenericUserModel.fromJson(json["astrologer_id"]),
     content: json["content"],
     isHidden: json["is_hidden"],
     isPinned: json["is_pinned"],
     totalComment: json["total_comment"],
     totalLikes: json["total_likes"],
     totalShare: json["total_share"],
+    totalRepost: json["total_repost"],
     isDeleted: json["is_deleted"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     v: json["__v"],
     imageUrl: json["image_url"],
     videoUrl: json["video_url"],
-    isLiked: json["isLike"],
-    type: json["video_url"]!=null ? PostType.video : json["image_url"] !=null ? PostType.image : PostType.text,
+    isLiked: json["isLiked"],
+    originalPost: json["original_post"]!=null && json["original_post"] is Map ? SocialPostModel.fromJson(json["original_post"]):null,
+    type: json["video_url"]!=null && json["video_url"]!="" ? PostType.video : json["image_url"] !=null && json["image_url"]!=""? PostType.image : PostType.text,
   );
 
   Map<String, dynamic> toJson() => {
     "_id": id,
-    "user": user?.toJson(),
+    "user_id": user?.toJson(),
+    "astrologer_id": user?.toJson(),
     "content": content,
     "is_hidden": isHidden,
     "is_pinned": isPinned,

@@ -16,7 +16,8 @@ class SquareNetworkImageAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: image ?? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+        imageUrl: image ?? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+
       imageBuilder: (context, imageProvider) => Container(
         width:size??width ?? 60,
         height: size??height??60,

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jyotishee/app/utils/utils.dart';
+import 'package:jyotishee/data/providers/providers.dart';
 
+import '../../../data/models/notification_data_model.dart';
+import '../../../data/models/wallet_model.dart';
+import '../../../data/providers/auth_provider.dart';
 import '../../widgets/widgets.dart';
 
 class NotificationScreen extends StatelessWidget {
@@ -11,125 +15,83 @@ class NotificationScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: AppStrings.notification,
-        showProfile: true,
+        showProfile: false,trailingIcon: context.watch<AuthProvider>().notList.isNotNull && context.read<AuthProvider>().notList!.isNotEmpty ?InkWell(
+        onTap: () {
+            context.read<AuthProvider>().notificationReadAll();
+        },
+          child: Center(child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("Clear All",style: AppStyle.purple14,),
+          )),
+        ) : SizedBox(),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.all(15),
-              margin: EdgeInsets.only(bottom: 20),
-              decoration: AppDecoration.whiteShadowRounded,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            child: CircleAvatar(
-                              radius: 22,backgroundColor: AppColors.colorPrimary,
-                              child: CircleNetworkImageAvatar(
-                                  radius: 20,
-                                  image:
-                                  "https://images.unsplash.com/photo-1567324216289-97cc4134f626?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cG9ydHJhaXQlMjBtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80"),
-                            ),
-                          ),
-                          Text(AppStrings.call.toUpperCase(),style: AppStyle.purple12,)
-                        ],
-                      ),
-                      20.width,
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("7 min ago",style: AppStyle.grayDark12,),
-                            Text("Suhel Ahmed",style: AppStyle.black14),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  ' \u{20B9}',
-                                  style: TextStyle(
-                                    color: AppColors.greyDark,
-                                    fontSize: 14,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                Text(" 5/Min",style: AppStyle.grayDark12,),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Icon(Icons.close,size: 20,color: AppColors.greyDark,),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: AppRoundedButton(text: AppStrings.rejects,color: AppColors.red,),
-                          ),
-                        20.width,
-                        Expanded(
-                          child: AppRoundedButton(text: AppStrings.accept,color: AppColors.colorPrimary,),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(15),
-              margin: EdgeInsets.only(bottom: 20),
-              decoration: AppDecoration.whiteShadowRounded,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        child: CircleAvatar(
-                          radius: 22,backgroundColor: AppColors.colorPrimary,
-                          child: CircleNetworkImageAvatar(
-                              radius: 20,
-                              image:
-                              "https://images.unsplash.com/photo-1567324216289-97cc4134f626?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cG9ydHJhaXQlMjBtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80"),
-                        ),
-                      ),
-                      20.width,
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("15 min ago",style: AppStyle.grayDark12,),
-                                Text("Amount Transfer to Bank",style: AppStyle.black14),
-                                Text("27 Jun, 01:00 PM",style: AppStyle.grayDark12,),
-                              ],
-                            ),
-                            Spacer(),
-                            Icon(Icons.close,size: 20,color: AppColors.greyDark,),
-                          ],
-                        ),
-                      ),
+      body: Container(
+        height: context.screenHeight,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: AppConsumer<AuthProvider, List<NotificationDataModel>>(
+          taskName: AuthProvider.notificationListKey,
+          load: (provider) => provider.notificationList(),
+          successBuilder: (data, provider) => ListView.builder(
+            padding: EdgeInsets.only(top: 20),
+            itemCount: data.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) => NotificationCard(model : data[index]),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
+class NotificationCard extends StatelessWidget {
+  const NotificationCard({super.key,required this.model});
+  final NotificationDataModel model;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(15),
+      margin: EdgeInsets.only(bottom: 20),
+      decoration: AppDecoration.whiteShadowRounded.copyWith(
+        //color: model.seen ? null : AppColors.black.withOpacity(0.1)
+      ),
+      child: InkWell(
+        onTap: () {
+          if(model.seen.isFalse){
+            context.read<AuthProvider>().notificationRead(id: model.id,onSuccess: () {
+              model.seen=true;
+            },);
+          }
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              radius: 22,
+              backgroundColor: AppColors.colorPrimary,
+              child: CircleNetworkImageAvatar(
+                  radius: 20,
+                  image:model.actorId.image),
+            ),
+            10.width,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          model.createdAt.toLocal().formatElapsedTimeString(),
+                          style: AppStyle.grayDark12.copyWith(fontSize: 10),
+                        ),
+                      ),
+                      SizedBox()
                     ],
                   ),
+                  //Text(model.actorId.name.toStringOrEmpty.toTitleCase(), style: AppStyle.black14),
+                  Text(model.title.toStringOrEmpty, style: AppStyle.black12),
                 ],
               ),
             ),
